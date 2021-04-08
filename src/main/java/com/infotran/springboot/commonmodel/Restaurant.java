@@ -59,14 +59,16 @@ public class Restaurant {
 	@Column(name = "fk_userAccount_id")
 	private Integer userAccountId;
 	
+	/** 1個User可以有多個餐廳 **/
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "")  
+	@JoinColumn(name = "fk_userAccount_id")  
 	private UserAccount userAccount;
 	
-	
+	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
 	
+	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
 	
