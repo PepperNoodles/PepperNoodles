@@ -1,4 +1,4 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.common.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
