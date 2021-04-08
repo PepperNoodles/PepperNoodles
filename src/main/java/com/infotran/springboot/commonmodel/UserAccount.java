@@ -146,10 +146,10 @@ public class UserAccount {
 	// ForumReplyMessageBox=============================================================
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumReplyuserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> forumReplyNetizenAccounts = new ArrayList<ReplyMessage>();
+	private List<ForumReplyMessage> forumReplyNetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumCommentUserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> forumCommentnetizenAccounts = new ArrayList<ReplyMessage>();
+	private List<ForumReplyMessage> forumCommentnetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	// =============================================================
 	

@@ -15,8 +15,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.stereotype.Component;
+
 @Entity
 @Table(name="forumMessageBox")
+@Component
 public class ForumMessageBox {
 	
 	@Id
@@ -54,7 +57,7 @@ public class ForumMessageBox {
 	
 	//replyMessageBox
 	@OneToOne(mappedBy ="forumMessageBox",cascade = CascadeType.ALL)
-	private ForumMessageBox replyMessage;
+	private ForumReplyMessage replyMessage;
 
 	
 	
