@@ -1,12 +1,21 @@
 package com.infotran.springboot.loginsystem.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,54 +25,131 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-@Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "Account") })
+@Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
 @Component
 public class UserAccount {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "accoount_index")
-	private Integer accoount_index;
+	@Column(name = "account_id")
+	private Integer accountId;
 	
-	private String Account;
+	@Column(name = "acoount_index")
+	private String accountIndex;
 
-	private String Password;
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "accountType")
+	@Transient
+	private Integer accountType;
 
 	@Column(name = "fk_accountDetail_id")
 	@Transient
-	private Integer detailid;
-//
-//	@Transient
-//	private Integer fk_levelDetail_id;
-//
-//	// =============================================================
-//
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinTable(name = "FriendList", joinColumns = {
-//			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "Account") }, inverseJoinColumns = {
-//					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "Account") })
-//	private Set<UserAccount> friends = new HashSet<UserAccount>();
-//
-//	@ManyToMany(mappedBy = "friends")
-//	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
-//
-//	// =============================================================
-//	
+	private Integer accountDetailId;
+	
+	@Column(name = "fk_companyDetail_id")
+	@Transient
+	private Integer companyDetailId;
+
+	@Column(name = "fk_levelDetail_id")
+	@Transient
+	private Integer levelDetailId;
+
+	// =============================================================
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_accountDetail_id")
-	private UserDetail useraccountdetail;
-//
-//	// =============================================================
-//	@ManyToMany(mappedBy = "user")
-//	private Set<TagList> usertags = new HashSet<TagList>();
-//	
-//	// =============================================================
-//
-//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "netizen",cascade = CascadeType.ALL)
-//	private List<MessageBox> netizens = new ArrayList<MessageBox>();
-//	
-//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "msguser",cascade = CascadeType.ALL)
-//	private List<MessageBox> msnbox = new ArrayList<MessageBox>();
+	private UserDetail userAccountDetail;
+
+	// =============================================================
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_companyDetail_id")
+	private CompanyDetail companyDetail;
+
+	// =============================================================
+	
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_levelDetail_id")
+	private CompanyDetail levelDetail;
+
+	// foodtags=============================================================
+	
+	@ManyToMany(mappedBy = "users")
+	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	// RestaurantFollowerForm=============================================================
+	
+	@ManyToMany(mappedBy = "userAccountIDs")
+	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
+	
+	// 如果要做朋友的request請求要在新增一個表格??=============================================================
+	
+	@ManyToMany(mappedBy = "friends")
+	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "FriendList", joinColumns = {
+			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "account_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "account_id") })
+	private Set<UserAccount> friends = new HashSet<UserAccount>();
+
+
+
+	// UserFollowerForm=============================================================
+	
+	@ManyToMany(mappedBy = "followers")
+	private Set<UserAccount> followersinmap = new HashSet<UserAccount>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "UserFollowerForm", joinColumns = {
+			@JoinColumn(name = "fk_userAccount_id", referencedColumnName = "account_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "fk_followerAccount_id", referencedColumnName = "account_id") })
+	private Set<UserAccount> followers = new HashSet<UserAccount>();
+
+
+
+	// MessageBox=============================================================
+
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "netizenAccount",cascade = CascadeType.ALL)
+	private List<MessageBox> netizens = new ArrayList<MessageBox>();
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "UserAccount",cascade = CascadeType.ALL)
+	private List<MessageBox> msnBox = new ArrayList<MessageBox>();
+	
+	// Forum=============================================================
+
+		@OneToMany(fetch = FetchType.LAZY,mappedBy = "userAccount",cascade = CascadeType.ALL)
+		private List<Forum> forums = new ArrayList<Forum>();
+		
+	// ForumCollections=============================================================
+	
+	@ManyToMany(mappedBy = "colloctors")
+	private Set<Forum> collectedforums = new HashSet<Forum>();
+
+
+	// ForumMessageBox=============================================================
+
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumNetizenAccount",cascade = CascadeType.ALL)
+	private List<ForumMessageBox> forumNetizens = new ArrayList<ForumMessageBox>();
+	
+	// ReplyMessageBox=============================================================
+
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "replyuserAccount",cascade = CascadeType.ALL)
+	private List<ReplyMessage> replyNetizenAccounts = new ArrayList<ReplyMessage>();
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "commentUserAccount",cascade = CascadeType.ALL)
+	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
+	
+	// ForumReplyMessageBox=============================================================
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumReplyuserAccount",cascade = CascadeType.ALL)
+	private List<ReplyMessage> forumReplyNetizenAccounts = new ArrayList<ReplyMessage>();
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumCommentUserAccount",cascade = CascadeType.ALL)
+	private List<ReplyMessage> forumCommentnetizenAccounts = new ArrayList<ReplyMessage>();
 	
 	// =============================================================
 	
@@ -84,108 +170,6 @@ public class UserAccount {
 
 	// =============================================================
 	
-	public MultipartFile getProductImage() {
-		return productImage;
-	}
 
-	public void setProductImage(MultipartFile productImage) {
-		this.productImage = productImage;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Integer getAccoount_index() {
-		return accoount_index;
-	}
-
-	public void setAccoount_index(Integer accoount_index) {
-		this.accoount_index = accoount_index;
-	}
-
-	public String getAccount() {
-		return Account;
-	}
-
-	public void setAccount(String account) {
-		Account = account;
-	}
-
-	public String getPassword() {
-		return Password;
-	}
-
-	public void setPassword(String password) {
-		Password = password;
-	}
-
-	public Integer getDetailid() {
-		return detailid;
-	}
-
-	public void setDetailid(Integer detailid) {
-		this.detailid = detailid;
-	}
-//
-//	public Integer getFk_levelDetail_id() {
-//		return fk_levelDetail_id;
-//	}
-//
-//	public void setFk_levelDetail_id(Integer fk_levelDetail_id) {
-//		this.fk_levelDetail_id = fk_levelDetail_id;
-//	}
-//
-//	public Set<UserAccount> getFriends() {
-//		return friends;
-//	}
-//
-//	public void setFriends(Set<UserAccount> friends) {
-//		this.friends = friends;
-//	}
-//
-	public UserDetail getUseraccountdetail() {
-		return useraccountdetail;
-	}
-
-	public void setUseraccountdetail(UserDetail useraccountdetail) {
-		this.useraccountdetail = useraccountdetail;
-	}
-//
-//	public Set<TagList> getUsertags() {
-//		return usertags;
-//	}
-//
-//	public void setUsertags(Set<TagList> usertags) {
-//		this.usertags = usertags;
-//	}
-//
-//	public Set<UserAccount> getFriendsinmap() {
-//		return friendsinmap;
-//	}
-//
-//	public void setFriendsinmap(Set<UserAccount> friendsinmap) {
-//		this.friendsinmap = friendsinmap;
-//	}
-//
-//	public List<MessageBox> getNetizens() {
-//		return netizens;
-//	}
-//
-//	public void setNetizens(List<MessageBox> netizens) {
-//		this.netizens = netizens;
-//	}
-//
-//	public List<MessageBox> getMsnbox() {
-//		return msnbox;
-//	}
-//
-//	public void setMsnbox(List<MessageBox> msnbox) {
-//		this.msnbox = msnbox;
-//	}
 
 }

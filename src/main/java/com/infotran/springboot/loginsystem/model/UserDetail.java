@@ -19,111 +19,130 @@ public class UserDetail {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="Detail_id")
-	private int Detail_id;
+	@Column(name = "user_Detail_id")
+	private Integer useretailId;
 	
-	private String RealName;
+	@Column(name = "realname")
+	private String realName;
 	
-	private String NickName;
+	@Column(name = "nickname")
+	private String nickName;
 	
-	private String PhoneNumber;
+	@Column(name = "phonenumber")
+	private String phoneNumber;
 	
-	private String BirthDay;
+	@Column(name = "birthday")
+	private String birthDay;
 	
-	private Blob UserPhoto;
+	@Column(name="userphotoname")
+	private String userPhotoName;
 	
-	private String Sex;
+	@Column(name = "userphoto")
+	private Blob userPhoto;
 	
-	private String Location;
+	@Column(name = "gender")
+	private String gender;
 	
-	private int FoodPoint;
+	@Column(name = "location")
+	private String location;
+	
+	@Column(name = "fk_purse_id")
+	private Integer purseID;
 	
 	@OneToOne(mappedBy = "useraccountdetail")
-	private UserAccount useraccount;
+	private UserAccount userAccount;
 	
 	public UserDetail() {
 	}
 
-	public int getDetail_id() {
-		return Detail_id;
+	public Integer getUseretailId() {
+		return useretailId;
 	}
 
-	public void setDetail_id(int detail_id) {
-		Detail_id = detail_id;
+	public void setUseretailId(Integer useretailId) {
+		this.useretailId = useretailId;
 	}
 
 	public String getRealName() {
-		return RealName;
+		return realName;
 	}
 
 	public void setRealName(String realName) {
-		RealName = realName;
+		this.realName = realName;
 	}
 
 	public String getNickName() {
-		return NickName;
+		return nickName;
 	}
 
 	public void setNickName(String nickName) {
-		NickName = nickName;
+		this.nickName = nickName;
 	}
 
 	public String getPhoneNumber() {
-		return PhoneNumber;
+		return phoneNumber;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		PhoneNumber = phoneNumber;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getBirthDay() {
-		return BirthDay;
+		return birthDay;
 	}
 
 	public void setBirthDay(String birthDay) {
-		BirthDay = birthDay;
-	}
-
-
-	public String getSex() {
-		return Sex;
-	}
-
-	public void setSex(String sex) {
-		Sex = sex;
-	}
-
-	public String getLocation() {
-		return Location;
-	}
-
-	public void setLocation(String location) {
-		Location = location;
-	}
-
-	public int getFoodPoint() {
-		return FoodPoint;
-	}
-
-	public void setFoodPoint(int foodPoint) {
-		FoodPoint = foodPoint;
-	}
-
-	public UserAccount getUseraccount() {
-		return useraccount;
-	}
-
-	public void setUseraccount(UserAccount useraccount) {
-		this.useraccount = useraccount;
+		this.birthDay = birthDay;
 	}
 
 	public Blob getUserPhoto() {
-		return UserPhoto;
+		return userPhoto;
 	}
 
 	public void setUserPhoto(Blob userPhoto) {
-		UserPhoto = userPhoto;
+		this.userPhoto = userPhoto;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Integer getPurseID() {
+		return purseID;
+	}
+
+	public void setPurseID(Integer purseID) {
+		this.purseID = purseID;
+	}
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getUserPhotoName() {
+		return userPhotoName;
+	}
+
+	public void setUserPhotoName(String userPhotoName) {
+		this.userPhotoName = userPhotoName;
 	}
 	
 	
+
 }
