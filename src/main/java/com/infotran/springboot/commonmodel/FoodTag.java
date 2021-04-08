@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,7 +74,5 @@ public class FoodTag {
 	public void setUsers(Set<UserAccount> users) {
 		this.users = users;
 	}
-	
-	
-	
+
 }
