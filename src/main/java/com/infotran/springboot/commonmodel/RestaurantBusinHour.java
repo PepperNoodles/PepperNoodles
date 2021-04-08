@@ -1,13 +1,17 @@
 package com.infotran.springboot.commonmodel;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.crypto.Data;
 
 import org.springframework.stereotype.Component;
@@ -24,11 +28,11 @@ public class RestaurantBusinHour {
 	@Column(name = "RestaurantBusinHour_id")
 	private Integer restaurantBusinHourId;
 	
-	@OneToOne(mappedBy = "Restaurant_id" , cascade = CascadeType.ALL)
 	@Column(name = "fk_restaurant_id")
+	@Transient
 	private Integer restaurantId;
 	
-	private Data day;
+	private Date day;
 	
 	@Column(name = "open_time")
 	private String openTime;
@@ -47,6 +51,13 @@ public class RestaurantBusinHour {
 	
 	@Column(name = "close_time_3rd")
 	private String closeTime3rd;
+	
+	//
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_restaurant_id")
+	private Restaurant restaurant;
+
+
 
 	public Integer getRestaurantBusinHourId() {
 		return restaurantBusinHourId;
@@ -64,11 +75,11 @@ public class RestaurantBusinHour {
 		this.restaurantId = restaurantId;
 	}
 
-	public Data getDay() {
+	public Date getDay() {
 		return day;
 	}
 
-	public void setDay(Data day) {
+	public void setDay(Date day) {
 		this.day = day;
 	}
 
