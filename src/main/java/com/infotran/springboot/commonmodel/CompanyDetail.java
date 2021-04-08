@@ -1,7 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
 import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,55 +8,48 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name="companyDetail")
 @Component
+@Table(name = "companyDetail")
 public class CompanyDetail {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="company_Detail_id")
-	private int companyDetailId;
+	@Column(name = "Company_Detail_id")
+	private Integer companyDetailId;
 	
-	@Column(name="realname")
-	private String realName;
+	@Column(name = "realname")
+	private String realname;
 	
-	@Column(name="phonenumber")
+	@Column(name = "phonenumber")
 	private String phonenumber;
 	
-	@Column(name="userphotoname")
-	private String userPhotoName;
+	@Column(name = "userphoto")
+	private byte[] userphoto;
 	
-	@Column(name="userphoto")
-	private Blob userPhoto;
-	
-	@Column(name="location")
+	@Column(name = "location")
 	private String location;
 	
-	
-	@OneToOne(mappedBy = "companyDetail")
-	private UserAccount userAccount;
-	
-	public CompanyDetail() {
-	}
+	@Column(name = "level")
+	private String level;
 
-	public int getCompanyDetailId() {
+	public Integer getCompanyDetailId() {
 		return companyDetailId;
 	}
 
-	public void setCompanyDetailId(int companyDetailId) {
+	public void setCompanyDetailId(Integer companyDetailId) {
 		this.companyDetailId = companyDetailId;
 	}
 
-	public String getRealName() {
-		return realName;
+	public String getRealname() {
+		return realname;
 	}
 
-	public void setRealName(String realName) {
-		this.realName = realName;
+	public void setRealname(String realname) {
+		this.realname = realname;
+
 	}
 
 	public String getPhonenumber() {
@@ -68,20 +60,13 @@ public class CompanyDetail {
 		this.phonenumber = phonenumber;
 	}
 
-	public String getUserPhotoName() {
-		return userPhotoName;
+
+	public byte[] getUserphoto() {
+		return userphoto;
 	}
 
-	public void setUserPhotoName(String userPhotoName) {
-		this.userPhotoName = userPhotoName;
-	}
-
-	public Blob getUserPhoto() {
-		return userPhoto;
-	}
-
-	public void setUserPhoto(Blob userPhoto) {
-		this.userPhoto = userPhoto;
+	public void setUserphoto(byte[] userphoto) {
+		this.userphoto = userphoto;
 	}
 
 	public String getLocation() {
@@ -92,12 +77,12 @@ public class CompanyDetail {
 		this.location = location;
 	}
 
-	public UserAccount getUserAccount() {
-		return userAccount;
+	public String getLevel() {
+		return level;
 	}
 
-	public void setUserAccount(UserAccount userAccount) {
-		this.userAccount = userAccount;
+	public void setLevel(String level) {
+		this.level = level;
 	}
-
+	
 }

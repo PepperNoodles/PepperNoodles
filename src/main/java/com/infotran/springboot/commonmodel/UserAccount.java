@@ -1,10 +1,11 @@
 package com.infotran.springboot.commonmodel;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.LinkedHashSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -152,6 +152,18 @@ public class UserAccount {
 	private List<ForumReplyMessage> forumCommentnetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	// =============================================================
+  
+  	/** 1個User可以有多個餐廳 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<Restaurant> Restaurant = new LinkedHashSet<Restaurant>();
+	
+	/** 1個User可以對多個餐廳留言表留言 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<RestaurantMessageBox> RestaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+	
+	/** 一個會員可以有多個回覆留言 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<RestaurantReplyMessage> RestaurantReplyMessage = new LinkedHashSet<RestaurantReplyMessage>();
 	
 	@Transient
 	private String code;
@@ -217,9 +229,6 @@ public class UserAccount {
 	public void setUserAccountDetail(UserDetail userAccountDetail) {
 		this.userAccountDetail = userAccountDetail;
 	}
-
-
-
 
 
 }
