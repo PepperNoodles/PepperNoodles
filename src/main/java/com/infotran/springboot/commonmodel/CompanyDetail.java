@@ -1,12 +1,13 @@
 package com.infotran.springboot.commonmodel;
 
+import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -48,6 +49,7 @@ public class CompanyDetail {
 
 	public void setRealname(String realname) {
 		this.realname = realname;
+
 	}
 
 	public String getPhonenumber() {
@@ -57,6 +59,7 @@ public class CompanyDetail {
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
+
 
 	public byte[] getUserphoto() {
 		return userphoto;

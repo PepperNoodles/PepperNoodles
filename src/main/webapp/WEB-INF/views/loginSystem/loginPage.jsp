@@ -46,7 +46,7 @@ window.onload = function() {
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", "<c:url value='/CheckMemberAccount' />", true);
 		var jsonAccount = {
-			"account" : userValue
+			"accountIndex" : userValue
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
 //			alert(JSON.stringify(jsonAccount));//debug
@@ -97,7 +97,7 @@ window.onload = function() {
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "<c:url value='/sendEmail' />", true);
 			var jsonAccountEmailCheck = {
-				"account" : userValue
+				"accountIndex" : userValue
 			}
 			xhr.setRequestHeader("Content-Type", "application/json");
 			//alert(jsonAccountEmailCheck);
@@ -326,7 +326,7 @@ window.onload = function() {
 // 				xhr1.open("POST", "<c:url value='/members' />", true);
 				data = new FormData();
 		    	data.append('file', $('#wizard-picture')[0].files[0]);
-				data.append('userinfo',new Blob([JSON.stringify( {"account": userValue,"password": pwdValue,"realName" : realName,"nickname" : nickname,"phoneNumber" :phoneNumber,"birthDay" : birthday,"sex" :sexValue,"Location": location} )],{type: "application/json"}));
+				data.append('userinfo',new Blob([JSON.stringify( {"accountIndex": userValue,"password": pwdValue,"realName" : realName,"nickname" : nickname,"phoneNumber" :phoneNumber,"birthDay" : birthday,"gender" :sexValue,"location": location} )],{type: "application/json"}));
 // 				var jsonMember = {
 // 					"account" : userValue,
 // 					"password" : pwdValue,

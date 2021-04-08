@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Repository;
-
-import com.infotran.springboot.loginsystem.model.UserAccount;
-
+import com.infotran.springboot.commonmodel.UserAccount;
 
 @Repository
 public interface UserAccountDAOInterface {
