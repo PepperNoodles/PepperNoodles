@@ -1,6 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
-import java.sql.Blob;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -70,6 +72,12 @@ public class Restaurant {
 	
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
+	
+	@ManyToMany
+	@JoinTable(name = "foodtag_restaurant",joinColumns = {
+			@JoinColumn(name="fk_restaurant_id",referencedColumnName="Restaurant_id")},inverseJoinColumns = {
+					@JoinColumn(name="fk_tag_id",referencedColumnName = "Tag_id")})
+	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
 	public Integer getRestaurantId() {
 		return restaurantId;
@@ -190,6 +198,13 @@ public class Restaurant {
 	public void setEventList(Set<EventList> eventList) {
 		this.eventList = eventList;
 	}
-	
+
+	public Set<FoodTag> getFoodTag() {
+		return foodTag;
+	}
+
+	public void setFoodTag(Set<FoodTag> foodTag) {
+		this.foodTag = foodTag;
+	}
 	
 }
