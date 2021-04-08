@@ -1,4 +1,4 @@
-package com.infotran.springboot.common.model;
+package com.infotran.springboot.commonmodel;
 
 import java.util.Date;
 

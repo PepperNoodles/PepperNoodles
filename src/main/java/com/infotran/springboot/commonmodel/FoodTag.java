@@ -1,4 +1,4 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.commonmodel;
 
 import java.util.HashSet;
 import java.util.Set;

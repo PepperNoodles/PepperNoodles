@@ -5,6 +5,7 @@ import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -13,15 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infotran.springboot.loginsystem.model.SendEmail;
-import com.infotran.springboot.loginsystem.model.UserAccount;
-import com.infotran.springboot.loginsystem.model.UserDetail;
+import com.infotran.springboot.commonmodel.SendEmail;
+import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 
@@ -57,13 +58,13 @@ public class UserAccountController {
 	public @ResponseBody Map<String,String> Registure( @RequestPart("userinfo")String toString,@RequestPart("file")MultipartFile file,HttpServletResponse response) throws Exception{
 		Map<String, String> map = new HashMap<>();
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
-		useraccount.setAccount(dispatch.get("account"));
+		useraccount.setAccountIndex(dispatch.get("account"));
 		useraccount.setPassword(dispatch.get("password"));
 		userDetail.setRealName(dispatch.get("realName"));
 		userDetail.setNickName(dispatch.get("nickname"));
 		userDetail.setPhoneNumber(dispatch.get("phoneNumber"));
 		userDetail.setBirthDay(dispatch.get("birthDay"));
-		userDetail.setSex(dispatch.get("sex"));
+		userDetail.setGender(dispatch.get("sex"));
 		userDetail.setLocation(dispatch.get("Location"));
 		
 		String originalFilename = file.getOriginalFilename();
@@ -82,7 +83,7 @@ public class UserAccountController {
 				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
 			}
 		}
-		useraccount.setUseraccountdetail(userDetail);
+		useraccount.setUserAccountDetail(userDetail);
 		Integer flag;
 		try {
 			flag = service.save(useraccount);
@@ -97,7 +98,7 @@ public class UserAccountController {
 		}
 		
 		try {
-			File fileplace = new File(imageFolder, "UserImage_" + useraccount.getAccount() + extFilename);
+			File fileplace = new File(imageFolder, "UserImage_" + useraccount.getAccountIndex() + extFilename);
 			file.transferTo(fileplace);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,7 +111,7 @@ public class UserAccountController {
 	@PostMapping(value="/CheckMemberAccount",produces="application/json")
 	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody UserAccount user){
 		Map<String, String> map = new HashMap<>();
-		String userAccountName = service.checkUserAccount(user.getAccount());
+		String userAccountName = service.checkUserAccount(user.getAccountIndex());
 		map.put("username",userAccountName );
 		return map;
 	}

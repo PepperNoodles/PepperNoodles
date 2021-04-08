@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import com.infotran.springboot.commonmodel.UserAccount;
 
-import com.infotran.springboot.loginsystem.model.UserAccount;
 
 public interface UserAccountRepository  extends JpaRepository<UserAccount, Integer>{
 

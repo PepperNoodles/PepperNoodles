@@ -1,4 +1,4 @@
-package com.infotran.springboot.common.model;
+package com.infotran.springboot.commonmodel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class UserAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
 	private Integer accountId;
-	
+
 	@Column(name = "acoount_index")
 	private String accountIndex;
 
@@ -82,8 +82,8 @@ public class UserAccount {
 	
 	// RestaurantFollowerForm=============================================================
 	
-	@ManyToMany(mappedBy = "userAccountIDs")
-	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
+//	@ManyToMany(mappedBy = "userAccountIDs")
+//	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
 	
 	// 如果要做朋友的request請求要在新增一個表格??=============================================================
 	
@@ -163,13 +163,63 @@ public class UserAccount {
 	public UserAccount() {
 	}
 
-	public UserAccount(String Account, String Password) {
-		this.Account = Account;
-		this.Password = Password;
+	
+
+	public UserAccount(String accountIndex, String password) {
+		super();
+		this.accountIndex = accountIndex;
+		this.password = password;
 	}
+
+
 
 	// =============================================================
 	
+	public String getAccountIndex() {
+		return accountIndex;
+	}
+
+
+	public void setAccountIndex(String accountIndex) {
+		this.accountIndex = accountIndex;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
+
+	public UserDetail getUserAccountDetail() {
+		return userAccountDetail;
+	}
+
+
+
+	public void setUserAccountDetail(UserDetail userAccountDetail) {
+		this.userAccountDetail = userAccountDetail;
+	}
+
+
+
 
 
 }

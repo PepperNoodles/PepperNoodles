@@ -1,4 +1,4 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.commonmodel;
 
 import java.util.Properties;
 import java.util.Random;
@@ -24,7 +24,7 @@ public class SendEmail {
 	
 	public boolean sendEmail(UserAccount user) {
 		boolean test = false;
-		String toEmail = user.getAccount();
+		String toEmail = user.getAccountIndex();
 		String fromEmail = "chrislo5311@gmail.com";
 		String password = "yxkvbvbjasbfooya";
 		try {
