@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -52,7 +53,7 @@ public class Restaurant {
 	@Column(name = "Longitude")
 	private String longitude;
 	
-	@Column(name = "Longitude")
+	@Column(name = "Latitude")
 	private String latitude;
 	
 	@Transient
@@ -78,8 +79,13 @@ public class Restaurant {
 	@ManyToMany
 	@JoinTable(name = "foodtag_restaurant",joinColumns = {
 			@JoinColumn(name="fk_restaurant_id",referencedColumnName="Restaurant_id")},inverseJoinColumns = {
-					@JoinColumn(name="fk_tag_id",referencedColumnName = "Tag_id")})
+					@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")})
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
+	
+	@OneToOne(mappedBy = "restaurant" , cascade = CascadeType.ALL)
+	private RestaurantBusinHour restaurantBusinHour;
+
+
 
 	public Integer getRestaurantId() {
 		return restaurantId;
