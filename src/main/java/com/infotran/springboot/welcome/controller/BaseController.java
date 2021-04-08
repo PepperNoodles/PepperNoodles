@@ -12,5 +12,10 @@ public class BaseController {
 		return "index";
 	}
 	
+	@GetMapping("/INDEX")
+	public String home2() {
+		return "index";
+	}
+	
 	
 }
