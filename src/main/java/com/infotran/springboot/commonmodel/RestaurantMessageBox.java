@@ -48,11 +48,12 @@ public class RestaurantMessageBox {
 	@Column(name = "Score")
 	private Integer score;
 	
-	//被留言餐廳
+	/**被留言餐廳**/
 	@Transient
 	@Column(name = "fk_restaurant_id")
 	private Integer restaurantId;
 	
+	/** 1個User可以對多個餐廳留言表留言 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_netizen_account_id")
 	private UserAccount userAccount;

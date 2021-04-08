@@ -6,13 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.crypto.Data;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -42,12 +40,12 @@ public class RestaurantReplyMessage {
 	@Column(name = "LikeAmount")
 	private Integer likeAmount;
 	
-	/*回覆留言的人*/
+	/** 一個會員可以有多個回覆留言 **/
 	@ManyToOne
 	@JoinColumn(name = "fk_ReplyNetizen_Account_id")
 	private UserAccount userAccount;
 	
-	/*被回覆的那則留言*/
+	/** 被回覆的那則留言 **/
 	@ManyToOne
 	@JoinColumn(name = "fk_replyMessage_id")
 	private RestaurantMessageBox restaurantMessageBox;

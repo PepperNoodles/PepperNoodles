@@ -1,7 +1,5 @@
 package com.infotran.springboot.commonmodel;
 
-import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,55 +19,67 @@ public class CompanyDetail {
 	@Column(name = "Company_Detail_id")
 	private Integer companyDetailId;
 	
+	@Column(name = "realname")
 	private String realname;
+	
+	@Column(name = "phonenumber")
 	private String phonenumber;
-	private String userphotoname;
-	private Blob userphoto;
+	
+	@Column(name = "userphoto")
+	private byte[] userphoto;
+	
+	@Column(name = "location")
 	private String location;
+	
+	@Column(name = "level")
 	private String level;
+
 	public Integer getCompanyDetailId() {
 		return companyDetailId;
 	}
+
 	public void setCompanyDetailId(Integer companyDetailId) {
 		this.companyDetailId = companyDetailId;
 	}
+
 	public String getRealname() {
 		return realname;
 	}
+
 	public void setRealname(String realname) {
 		this.realname = realname;
 	}
+
 	public String getPhonenumber() {
 		return phonenumber;
 	}
+
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
-	public String getUserphotoname() {
-		return userphotoname;
-	}
-	public void setUserphotoname(String userphotoname) {
-		this.userphotoname = userphotoname;
-	}
-	public Blob getUserphoto() {
+
+	public byte[] getUserphoto() {
 		return userphoto;
 	}
-	public void setUserphoto(Blob userphoto) {
+
+	public void setUserphoto(byte[] userphoto) {
 		this.userphoto = userphoto;
 	}
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 	public String getLevel() {
 		return level;
 	}
+
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	
-	
 	
 }
