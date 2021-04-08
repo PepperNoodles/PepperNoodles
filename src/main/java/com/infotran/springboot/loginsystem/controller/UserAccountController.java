@@ -58,14 +58,15 @@ public class UserAccountController {
 	public @ResponseBody Map<String,String> Registure( @RequestPart("userinfo")String toString,@RequestPart("file")MultipartFile file,HttpServletResponse response) throws Exception{
 		Map<String, String> map = new HashMap<>();
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
-		useraccount.setAccountIndex(dispatch.get("account"));
+		
+		useraccount.setAccountIndex(dispatch.get("accountIndex"));
 		useraccount.setPassword(dispatch.get("password"));
 		userDetail.setRealName(dispatch.get("realName"));
 		userDetail.setNickName(dispatch.get("nickname"));
 		userDetail.setPhoneNumber(dispatch.get("phoneNumber"));
 		userDetail.setBirthDay(dispatch.get("birthDay"));
-		userDetail.setGender(dispatch.get("sex"));
-		userDetail.setLocation(dispatch.get("Location"));
+		userDetail.setGender(dispatch.get("gender"));
+		userDetail.setLocation(dispatch.get("location"));
 		
 		String originalFilename = file.getOriginalFilename();
 		String extFilename = ""; 
@@ -124,6 +125,7 @@ public class UserAccountController {
 	
 	@PostMapping(value="/sendEmail",produces="application/json")
 	public  @ResponseBody Map<String,String> sendEmail(@RequestBody UserAccount user){
+		System.out.println("------controller-------"+user.getAccountIndex());
 		Map<String,String> map = new HashMap<String, String>();
 		String code = sendemail.getRandom();
 		user.setCode(code);

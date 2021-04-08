@@ -25,6 +25,7 @@ public class SendEmail {
 	public boolean sendEmail(UserAccount user) {
 		boolean test = false;
 		String toEmail = user.getAccountIndex();
+		System.out.println(toEmail);
 		String fromEmail = "chrislo5311@gmail.com";
 		String password = "yxkvbvbjasbfooya";
 		try {
@@ -45,7 +46,9 @@ public class SendEmail {
 			});
 			Message mess = new MimeMessage(session);
 			mess.setFrom(new InternetAddress(fromEmail));
+			System.out.println("1");
 			mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail) );
+			System.out.println("2");
 			mess.setSubject("User Email Varification");
 			mess.setText("假的驗證碼已寄出" + user.getCode());
 			Transport.send(mess);
