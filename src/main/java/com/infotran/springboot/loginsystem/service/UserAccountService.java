@@ -1,7 +1,8 @@
 package com.infotran.springboot.loginsystem.service;
 
 import java.util.List;
-import com.infotran.springboot.loginsystem.model.UserAccount;
+
+import com.infotran.springboot.commonmodel.UserAccount;
 
 public interface UserAccountService {
 
