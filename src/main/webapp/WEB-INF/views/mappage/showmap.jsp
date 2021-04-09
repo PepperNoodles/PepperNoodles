@@ -149,26 +149,25 @@ html, body {
 		<!-- Header End -->
 	</header>
 
+	<div id="memoBoard"
+		style="float: left; height: 100%; overflow: scroll;"></div>
+
+	<button onclick="getcenter()" value="cc">cc</button>
+	<form name="centerSearch" action="CenterSearch" method="post">
+		<input type="text" name="ctPositon">
 
 
-	 <div id="memoBoard" style="float: left;height: 100%;overflow: scroll;"></div>
-        
-     <button onclick="getcenter()" value="cc">cc</button>
-     <form name="centerSearch" action="CenterSearch" method="post">
-     <input type="text" name="ctPositon">
+	</form>
+	<div id="map" style="float: left;"></div>
+	<p style="clear: left;"></p>
+	<br>
 
 
-      </form>
-      <div id="map" style="float: left;"></div>
-      <p style="clear: left;"></p>
-      <br>
-
-
-		<h1>GGG</h1>
+	<h1>測試用</h1>
 
 
 
-<script>
+	<script>
 let loca=[{"names":"藝啟開心．心中有你","longitude":"121.454084","latitude":"25.02507","cityName":"新北市  板橋區(板橋市)"},
     {"names":"身心靈的歡慶力量","longitude":"121.457717","latitude":"25.022708","cityName":"新北市  板橋區(板橋市)"},
     {"names":"肢體智能","longitude":"121.457717","latitude":"25.022708","cityName":"新北市  板橋區(板橋市)"},
@@ -253,6 +252,42 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+let count = 0;
+let alat=0;
+let along=0;
+
+var markerArray = []; //create new markers array
+
+for(let i=0; i <loca.length;i++){
+    let lat=parseFloat(loca[i].latitude);
+    console.log(lat);
+    let long=parseFloat(loca[i].longitude);
+    console.log(long);
+    var marker = L.marker([lat,long]);
+    let name=loca[i].names;
+    marker.addTo(map).bindPopup(name).openPopup();
+    markerArray.push(marker); //add each markers to array
+
+    if(i==loca.length-1){//this is the case when all the markers would be added to array
+    var group = L.featureGroup(markerArray); //add markers array to featureGroup
+    map.fitBounds(group.getBounds());   
+    }
+
+
+    alat+=lat;
+    along+=long;
+    count++;
+}
+
+let center=[alat/count,along/count];
+
+map.panTo(center);
+console.log(center);
+map.setZoom(16);
+
+L.marker([25.0333, 121.5358]).addTo(map).bindPopup("aa").openPopup();
+L.marker([25.033674, 121.540411],{icon:greenIcon}).addTo(map).openPopup();
+
 
 //按左邊彈出視窗
 function showMemo(){
@@ -268,15 +303,8 @@ popup.setContent(loca[this.value].names)
 }  
 
 
+
 </script>
-
-
-	
-
-
-
-
-
 	<footer>
 		<!-- Footer Start-->
 		<div class="footer-area">
