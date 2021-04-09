@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -85,8 +86,10 @@ public class Restaurant {
 					@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")})
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 	
+
 	
 	/** Getter和Setter **/
+
 	public Integer getRestaurantId() {
 		return restaurantId;
 	}
