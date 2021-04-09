@@ -22,9 +22,9 @@ import com.infotran.springboot.loginsystem.model.UserAccount;
 import com.infotran.springboot.loginsystem.model.UserDetail;
 
 @Entity
-@Table(name="Order")
+@Table(name="OrderList")
 @Component
-public class Order {
+public class OrderList {
 	
 	@Id
 	@Column(name="Order_id")
@@ -49,6 +49,70 @@ public class Order {
 	
 	@ManyToMany(mappedBy = "order")
 	private Set<Product> products = new HashSet<Product>();
+
+	public Integer getOrderId() {
+		return OrderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		OrderId = orderId;
+	}
+
+	public Date getOrderCreatedDate() {
+		return OrderCreatedDate;
+	}
+
+	public void setOrderCreatedDate(Date orderCreatedDate) {
+		OrderCreatedDate = orderCreatedDate;
+	}
+
+	public Integer getFkUserAccountId() {
+		return fkUserAccountId;
+	}
+
+	public void setFkUserAccountId(Integer fkUserAccountId) {
+		this.fkUserAccountId = fkUserAccountId;
+	}
+
+	public UserAccount getUser() {
+		return user;
+	}
+
+	public void setUser(UserAccount user) {
+		this.user = user;
+	}
+
+	public String getReceiveAddress() {
+		return ReceiveAddress;
+	}
+
+	public void setReceiveAddress(String receiveAddress) {
+		ReceiveAddress = receiveAddress;
+	}
+
+	public Date getPaidDate() {
+		return PaidDate;
+	}
+
+	public void setPaidDate(Date paidDate) {
+		PaidDate = paidDate;
+	}
+
+	public String getStatus() {
+		return Status;
+	}
+
+	public void setStatus(String status) {
+		Status = status;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
 	
 	
 }

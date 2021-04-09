@@ -29,6 +29,33 @@ public class ProductMainClass {
 	
 	/*對應子類別*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productMainClass",cascade =CascadeType.ALL)
-	private List<ProductDetailClass> productDetailClass = new ArrayList<ProductDetailClass>();   
+	private List<ProductDetailClass> productDetailClass = new ArrayList<ProductDetailClass>();
+
+	public ProductMainClass() {
+	}
+
+	public Integer getProductMainClassId() {
+		return ProductMainClassId;
+	}
+
+	public void setProductMainClassId(Integer productMainClassId) {
+		ProductMainClassId = productMainClassId;
+	}
+
+	public String getMainClassName() {
+		return MainClassName;
+	}
+
+	public void setMainClassName(String mainClassName) {
+		MainClassName = mainClassName;
+	}
+
+	public List<ProductDetailClass> getProductDetailClass() {
+		return productDetailClass;
+	}
+
+	public void setProductDetailClass(List<ProductDetailClass> productDetailClass) {
+		this.productDetailClass = productDetailClass;
+	}   
 	
 }

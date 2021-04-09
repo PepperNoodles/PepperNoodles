@@ -22,5 +22,29 @@ public class Restaurant {
 	
 	
 	private String restaurantName;
+
+	
+	public Restaurant() {
+	}
+
+	public Integer getRestaurantId() {
+		return RestaurantId;
+	}
+
+
+	public void setRestaurantId(Integer restaurantId) {
+		RestaurantId = restaurantId;
+	}
+
+
+	public String getRestaurantName() {
+		return restaurantName;
+	}
+
+
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
+	}
+	
 	
 }
