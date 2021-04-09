@@ -422,13 +422,15 @@ window.onload = function() {
 			accoutPage1.classList.add("toshow");
 		}
 		
-		
+		//一鍵新增-UserPage
 		var addmember = document.getElementById("addMember");
 		addmember.onclick = function(){
 			var userValue = document.getElementById("UserEmail");
 			var pwdValue = document.getElementById("userPwd");
 			userValue.value="chrislo5311@gmail.com";
 			pwdValue.value="a123456@";
+			hasError = true;
+			hasErrorpwd = true;
 		}
 		
 		var addMemberDetail = document.getElementById("addMemberDetail");			
@@ -443,7 +445,96 @@ window.onload = function() {
 			birthday.value ="1977/01/01";
 		}
 		
-		
+		//下一頁-企業端
+		$(document).ready(function(){
+			//確認表格皆填完整
+			var hasErrorComRealname = false;
+			var hasErrorComPhone = false;
+			var hasErrorComLocation = false;
+			//前端判斷是否輸入正確
+			$("#comRealname").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+			    	$("#comRealname").css({"border":"2px solid red"});
+			    	txt="<span>企業名稱不可為空白</span>";
+			    }
+			    if(value.length<2){
+			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+			    	$("#comRealname").css({"border":"2px solid red"});
+			    	txt="<span>名稱需至少2個字</span>";
+			    }
+			    else{
+			    	$("#comRealname").css("border","2px solid green");
+			        txt="&emsp;";
+			        hasErrorComRealname = true;
+			    }
+			    $("#comRealnameResult").html(txt);
+			});
+
+			$("#comPhonenumber").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+			    	$("#comPhonenumber").css({"border":"2px solid red"});
+			    	txt="<span>請輸入連絡電話</span>";
+			    }
+			    else{
+			    	for (let i = 0; i < value.length; i++) {
+			            let ch = value.charAt(i);
+			            if(ch>=0&&ch<=9){
+			                txt="&emsp;";
+			            $("#comPhonenumber").css("border","2px solid green");
+			            hasErrorComPhone = true;
+			            }
+			            else{
+			            $("#comPhotoResult").css({"color":"red","font-size":"small"});
+			    		$("#comPhonenumber").css({"border":"2px solid red"});
+			                txt="<span>只能輸入數字</span>";
+			            }
+			        }
+			    }
+			    $("#comPhotoResult").html(txt);
+			});
+
+			$("#comLocation").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comLocationResult").css({"color":"red","font-size":"small"});
+			    	$("#comLocation").css({"border":"2px solid red"});
+			    	txt="<span>地址不可為空白</span>";
+			    }
+			    else{
+			    	$("#comLocation").css("border","2px solid green");
+			        txt="&emsp;";
+			        hasErrorComLocation = true;
+			    }
+			    $("#comLocationResult").html(txt);
+			});
+
+			//一鍵新增
+			$("#addcompany").click(function(){
+				$("#UserEmail").val('ting0420a@gmail.com');
+				$("#userPwd").val('123!Q123');
+				$("#privacycheck").prop("checked", true);
+				$("#company").prop("checked", true);
+				hasError = true;
+				hasErrorpwd = true;
+				privacycheck = true;
+			});
+			
+			$("#signinCompany").click(function(){
+				$("#comRealname").val('黯然消魂麵館');
+				$("#comPhonenumber").val('09123456789');
+				$("#comLocation").val('台北市中正路二段158號1樓');
+				hasErrorComRealname = true;
+				hasErrorComPhone = true;
+				hasErrorComLocation = true;
+			});
+		});
 	
 }//end
 
@@ -474,76 +565,7 @@ function privacyornot() {
 	  return document.getElementById("privacycheck").checked;
 	}
 
-//下一頁-企業端
-	$(document).ready(function(){
-		//前端判斷是否輸入正確
-		$("#comRealname").blur(function(){
-			let value=$(this).val();
-		    let txt="";
-		    if(value==""){
-		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
-		    	$("#comRealname").css({"border":"2px solid red"});
-		    	txt="<span>企業名稱不可為空白</span>";
-		    }
-		    if(value.length<2){
-		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
-		    	$("#comRealname").css({"border":"2px solid red"});
-		    	txt="<span>名稱需至少2個字</span>";
-		    }
-		    else{
-		    	$("#comRealname").css("border","2px solid green");
-		        txt="&emsp;";
-		    }
-		    $("#comRealnameResult").html(txt);
-		});
 
-		$("#comPhonenumber").blur(function(){
-			let value=$(this).val();
-		    let txt="";
-		    if(value==""){
-		    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
-		    	$("#comPhonenumber").css({"border":"2px solid red"});
-		    	txt="<span>請輸入連絡電話</span>";
-		    }
-		    else{
-		    	for (let i = 0; i < value.length; i++) {
-		            let ch = value.charAt(i);
-		            if(ch>=0&&ch<=9){
-		                txt="&emsp;";
-		            $("#comPhonenumber").css("border","2px solid green");
-		            }
-		            else{
-		            $("#comPhotoResult").css({"color":"red","font-size":"small"});
-		    		$("#comPhonenumber").css({"border":"2px solid red"});
-		                txt="<span>只能輸入數字</span>";
-		            }
-		        }
-		    }
-		    $("#comPhotoResult").html(txt);
-		});
-
-		$("#comLocation").blur(function(){
-			let value=$(this).val();
-		    let txt="";
-		    if(value==""){
-		    	$("#comLocationResult").css({"color":"red","font-size":"small"});
-		    	$("#comLocation").css({"border":"2px solid red"});
-		    	txt="<span>地址不可為空白</span>";
-		    }
-		    else{
-		    	$("#comLocation").css("border","2px solid green");
-		        txt="&emsp;";
-		    }
-		    $("#comLocationResult").html(txt);
-		});
-
-		//一鍵新增
-		$("#signinCompany").click(function(){
-			$("#comRealname").val('黯然消魂麵館');
-			$("#comPhonenumber").val('09123456789');
-			$("#comLocation").val('台北市中正路二段158號1樓');
-		});
-	});
 
 </script>
 
@@ -763,7 +785,7 @@ function privacyornot() {
 											<div class="pull-right">
 											<input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
 												name='next' value='Next' id="nextSlide2"  style="margin-bottom: 20px;margin-top: 10px"/>
-												<br><button id="signinCompany">一鍵新增</button>
+												<br><a id="signinCompany" href="#">一鍵新增</a>
 											</div>	
 											<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus2">
 												<div style="width: 150px;height: 30px;"></div>
@@ -868,6 +890,8 @@ function privacyornot() {
 			<div  id="myBtn" title="Go to top">
 				<button id="addMember">一鍵新增1</button>
 				<button id="addMemberDetail">一鍵新增2</button>
+				<br>
+				<button id="addcompany">一鍵企業</button>
 			</div>
 		</div>
 		<!--  big container -->
