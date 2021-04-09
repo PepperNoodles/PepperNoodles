@@ -18,7 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
-import com.infotran.springboot.common.model.FoodTag;
+import com.infotran.springboot.commonmodel.FoodTag;
+
+
 
 
 @Entity

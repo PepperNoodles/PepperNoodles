@@ -1,10 +1,11 @@
-package com.infotran.springboot.common.model;
+package com.infotran.springboot.commonmodel;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.LinkedHashSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +33,7 @@ public class UserAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
 	private Integer accountId;
-	
+
 	@Column(name = "acoount_index")
 	private String accountIndex;
 
@@ -82,8 +82,8 @@ public class UserAccount {
 	
 	// RestaurantFollowerForm=============================================================
 	
-	@ManyToMany(mappedBy = "userAccountIDs")
-	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
+//	@ManyToMany(mappedBy = "userAccountIDs")
+//	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
 	
 	// 如果要做朋友的request請求要在新增一個表格??=============================================================
 	
@@ -146,12 +146,24 @@ public class UserAccount {
 	// ForumReplyMessageBox=============================================================
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumReplyuserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> forumReplyNetizenAccounts = new ArrayList<ReplyMessage>();
+	private List<ForumReplyMessage> forumReplyNetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumCommentUserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> forumCommentnetizenAccounts = new ArrayList<ReplyMessage>();
+	private List<ForumReplyMessage> forumCommentnetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	// =============================================================
+  
+  	/** 1個User可以有多個餐廳 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<Restaurant> Restaurant = new LinkedHashSet<Restaurant>();
+	
+	/** 1個User可以對多個餐廳留言表留言 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<RestaurantMessageBox> RestaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+	
+	/** 一個會員可以有多個回覆留言 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<RestaurantReplyMessage> RestaurantReplyMessage = new LinkedHashSet<RestaurantReplyMessage>();
 	
 	@Transient
 	private String code;
@@ -163,13 +175,60 @@ public class UserAccount {
 	public UserAccount() {
 	}
 
-	public UserAccount(String Account, String Password) {
-		this.Account = Account;
-		this.Password = Password;
+	
+
+	public UserAccount(String accountIndex, String password) {
+		super();
+		this.accountIndex = accountIndex;
+		this.password = password;
 	}
+
+
 
 	// =============================================================
 	
+	public String getAccountIndex() {
+		return accountIndex;
+	}
+
+
+	public void setAccountIndex(String accountIndex) {
+		this.accountIndex = accountIndex;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
+
+	public UserDetail getUserAccountDetail() {
+		return userAccountDetail;
+	}
+
+
+
+	public void setUserAccountDetail(UserDetail userAccountDetail) {
+		this.userAccountDetail = userAccountDetail;
+	}
 
 
 }
