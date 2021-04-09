@@ -59,12 +59,12 @@ public class Restaurant {
 	@Transient
 	@Column(name = "fk_userAccount_id")
 	private Integer userAccountId;
-	
+
 	/** 1個User可以有多個餐廳 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")  
 	private UserAccount userAccount;
-	
+		
 	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
@@ -76,16 +76,19 @@ public class Restaurant {
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
 	
+	/** 一家餐廳有多個營業時間 **/
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantBusinHourId" , cascade = CascadeType.ALL)
+	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
+	
 	@ManyToMany
 	@JoinTable(name = "foodtag_restaurant",joinColumns = {
 			@JoinColumn(name="fk_restaurant_id",referencedColumnName="Restaurant_id")},inverseJoinColumns = {
 					@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")})
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 	
-	@OneToOne(mappedBy = "restaurant" , cascade = CascadeType.ALL)
-	private RestaurantBusinHour restaurantBusinHour;
 
-
+	
+	/** Getter和Setter **/
 
 	public Integer getRestaurantId() {
 		return restaurantId;
@@ -207,6 +210,14 @@ public class Restaurant {
 		this.eventList = eventList;
 	}
 
+	public Set<RestaurantBusinHour> getRestaurantBusinHour() {
+		return RestaurantBusinHour;
+	}
+
+	public void setRestaurantBusinHour(Set<RestaurantBusinHour> restaurantBusinHour) {
+		RestaurantBusinHour = restaurantBusinHour;
+	}
+
 	public Set<FoodTag> getFoodTag() {
 		return foodTag;
 	}
@@ -214,5 +225,5 @@ public class Restaurant {
 	public void setFoodTag(Set<FoodTag> foodTag) {
 		this.foodTag = foodTag;
 	}
-	
+
 }
