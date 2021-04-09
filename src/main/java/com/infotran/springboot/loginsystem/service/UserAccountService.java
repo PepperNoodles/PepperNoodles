@@ -15,7 +15,7 @@ public interface UserAccountService {
 	
 	public String checkUserAccount(String AccountName);
 
-	// 自訂布林查詢使用者是否存在
+	// 自訂查詢使用者是否存在
 	public UserAccount isExist(String AccountName);
 
 	void update(UserAccount user);

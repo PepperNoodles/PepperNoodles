@@ -1,8 +1,10 @@
 package com.infotran.springboot.shoppingmall.model;
 
 import java.sql.Blob;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.springframework.stereotype.Component;
 
 import com.infotran.springboot.common.model.FoodTag;
@@ -59,6 +62,9 @@ public class Product {
 	@JoinColumn(name="fk_ProductDetailClass_id")
 	private ProductDetailClass productDetailClass;
 	
+	/*ReleasedDate*/
+	private Date RealeasedDate;
+	
 	/* 所屬的tag */
 	@ManyToMany(mappedBy = "Product")
 	private Set<FoodTag> productTags = new HashSet<FoodTag>();
@@ -68,7 +74,7 @@ public class Product {
 	@JoinTable(name="OrderDetail",joinColumns = {
 			@JoinColumn(name="fk_Product_id",referencedColumnName = "Product_id")},inverseJoinColumns = {
 			@JoinColumn(name="fk_Order_id",referencedColumnName = "Order_id")})
-	private Set<Order> order = new HashSet<Order>();
+	private Set<OrderList> OrderList = new HashSet<OrderList>();
 
 	public Integer getProductId() {
 		return ProductId;
@@ -158,13 +164,28 @@ public class Product {
 		this.productTags = productTags;
 	}
 
-	public Set<Order> getOrder() {
-		return order;
+	public Set<OrderList> getOrder() {
+		return OrderList;
 	}
 
-	public void setOrder(Set<Order> order) {
-		this.order = order;
+	public void setOrder(Set<OrderList> order) {
+		this.OrderList = order;
 	}
-	
+
+	public Date getRealeasedDate() {
+		return RealeasedDate;
+	}
+
+	public void setRealeasedDate(Date realeasedDate) {
+		RealeasedDate = realeasedDate;
+	}
+
+	public Set<OrderList> getOrderList() {
+		return OrderList;
+	}
+
+	public void setOrderList(Set<OrderList> orderList) {
+		OrderList = orderList;
+	}
 	
 }
