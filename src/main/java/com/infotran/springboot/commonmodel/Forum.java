@@ -1,4 +1,4 @@
-package com.infotran.springboot.common.model;
+package com.infotran.springboot.commonmodel;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -69,9 +69,9 @@ public class Forum {
 
 	// =============================================================
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_restaurant_id")
-	private Restaurant restaurant;
+//	@ManyToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "fk_restaurant_id")
+//	private Restaurant restaurant;
 	
 	//forumCollections =============================================================
 	

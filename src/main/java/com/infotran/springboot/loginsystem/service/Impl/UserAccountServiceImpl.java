@@ -1,10 +1,12 @@
 package com.infotran.springboot.loginsystem.service.Impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
-import com.infotran.springboot.loginsystem.model.UserAccount;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 @Service
@@ -15,7 +17,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Override
 	public Integer save(UserAccount user) {
-		String name =user.getAccount();
+		String name =user.getAccountIndex();
 		UserAccount user2 = UserDao.isExist(name);
 		Integer flag = 0;
 		if(user2!=null) {
@@ -64,7 +66,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		String username = "";
 		if (!userlist.isEmpty()) {
 			useraccount = userlist.get(0);
-			username = useraccount.getAccount();
+			username = useraccount.getAccountIndex();
 		}
 		return username;
 	}

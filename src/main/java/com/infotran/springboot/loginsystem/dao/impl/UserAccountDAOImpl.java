@@ -1,15 +1,8 @@
 package com.infotran.springboot.loginsystem.dao.impl;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
@@ -17,8 +10,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.loginsystem.dao.UserAccountDAOInterface;
-import com.infotran.springboot.loginsystem.model.UserAccount;
 
 @Repository
 public class UserAccountDAOImpl implements UserAccountDAOInterface {
@@ -31,7 +24,7 @@ public class UserAccountDAOImpl implements UserAccountDAOInterface {
 	public UserAccount SelectByAccount(UserAccount user) {
 		Session session = sessionfactory.getCurrentSession();
 		String hql = "FROM UserAccount u Where u.Account=:Account";
-		List<UserAccount> userlist = session.createQuery(hql).setParameter("Account", user.getAccount()).getResultList();
+		List<UserAccount> userlist = session.createQuery(hql).setParameter("Account", user.getAccountIndex()).getResultList();
 		UserAccount useraccount=null;
 		if(!userlist.isEmpty()) {
 			useraccount = userlist.get(0);
@@ -97,7 +90,7 @@ public class UserAccountDAOImpl implements UserAccountDAOInterface {
 		Session session = sessionfactory.getCurrentSession();
 		String hql = "FROM UserAccount u WHERE u.Account=:account";
 		try {
-			session.createQuery(hql).setParameter("account", user.getAccount()).getSingleResult();
+			session.createQuery(hql).setParameter("account", user.getAccountIndex()).getSingleResult();
 			isexist = true;			
 		} catch (NoResultException ex) {
 			;
@@ -113,8 +106,8 @@ public class UserAccountDAOImpl implements UserAccountDAOInterface {
 		Session session = sessionfactory.getCurrentSession();
 		String hql = "FROM UserAccount u where u.Account=:account";
 		try {
-			UserAccount user2 = (UserAccount) session.createQuery(hql).setParameter("account", user.getAccount()).getSingleResult();
-			userAccountName = user2.getAccount();
+			UserAccount user2 = (UserAccount) session.createQuery(hql).setParameter("account", user.getAccountIndex()).getSingleResult();
+			userAccountName = user2.getAccountIndex();
 		} catch (NoResultException ex) {
 			return userAccountName;
 		} catch (Exception ex) {
