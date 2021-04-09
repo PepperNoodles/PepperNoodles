@@ -429,7 +429,20 @@ window.onload = function() {
 			birthday.value ="1977/01/01";
 		}
 		
-		
+		//第3頁
+		var nextSlide3 = document.getElementById("sendData");//下一步
+		nextSlide3.onclick = function() {
+			var hobby = document.getElementsByName("hobby");
+			
+			var hobbyVal = [];
+			for (var i = 0; i< hobby.length; i++) {
+		  		if (hobby[i].checked) {
+		  			hobbyVal.push(hobby[i].value);
+		  		}
+			}
+	  		console.log(hobbyVal);
+
+		}
 	
 }//end
 
@@ -580,7 +593,7 @@ function privacyornot() {
 										</div>
 									</div>
 									<!-- second -->
-									<div class="tab-pane tohide" id="accoutDetailPage2">
+									<div class="tab-pane toshow" id="accoutDetailPage2">
 										<div class="row">
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
@@ -645,61 +658,30 @@ function privacyornot() {
 										</div>
 									</div>
 									<!-- third -->
-									<div class="tab-pane tohide" id="tagPage3" >
+									<div class="tab-pane toshow" id="tagPage3" >
 										<div class="row">
-											<div id=""  class="col-sm-10 col-sm-offset-1 " style="border:1px solid red">
 											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
 												<tr>
 													<td width="50px">興趣:</td>
-													<td><input type="checkbox" name="hobby" value="carry"
+													<td><input type="checkbox" name="hobby" value="curry"
 														id="hobby">咖哩</td>
-													<td><input type="checkbox" name="hobby" value="carry"
+													<td><input type="checkbox" name="hobby" value="BBQ"
 														id="hobby">烤肉</td>
-													<td><input type="checkbox" name="hobby" value="carry"
+													<td><input type="checkbox" name="hobby" value="pizza"
 														id="hobby">披薩</td>
-													<td><input type="checkbox" name="hobby" value="carry"
+													<td><input type="checkbox" name="hobby" value="fried"
 														id="hobby">炸物</td>
-													<td><input type="checkbox" name="hobby" value="carry"
+													<td><input type="checkbox" name="hobby" value="hamburger"
 														id="hobby">漢堡</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">漢堡</td>
-												</tr>
-												<tr>
-													<td width="10px"></td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-												</tr>
-												<tr>
-													<td width="10px"></td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
+													<td><input type="checkbox" name="hobby" value="springRoll"
+														id="hobby">春捲</td>
 												</tr>
 											</table>
-											</div>
+											
 										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 											<div class="pull-right">
-												<input type='button'class='btn btn-finish btn-fill btn-warning btn-wd btn-sm'
-													name='finish' value='Finish' id='senData'/>
+												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+													name='finish' value='Finish' id='sendData' style="border: 1px solid red"/>
 											</div>
 												<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus">
 												<div style="width: 150px;height: 30px;"></div>
@@ -709,6 +691,7 @@ function privacyornot() {
 													name='previous' value='Previous' id='lastSlide'/>
 											</div>
 										</div>
+										
 										</div>
 									</div>
 								</div>
