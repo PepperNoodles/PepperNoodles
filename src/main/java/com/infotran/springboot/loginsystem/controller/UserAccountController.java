@@ -3,6 +3,7 @@ package com.infotran.springboot.loginsystem.controller;
 import java.io.File;
 import java.sql.Blob;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +12,19 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
@@ -27,6 +32,7 @@ import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 
 @Controller
+@SessionAttributes(names = "useraccount")
 public class UserAccountController {
 	
 	String imageRootDirectory = "D:\\_SpringBoot\\image";
@@ -55,7 +61,7 @@ public class UserAccountController {
 	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/webapp/imagedata";
 
 	@PostMapping(value="/members",consumes={"multipart/mixed","multipart/form-data","application/json"})
-	public @ResponseBody Map<String,String> Registure( @RequestPart("userinfo")String toString,@RequestPart("file")MultipartFile file,HttpServletResponse response) throws Exception{
+	public @ResponseBody Map<String,String> Registure( @RequestPart("userinfo")String toString,@RequestPart("file")MultipartFile file,HttpServletResponse response, Model m) throws Exception{
 		Map<String, String> map = new HashMap<>();
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
 		
@@ -90,6 +96,7 @@ public class UserAccountController {
 			flag = service.save(useraccount);
 			if(flag ==1) {
 				map.put("success", "新增成功");
+				m.addAttribute("useraccount",useraccount);
 				response.setStatus(HttpServletResponse.SC_CREATED);
 			}else if(flag==-1) {
 				map.put("fail", "帳號重複");
@@ -133,6 +140,30 @@ public class UserAccountController {
 		boolean emailResult = sendemail.sendEmail(user);
 		if (emailResult) {
 			map.put("emailCode", code);
+		}
+		return map;
+	}
+	
+	@PostMapping(value="/addAccountInterest",consumes="application/json")
+	public @ResponseBody Map<String,String> saveAccountInterest(@ModelAttribute("useraccount")UserAccount userAccount,@RequestBody HashSet<FoodTag> actDe, HttpServletResponse res, Model m){
+		System.out.println(userAccount);
+		System.out.println(actDe);
+		Map<String,String> map = new HashMap<>();
+		int n = 0;
+		try {
+//			n = accountDetailAJService.saveAccountDetailAJ(actDe);
+//			if (n == 1) {
+			if(actDe!=null) {
+				n=1;
+				map.put("success", "Detail資訊新增成功");
+				res.setStatus(HttpServletResponse.SC_CREATED);
+				int x = service.addAccountAJDetail(member, actDe);
+				System.out.println("x: " + x);
+			} else if (n == -1) {
+				map.put("fail", "帳號重複");
+			}
+		} catch (Exception e) {
+			map.put("fail", e.getMessage());
 		}
 		return map;
 	}
