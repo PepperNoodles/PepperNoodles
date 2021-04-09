@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
@@ -121,6 +120,7 @@ window.onload = function() {
 			
 	}//end
 	
+	//驗證碼驗證
 	var verifycodeInput = document.getElementById("verifycode");
 	var cheqMailResult = document.getElementById("cheqMailResult");
 	verifycodeInput.onblur = function(){
@@ -168,14 +168,14 @@ window.onload = function() {
 		}
 	}//end
 	
-		//下一頁
+		//下一頁-使用者
 		var nextSlide = document.getElementById("nextSlide");//下一步
 		var accoutPage1 = document.getElementById("accoutPage1");
 		var accoutDetailPage2 = document.getElementById("accoutDetailPage2");
 		nextSlide.onclick = function() {
 			var accountType = document.getElementsByName("accountType");
 			
-			var accountTypeVal = "";
+			console.log(accountType[0]);
 			for (var i = 0; i< accountType.length; i++) {
 		  		if (accountType[i].checked) {
 		  			accountTypeVal = accountType[i].value;
@@ -190,6 +190,11 @@ window.onload = function() {
 				accoutPage1.classList.add("tohide");
 				accoutDetailPage2.classList.remove("tohide");
 				accoutDetailPage2.classList.add("toshow");
+				}
+				if(accountTypeVal == "company"){
+				accoutPage1.classList.add("tohide");
+				comDetailPage2.classList.remove("tohide");
+				comDetailPage2.classList.add("toshow");
 				}
 				
 			}else {
@@ -407,6 +412,15 @@ window.onload = function() {
 			accoutPage1.classList.remove("tohide");
 			accoutPage1.classList.add("toshow");
 		}
+		var comlastSlide2 = document.getElementById("comlastSlide2");
+		comlastSlide2.onclick = function() {
+			var accoutPage1 = document.getElementById("accoutPage1");
+			var comDetailPage2 = document.getElementById("comDetailPage2");
+			comDetailPage2.classList.remove("toshow");
+			comDetailPage2.classList.add("tohide");
+			accoutPage1.classList.remove("tohide");
+			accoutPage1.classList.add("toshow");
+		}
 		
 		
 		var addmember = document.getElementById("addMember");
@@ -460,7 +474,76 @@ function privacyornot() {
 	  return document.getElementById("privacycheck").checked;
 	}
 
+//下一頁-企業端
+	$(document).ready(function(){
+		//前端判斷是否輸入正確
+		$("#comRealname").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+		    	$("#comRealname").css({"border":"2px solid red"});
+		    	txt="<span>企業名稱不可為空白</span>";
+		    }
+		    if(value.length<2){
+		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+		    	$("#comRealname").css({"border":"2px solid red"});
+		    	txt="<span>名稱需至少2個字</span>";
+		    }
+		    else{
+		    	$("#comRealname").css("border","2px solid green");
+		        txt="&emsp;";
+		    }
+		    $("#comRealnameResult").html(txt);
+		});
 
+		$("#comPhonenumber").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+		    	$("#comPhonenumber").css({"border":"2px solid red"});
+		    	txt="<span>請輸入連絡電話</span>";
+		    }
+		    else{
+		    	for (let i = 0; i < value.length; i++) {
+		            let ch = value.charAt(i);
+		            if(ch>=0&&ch<=9){
+		                txt="&emsp;";
+		            $("#comPhonenumber").css("border","2px solid green");
+		            }
+		            else{
+		            $("#comPhotoResult").css({"color":"red","font-size":"small"});
+		    		$("#comPhonenumber").css({"border":"2px solid red"});
+		                txt="<span>只能輸入數字</span>";
+		            }
+		        }
+		    }
+		    $("#comPhotoResult").html(txt);
+		});
+
+		$("#comLocation").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comLocationResult").css({"color":"red","font-size":"small"});
+		    	$("#comLocation").css({"border":"2px solid red"});
+		    	txt="<span>地址不可為空白</span>";
+		    }
+		    else{
+		    	$("#comLocation").css("border","2px solid green");
+		        txt="&emsp;";
+		    }
+		    $("#comLocationResult").html(txt);
+		});
+
+		//一鍵新增
+		$("#signinCompany").click(function(){
+			$("#comRealname").val('黯然消魂麵館');
+			$("#comPhonenumber").val('09123456789');
+			$("#comLocation").val('台北市中正路二段158號1樓');
+		});
+	});
 
 </script>
 
@@ -644,6 +727,69 @@ function privacyornot() {
 										</div>
 										</div>
 									</div>
+					<!-- 企業的Detail -->
+									
+									<div class="tab-pane tohide" id="comDetailPage2">
+										<div class="row">
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
+													<input class="form-control" type="text" name="comRealname" id="comRealname">
+													<span id="comRealnameResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>連絡電話:<small>(請輸入數字。例:09xxxxxxxx)</small></label>
+													<input class="form-control" type="text" name="comPhonenumber" id="comPhonenumber">
+													<span id="comPhotoResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>地址:<small>(請輸入公司地址)</small></label>
+													<input class="form-control" type="text" name="comLocation" id="comLocation">
+													<span id="comLocationResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1" style="display: none;">
+												<div class="form-group">
+													<label>企業等級:<small>一般會員</small></label>
+													<input class="form-control" type="text" name="comlevel" id="comlevel" value="一般會員">
+													<span id="comlevelResult"></span><br>
+												</div>
+											</div>
+										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
+											<div class="pull-right">
+											<input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+												name='next' value='Next' id="nextSlide2"  style="margin-bottom: 20px;margin-top: 10px"/>
+												<br><button id="signinCompany">一鍵新增</button>
+											</div>	
+											<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus2">
+												<div style="width: 150px;height: 30px;"></div>
+											</div> 
+											<div class="pull-left">
+											<input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
+												name='previous' value='Previous' id='comlastSlide2'  style="margin-bottom: 20px;margin-top: 10px"/>
+											</div>
+										</div>
+										</div>
+									</div>
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
 									<!-- third -->
 									<div class="tab-pane tohide" id="tagPage3" >
 										<div class="row">
