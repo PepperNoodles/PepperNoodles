@@ -2,17 +2,20 @@ package com.infotran.springboot.commonmodel;
 
 import java.util.Date;
 
+
 import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.crypto.Data;
+
 
 import org.springframework.stereotype.Component;
 
@@ -52,11 +55,11 @@ public class RestaurantBusinHour {
 	@Column(name = "close_time_3rd")
 	private String closeTime3rd;
 	
-	//
-	@OneToOne(cascade = CascadeType.ALL)
+
+	/** 一家餐廳有多個時間表 **/
+	@ManyToOne
 	@JoinColumn(name = "fk_restaurant_id")
 	private Restaurant restaurant;
-
 
 
 	public Integer getRestaurantBusinHourId() {
@@ -130,7 +133,13 @@ public class RestaurantBusinHour {
 	public void setCloseTime3rd(String closeTime3rd) {
 		this.closeTime3rd = closeTime3rd;
 	}
-	
-	
-	
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
 }
