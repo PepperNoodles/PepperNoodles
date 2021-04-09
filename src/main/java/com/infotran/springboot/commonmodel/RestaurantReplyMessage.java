@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.crypto.Data;
 
 import org.springframework.stereotype.Component;
 
@@ -35,7 +35,7 @@ public class RestaurantReplyMessage {
 	private String replyText;
 
 	@Column(name = "Time")
-	private Data time;
+	private Date time;
 
 	@Column(name = "LikeAmount")
 	private Integer likeAmount;
@@ -82,11 +82,11 @@ public class RestaurantReplyMessage {
 		this.replyText = replyText;
 	}
 
-	public Data getTime() {
+	public Date getTime() {
 		return time;
 	}
 
-	public void setTime(Data time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 
