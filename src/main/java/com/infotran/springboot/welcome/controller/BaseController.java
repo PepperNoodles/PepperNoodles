@@ -12,5 +12,14 @@ public class BaseController {
 		return "index";
 	}
 	
+	@GetMapping("/temp")
+	public String template() {
+		return "template/template";
+	}
 	
+	@GetMapping("/map")
+	public String maptest() {
+		return "mappage/showmap";
+	}
+
 }
