@@ -1,4 +1,4 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.commonmodel;
 
 import java.sql.Blob;
 
@@ -49,7 +49,7 @@ public class UserDetail {
 	@Column(name = "fk_purse_id")
 	private Integer purseID;
 	
-	@OneToOne(mappedBy = "useraccountdetail")
+	@OneToOne(mappedBy = "userAccountDetail")
 	private UserAccount userAccount;
 	
 	public UserDetail() {

@@ -1,4 +1,4 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.commonmodel;
 
 import java.util.Date;
 
@@ -15,8 +15,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.stereotype.Component;
+
 @Entity
 @Table(name="messageBox")
+@Component
 public class MessageBox {
 	
 	@Id
