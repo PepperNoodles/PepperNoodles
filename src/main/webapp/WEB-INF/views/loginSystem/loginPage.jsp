@@ -20,6 +20,10 @@
 
 <script>
 window.onload = function() {
+	//選擇是哪一種帳號的表單變數
+// 	document.getElementsByName("accountType").addEventListener("change", checkAccountType);
+
+	
 	var hasError = false;
 	var hasErrorpwd = false;
 	var hasErrorCheckEmail = false;
@@ -29,6 +33,9 @@ window.onload = function() {
 	var checkAccountStatus = document.getElementById("checkAccountStatus");
 	var userValueinput = document.getElementById("UserEmail");
 	var div1 = document.getElementById("result");
+	
+	
+	
 	//帳號驗證
 	check.onblur = function() {
 		var userValue = document.getElementById("UserEmail").value;
@@ -166,12 +173,25 @@ window.onload = function() {
 		var accoutPage1 = document.getElementById("accoutPage1");
 		var accoutDetailPage2 = document.getElementById("accoutDetailPage2");
 		nextSlide.onclick = function() {
+			var accountType = document.getElementsByName("accountType");
+			
+			var accountTypeVal = "";
+			for (var i = 0; i< accountType.length; i++) {
+		  		if (accountType[i].checked) {
+		  			accountTypeVal = accountType[i].value;
+			    	break;
+		  		}
+			}
 			var tagPage3 = document.getElementById("tagPage3");
 			var privacycheck = privacyornot();
 			if (hasError && hasErrorpwd && hasErrorCheckEmail && privacycheck){
+				console.log(accountTypeVal);
+				if(accountTypeVal =="user"){
 				accoutPage1.classList.add("tohide");
 				accoutDetailPage2.classList.remove("tohide");
 				accoutDetailPage2.classList.add("toshow");
+				}
+				
 			}else {
 				checkAccountStatus.innerHTML="<font color='red' >請輸入正確資訊</font>";
 			}
@@ -413,6 +433,10 @@ window.onload = function() {
 	
 }//end
 
+// function checkAccountType(){
+// 	if
+// }
+
 function setErrorFor(input, message) {
 	input.innerHTML = "<font color='red' size='-2'>" + message + "</font>";
 	hasError = true;
@@ -500,8 +524,8 @@ function privacyornot() {
 <!-- 											<h4 class="info-text">請您輸入基本資訊</h4> -->
 											<div  style="text-align: center;font-size:20px;margin-top: 0px;margin-bottom: 15px;" >
 											<label style="margin-top:10px;font-weight: bold;">選擇身份: </label>
-											<label style="font-weight: bold;"><input type="checkbox" name="user" value="user" id="user" >&nbsp;使用者登入</label>
-											<label style="font-weight: bold;"><input type="checkbox" name="company" value="company" id="company">&nbsp;企業登入</label>
+											<label style="font-weight: bold;"><input type="radio" name="accountType" value="user" id="user" >&nbsp;使用者註冊</label>
+											<label style="font-weight: bold;"><input type="radio" name="accountType" value="company" id="company">&nbsp;企業註冊</label>
 											</div>
 											<!-- First -->
 											<div class="col-sm-4 col-sm-offset-1">
@@ -621,7 +645,7 @@ function privacyornot() {
 										</div>
 									</div>
 									<!-- third -->
-									<div class="tab-pane toshow" id="tagPage3">
+									<div class="tab-pane tohide" id="tagPage3" >
 										<div class="row">
 											<div id=""  class="col-sm-10 col-sm-offset-1 " style="border:1px solid red">
 											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">

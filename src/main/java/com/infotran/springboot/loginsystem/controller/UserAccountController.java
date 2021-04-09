@@ -128,6 +128,7 @@ public class UserAccountController {
 		System.out.println("------controller-------"+user.getAccountIndex());
 		Map<String,String> map = new HashMap<String, String>();
 		String code = sendemail.getRandom();
+		System.out.println(code);
 		user.setCode(code);
 		boolean emailResult = sendemail.sendEmail(user);
 		if (emailResult) {
