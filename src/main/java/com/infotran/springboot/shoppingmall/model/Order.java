@@ -11,15 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
-import com.infotran.springboot.common.model.FoodTag;
-import com.infotran.springboot.loginsystem.model.UserAccount;
-import com.infotran.springboot.loginsystem.model.UserDetail;
+import com.infotran.springboot.commonmodel.UserAccount;
+
+
 
 @Entity
 @Table(name="Order")

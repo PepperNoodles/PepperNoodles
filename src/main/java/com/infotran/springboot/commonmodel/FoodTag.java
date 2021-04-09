@@ -1,4 +1,5 @@
-package com.infotran.springboot.loginsystem.model;
+package com.infotran.springboot.commonmodel;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +16,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
+import com.infotran.springboot.shoppingmall.model.Product;
+
 @Entity
 @Table(name="foodTag")
+@Component
 public class FoodTag {
 	
 	@Id
@@ -40,6 +46,12 @@ public class FoodTag {
 			@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
 			@JoinColumn(name="fk_forum_id",referencedColumnName = "forum_id")})
 	private Set<Forum> forums = new HashSet<Forum>();
+//	
+//	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//	@JoinTable(name="FoodTag_Product",joinColumns = {
+//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+//			@JoinColumn(name="fk_Product_id",referencedColumnName = "Product_id")})
+//	private Set<Product> Product = new HashSet<Product>();
 	
 	
 	
@@ -70,7 +82,5 @@ public class FoodTag {
 	public void setUsers(Set<UserAccount> users) {
 		this.users = users;
 	}
-	
-	
-	
+
 }
