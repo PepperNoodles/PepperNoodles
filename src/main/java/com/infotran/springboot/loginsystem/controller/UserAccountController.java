@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,15 +27,19 @@ import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 
+//forEasyLogin
+
+@SessionAttributes(names = "userAccount")
 @Controller
 public class UserAccountController {
 	
-	String imageRootDirectory = "D:\\_SpringBoot\\image";
+	String imageRootDirectory = "C:\\myfolder\\PPNpics";
 	
 	File imageFolder = null; 
 	
 	@Autowired
 	private UserAccountService service;
+	
 	
 	@Autowired
 	private UserAccount useraccount;
@@ -135,7 +140,11 @@ public class UserAccountController {
 			map.put("emailCode", code);
 		}
 		return map;
+	}	
+	
+	//for easy login
+	@PostMapping(value="/easycheck")
+	public String logincheck(@RequestBody Map<String,String> userAccount) {
+		return "ok";
 	}
-	
-	
 }

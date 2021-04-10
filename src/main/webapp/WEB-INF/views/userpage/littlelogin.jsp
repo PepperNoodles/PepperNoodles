@@ -60,7 +60,7 @@
 		<!-- 覆蓋用 -->
 		<div style="height: 90px"></div>
 
-		<div class="header-area header ">
+		<div class="header-area header">
 			<!--  header-transparent -->
 			<div class="main-header sticky-top">
 				<div class="header-bottom header-sticky">
@@ -130,50 +130,16 @@
 		<!-- Header End -->
 	</header>
 
-
+	
 	<div>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-
-
-
-
+	<form method="post" action="<c:url value=''/>">
+	<label for="account_index">account</label>
+	<input type="text" id="account_index" >
+	<label for="password" >password</label>
+	<input type="text" id="password">
+	</form>
 	</div>
-
-
-
-
-
-
-
+	
 	<footer>
 		<!-- Footer Start-->
 		<div class="footer-area">
@@ -268,13 +234,10 @@
 
 	<script>
 		$(window).on('load', function() {
-			
-			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
 			$(".header-sticky").css("height", "90px");
 			//$(".header-sticky").css("position","static ")
 
-			//讓loading圖動起來
 			$('#preloader-active').delay(450).fadeOut('slow');
 			$('body').delay(450).css({
 				'overflow' : 'visible'
@@ -294,7 +257,7 @@
 	<!-- 	<script type="text/javascript" -->
 	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
 	<!-- Jquery Mobile Menu -->
-		<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
 	<%-- 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
@@ -310,12 +273,12 @@
 	<%-- 	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
 	<%-- 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
 	<!-- contact js -->
-<%-- 		<script src="<c:url value='/scripts/contact.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/contact.js' />"></script> --%>
 
-<%-- 		<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
-<%-- 		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
-<%-- 		<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
-<%-- 		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
 
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
