@@ -184,7 +184,7 @@ window.onload = function() {
 			}
 			var tagPage3 = document.getElementById("tagPage3");
 			var privacycheck = privacyornot();
-			if (hasError && hasErrorpwd && hasErrorCheckEmail && privacycheck){
+			if (hasError && hasErrorpwd && privacycheck){ //hasErrorCheckEmail 
 				console.log(accountTypeVal);
 				if(accountTypeVal =="user"){
 				accoutPage1.classList.add("tohide");

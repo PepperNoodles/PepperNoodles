@@ -21,5 +21,10 @@ public class BaseController {
 	public String maptest() {
 		return "mappage/showmap";
 	}
+	
+	@GetMapping("/user/main")
+	public String userMain() {
+		return "userpage/usermain";
+	}
 
 }
