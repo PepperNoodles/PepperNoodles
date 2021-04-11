@@ -1,6 +1,5 @@
 package com.infotran.springboot.commonmodel;
 
-import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +33,11 @@ public class CompanyDetail {
 	
 	@Column(name = "level")
 	private String level;
+	
+	@OneToOne(mappedBy = "companyDetail")
+	private UserAccount userAccount;
+	
+	
 
 	public Integer getCompanyDetailId() {
 		return companyDetailId;
@@ -84,5 +88,15 @@ public class CompanyDetail {
 	public void setLevel(String level) {
 		this.level = level;
 	}
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+	
+	
 	
 }

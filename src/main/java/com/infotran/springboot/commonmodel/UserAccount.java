@@ -231,4 +231,16 @@ public class UserAccount {
 	}
 
 
+
+	public CompanyDetail getCompanyDetail() {
+		return companyDetail;
+	}
+
+
+
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
+	}
+
+	
 }
