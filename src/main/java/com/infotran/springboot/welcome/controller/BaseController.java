@@ -21,5 +21,10 @@ public class BaseController {
 	public String maptest() {
 		return "mappage/showmap";
 	}
+	
+	@GetMapping("/rest")
+	public String company() {
+		return "companySystem/restaurantCRUD";
+	}
 
 }
