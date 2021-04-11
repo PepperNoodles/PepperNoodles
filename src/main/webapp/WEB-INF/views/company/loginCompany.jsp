@@ -8,9 +8,9 @@
 </head>
 <body>
 <div align='center'>
-${comDetail}
+${comDetailId}
 <br>
-<a href='index'>回首頁</a>
+<a href="/PepperNoodles">回首頁</a>
 </div>
 </body>
 </html>
