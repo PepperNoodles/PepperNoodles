@@ -402,7 +402,7 @@ window.onload = function() {
 			}
 		}//end
 
-//回上一頁
+//回上一頁-會員
 		var lastSlide2 = document.getElementById("lastSlide2");
 		lastSlide2.onclick = function() {
 			var accoutPage1 = document.getElementById("accoutPage1");
@@ -412,6 +412,7 @@ window.onload = function() {
 			accoutPage1.classList.remove("tohide");
 			accoutPage1.classList.add("toshow");
 		}
+//回上一頁-企業
 		var comlastSlide2 = document.getElementById("comlastSlide2");
 		comlastSlide2.onclick = function() {
 			var accoutPage1 = document.getElementById("accoutPage1");
@@ -459,11 +460,13 @@ window.onload = function() {
 			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
 			    	$("#comRealname").css({"border":"2px solid red"});
 			    	txt="<span>企業名稱不可為空白</span>";
+			    	hasErrorComRealname = false;
 			    }
 			    if(value.length<2){
 			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
 			    	$("#comRealname").css({"border":"2px solid red"});
 			    	txt="<span>名稱需至少2個字</span>";
+			    	hasErrorComRealname = false;
 			    }
 			    else{
 			    	$("#comRealname").css("border","2px solid green");
@@ -480,6 +483,7 @@ window.onload = function() {
 			    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
 			    	$("#comPhonenumber").css({"border":"2px solid red"});
 			    	txt="<span>請輸入連絡電話</span>";
+			    	hasErrorComPhone = false;
 			    }
 			    else{
 			    	for (let i = 0; i < value.length; i++) {
@@ -490,9 +494,10 @@ window.onload = function() {
 			            hasErrorComPhone = true;
 			            }
 			            else{
-			            $("#comPhotoResult").css({"color":"red","font-size":"small"});
-			    		$("#comPhonenumber").css({"border":"2px solid red"});
+			            	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+			    			$("#comPhonenumber").css({"border":"2px solid red"});
 			                txt="<span>只能輸入數字</span>";
+			                hasErrorComPhone = false;
 			            }
 			        }
 			    }
@@ -506,6 +511,7 @@ window.onload = function() {
 			    	$("#comLocationResult").css({"color":"red","font-size":"small"});
 			    	$("#comLocation").css({"border":"2px solid red"});
 			    	txt="<span>地址不可為空白</span>";
+			    	hasErrorComLocation = false;
 			    }
 			    else{
 			    	$("#comLocation").css("border","2px solid green");
@@ -534,6 +540,24 @@ window.onload = function() {
 				hasErrorComPhone = true;
 				hasErrorComLocation = true;
 			});
+			
+			//輸入完成傳值到Conrtoller
+			$("#comNextSlide2").click(function(){
+				if(!hasErrorComRealname || !hasErrorComPhone || !hasErrorComLocation){
+					txt="<span>請輸入正確資訊</span>";
+					$("#checkComStatus2").css({"color":"red","font-size":"small"});
+					$("#checkComStatus2").html(txt);
+				}
+				else{
+					txt="&emsp;";
+					$("#checkComStatus2").html(txt);
+					document.form1.method= "post"; 
+					document.form1.action= "/PepperNoodles/addCom";
+					document.form1.enctype="multipart/form-data";
+					document.form1.submit();
+				}
+			});
+			
 		});
 	
 }//end
@@ -601,6 +625,7 @@ function privacyornot() {
 </style>
 </head>
 <body>
+<form name="form1">
 	<div class="image-container set-full-height"style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
 		<div class="logo-container">
 			<div class="logo">
@@ -638,7 +663,7 @@ function privacyornot() {
 													<div class="picture">
 														<img src="<c:url value="/images/NoImage/NoImage_Male.png"/>"
 															class="picture-src" id="wizardPicturePreview"  />
-														<input type="file" id="wizard-picture" accept="image/*">
+														<input type="file" id="wizard-picture" accept="image/*" name="photo">
 													</div>
 													<h6>Choose Picture</h6>
 												</div>
@@ -657,7 +682,7 @@ function privacyornot() {
 											</div>
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
-													<button id="checkMail" style="margin-top: 10px;margin-bottom: 10px">驗證信箱</button>
+													<button type="button" id="checkMail" style="margin-top: 10px;margin-bottom: 10px">驗證信箱</button>
 													<label><small id="checkMailInput"></small></label>
 													<input class="form-control" type="text" name="verifycode" id="verifycode" placeholder="請輸入驗證碼...">
 													<span id="cheqMailResult"></span><br>
@@ -704,7 +729,7 @@ function privacyornot() {
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
 													<label>Sex:<small></small></label><br>
-													<input type="radio" name="gender" value="male" id="male">男
+													<input type="radio" name="gende	r" value="male" id="male">男
 													<input type="radio" name="gender" value="female" id="female">女
 												</div>
 											</div>
@@ -784,10 +809,9 @@ function privacyornot() {
 										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 											<div class="pull-right">
 											<input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
-												name='next' value='Next' id="nextSlide2"  style="margin-bottom: 20px;margin-top: 10px"/>
-												<br><a id="signinCompany" href="#">一鍵新增</a>
+												name='next' value='Next' id="comNextSlide2"  style="margin-bottom: 20px;margin-top: 10px"/>
 											</div>	
-											<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus2">
+											<div class="pull-right" style="margin-right: 20%;" id="checkComStatus2">
 												<div style="width: 150px;height: 30px;"></div>
 											</div> 
 											<div class="pull-left">
@@ -797,20 +821,6 @@ function privacyornot() {
 										</div>
 										</div>
 									</div>
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
 									
 									<!-- third -->
 									<div class="tab-pane tohide" id="tagPage3" >
@@ -888,10 +898,12 @@ function privacyornot() {
 			</div>
 			<!-- end row -->
 			<div  id="myBtn" title="Go to top">
-				<button id="addMember">一鍵新增1</button>
-				<button id="addMemberDetail">一鍵新增2</button>
+				<button type="button" id="addMember">一鍵新增1</button>
+				<button type="button" id="addMemberDetail">一鍵新增2</button>
 				<br>
-				<button id="addcompany">一鍵企業</button>
+				<button type="button" id="addcompany">一鍵企業1</button>
+				<button type="button" id="signinCompany">一鍵企業2</button>
+				
 			</div>
 		</div>
 		<!--  big container -->
@@ -911,7 +923,7 @@ function privacyornot() {
 		</div>
 
 	</div>
-	
+</form>	
 	<script>
 		$(function(){
 			$("#wizard-picture").change(function(){
