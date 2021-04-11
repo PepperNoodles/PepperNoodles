@@ -94,6 +94,7 @@ public class CompanyDetailController {
 	/**修改會員-接收修改後的資料**/
 	@PostMapping("/updateCom/{comId}")
 	public String modify( @ModelAttribute("comDetail") CompanyDetail comDetail, BindingResult result, Model model,
+						  @RequestPart("userphoto")MultipartFile userphoto ,
 						  @PathVariable("comId") Integer comId, HttpServletRequest request) {
 		System.out.println("--------- 收到修改資料 ---------");
 		System.out.println(comDetail.getLevel());
@@ -103,9 +104,17 @@ public class CompanyDetailController {
 		System.out.println(comDetail.getUserphoto());
 //		System.out.println(comDetail.getUserAccount().getAccountIndex());
 		
+		if (userphoto != null && !userphoto.isEmpty()) {
+			try {
+				byte[] b = userphoto.getBytes();
+				comDetail.setUserphoto(b);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("圖片發生異常: " + e.getMessage());
+			}
+		}
 		
-		
-		CompanyDetail  companyDetail = comDetailService.update(comDetail);
+		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
 			return "company/showAllCompany";
 		}

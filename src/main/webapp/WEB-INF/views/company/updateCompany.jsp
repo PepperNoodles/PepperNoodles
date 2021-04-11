@@ -36,9 +36,9 @@
 	   	  <td>
 	   	  	<form:hidden path='level'/>${comDetail.level}<br>&nbsp;
 	   	  </td>
-<!-- 	   	  <td> -->
-<%-- 	   	  會員: ${comDetail.userAccount.accountIndex} --%>
-<!-- 	   	  </td> -->
+	   	  <td>
+	   	  會員: ${comDetail.userAccount.accountIndex}
+	   	  </td>
 	   </tr>
     </c:if>	
     	<tr>
