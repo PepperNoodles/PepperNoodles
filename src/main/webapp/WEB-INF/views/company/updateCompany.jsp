@@ -36,9 +36,11 @@
 	   	  <td>
 	   	  	<form:hidden path='level'/>${comDetail.level}<br>&nbsp;
 	   	  </td>
+	   	</tr>
+	   	<tr>
 	   	  <td>會員帳號(E-mail)：<br>&nbsp;</td>
 	   	  <td>
-	   	  	<form:hidden path='level'/>${comDetail.userAccount.accountIndex}<br>&nbsp;
+	   	  	<form:hidden path='userAccount.accountIndex'/>${comDetail.userAccount.accountIndex}<br>&nbsp;
 	   	  </td>
 	   </tr>
     </c:if>	
