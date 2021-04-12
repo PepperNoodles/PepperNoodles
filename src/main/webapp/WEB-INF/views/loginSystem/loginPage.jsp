@@ -441,8 +441,36 @@ window.onload = function() {
 		  		}
 			}
 	  		console.log(hobbyVal);
+	  		
+	  	//interest 傳值
+	  		var xhr = new XMLHttpRequest();
+			xhr.open("POST", "<c:url value='/addAccountInterest' />", true);
+
+			xhr.setRequestHeader("Content-Type", "application/json");
+			// 			alert(JSON.stringify(jsonAccount));//debug
+			xhr.send(JSON.stringify(hobbyVal));
+			var message = "";
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					accountResult = JSON.parse(xhr.responseText);
+					// 					alert(accountResulst);
+					if (accountResult.username.length == 0) {
+						message = "<font color='green' size='-2'>帳號可用</font>";
+						hasError = true;
+					} else if (accountResult.username.startsWith("Error")) {
+						message = "<font color='red' size='-2'>發生錯誤</font>";
+						hasError = false;
+					} else {
+						message = "<font color='red' size='-2'>帳號重複，請重新輸入帳號</font>";
+						hasError = false;
+					}
+				}
+				div1.innerHTML = message;
+			}
 
 		}
+		
+		
 	
 }//end
 
