@@ -77,8 +77,11 @@ public class UserAccount {
 
 	// foodtags=============================================================
 	
-	@ManyToMany(mappedBy = "users")
-	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+//	@ManyToMany(mappedBy = "users")
+//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	
@@ -230,5 +233,21 @@ public class UserAccount {
 		this.userAccountDetail = userAccountDetail;
 	}
 
+
+
+	public Set<FoodTagUser> getFoodTagUsers() {
+		return FoodTagUsers;
+	}
+
+
+
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
+	}
+
+
+
+
+	
 
 }
