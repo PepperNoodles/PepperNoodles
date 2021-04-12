@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>企業會員</title>
+<style>
+body{
+	background-color: 	#FFFAF4;
+}
+</style>
 </head>
 <body>
 <div align='center'>
@@ -32,7 +37,7 @@
 			<c:forEach var='companys' items='${companys}'>
 				<tr>
 					<td>${companys.companyDetailId}</td>
-					<td>${companys.userphoto}</td>
+					<td><img width='120' src='picture/${companys.companyDetailId}' /></td>
 					<td>${companys.realname}</td>
 					<td>${companys.phonenumber}</td>
 					<td style="text-align:left">${companys.location}</td>
