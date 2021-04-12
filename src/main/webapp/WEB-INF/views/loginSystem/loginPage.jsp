@@ -879,7 +879,7 @@ function privacyornot() {
 												<input type='button'class='btn btn-finish btn-fill btn-warning btn-wd btn-sm'
 													name='finish' value='Finish' id='senData'/>
 											</div>
-												<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus">
+									m		<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus">
 												<div style="width: 150px;height: 30px;"></div>
 											</div> 
 											<div class="pull-left">

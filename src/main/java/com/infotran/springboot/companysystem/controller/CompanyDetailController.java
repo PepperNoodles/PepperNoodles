@@ -20,7 +20,7 @@ import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 @Controller
-@SessionAttributes(names = {"comDetail"})
+@SessionAttributes(names = {"comDetail","comDetailId"})
 public class CompanyDetailController {
 	
 	@Autowired
@@ -84,9 +84,8 @@ public class CompanyDetailController {
 		System.out.println(comDetail.getPhonenumber());
 		System.out.println(comDetail.getRealname());
 		System.out.println(comDetail.getUserphoto());
-//		System.out.println(comDetail.getUserAccount()); //為什麼取不到userAccount資料?
-//		System.out.println(comDetail.getUserAccount().getAccountIndex());
-//		System.out.println(comDetail.getUserAccount().getPassword());
+		System.out.println(comDetail.getUserAccount().getAccountIndex());
+		System.out.println(comDetail.getUserAccount().getPassword());
 		model.addAttribute("comDetail",	comDetail);
 		return "company/updateCompany";
 	}
