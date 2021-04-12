@@ -233,6 +233,9 @@ public class UserAccount {
 		this.userAccountDetail = userAccountDetail;
 	}
 
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
+	}
 
 
 	public Set<FoodTagUser> getFoodTagUsers() {
@@ -241,13 +244,13 @@ public class UserAccount {
 
 
 
-	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
-		FoodTagUsers = foodTagUsers;
+	public CompanyDetail getCompanyDetail() {
+		return companyDetail;
+	}
+	
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
 	}
 
-
-
-
 	
-
 }
