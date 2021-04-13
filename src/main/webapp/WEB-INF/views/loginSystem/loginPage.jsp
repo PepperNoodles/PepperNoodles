@@ -895,7 +895,7 @@ function privacyornot() {
 											
 											<div class="pull-right toshow"  id="">
 												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
-													name='' value='往個人頁' id='toBasic' style="margin-bottom: 20px;margin-top: 300px"/>
+													name='' value='前往登入' id='toBasic' style="margin-bottom: 20px;margin-top: 300px"/>
 											</div> 
 											
 											<div class="pull-left">
