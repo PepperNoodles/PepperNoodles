@@ -33,7 +33,78 @@
 			}
 		});
 		
-		$()
+		var hasErrorComRealname = false;
+		var hasErrorComPhone = false;
+		var hasErrorComLocation = false;
+		//前端判斷是否輸入正確
+		$("#comRealname").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+		    	$("#comRealname").css({"border":"2px solid red"});
+		    	txt="<span>企業名稱不可為空白</span>";
+		    	hasErrorComRealname = false;
+		    }
+		    if(value.length<2){
+		    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+		    	$("#comRealname").css({"border":"2px solid red"});
+		    	txt="<span>名稱需至少2個字</span>";
+		    	hasErrorComRealname = false;
+		    }
+		    else{
+		    	$("#comRealname").css("border","2px solid green");
+		        txt="&emsp;";
+		        hasErrorComRealname = true;
+		    }
+		    $("#comRealnameResult").html(txt);
+		});
+		
+		$("#comPhonenumber").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+		    	$("#comPhonenumber").css({"border":"2px solid red"});
+		    	txt="<span>請輸入連絡電話</span>";
+		    	hasErrorComPhone = false;
+		    }
+		    else{
+		    	for (let i = 0; i < value.length; i++) {
+		            let ch = value.charAt(i);
+		            if(ch>=0&&ch<=9){
+		                txt="&emsp;";
+		            $("#comPhonenumber").css("border","2px solid green");
+		            hasErrorComPhone = true;
+		            }
+		            else{
+		            	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+		    			$("#comPhonenumber").css({"border":"2px solid red"});
+		                txt="<span>只能輸入數字</span>";
+		                hasErrorComPhone = false;
+		            }
+		        }
+		    }
+		    $("#comPhotoResult").html(txt);
+		});
+
+		$("#comLocation").blur(function(){
+			let value=$(this).val();
+		    let txt="";
+		    if(value==""){
+		    	$("#comLocationResult").css({"color":"red","font-size":"small"});
+		    	$("#comLocation").css({"border":"2px solid red"});
+		    	txt="<span>地址不可為空白</span>";
+		    	hasErrorComLocation = false;
+		    }
+		    else{
+		    	$("#comLocation").css("border","2px solid green");
+		        txt="&emsp;";
+		        hasErrorComLocation = true;
+		    }
+		    $("#comLocationResult").html(txt);
+		});
+
 	});
 </script>
 </head>
@@ -78,8 +149,6 @@
 													<div class="col-sm-6">
 														<div class="form-group">
 															<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
-															&nbsp;&nbsp; 
-															<a href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
 														</div>
 													</div>
 												</c:if>
@@ -97,13 +166,13 @@
 														<div class="form-group">
 															<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
 															<form:input class="form-control" type="text" path="realname" id="comRealname" />
-															<span id="comRealnameResult"></span>
+															<span id="comRealnameResult">&emsp;</span>
 															<form:errors path='realname' cssClass="error" />
 														</div>
 														<div class="form-group">
 															<label>連絡電話: <small>(請輸入數字。例:09xxxxxxxx)</small></label>
-															<form:input class="form-control" type="text" path="phonenumber" id="phonenumber" />
-															<span id="result2"></span>
+															<form:input class="form-control" type="text" path="phonenumber" id="comPhonenumber" />
+															<span id="comPhotoResult">&emsp;</span>
 															<form:errors path='phonenumber' cssClass="error" />
 														</div>
 													</div>
@@ -112,9 +181,9 @@
 														<div class="form-group">
 															<label>地址:<small>(請輸入公司地址)</small></label>
 															<form:input class="form-control" type="text" path="location" id="comLocation" />
-															<span id="comLocationResult"></span>
+															<span id="comLocationResult">&emsp;</span>
 															<form:errors path='location' cssClass="error" />
-															<br>
+															<br>	<br>
 															<div class="pull-right">
 																<input type='submit' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' 
 																	  value='確認修改' id="nextSlide" style="margin-bottom: 20px; margin-top: 10px" />
@@ -154,23 +223,6 @@
 			</div>
 
 		</div>
-	<script>
-		$(function() {
-			$("#wizard-picture").change(
-					function() {
-						if (this.files && this.files[0]) {
-							var reader = new FileReader();
-
-							reader.onload = function(e) {
-								$('#wizardPicturePreview').attr('src',
-										e.target.result);
-							}
-
-							reader.readAsDataURL(this.files[0]);
-						}
-					});
-		});
-	</script>
 
 </body>
 <!--   Core JS Files   -->
