@@ -1,8 +1,16 @@
 package com.infotran.springboot.companysystem.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,11 +31,16 @@ import com.infotran.springboot.loginsystem.service.UserAccountService;
 @SessionAttributes(names = {"comDetail","comDetailId"})
 public class CompanyDetailController {
 	
+	String NoCompany = "/images/NoImage/NoCompany.png";
+	
 	@Autowired
 	private CompanyDetailService comDetailService;
 	
 	@Autowired
 	private UserAccountService userAccountService;
+	
+	@Autowired
+	ServletContext context;
 	
 	/**新增企業會員**/
 	@PostMapping(value = "/addCom")
@@ -79,13 +92,6 @@ public class CompanyDetailController {
 	@GetMapping(value = "/updateCom/{comId}")
 	public String updateCompany(@PathVariable("comId") Integer comId , Model model) {
 		CompanyDetail comDetail = comDetailService.findById(comId);
-		System.out.println(comDetail.getLevel());
-		System.out.println(comDetail.getLocation());
-		System.out.println(comDetail.getPhonenumber());
-		System.out.println(comDetail.getRealname());
-		System.out.println(comDetail.getUserphoto());
-		System.out.println(comDetail.getUserAccount().getAccountIndex());
-		System.out.println(comDetail.getUserAccount().getPassword());
 		model.addAttribute("comDetail",	comDetail);
 		return "company/updateCompany";
 	}
@@ -117,5 +123,41 @@ public class CompanyDetailController {
 		System.out.println("新圖:"+companyDetail.getUserphoto());
 			return "company/showAllCompany";
 		}
+	
+	
+	@GetMapping("/picture/{id}")
+	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
+		ResponseEntity<byte[]> re = null;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+		CompanyDetail companyDetail = comDetailService.findById(id);
+		if (companyDetail == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+	
+		byte[] comImg = companyDetail.getUserphoto();
+		if (comImg == null) {
+			comImg = fileToByteArray(NoCompany);
+		}
+		re = new ResponseEntity<byte[]>(comImg, headers, HttpStatus.OK);
+
+		return re;
+	}
+
+	private byte[] fileToByteArray(String NoCompany) {
+		byte[] result = null;
+		try (InputStream is = context.getResourceAsStream(NoCompany);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+			byte[] b = new byte[819200];
+			int len = 0;
+			while ((len = is.read(b)) != -1) {
+				baos.write(b, 0, len);
+			}
+			result = baos.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }
