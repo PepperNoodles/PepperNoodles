@@ -182,7 +182,6 @@ window.onload = function() {
 			    	break;
 		  		}
 			}
-			var tagPage3 = document.getElementById("tagPage3");
 			var privacycheck = privacyornot();
 			if (hasError && hasErrorpwd && hasErrorCheckEmail && privacycheck){
 				console.log(accountTypeVal);
@@ -460,6 +459,7 @@ window.onload = function() {
 	  		console.log(hobbyVal);
 	  		
 	  	//interest 傳值
+	  	var divResult = document.getElementById("divResult");
 	  		var xhr = new XMLHttpRequest();
 			xhr.open("POST", "<c:url value='/addAccountInterest' />", true);
 
@@ -469,20 +469,20 @@ window.onload = function() {
 			var message = "";
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status == 200) {
-					accountResult = JSON.parse(xhr.responseText);
-					// 					alert(accountResulst);
-					if (accountResult.username.length == 0) {
-						message = "<font color='green' size='-2'>帳號可用</font>";
-						hasError = true;
-					} else if (accountResult.username.startsWith("Error")) {
-						message = "<font color='red' size='-2'>發生錯誤</font>";
-						hasError = false;
-					} else {
-						message = "<font color='red' size='-2'>帳號重複，請重新輸入帳號</font>";
-						hasError = false;
+// 					interestResult = JSON.parse(xhr.responseText);
+// 					alert(interestResult);
+// 					alert(interestResult.success);
+// 					alert(interestResult.success.value);
+					if (interestResult.success == 1) {
+						message = "<span><font color='green' size='-2'>興趣新增成功</font></span>";
+						console.log("興趣新增成功");
+						
+						} else {
+						message = "<span><font color='green' size='-2'>興趣之後還可以繼續修改與填寫唷:))</font></span>";
+						
 					}
 				}
-				div1.innerHTML = message;
+				divResult.innerHTML = message;
 			}
 
 		}
@@ -751,7 +751,7 @@ function privacyornot() {
 										</div>
 									</div>
 									<!-- second -->
-									<div class="tab-pane toshow" id="accoutDetailPage2">
+									<div class="tab-pane tohide" id="accoutDetailPage2">
 										<div class="row">
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
@@ -864,8 +864,9 @@ function privacyornot() {
 									</div>
 									
 									<!-- third -->
-									<div class="tab-pane toshow" id="tagPage3" >
+									<div class="tab-pane tohide" id="tagPage3" >
 										<div class="row">
+										
 											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
 												<tr>
 													<td width="50px">興趣:</td>
@@ -883,18 +884,23 @@ function privacyornot() {
 														id="hobby">春捲</td>
 												</tr>
 											</table>
+											<br>
+											<span id="divResult" ></span>
 											
 										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 											<div class="pull-right">
 												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
-													name='finish' value='Finish' id='sendData' style="border: 1px solid red"/>
+													name='finish' value='Finish' id='sendData' style="margin-bottom: 20px;margin-top: 300px"/>
 											</div>
-											<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus">
-												<div style="width: 150px;height: 30px;"></div>
+											
+											<div class="pull-right toshow"  id="">
+												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+													name='' value='前往登入' id='toBasic' style="margin-bottom: 20px;margin-top: 300px"/>
 											</div> 
+											
 											<div class="pull-left">
 												<input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
-													name='previous' value='Previous' id='lastSlide'/>
+													name='previous' value='Previous' id='lastSlide' style="margin-bottom: 20px;margin-top: 300px" />
 											</div>
 										</div>
 										
