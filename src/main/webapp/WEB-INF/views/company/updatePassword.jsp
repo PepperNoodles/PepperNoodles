@@ -18,24 +18,6 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
-
-<script>
-	$(function() {
-		$("#wizard-picture").change(function() {
-			if (this.files && this.files[0]) {
-				var reader = new FileReader();
-
-				reader.onload = function(e) {
-					$('#wizardPicturePreview').attr('src', e.target.result);
-				}
-
-				reader.readAsDataURL(this.files[0]);
-			}
-		});
-		
-		$()
-	});
-</script>
 </head>
 <body>
 		<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
@@ -56,7 +38,7 @@
 								id="wizardProfile">
 								<div class="wizard-header">
 									<h3>
-										<b>修改 店家資料</b><br>
+										<b>修改密碼</b><br>
 									</h3>
 								</div>
 								<br>
@@ -74,47 +56,41 @@
 											</div>
 											<div class="row">
 												<c:if test='${comDetail.companyDetailId != null}'>
-													<div class="col-sm-4 col-sm-offset-1"></div>
+													<div class="col-sm-4 col-sm-offset-1">
+															<br>
+															<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src"  />
+													</div>
 													<div class="col-sm-6">
 														<div class="form-group">
 															<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
-															&nbsp;&nbsp; 
-															<a href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
 														</div>
-													</div>
-												</c:if>
-													<div class="col-sm-4 col-sm-offset-1">
-														<div class="picture-container">
-															<div class="picture">
-																<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
-																<form:input type="file" id="wizard-picture" accept="image/*" path="userphoto" />
-																<form:errors path="userphoto" cssClass="error" />
-															</div>
-															<h6>更換圖片</h6>
-														</div>
-													</div>
-													<div class="col-sm-6">
+													
+													
 														<div class="form-group">
-															<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
-															<form:input class="form-control" type="text" path="realname" id="comRealname" />
+															<label>舊密碼:</label>
+															<input class="form-control" type="password" name="userAccount.password" id="comRealname" />
 															<span id="comRealnameResult"></span>
 															<form:errors path='realname' cssClass="error" />
 														</div>
+														
 														<div class="form-group">
-															<label>連絡電話: <small>(請輸入數字。例:09xxxxxxxx)</small></label>
-															<form:input class="form-control" type="text" path="phonenumber" id="phonenumber" />
-															<span id="result2"></span>
-															<form:errors path='phonenumber' cssClass="error" />
+															<label>新密碼:</label>
+															<input class="form-control" type="password" path="userAccount.password" id="comRealname" />
+															<span id="comRealnameResult"></span>
+															<form:errors path='realname' cssClass="error" />
+														</div>
+														
+														<div class="form-group">
+															<label>確認密碼:</label>
+															<input class="form-control" type="password" name="userAccount.password" id="comRealname" />
+															<span id="comRealnameResult"></span>
+															<form:errors path='realname' cssClass="error" />
 														</div>
 													</div>
 													<div class="col-sm-1 col-sm-offset-1"></div>
 													<div class="col-sm-10 col-sm-offset-1">
 														<div class="form-group">
-															<label>地址:<small>(請輸入公司地址)</small></label>
-															<form:input class="form-control" type="text" path="location" id="comLocation" />
-															<span id="comLocationResult"></span>
-															<form:errors path='location' cssClass="error" />
-															<br>
+															
 															<div class="pull-right">
 																<input type='submit' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' 
 																	  value='確認修改' id="nextSlide" style="margin-bottom: 20px; margin-top: 10px" />
@@ -126,6 +102,7 @@
 															</div>
 														</div>
 													</div>
+												</c:if>
 											</div>
 										</div>
 									</div>
