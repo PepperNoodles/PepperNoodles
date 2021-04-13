@@ -206,54 +206,42 @@ public class UserAccountController {
 			Model m,
 			SessionStatus s,
 			HttpSession ses){
+		Map<String,String> map = new HashMap<>();
+
+		if(interest.length!=0) {
+			
+		
 		System.out.println(userAccount.getAccountIndex());
 		Set<FoodTagUser> userSet = userAccount.getFoodTagUsers();
-
-		for(int i = 0; i<interest.length; i++) {
-			System.out.println("json傳到server的值" + interest[i]);
-			String tagName = interest[i];
+		
+			for(int i = 0; i<interest.length; i++) {
+				System.out.println("json傳到server的值" + interest[i]);
+				String tagName = interest[i];
+				
+				//用json轉的字串值取得DB的 FoodTag
+				FoodTag tag = foodTagRepository.findByFoodTagName(tagName);
+				//驗證 FoodTag 資訊
+				System.out.println("FoodTag Object's  tag = " + tag.getFoodTagName());
+				
+				//設定一筆關聯表資料
+				FoodTagUser ftu = new FoodTagUser();
+				//分別將雙邊資料存入
+				ftu.setFkfoodtag(tag);
+				ftu.setFkuser(userAccount);
+				
+				userSet.add(ftu);
+				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
+				tagSet.add(ftu);
+				System.out.println("save foodtag");
+				foodTagRepository.save(tag);
+				map.put("success","1");
+	
+			}
 			
-			//用json轉的字串值取得DB的 FoodTag
-			FoodTag tag = foodTagRepository.findByFoodTagName(tagName);
-			//驗證 FoodTag 資訊
-			System.out.println("FoodTag Object's  tag = " + tag.getFoodTagName());
-			
-			//設定一筆關聯表資料
-			FoodTagUser ftu = new FoodTagUser();
-			//分別將雙邊資料存入
-			ftu.setFkfoodtag(tag);
-			ftu.setFkuser(userAccount);
-			
-			userSet.add(ftu);
-			Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
-			tagSet.add(ftu);
-			System.out.println("save foodtag");
-			foodTagRepository.save(tag);
-
+		}else {
+			map.put("success","0");
 		}
-		//如果存user的話SQL會重複存 不知道為什麼
-//		System.out.println("update useraccount");
-//		service.update(userAccount);
-		
-//		ses.removeAttribute("useraccount");
-//		s.setComplete();
-		
 
-		Map<String,String> map = new HashMap<>();
-//		int n = 0;
-//		try {
-////			n = accountDetailAJService.saveAccountDetailAJ(actDe);
-////			if (n == 1) {
-//			if(interest!=null) {
-//				n=1;
-//				map.put("success", "Detail資訊新增成功");
-//				res.setStatus(HttpServletResponse.SC_CREATED);
-//			} else if (n == -1) {
-//				map.put("fail", "帳號重複");
-//			}
-//		} catch (Exception e) {
-//			map.put("fail", e.getMessage());
-//		}
 		return map;
 	}
 	
