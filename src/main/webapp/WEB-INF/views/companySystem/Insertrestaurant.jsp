@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -38,6 +39,7 @@
 	background-color: #000000;
 }
 </style>
+
 </head>
 <body>
 	<!-- 讀取圖案 -->
@@ -132,43 +134,54 @@
 
 	<!-- 餐廳管理頁面 -->
 	<!-- 背景圖片+自動填滿 -->
-	<div class="image-container set-full-height"
-		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
+	<div class="image-container set-full-height"<%-- 		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover" --%>
+		>
 
 
-		<h1>餐廳啦</h1><h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		<h1>餐廳啦</h1>
-		
+		<h1>add rest</h1>
+		<fieldset>
+			<legend>新增餐廳資料(rest)</legend>
+			<!--綁定model中的restaurant-->
+			<form:form method="POST" modelAttribute="restaurant"
+				enctype='multipart/form-data'>
+				<Table style="align-self: center;">
+					<tr>
+						<td>餐廳地址：<br></td>
+						<td width='360'><form:input path='restaurantAddress' /><br>
+							<form:errors path="restaurantAddress" cssClass="error" /></td>
+					</tr>
+					<tr>
+						<td>聯絡方式：<br></td>
+						<td width='360'><form:input path='restaurantContact' /><br>
+							<form:errors path="restaurantContact" cssClass="error" /></td>
+					</tr>
+					<tr>
+						<td>餐廳名稱：<br></td>
+						<td width='360'><form:input path='restaurantName' /><br>
+							<form:errors path="restaurantName" cssClass="error" /></td>
+					</tr>
+					<tr>
+						<td>餐廳網站：<br></td>
+						<td width='360'><form:input path='restaurantWebsite' /><br>
+							<form:errors path="restaurantWebsite" cssClass="error" /></td>
+					</tr>
+					<tr>
+						<td>餐廳照片：<br>
+						<img src="<c:url value="對controll的請求路徑"/>">
+						</td>
+						<td width='360'><form:input path='restaurantPhoto'
+								type='file' /> <br>
+							<form:errors path="restaurantPhoto" cssClass="error" /></td>
+					</tr>
 
+					<tr>
+						<td colspan='4' align='center'><br> <input type='submit'>
+						</td>
+					</tr>
+				</Table>
+			</form:form>
 
-
-
-
+		</fieldset>
 
 	</div>
 
