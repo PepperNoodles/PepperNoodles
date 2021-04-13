@@ -43,7 +43,7 @@ import com.infotran.springboot.loginsystem.service.UserAccountService;
 @SessionAttributes(names = "useraccount")
 public class UserAccountController {
 	
-	String imageRootDirectory = "D:\\_SpringBoot\\image";
+	String imageRootDirectory = "C:\\_SpringBoot\\image";
 	
 	File imageFolder = null; 
 	

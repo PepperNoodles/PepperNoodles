@@ -87,9 +87,16 @@ public class CompanyDetailController {
 		}
 		return "company/loginCompany";
 	}
+	/**修改會員密碼-讀取要修改的會員資料傳到修改會員頁面**/
+	@GetMapping(value = {"/updateComPwd/{comId}"} )
+	public String updateComPwd(@PathVariable("comId") Integer comId , CompanyDetail comDetail , Model model) {
+		comDetail = comDetailService.findById(comId);
+		model.addAttribute("comDetail",	comDetail);
+		return "company/updatePassword";
+	}
 	
 	/**修改會員-讀取要修改的會員資料傳到修改會員頁面**/
-	@GetMapping(value = "/updateCom/{comId}")
+	@GetMapping(value = {"/updateCom/{comId}"} )
 	public String updateCompany(@PathVariable("comId") Integer comId , Model model) {
 		CompanyDetail comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail",	comDetail);
@@ -101,14 +108,6 @@ public class CompanyDetailController {
 	public String modify( @ModelAttribute("comDetail") CompanyDetail comDetail, BindingResult result, Model model,
 						  @RequestPart("userphoto")MultipartFile userphoto ,
 						  @PathVariable("comId") Integer comId, HttpServletRequest request) {
-		System.out.println("--------- 收到修改資料 ---------");
-		System.out.println(comDetail.getLevel());
-		System.out.println(comDetail.getLocation());
-		System.out.println(comDetail.getPhonenumber());
-		System.out.println(comDetail.getRealname());
-		System.out.println(comDetail.getUserphoto());
-//		System.out.println(comDetail.getUserAccount().getAccountIndex());
-		
 		if (userphoto != null && !userphoto.isEmpty()) {
 			try {
 				byte[] b = userphoto.getBytes();
@@ -121,10 +120,10 @@ public class CompanyDetailController {
 		
 		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
-			return "company/showAllCompany";
+			return "company/showCompany";
 		}
 	
-	
+	/**秀圖片**/
 	@GetMapping("/picture/{id}")
 	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
 		ResponseEntity<byte[]> re = null;
