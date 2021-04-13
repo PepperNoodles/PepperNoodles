@@ -18,6 +18,97 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
+<script>
+$(function() {
+	
+	var hasErrorPwd = false;
+	var hasErrorNextPwd = false;
+	var hasErrorCheckNextPwd = false;
+	
+	$("#userPwd").blur(function(){
+		let value=$(this).val();
+	    let txt="";
+	    if(value==""){
+	    	$("#userPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#userPwd").css({"border":"2px solid red"});
+	    	txt="<span>密碼不可為空白</span>";
+	    	hasErrorComRealname = false;
+	    }
+	    else if(!isPWD(value)){
+	    	$("#userPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#userPwd").css({"border":"2px solid red"});
+	    	txt="<span>密碼格式錯誤</span>";
+	    	hasErrorComRealname = false;
+	    }
+	    else{
+	    	$("#userPwd").css("border","2px solid green");
+	        txt="&emsp;";
+	        hasErrorPwd = true;
+	    }
+	    $("#userPwdResult").html(txt);
+	});
+	
+	
+	$("#nextUserPwd").blur(function(){
+		nextPwdValue=$(this).val();
+	    let txt="";
+	    if(nextPwdValue==""){
+	    	$("#nextUserPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#nextUserPwd").css({"border":"2px solid red"});
+	    	txt="<span>密碼不可為空白</span>";
+	    	hasErrorComRealname = false;
+	    }
+	    else if(nextPwdValue.length<6){
+	    	$("#nextUserPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#nextUserPwd").css({"border":"2px solid red"});
+	    	txt="<span>密碼至少輸入6碼</span>";
+	    	hasErrorComRealname = false;
+	    }
+	    else if(!isPWD(nextPwdValue)){
+	    	$("#nextUserPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#nextUserPwd").css({"border":"2px solid red"});
+	    	txt="<span>密碼格式錯誤</span>";
+	    	hasErrorComRealname = false;
+	    }
+	    else{
+	    	$("#nextUserPwd").css("border","2px solid green");
+	        txt="&emsp;";
+	        hasErrorNextPwd = true;
+	    }
+	    $("#nextUserPwdResult").html(txt);
+	});
+	
+	$("#checkNextUserPwd").blur(function(){
+		let value=$(this).val();
+	    let txt="";
+	    if(value == ""){
+	    	$("#checkNextUserPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#checkNextUserPwd").css({"border":"2px solid red"});
+	    	txt="<span>請輸入確認密碼</span>";
+	    	hasErrorCheckNextPwd = false;
+	    }
+	    else if(value != nextPwdValue){
+	    	$("#checkNextUserPwdResult").css({"color":"red","font-size":"small"});
+	    	$("#checkNextUserPwd").css({"border":"2px solid red"});
+	    	txt="<span>確認密碼需與密碼相同</span>";
+	    	hasErrorCheckNextPwd = false;
+	    }
+	    else{
+	    	$("#checkNextUserPwd").css("border","2px solid green");
+	        txt="&emsp;";
+	        hasErrorCheckNextPwd = true;
+	    }
+	    $("#checkNextUserPwdResult").html(txt);
+	});
+	
+});
+
+function isPWD(pwd) {
+	return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[#^@$!%*?&])[A-Za-z\d#^@$!%*?&]{6,}$/
+			.test(pwd);
+}
+
+</script>
 </head>
 <body>
 		<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
@@ -42,49 +133,45 @@
 									</h3>
 								</div>
 								<br>
-								<form:form method="POST" modelAttribute="comDetail"	enctype='multipart/form-data'>
+								<form method="POST" enctype='multipart/form-data'>
 									<div class="">
 										<!-- 整大包的div -->
 										<div class="" id="accoutPage1">
 											<div>
 												<c:if test='${comDetail.companyDetailId == null}'>
 													<br>帳號：<br>&nbsp;
-												<form:input path='realname' />
 													<br>&nbsp;
-												<form:errors path="realname" cssClass="error" />
 												</c:if>
 											</div>
 											<div class="row">
 												<c:if test='${comDetail.companyDetailId != null}'>
+												<div class="col-sm-4 col-sm-offset-1"></div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
+														</div>
+													</div>
 													<div class="col-sm-4 col-sm-offset-1">
 															<br>
 															<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src"  />
 													</div>
 													<div class="col-sm-6">
 														<div class="form-group">
-															<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
-														</div>
-													
-													
-														<div class="form-group">
 															<label>舊密碼:</label>
-															<input class="form-control" type="password" name="userAccount.password" id="comRealname" />
-															<span id="comRealnameResult"></span>
-															<form:errors path='realname' cssClass="error" />
+															<input class="form-control" type="password" name="userAccount.password" id="userPwd" />
+															<span id="userPwdResult"></span>
 														</div>
 														
 														<div class="form-group">
 															<label>新密碼:</label>
-															<input class="form-control" type="password" path="userAccount.password" id="comRealname" />
-															<span id="comRealnameResult"></span>
-															<form:errors path='realname' cssClass="error" />
+															<input class="form-control" type="password" path="userAccount.password" id="nextUserPwd" />
+															<span id="nextUserPwdResult"></span>
 														</div>
 														
 														<div class="form-group">
 															<label>確認密碼:</label>
-															<input class="form-control" type="password" name="userAccount.password" id="comRealname" />
-															<span id="comRealnameResult"></span>
-															<form:errors path='realname' cssClass="error" />
+															<input class="form-control" type="password" name="userAccount.password" id="checkNextUserPwd" />
+															<span id="checkNextUserPwdResult"></span>
 														</div>
 													</div>
 													<div class="col-sm-1 col-sm-offset-1"></div>
@@ -106,7 +193,7 @@
 											</div>
 										</div>
 									</div>
-								</form:form>
+								</form>
 							</div>
 						</div>
 						<!-- wizard container -->
@@ -129,26 +216,7 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-	<script>
-		$(function() {
-			$("#wizard-picture").change(
-					function() {
-						if (this.files && this.files[0]) {
-							var reader = new FileReader();
-
-							reader.onload = function(e) {
-								$('#wizardPicturePreview').attr('src',
-										e.target.result);
-							}
-
-							reader.readAsDataURL(this.files[0]);
-						}
-					});
-		});
-	</script>
-
 </body>
 <!--   Core JS Files   -->
 <script src="<c:url value='/scripts/jquery.bootstrap.wizard.js'/>" type="text/javascript"></script>
