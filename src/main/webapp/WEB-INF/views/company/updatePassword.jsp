@@ -102,15 +102,57 @@ $(function() {
 	
 	//輸入完成傳值到Conrtoller
 	$("#nextSlide").click(function(){
+		txt="";
 		if(!hasErrorPwd || !hasErrorNextPwd || !hasErrorCheckNextPwd){
 			txt="<span>請輸入正確資訊</span>";
 			$("#checkComStatus").css({"color":"red","font-size":"small"});
 			$("#checkComStatus").html(txt);
 		}
 		else{
-			txt="&emsp;";
+			txt="";
 			$("#checkComStatus").html(txt);
+			var id=${comDetail.companyDetailId};
+			var userPwd = $("#userPwd").val();
+			var nextUserPwd = $("#nextUserPwd").val();
+// 			alert("id:"+id);
+// 			alert("userPwd:"+userPwd);
+// 			alert("nextUserPwd:"+nextUserPwd);
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "<c:url value='/updatePwd/' />"+id, true);
+// 			var jsonAccount = {
+// 								"userPwd": userPwd, 					
+// 								"nextUserPwd": nextUserPwd, 	
+// 			};
+//  			alert("jsonMember:"+jsonMember.userPwd+":"+jsonMember.nextUserPwd);
+// 			xhr.setRequestHeader("Content-Type", "application/json");
+// 			xhr.send(JSON.stringify(jsonAccount));
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.send("userPwd=" + userPwd + "&nextUserPwd=" + nextUserPwd);
 			
+			xhr.onreadystatechange = function() {
+				result = JSON.parse(xhr.responseText);
+				if(result.success){
+					txt="修改密碼成功!";
+					$("#checkComStatus").css({"color":"red","font-size":"small"});
+					$("#checkComStatus").html(txt);
+				}
+				else{
+					txt="密碼錯誤，修改失敗!";
+					$("#checkComStatus").css({"color":"red","font-size":"small"});
+					$("#checkComStatus").html(txt);
+				}
+				var seconds = 3;
+				$("#dvCountDown").show();
+				$("#lblCount").html(seconds);
+	  		    setInterval(function () {
+					seconds--;
+					$("#lblCount").html(seconds);
+				    if (seconds == 0) {
+				   	$("#dvCountDown").hide();
+				       window.location = "<c:url value='/showCompany/${comDetail.companyDetailId}' />";
+				    }
+				}, 1000);	
+			}			
 		}
 	});
 	
@@ -123,6 +165,12 @@ function isPWD(pwd) {
 }
 
 </script>
+<style>
+.center{
+	text-align: center;
+	color: red;
+}
+</style>
 </head>
 <body>
 	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
@@ -139,15 +187,16 @@ function isPWD(pwd) {
 				<div class="col-sm-8 col-sm-offset-2">
 					<!--      Wizard container        -->
 					<div class="wizard-container">
-						<div class="card wizard-card" data-color="blue"
-							id="wizardProfile">
+						<div class="card wizard-card" data-color="blue" id="wizardProfile">
 							<div class="wizard-header">
 								<h3>
 									<b>修改密碼</b><br>
 								</h3>
+							<div class="center" id="dvCountDown" style="display: none">
+								&nbsp;&nbsp;你將在<span id='lblCount'></span>秒後跳轉。
+							</div>								
 							</div>
 							<br>
-<%-- 							<form method="POST" enctype='multipart/form-data'> --%>
 								<div class="">
 									<!-- 整大包的div -->
 									<div class="" id="accoutPage1">
@@ -166,26 +215,26 @@ function isPWD(pwd) {
 													</div>
 												</div>
 												<div class="col-sm-4 col-sm-offset-1">
-														<br>
+														<br><br>
 														<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src"  />
 												</div>
 												<div class="col-sm-6">
 													<div class="form-group">
 														<label>舊密碼:</label>
-														<input class="form-control" type="password" name="userAccount.password" id="userPwd" />
-														<span id="userPwdResult"></span>
+														<input class="form-control" type="password" name="userPwd" id="userPwd" />
+														<span id="userPwdResult">&nbsp;</span>
 													</div>
 													
 													<div class="form-group">
 														<label>新密碼:</label>
-														<input class="form-control" type="password" path="userAccount.password" id="nextUserPwd" />
-														<span id="nextUserPwdResult"></span>
+														<input class="form-control" type="password" name="nextUserPwd" id="nextUserPwd" />
+														<span id="nextUserPwdResult">&nbsp;</span>
 													</div>
 													
 													<div class="form-group">
 														<label>確認密碼:</label>
-															<input class="form-control" type="password" name="userAccount.password" id="checkNextUserPwd" />
-														<span id="checkNextUserPwdResult"></span>
+															<input class="form-control" type="password" name="checkNextUserPwd" id="checkNextUserPwd" />
+														<span id="checkNextUserPwdResult">&nbsp;</span>
 													</div>
 												</div>
 												<div class="col-sm-1 col-sm-offset-1"></div>
@@ -198,7 +247,7 @@ function isPWD(pwd) {
 														</div>
 														<div class="pull-right" style="margin-right: 20%;" id="checkComStatus">
 															<div style="width: 150px;height: 30px;"></div>
-															</div> 
+														</div> 
 														<div class="pull-left">
 															<a class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
 												  			   style="margin-bottom: 20px; margin-top: 10px"
@@ -210,7 +259,6 @@ function isPWD(pwd) {
 										</div>
 									</div>
 								</div>
-<%-- 							</form> --%>
 						</div>
 					</div>
 					<!-- wizard container -->
