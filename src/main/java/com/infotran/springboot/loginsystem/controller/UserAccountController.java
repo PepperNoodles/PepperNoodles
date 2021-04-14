@@ -24,12 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.support.SessionStatus;
->>>>>>> c0ab8a1c5d841237ca9f1d084d74550fe6e7183d
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.FoodTag;
@@ -43,8 +39,6 @@ import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 
 //forEasyLogin
-
-@SessionAttributes(names = "userAccount")
 @Controller
 @SessionAttributes(names = "useraccount")
 public class UserAccountController {
@@ -205,10 +199,10 @@ public class UserAccountController {
 			map.put("emailCode", code);
 		}
 		return map;
-<<<<<<< HEAD
+
 	}	
-=======
-	}
+
+
 	@PostMapping(value="/addAccountInterest",consumes="application/json")
 	public @ResponseBody Map<String,String> saveAccountInterest(
 			/*取account sessionattribute 值*/ @ModelAttribute("useraccount")UserAccount userAccount,
@@ -254,8 +248,6 @@ public class UserAccountController {
 
 		return map;
 	}
-	
->>>>>>> c0ab8a1c5d841237ca9f1d084d74550fe6e7183d
 	
 	//for easy login
 	@PostMapping(value="/easycheck")

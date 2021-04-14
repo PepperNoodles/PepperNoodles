@@ -244,7 +244,7 @@ public class UserAccount {
 		this.userAccountDetail = userAccountDetail;
 	}
 
-<<<<<<< HEAD
+
 	//好友系統用
 
 	public Set<FriendList> getFriends() {
@@ -283,7 +283,7 @@ public class UserAccount {
 	
 	//好友系統用
 	
-=======
+
 	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
 		FoodTagUsers = foodTagUsers;
 	}
@@ -293,7 +293,7 @@ public class UserAccount {
 		return FoodTagUsers;
 	}
 
->>>>>>> c0ab8a1c5d841237ca9f1d084d74550fe6e7183d
+
 
 
 	public CompanyDetail getCompanyDetail() {
