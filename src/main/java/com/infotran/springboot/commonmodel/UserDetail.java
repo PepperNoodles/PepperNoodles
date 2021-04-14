@@ -4,6 +4,7 @@ import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="userDetail")
@@ -37,6 +40,7 @@ public class UserDetail {
 	@Column(name="userphotoname")
 	private String userPhotoName;
 	
+	@JsonIgnore
 	@Column(name = "userphoto")
 	private Blob userPhoto;
 	
@@ -49,7 +53,8 @@ public class UserDetail {
 	@Column(name = "fk_purse_id")
 	private Integer purseID;
 	
-	@OneToOne(mappedBy = "userAccountDetail")
+	@JsonIgnore
+	@OneToOne(mappedBy = "userAccountDetail",fetch = FetchType.LAZY)
 	private UserAccount userAccount;
 	
 	public UserDetail() {

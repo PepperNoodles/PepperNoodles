@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.FoodTag;
@@ -39,17 +38,21 @@ import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 
+//forEasyLogin
 @Controller
 @SessionAttributes(names = "useraccount")
 public class UserAccountController {
 	
-	String imageRootDirectory = "C:\\_SpringBoot\\image";
+
+	String imageRootDirectory = "C:\\myfolder\\PPNpics";
+
 	
 	File imageFolder = null; 
 	
 	//test
 	@Autowired
 	private FoodTagRepository foodTagRepository;
+	
 	
 	@Autowired
 	private UserAccountService service;
@@ -198,7 +201,10 @@ public class UserAccountController {
 			map.put("emailCode", code);
 		}
 		return map;
-	}
+
+	}	
+
+
 	@PostMapping(value="/addAccountInterest",consumes="application/json")
 	public @ResponseBody Map<String,String> saveAccountInterest(
 			/*取account sessionattribute 值*/ @ModelAttribute("useraccount")UserAccount userAccount,
@@ -245,5 +251,9 @@ public class UserAccountController {
 		return map;
 	}
 	
-	
+	//for easy login
+	@PostMapping(value="/easycheck")
+	public String logincheck(@RequestBody Map<String,String> userAccount) {
+		return "ok";
+	}
 }

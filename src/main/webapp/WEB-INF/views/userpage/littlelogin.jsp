@@ -24,13 +24,13 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-<link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
-<link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
-<link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
-<link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />">
-<link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />">
-<link rel="stylesheet" href="<c:url value='/css/slick.css' />">
-<link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
+<%-- <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
@@ -58,9 +58,9 @@
 	<header>
 		<!-- Header Start -->
 		<!-- 覆蓋用 -->
-		<!--  <div style="height: 90px"></div>-->
+		<div style="height: 90px"></div>
 
-		<div class="header-area header ">
+		<div class="header-area header">
 			<!--  header-transparent -->
 			<div class="main-header sticky-top">
 				<div class="header-bottom header-sticky">
@@ -130,50 +130,16 @@
 		<!-- Header End -->
 	</header>
 
-
+	
 	<div>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-
-
-
-
+	<form method="post" action="<c:url value=''/>">
+	<label for="account_index">account</label>
+	<input type="text" id="account_index" >
+	<label for="password" >password</label>
+	<input type="text" id="password">
+	</form>
 	</div>
-
-
-
-
-
-
-
+	
 	<footer>
 		<!-- Footer Start-->
 		<div class="footer-area">
@@ -267,20 +233,16 @@
 	</div>
 
 	<script>
- 		$(window).on('load', function() {
-			
-// 			//讓bar固定在上面以及設定高度
+		$(window).on('load', function() {
 			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
+			$(".header-sticky").css("height", "90px");
+			//$(".header-sticky").css("position","static ")
 
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
-			
- 		});
+			$('#preloader-active').delay(450).fadeOut('slow');
+			$('body').delay(450).css({
+				'overflow' : 'visible'
+			});
+		});
 	</script>
 
 	<!-- JS here -->
@@ -290,36 +252,36 @@
 	<!-- Jquery, Popper, Bootstrap -->
 	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
 
-		<script src="<c:url value='/scripts/popper.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/popper.min.js' />"></script> --%>
 
-		<script type="text/javascript"
-			src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+	<!-- 	<script type="text/javascript" -->
+	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
 	<!-- Jquery Mobile Menu -->
-		<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
-		<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
 
 
-		<script src="<c:url value='/scripts/slick.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/slick.min.js' />"></script> --%>
 
 	<!-- One Page, Animated-HeadLin -->
-		<script src="<c:url value='/scripts/wow.min.js' />"></script>
-		<script src="<c:url value='/scripts/animated.headline.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
-	<!--  Nice-select, sticky-->
-		<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/wow.min.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/animated.headline.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script> --%>
+	<!-- Nice-select, sticky -->
+	<%-- 	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
 	<!-- contact js -->
-		<script src="<c:url value='/scripts/contact.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/contact.js' />"></script> --%>
 
-		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
-		<script src="<c:url value='/scripts/mail-script.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
+	<%-- 	<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
+	<%-- 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
 
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
-<%-- <script src="<c:url value='/scripts/main.js' />"></script>  --%>
+	<%-- 	<script src="<c:url value='/scripts/main.js' />"></script> --%>
 </body>
 </html>
