@@ -38,6 +38,13 @@
 	background-color: #000000;
 }
 </style>
+<script>
+
+
+
+
+
+</script>
 </head>
 <body>
 	<!-- 讀取圖案 -->
@@ -48,7 +55,7 @@
 				<div class="preloader-circle"
 					style="background-color: rgb(102, 102, 102);"></div>
 				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+					<img id="userProtrait" src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
 				</div>
 			</div>
 		</div>
@@ -58,9 +65,9 @@
 	<header>
 		<!-- Header Start -->
 		<!-- 覆蓋用 -->
-		<!--  <div style="height: 90px"></div>-->
+		<div style="height: 90px"></div>
 
-		<div class="header-area header ">
+		<div class="header-area header">
 			<!--  header-transparent -->
 			<div class="main-header sticky-top">
 				<div class="header-bottom header-sticky">
@@ -131,46 +138,61 @@
 	</header>
 
 
-	<div>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
+	<div class="container mt-10" style="width:50%">
+			<h1>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h1>
+			<!-- 圖片+姓名bar-->
+			<div class="d-flex">
+				<div class="p-2 bg-info">
+					
+					<img style="height: 100px" src="<c:url value='/userProtrait/${viewUserAccountDetail.useretailId}'/>">
+				</div>
 
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
+				<div id="nickname" class="p-2 flex-fill align-self-end justify-content-start">
+					<h1>${viewUserAccountDetail.nickName}</h1>
+				</div>
 
+				<div id="" class="align-self-start justify-content-start">
+					<button style="color:#4a4aFF" id="AddFriendChecker">加好友</button>
+				</div>
+				
 
+			</div>
+			
+			<div class="d-flex">
+				<div class="p-2  flex-fill bg-dark">
+					<a href="#"><i class="fas fa-users"></i>好友</a>		
+				</div>
+				<div class="p-2  flex-fill bg-dark">
+					<a href="#"><i class="fas fa-file-alt"></i>關於我</a>							
+				</div>
+				<div class="p-2  flex-fill bg-dark">
+					<a href="#"><i class="fas fa-comments"></i>留言區</a>							
+				</div>					
+				<div class="p-2  flex-fill bg-dark">
+					<a href="#"><i class="fas fa-heart"></i>收藏區</a>								
+				</div>
+				
+				
+			</div>
+		
+		
+		
+		
+			
+			<div class="mt-5" id="basicInfo">
+				<h2>基本資料</h2>
+				<p>email: ${viewUserAccount.accountIndex} </p>
+				<p>性別：${viewUserAccountDetail.gender}</p>
+				<p>地區：${viewUserAccountDetail.location}</p>
+			</div>	
 
+			<div class="" id="friend">
+				<h2>好友區</h2>
+			
+			</div>
 
 
 	</div>
-
-
-
-
 
 
 
@@ -267,20 +289,75 @@
 	</div>
 
 	<script>
- 		$(window).on('load', function() {
-			
-// 			//讓bar固定在上面以及設定高度
+		$(window).on('load', function() {
 			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
+			$(".header-sticky").css("height", "90px");
+			//$(".header-sticky").css("position","static ")
 
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
+			$('#preloader-active').delay(450).fadeOut('slow');
+			$('body').delay(450).css({
+				'overflow' : 'visible'
+			});
+
+			//利用ajax送出請求判斷是否可以加好友
+			judgeRelation();
+
+			function judgeRelation(){
+				let mainUser = "${userAccount.accountIndex}";
+				let viewUser = "${viewUserAccount.accountIndex}";
+				let urls="${pageContext.request.contextPath}/";
+					urls+="<c:url value='judgeFriendShip'/>";
+					urls+="?userIndex="+mainUser+"&friendIndex="+viewUser;
+					console.log(urls);
+			$.ajax({
+					type: "GET",
+					url: urls,							
+					dataType: "text",
+					success: function (response) {		
+					if (response =="noFriendShip"){
+						$("#AddFriendChecker").html("addFriend");
+						$("#AddFriendChecker").on("click",sendFriendRequest);
+					}else if(response == "wait_check"){
+						$("#AddFriendChecker").html("RequestSended");
+					}else if(response =="friend"){
+						$("#AddFriendChecker").html("Friend");
+					}else if(response == "reject"){
+						$("#AddFriendChecker").html("rejected");
+					}else{
+						console.log("somethingWrong")
+					}
+					},
+						error: function (thrownError) {
+						console.log(thrownError);
+					}
+	    			});
+			}
 			
- 		});
+			
+
+			function sendFriendRequest(){
+				alert("送出邀請");
+				let mainUser = "${userAccount.accountIndex}";
+				let viewUser = "${viewUserAccount.accountIndex}";
+				let urls="${pageContext.request.contextPath}/";
+					urls+="<c:url value='addfriend'/>";
+					urls+="/"+mainUser+"/"+viewUser;
+				$.ajax({
+					type: "GET",
+					url: urls,							
+					dataType: "text",
+					success: function (response) {		
+						alert(response);
+						judgeRelation();
+					},
+						error: function (thrownError) {
+						console.log(thrownError);
+					}
+	    			});
+			}
+			
+
+		});
 	</script>
 
 	<!-- JS here -->
@@ -292,34 +369,34 @@
 
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 
-		<script type="text/javascript"
+	<!-- 	<script type="text/javascript" -->
 			src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	<!-- Jquery Mobile Menu -->
 		<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
-
+	
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
-		<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
 
 
-		<script src="<c:url value='/scripts/slick.min.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/slick.min.js' />"></script> --%>
 
-	<!-- One Page, Animated-HeadLin -->
-		<script src="<c:url value='/scripts/wow.min.js' />"></script>
-		<script src="<c:url value='/scripts/animated.headline.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
-	<!--  Nice-select, sticky-->
-		<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
-	<!-- contact js -->
-		<script src="<c:url value='/scripts/contact.js' />"></script>
+<!-- 	<!-- One Page, Animated-HeadLin --> -->
+<%-- 		<script src="<c:url value='/scripts/wow.min.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/animated.headline.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script> --%>
+<!-- 	<!-- Nice-select, sticky --> -->
+<%-- 		<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
+<!-- 	<!-- contact js --> -->
+<%-- 		<script src="<c:url value='/scripts/contact.js' />"></script> --%>
 
-		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
-		<script src="<c:url value='/scripts/mail-script.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
 
-	<!-- Jquery Plugins, main Jquery -->
-	<script src="<c:url value='/scripts/plugins.js' />"></script>
-<%-- <script src="<c:url value='/scripts/main.js' />"></script>  --%>
+<!-- 	<!-- Jquery Plugins, main Jquery --> -->
+<%-- 	<script src="<c:url value='/scripts/plugins.js' />"></script> --%>
+<!--		<script src="<c:url value='/scripts/main.js' />"></script> -->
 </body>
 </html>
