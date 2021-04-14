@@ -2,6 +2,8 @@ package com.infotran.springboot.companysystem.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,11 +93,41 @@ public class CompanyDetailController {
 		}
 		return "company/loginCompany";
 	}
+	/**修改會員密碼-讀取要修改的會員資料傳到修改會員頁面**/
+	@GetMapping(value = {"/updateComPwd/{comId}"} )
+	public String updateComPwd(@PathVariable("comId") Integer comId , CompanyDetail comDetail , Model model) {
+		comDetail = comDetailService.findById(comId);
+		model.addAttribute("comDetail",	comDetail);
+		return "company/updatePassword";
+	}
+	
+	/**修改會員密碼-接收密碼&新密碼**/
+	@PostMapping(value = "/updatePwd/{comId}",produces="application/json")
+	public  @ResponseBody Map<String,String> nextComPwd(@PathVariable("comId") Integer comId ,
+														@RequestParam("userPwd") String userPwd,
+														@RequestParam("nextUserPwd") String nextUserPwd,
+										   				Model model) {
+		System.out.println(comId+":"+userPwd+":"+nextUserPwd);
+		Map<String,String> map = new HashMap<String, String>();
+		CompanyDetail  companyDetail = comDetailService.findById(comId);
+		String pwd = companyDetail.getUserAccount().getPassword();
+		System.out.println("原始密碼:"+pwd);
+		if (userPwd.equals(pwd)) {
+			UserAccount user = companyDetail.getUserAccount();
+			user.setPassword(nextUserPwd);
+			userAccountService.update(user);
+			map.put("success", "修改密碼成功!");
+		}
+		else {
+			map.put("failure", "密碼錯誤，修改失敗!");
+		}
+		return map;
+	}
 	
 	/**修改會員-讀取要修改的會員資料傳到修改會員頁面**/
-	@GetMapping(value = "/updateCom/{comId}")
-	public String updateCompany(@PathVariable("comId") Integer comId , Model model) {
-		CompanyDetail comDetail = comDetailService.findById(comId);
+	@GetMapping(value = {"/updateCom/{comId}"} )
+	public String updateCompany(@PathVariable("comId") Integer comId , Model model , CompanyDetail comDetail) {
+		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail",	comDetail);
 		return "company/updateCompany";
 	}
@@ -101,14 +137,6 @@ public class CompanyDetailController {
 	public String modify( @ModelAttribute("comDetail") CompanyDetail comDetail, BindingResult result, Model model,
 						  @RequestPart("userphoto")MultipartFile userphoto ,
 						  @PathVariable("comId") Integer comId, HttpServletRequest request) {
-		System.out.println("--------- 收到修改資料 ---------");
-		System.out.println(comDetail.getLevel());
-		System.out.println(comDetail.getLocation());
-		System.out.println(comDetail.getPhonenumber());
-		System.out.println(comDetail.getRealname());
-		System.out.println(comDetail.getUserphoto());
-//		System.out.println(comDetail.getUserAccount().getAccountIndex());
-		
 		if (userphoto != null && !userphoto.isEmpty()) {
 			try {
 				byte[] b = userphoto.getBytes();
@@ -121,10 +149,10 @@ public class CompanyDetailController {
 		
 		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
-			return "company/showAllCompany";
+			return "company/showCompany";
 		}
 	
-	
+	/**秀圖片**/
 	@GetMapping("/picture/{id}")
 	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
 		ResponseEntity<byte[]> re = null;
