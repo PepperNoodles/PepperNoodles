@@ -33,6 +33,4 @@ public interface UserAccountDAOInterface {
 
 	public Set<UserAccount> selectuser(UserAccount user);
 	
-
-	
 }

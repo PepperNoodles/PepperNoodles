@@ -33,9 +33,9 @@
 			}
 		});
 		
-		var hasErrorComRealname = false;
-		var hasErrorComPhone = false;
-		var hasErrorComLocation = false;
+		var hasErrorComRealname = true;
+		var hasErrorComPhone = true;
+		var hasErrorComLocation = true;
 		//前端判斷是否輸入正確
 		$("#comRealname").blur(function(){
 			let value=$(this).val();
@@ -104,126 +104,140 @@
 		    }
 		    $("#comLocationResult").html(txt);
 		});
+		
+		//輸入完成傳值到Conrtoller
+		$("#nextSlide").click(function(){
+			if(!hasErrorComRealname || !hasErrorComPhone || !hasErrorComLocation){
+				txt="<span>請輸入正確資訊</span>";
+				$("#comStatus").css({"color":"red","font-size":"small"});
+			}
+			else{
+				txt="&emsp;";
+				document.form1.submit();
+			}
+				$("#comStatus").html(txt);
+		});
 
 	});
 </script>
 </head>
 <body>
-		<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
-			<div class="logo-container">
-				<div class="logo">
-					<a href="/PepperNoodles">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px"	height="100px" style="margin-left: 93%;">
-					</a>
-				</div>
+	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
+		<div class="logo-container">
+			<div class="logo">
+				<a href="/PepperNoodles">
+				<img src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px"	height="100px" style="margin-left: 93%;">
+				</a>
 			</div>
-			<!-- container   -->
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-8 col-sm-offset-2">
-						<!--      Wizard container        -->
-						<div class="wizard-container">
-							<div class="card wizard-card" data-color="blue"
-								id="wizardProfile">
-								<div class="wizard-header">
-									<h3>
-										<b>修改 店家資料</b><br>
-									</h3>
-								</div>
-								<br>
-								<form:form method="POST" modelAttribute="comDetail"	enctype='multipart/form-data'>
-									<div class="">
-										<!-- 整大包的div -->
-										<div class="" id="accoutPage1">
-											<div>
-												<c:if test='${comDetail.companyDetailId == null}'>
-													<br>帳號：<br>&nbsp;
-												<form:input path='realname' />
-													<br>&nbsp;
-												<form:errors path="realname" cssClass="error" />
-												</c:if>
-											</div>
-											<div class="row">
-												<c:if test='${comDetail.companyDetailId != null}'>
-													<div class="col-sm-4 col-sm-offset-1"></div>
-													<div class="col-sm-6">
-														<div class="form-group">
-															<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
+		</div>
+		<!-- container   -->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8 col-sm-offset-2">
+					<!--      Wizard container        -->
+					<div class="wizard-container">
+						<div class="card wizard-card" data-color="blue"
+							id="wizardProfile">
+							<div class="wizard-header">
+								<h3>
+									<b>修改 店家資料</b><br>
+								</h3>
+							</div>
+							<br>
+							<form:form method="POST" modelAttribute="comDetail"	enctype='multipart/form-data' name="form1">
+								<div class="">
+									<!-- 整大包的div -->
+									<div class="" id="accoutPage1">
+										<div>
+											<c:if test='${comDetail.companyDetailId == null}'>
+												<br>帳號：<br>&nbsp;
+											<form:input path='realname' />
+												<br>&nbsp;
+											<form:errors path="realname" cssClass="error" />
+											</c:if>
+										</div>
+										<div class="row">
+											<c:if test='${comDetail.companyDetailId != null}'>
+												<div class="col-sm-4 col-sm-offset-1"></div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
+													</div>
+												</div>
+											</c:if>
+												<div class="col-sm-4 col-sm-offset-1">
+													<div class="picture-container">
+														<div class="picture">
+															<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
+															<form:input type="file" id="wizard-picture" accept="image/*" path="userphoto" />
+															<form:errors path="userphoto" cssClass="error" />
+														</div>
+														<h6>更換圖片</h6>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
+														<form:input class="form-control" type="text" path="realname" id="comRealname" />
+														<span id="comRealnameResult">&emsp;</span>
+														<form:errors path='realname' cssClass="error" />
+													</div>
+													<div class="form-group">
+														<label>連絡電話: <small>(請輸入數字。例:09xxxxxxxx)</small></label>
+														<form:input class="form-control" type="text" path="phonenumber" id="comPhonenumber" />
+														<span id="comPhotoResult">&emsp;</span>
+														<form:errors path='phonenumber' cssClass="error" />
+													</div>
+												</div>
+												<div class="col-sm-1 col-sm-offset-1"></div>
+												<div class="col-sm-10 col-sm-offset-1">
+													<div class="form-group">
+														<label>地址:<small>(請輸入公司地址)</small></label>
+														<form:input class="form-control" type="text" path="location" id="comLocation" />
+														<span id="comLocationResult">&emsp;</span>
+														<form:errors path='location' cssClass="error" />
+														<br>	<br>
+														<div class="pull-right">
+															<input type="button" class='btn btn-next btn-fill btn-warning btn-wd btn-sm' 
+																  value='確認修改' id="nextSlide" style="margin-bottom: 20px; margin-top: 10px" />
+														</div>
+														<div class="pull-right" style="margin-right: 20%;" id="comStatus">
+															<div style="width: 150px;height: 30px;"></div>
+														</div> 
+														<div class="pull-left">
+															<a class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
+												  			   style="margin-bottom: 20px; margin-top: 10px"
+												 			   href="<c:url value='/' />showCompany/${comDetail.companyDetailId}">回基本資料</a>
 														</div>
 													</div>
-												</c:if>
-													<div class="col-sm-4 col-sm-offset-1">
-														<div class="picture-container">
-															<div class="picture">
-																<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
-																<form:input type="file" id="wizard-picture" accept="image/*" path="userphoto" />
-																<form:errors path="userphoto" cssClass="error" />
-															</div>
-															<h6>更換圖片</h6>
-														</div>
-													</div>
-													<div class="col-sm-6">
-														<div class="form-group">
-															<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
-															<form:input class="form-control" type="text" path="realname" id="comRealname" />
-															<span id="comRealnameResult">&emsp;</span>
-															<form:errors path='realname' cssClass="error" />
-														</div>
-														<div class="form-group">
-															<label>連絡電話: <small>(請輸入數字。例:09xxxxxxxx)</small></label>
-															<form:input class="form-control" type="text" path="phonenumber" id="comPhonenumber" />
-															<span id="comPhotoResult">&emsp;</span>
-															<form:errors path='phonenumber' cssClass="error" />
-														</div>
-													</div>
-													<div class="col-sm-1 col-sm-offset-1"></div>
-													<div class="col-sm-10 col-sm-offset-1">
-														<div class="form-group">
-															<label>地址:<small>(請輸入公司地址)</small></label>
-															<form:input class="form-control" type="text" path="location" id="comLocation" />
-															<span id="comLocationResult">&emsp;</span>
-															<form:errors path='location' cssClass="error" />
-															<br>	<br>
-															<div class="pull-right">
-																<input type='submit' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' 
-																	  value='確認修改' id="nextSlide" style="margin-bottom: 20px; margin-top: 10px" />
-															</div>
-															<div class="pull-left">
-																<a class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
-													  			   style="margin-bottom: 20px; margin-top: 10px"
-													 			   href="<c:url value='/' />showCompany/${comDetail.companyDetailId}">回基本資料</a>
-															</div>
-														</div>
-													</div>
-											</div>
+												</div>
 										</div>
 									</div>
-								</form:form>
-							</div>
+								</div>
+							</form:form>
 						</div>
-						<!-- wizard container -->
 					</div>
-				</div>
-				<!-- end row -->
-			</div>
-			<!--  big container -->
-			<div class="footer">
-				<div class="container">
-					<div class="footer-copy-right">
-						<p>
-							Copyright
-							<script>
-								document.write(new Date().getFullYear());
-							</script>
-							All rights reserved | U copy <i class="fa fa-heart"
-								aria-hidden="true"></i>U died
-						</p>
-					</div>
+					<!-- wizard container -->
 				</div>
 			</div>
-
+			<!-- end row -->
 		</div>
-
+		<!--  big container -->
+		<div class="footer">
+			<div class="container">
+				<div class="footer-copy-right">
+					<p>
+						Copyright
+						<script>
+							document.write(new Date().getFullYear());
+						</script>
+						All rights reserved | U copy <i class="fa fa-heart"
+							aria-hidden="true"></i>U died
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <!--   Core JS Files   -->
 <script src="<c:url value='/scripts/jquery.bootstrap.wizard.js'/>" type="text/javascript"></script>
