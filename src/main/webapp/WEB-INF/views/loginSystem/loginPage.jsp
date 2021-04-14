@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
@@ -121,6 +120,7 @@ window.onload = function() {
 			
 	}//end
 	
+	//驗證碼驗證
 	var verifycodeInput = document.getElementById("verifycode");
 	var cheqMailResult = document.getElementById("cheqMailResult");
 	verifycodeInput.onblur = function(){
@@ -168,21 +168,20 @@ window.onload = function() {
 		}
 	}//end
 	
-		//下一頁
+		//下一頁-使用者
 		var nextSlide = document.getElementById("nextSlide");//下一步
 		var accoutPage1 = document.getElementById("accoutPage1");
 		var accoutDetailPage2 = document.getElementById("accoutDetailPage2");
 		nextSlide.onclick = function() {
 			var accountType = document.getElementsByName("accountType");
 			
-			var accountTypeVal = "";
+			console.log(accountType[0]);
 			for (var i = 0; i< accountType.length; i++) {
 		  		if (accountType[i].checked) {
 		  			accountTypeVal = accountType[i].value;
 			    	break;
 		  		}
 			}
-			var tagPage3 = document.getElementById("tagPage3");
 			var privacycheck = privacyornot();
 			if (hasError && hasErrorpwd && privacycheck){ //hasErrorCheckEmail 
 				console.log(accountTypeVal);
@@ -190,6 +189,11 @@ window.onload = function() {
 				accoutPage1.classList.add("tohide");
 				accoutDetailPage2.classList.remove("tohide");
 				accoutDetailPage2.classList.add("toshow");
+				}
+				if(accountTypeVal == "company"){
+				accoutPage1.classList.add("tohide");
+				comDetailPage2.classList.remove("tohide");
+				comDetailPage2.classList.add("toshow");
 				}
 				
 			}else {
@@ -397,7 +401,7 @@ window.onload = function() {
 			}
 		}//end
 
-//回上一頁
+//回上一頁-會員
 		var lastSlide2 = document.getElementById("lastSlide2");
 		lastSlide2.onclick = function() {
 			var accoutPage1 = document.getElementById("accoutPage1");
@@ -407,14 +411,26 @@ window.onload = function() {
 			accoutPage1.classList.remove("tohide");
 			accoutPage1.classList.add("toshow");
 		}
+//回上一頁-企業
+		var comlastSlide2 = document.getElementById("comlastSlide2");
+		comlastSlide2.onclick = function() {
+			var accoutPage1 = document.getElementById("accoutPage1");
+			var comDetailPage2 = document.getElementById("comDetailPage2");
+			comDetailPage2.classList.remove("toshow");
+			comDetailPage2.classList.add("tohide");
+			accoutPage1.classList.remove("tohide");
+			accoutPage1.classList.add("toshow");
+		}
 		
-		
+		//一鍵新增-UserPage
 		var addmember = document.getElementById("addMember");
 		addmember.onclick = function(){
 			var userValue = document.getElementById("UserEmail");
 			var pwdValue = document.getElementById("userPwd");
 			userValue.value="chrislo5311@gmail.com";
 			pwdValue.value="a123456@";
+			hasError = true;
+			hasErrorpwd = true;
 		}
 		
 		var addMemberDetail = document.getElementById("addMemberDetail");			
@@ -429,7 +445,161 @@ window.onload = function() {
 			birthday.value ="1977/01/01";
 		}
 		
+		//第3頁
+		var nextSlide3 = document.getElementById("sendData");//下一步
+		nextSlide3.onclick = function() {
+			var hobby = document.getElementsByName("hobby");
+			
+			var hobbyVal = [];
+			for (var i = 0; i< hobby.length; i++) {
+		  		if (hobby[i].checked) {
+		  			hobbyVal.push(hobby[i].value);
+		  		}
+			}
+	  		console.log(hobbyVal);
+	  		
+	  	//interest 傳值
+	  	var divResult = document.getElementById("divResult");
+	  		var xhr = new XMLHttpRequest();
+			xhr.open("POST", "<c:url value='/addAccountInterest' />", true);
+
+			xhr.setRequestHeader("Content-Type", "application/json");
+			// 			alert(JSON.stringify(jsonAccount));//debug
+			xhr.send(JSON.stringify(hobbyVal));
+			var message = "";
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+// 					interestResult = JSON.parse(xhr.responseText);
+// 					alert(interestResult);
+// 					alert(interestResult.success);
+// 					alert(interestResult.success.value);
+					if (interestResult.success == 1) {
+						message = "<span><font color='green' size='-2'>興趣新增成功</font></span>";
+						console.log("興趣新增成功");
+						
+						} else {
+						message = "<span><font color='green' size='-2'>興趣之後還可以繼續修改與填寫唷:))</font></span>";
+						
+					}
+				}
+				divResult.innerHTML = message;
+			}
+
+		}
 		
+		//下一頁-企業端
+		$(document).ready(function(){
+			//確認表格皆填完整
+			var hasErrorComRealname = false;
+			var hasErrorComPhone = false;
+			var hasErrorComLocation = false;
+			//前端判斷是否輸入正確
+			$("#comRealname").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+			    	$("#comRealname").css({"border":"2px solid red"});
+			    	txt="<span>企業名稱不可為空白</span>";
+			    	hasErrorComRealname = false;
+			    }
+			    if(value.length<2){
+			    	$("#comRealnameResult").css({"color":"red","font-size":"small"});
+			    	$("#comRealname").css({"border":"2px solid red"});
+			    	txt="<span>名稱需至少2個字</span>";
+			    	hasErrorComRealname = false;
+			    }
+			    else{
+			    	$("#comRealname").css("border","2px solid green");
+			        txt="&emsp;";
+			        hasErrorComRealname = true;
+			    }
+			    $("#comRealnameResult").html(txt);
+			});
+
+			$("#comPhonenumber").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+			    	$("#comPhonenumber").css({"border":"2px solid red"});
+			    	txt="<span>請輸入連絡電話</span>";
+			    	hasErrorComPhone = false;
+			    }
+			    else{
+			    	for (let i = 0; i < value.length; i++) {
+			            let ch = value.charAt(i);
+			            if(ch>=0&&ch<=9){
+			                txt="&emsp;";
+			            $("#comPhonenumber").css("border","2px solid green");
+			            hasErrorComPhone = true;
+			            }
+			            else{
+			            	$("#comPhotoResult").css({"color":"red","font-size":"small"});
+			    			$("#comPhonenumber").css({"border":"2px solid red"});
+			                txt="<span>只能輸入數字</span>";
+			                hasErrorComPhone = false;
+			            }
+			        }
+			    }
+			    $("#comPhotoResult").html(txt);
+			});
+
+			$("#comLocation").blur(function(){
+				let value=$(this).val();
+			    let txt="";
+			    if(value==""){
+			    	$("#comLocationResult").css({"color":"red","font-size":"small"});
+			    	$("#comLocation").css({"border":"2px solid red"});
+			    	txt="<span>地址不可為空白</span>";
+			    	hasErrorComLocation = false;
+			    }
+			    else{
+			    	$("#comLocation").css("border","2px solid green");
+			        txt="&emsp;";
+			        hasErrorComLocation = true;
+			    }
+			    $("#comLocationResult").html(txt);
+			});
+
+			//一鍵新增
+			$("#addcompany").click(function(){
+				$("#UserEmail").val('ting0420a@gmail.com');
+				$("#userPwd").val('123!Q123');
+				$("#privacycheck").prop("checked", true);
+				$("#company").prop("checked", true);
+				hasError = true;
+				hasErrorpwd = true;
+				privacycheck = true;
+			});
+			
+			$("#signinCompany").click(function(){
+				$("#comRealname").val('黯然消魂麵館');
+				$("#comPhonenumber").val('09123456789');
+				$("#comLocation").val('台北市中正路二段158號1樓');
+				hasErrorComRealname = true;
+				hasErrorComPhone = true;
+				hasErrorComLocation = true;
+			});
+			
+			//輸入完成傳值到Conrtoller
+			$("#comNextSlide2").click(function(){
+				if(!hasErrorComRealname || !hasErrorComPhone || !hasErrorComLocation){
+					txt="<span>請輸入正確資訊</span>";
+					$("#checkComStatus2").css({"color":"red","font-size":"small"});
+					$("#checkComStatus2").html(txt);
+				}
+				else{
+					txt="&emsp;";
+					$("#checkComStatus2").html(txt);
+					document.form1.method= "post"; 
+					document.form1.action= "/PepperNoodles/addCom";
+					document.form1.enctype="multipart/form-data";
+					document.form1.submit();
+				}
+			});
+			
+		});
 	
 }//end
 
@@ -496,6 +666,7 @@ function privacyornot() {
 </style>
 </head>
 <body>
+<form name="form1">
 	<div class="image-container set-full-height"style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
 		<div class="logo-container">
 			<div class="logo">
@@ -533,7 +704,7 @@ function privacyornot() {
 													<div class="picture">
 														<img src="<c:url value="/images/NoImage/NoImage_Male.png"/>"
 															class="picture-src" id="wizardPicturePreview"  />
-														<input type="file" id="wizard-picture" accept="image/*">
+														<input type="file" id="wizard-picture" accept="image/*" name="photo">
 													</div>
 													<h6>Choose Picture</h6>
 												</div>
@@ -552,7 +723,7 @@ function privacyornot() {
 											</div>
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
-													<button id="checkMail" style="margin-top: 10px;margin-bottom: 10px">驗證信箱</button>
+													<button type="button" id="checkMail" style="margin-top: 10px;margin-bottom: 10px">驗證信箱</button>
 													<label><small id="checkMailInput"></small></label>
 													<input class="form-control" type="text" name="verifycode" id="verifycode" placeholder="請輸入驗證碼...">
 													<span id="cheqMailResult"></span><br>
@@ -599,7 +770,7 @@ function privacyornot() {
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group">
 													<label>Sex:<small></small></label><br>
-													<input type="radio" name="gender" value="male" id="male">男
+													<input type="radio" name="gende	r" value="male" id="male">男
 													<input type="radio" name="gender" value="female" id="female">女
 												</div>
 											</div>
@@ -644,71 +815,95 @@ function privacyornot() {
 										</div>
 										</div>
 									</div>
-									<!-- third -->
-									<div class="tab-pane tohide" id="tagPage3" >
+					<!-- 企業的Detail -->
+									
+									<div class="tab-pane tohide" id="comDetailPage2">
 										<div class="row">
-											<div id=""  class="col-sm-10 col-sm-offset-1 " style="border:1px solid red">
-											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
-												<tr>
-													<td width="50px">興趣:</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">咖哩</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">烤肉</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">披薩</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">炸物</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">漢堡</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">漢堡</td>
-												</tr>
-												<tr>
-													<td width="10px"></td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-												</tr>
-												<tr>
-													<td width="10px"></td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-													<td><input type="checkbox" name="hobby" value="carry"
-														id="hobby">null</td>
-												</tr>
-											</table>
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>企業名稱:<small>(1.不可空白，2.至少兩個字以上)</small></label>
+													<input class="form-control" type="text" name="comRealname" id="comRealname">
+													<span id="comRealnameResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>連絡電話:<small>(請輸入數字。例:09xxxxxxxx)</small></label>
+													<input class="form-control" type="text" name="comPhonenumber" id="comPhonenumber">
+													<span id="comPhotoResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1">
+												<div class="form-group">
+													<label>地址:<small>(請輸入公司地址)</small></label>
+													<input class="form-control" type="text" name="comLocation" id="comLocation">
+													<span id="comLocationResult"></span><br>
+												</div>
+											</div>
+											<div class="col-sm-10 col-sm-offset-1" style="display: none;">
+												<div class="form-group">
+													<label>企業等級:<small>一般會員</small></label>
+													<input class="form-control" type="text" name="comlevel" id="comlevel" value="一般會員">
+													<span id="comlevelResult"></span><br>
+												</div>
 											</div>
 										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 											<div class="pull-right">
-												<input type='button'class='btn btn-finish btn-fill btn-warning btn-wd btn-sm'
-													name='finish' value='Finish' id='senData'/>
-											</div>
-												<div class="pull-right" style="margin-right: 20%;" id="checkAccountStatus">
+											<input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+												name='next' value='Next' id="comNextSlide2"  style="margin-bottom: 20px;margin-top: 10px"/>
+											</div>	
+											<div class="pull-right" style="margin-right: 20%;" id="checkComStatus2">
 												<div style="width: 150px;height: 30px;"></div>
 											</div> 
 											<div class="pull-left">
-												<input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
-													name='previous' value='Previous' id='lastSlide'/>
+											<input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
+												name='previous' value='Previous' id='comlastSlide2'  style="margin-bottom: 20px;margin-top: 10px"/>
 											</div>
 										</div>
+										</div>
+									</div>
+									
+									<!-- third -->
+									<div class="tab-pane tohide" id="tagPage3" >
+										<div class="row">
+										
+											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
+												<tr>
+													<td width="50px">興趣:</td>
+													<td><input type="checkbox" name="hobby" value="curry"
+														id="hobby">咖哩</td>
+													<td><input type="checkbox" name="hobby" value="BBQ"
+														id="hobby">烤肉</td>
+													<td><input type="checkbox" name="hobby" value="pizza"
+														id="hobby">披薩</td>
+													<td><input type="checkbox" name="hobby" value="fried"
+														id="hobby">炸物</td>
+													<td><input type="checkbox" name="hobby" value="hamburger"
+														id="hobby">漢堡</td>
+													<td><input type="checkbox" name="hobby" value="springRoll"
+														id="hobby">春捲</td>
+												</tr>
+											</table>
+											<br>
+											<span id="divResult" ></span>
+											
+										<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
+											<div class="pull-right">
+												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+													name='finish' value='Finish' id='sendData' style="margin-bottom: 20px;margin-top: 300px"/>
+											</div>
+											
+											<div class="pull-right toshow"  id="">
+												<input type='button'class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+													name='' value='前往登入' id='toBasic' style="margin-bottom: 20px;margin-top: 300px"/>
+											</div> 
+											
+											<div class="pull-left">
+												<input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
+													name='previous' value='Previous' id='lastSlide' style="margin-bottom: 20px;margin-top: 300px" />
+											</div>
+										</div>
+										
 										</div>
 									</div>
 								</div>
@@ -720,8 +915,12 @@ function privacyornot() {
 			</div>
 			<!-- end row -->
 			<div  id="myBtn" title="Go to top">
-				<button id="addMember">一鍵新增1</button>
-				<button id="addMemberDetail">一鍵新增2</button>
+				<button type="button" id="addMember">一鍵新增1</button>
+				<button type="button" id="addMemberDetail">一鍵新增2</button>
+				<br>
+				<button type="button" id="addcompany">一鍵企業1</button>
+				<button type="button" id="signinCompany">一鍵企業2</button>
+				
 			</div>
 		</div>
 		<!--  big container -->
@@ -741,7 +940,7 @@ function privacyornot() {
 		</div>
 
 	</div>
-	
+</form>	
 	<script>
 		$(function(){
 			$("#wizard-picture").change(function(){

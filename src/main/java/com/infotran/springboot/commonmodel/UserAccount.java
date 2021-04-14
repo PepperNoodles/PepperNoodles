@@ -79,8 +79,11 @@ public class UserAccount {
 
 	// foodtags=============================================================
 	
-	@ManyToMany(mappedBy = "users")
-	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+//	@ManyToMany(mappedBy = "users")
+//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	
@@ -241,6 +244,7 @@ public class UserAccount {
 		this.userAccountDetail = userAccountDetail;
 	}
 
+<<<<<<< HEAD
 	//好友系統用
 
 	public Set<FriendList> getFriends() {
@@ -279,5 +283,26 @@ public class UserAccount {
 	
 	//好友系統用
 	
+=======
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
+	}
 
+
+	public Set<FoodTagUser> getFoodTagUsers() {
+		return FoodTagUsers;
+	}
+
+>>>>>>> c0ab8a1c5d841237ca9f1d084d74550fe6e7183d
+
+
+	public CompanyDetail getCompanyDetail() {
+		return companyDetail;
+	}
+	
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
+	}
+
+	
 }
