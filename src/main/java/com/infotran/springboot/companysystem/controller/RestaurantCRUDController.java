@@ -94,10 +94,9 @@ public class RestaurantCRUDController {
 		return re;
 	}
 
-//給圖用圖用↑
+//給圖用↑
 	@GetMapping(value = "/addrest")
-	public String initRestaurant(Model model) {
-		Restaurant rest = new Restaurant();
+	public String initRestaurant(Model model,Restaurant rest) {
 		model.addAttribute("restaurant", rest);
 		rest.setRestaurantName("幽靈炒飯");
 		rest.setRestaurantAddress("台北興安街");

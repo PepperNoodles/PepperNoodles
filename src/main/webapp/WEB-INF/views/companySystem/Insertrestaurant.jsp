@@ -38,6 +38,33 @@
 .header {
 	background-color: #000000;
 }
+
+.rest-infobox {
+	float: left;
+	width: 30%;
+}
+
+.rest-picbox {
+	float: right;
+	margin: auto;
+	width: 60%;
+	border: 3px solid #73AD21;
+	padding: 10px 10px 10px 10px;
+	border: 3px solid #73AD21;
+	padding: 10px 10px 10px 10px;
+	height: 50%;
+}
+
+#restaurantPicturePreview {
+	width: 100%;
+	heght: 100%;
+	object-fit: contain;
+}
+
+footer {
+	clear: both;
+	/* 	清除上面float影響 */
+}
 </style>
 
 </head>
@@ -134,55 +161,51 @@
 
 	<!-- 餐廳管理頁面 -->
 	<!-- 背景圖片+自動填滿 -->
-	<div class="image-container set-full-height"<%-- 		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover" --%>
-		>
+	<div class="image-container set-full-height"
+		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-2">
+					<form:form method="POST" modelAttribute="restaurant"
+						enctype='multipart/form-data'>
+						<!--綁定model中的restaurant-->
+
+						<div class="rest-infobox">
+							<h1 style="color: red">add rest</h1>
+
+							<h5 style="color: #FF1493">餐廳地址：</h5>
+							<form:input path='restaurantAddress' />
+							<form:errors path="restaurantAddress" cssClass="error" />
+							<br> 
+							<h5 style="color: #FF1493">聯絡方式：</h5>
+							<form:input path='restaurantContact' />
+							<form:errors path="restaurantContact" cssClass="error" />
+							<br> 
+							<h5 style="color: #FF1493">餐廳名稱：</h5>
+							<form:input path='restaurantName' />
+							<form:errors path="restaurantName" cssClass="error" />
+							<br> 
+							<h5 style="color: #FF1493">餐廳網站：</h5>
+							<form:input path='restaurantWebsite' />
+							<form:errors path="restaurantWebsite" cssClass="error" />
+							<br> 
+							<h5 style="color: #FF1493">餐廳照片：</h5>
+							<form:input path='restaurantPhoto' type='file'
+								id="restaurant-picture" accept="image/*" />
+							<form:errors path="restaurantPhoto" cssClass="error" />
+							<br> <input type='submit'>
+						</div>
+						<div class="rest-picbox">
+							<img
+								src="<c:url value="/images/NoImage/NoImage_restaurant.jpg"/>"
+								class="picture-src" id="restaurantPicturePreview" />
+						</div>
 
 
-		<h1>add rest</h1>
-		<fieldset>
-			<legend>新增餐廳資料(rest)</legend>
-			<!--綁定model中的restaurant-->
-			<form:form method="POST" modelAttribute="restaurant"
-				enctype='multipart/form-data'>
-				<Table style="align-self: center;">
-					<tr>
-						<td>餐廳地址：<br></td>
-						<td width='360'><form:input path='restaurantAddress' /><br>
-							<form:errors path="restaurantAddress" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td>聯絡方式：<br></td>
-						<td width='360'><form:input path='restaurantContact' /><br>
-							<form:errors path="restaurantContact" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td>餐廳名稱：<br></td>
-						<td width='360'><form:input path='restaurantName' /><br>
-							<form:errors path="restaurantName" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td>餐廳網站：<br></td>
-						<td width='360'><form:input path='restaurantWebsite' /><br>
-							<form:errors path="restaurantWebsite" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td>餐廳照片：<br>
-						<img src="<c:url value="對controll的請求路徑"/>">
-						</td>
-						<td width='360'><form:input path='restaurantPhoto'
-								type='file' /> <br>
-							<form:errors path="restaurantPhoto" cssClass="error" /></td>
-					</tr>
-
-					<tr>
-						<td colspan='4' align='center'><br> <input type='submit'>
-						</td>
-					</tr>
-				</Table>
-			</form:form>
-
-		</fieldset>
-
+					</form:form>
+				</div>
+			</div>
+		</div>
 	</div>
 
 
@@ -297,6 +320,24 @@
 	</script>
 
 	<!-- JS here -->
+	<!--預覽照片 -->
+	<script>
+		$(function() {
+			$("#restaurant-picture").change(
+					function() {
+						if (this.files && this.files[0]) {
+							var reader = new FileReader();
+
+							reader.onload = function(e) {
+								$('#restaurantPicturePreview').attr('src',
+										e.target.result);
+							}
+
+							reader.readAsDataURL(this.files[0]);
+						}
+					});
+		});
+	</script>
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
