@@ -43,7 +43,9 @@ import com.infotran.springboot.loginsystem.service.UserAccountService;
 @SessionAttributes(names = "useraccount")
 public class UserAccountController {
 	
+
 	String imageRootDirectory = "C:\\myfolder\\PPNpics";
+
 	
 	File imageFolder = null; 
 	
