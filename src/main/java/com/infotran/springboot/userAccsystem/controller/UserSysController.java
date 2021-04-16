@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.servlet.ServletContext;
+
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -45,6 +51,26 @@ public class UserSysController {
 	
 	@Autowired
 	ServletContext servletContext;	
+
+	//從Authentication取得登入者的名字字串的方法
+	public String returnNamePath() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String currentUserName = authentication.getName();
+		    return currentUserName;
+			}
+			return null;
+	}
+	
+	//buffer頁面MVC登入法
+	@PostMapping(value="user/loginMVC" )
+	public String gopage(Model model) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		System.out.println(returnNamePath());
+		model.addAttribute("userAccount", user);
+		return "userpage/usermain";
+	}
 	
 	
 	//得到mainUser的friendList
@@ -164,6 +190,8 @@ public class UserSysController {
 		return requestUsers;
 		
 	}
+	
+
 	
 	
 	//假裝用session登入(簡單利用pathVariable模擬登入)
