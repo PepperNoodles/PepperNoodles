@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -75,7 +76,7 @@ public class RestaurantCRUDController {
 		return result;
 	}
 
-	@GetMapping("/picture/{id}")
+	@GetMapping("/restpicture/{id}")
 	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
 		byte[] body = null;
 		ResponseEntity<byte[]> re = null;
@@ -110,7 +111,7 @@ public class RestaurantCRUDController {
 		rest.setRestaurantAddress("台北興安街");
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
-		return "companySystem/Insertrestaurant";
+		return "company/Insertrestaurant";
 
 	}
 
@@ -119,7 +120,7 @@ public class RestaurantCRUDController {
 	public String list(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
 		System.out.println(model.getAttribute("restaurants"));
-		return "companySystem/Allrestaurants";
+		return "company/Allrestaurants";
 	}
 
 	// 新增餐廳
@@ -136,7 +137,7 @@ public class RestaurantCRUDController {
 			for (ObjectError error : list) {
 				System.out.println("有錯誤：" + error);
 			}
-			return "companySystem/Insertrestaurant";
+			return "company/Insertrestaurant";
 		}
 //		從model取照片
 		MultipartFile picture = rest.getProductImage();
