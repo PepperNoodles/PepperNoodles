@@ -2,13 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>restaurantCRUD</title>
+<title>Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
@@ -25,71 +24,44 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-<%-- <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
+<link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
+<link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
+<link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
+<link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />">
+<link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />">
+<link rel="stylesheet" href="<c:url value='/css/slick.css' />">
+<link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+
 <style>
 .header {
 	background-color: #000000;
 }
-
-.rest-infobox {
-	float: left;
-	width: 30%;
-}
-
-.rest-picbox {
-	float: right;
-	margin: auto;
-	width: 60%;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	height: 50%;
-}
-
-#restaurantPicturePreview {
-	width: 100%;
-	heght: 100%;
-	object-fit: contain;
-}
-
-footer {
-	clear: both;
-	/* 	清除上面float影響 */
-}
 </style>
-
 </head>
 <body>
 	<!-- 讀取圖案 -->
-<!-- 	<div id="preloader-active"> -->
-<!-- 		<div -->
-<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
-<!-- 			<div class="preloader-inner position-relative"> -->
-<!-- 				<div class="preloader-circle" -->
-<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
-<!-- 				<div class="preloader-img pere-text"> -->
-<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<div id="preloader-active">
+		<div
+			class="preloader d-flex align-items-center justify-content-center">
+			<div class="preloader-inner position-relative">
+				<div class="preloader-circle"
+					style="background-color: rgb(102, 102, 102);"></div>
+				<div class="preloader-img pere-text">
+					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 最上層bar -->
 	<header>
 		<!-- Header Start -->
 		<!-- 覆蓋用 -->
-		<div style="height: 90px"></div>
+		<!--  <div style="height: 90px"></div>-->
 
-		<div class="header-area header">
+		<div class="header-area header ">
 			<!--  header-transparent -->
 			<div class="main-header sticky-top">
 				<div class="header-bottom header-sticky">
@@ -158,53 +130,11 @@ footer {
 		</div>
 		<!-- Header End -->
 	</header>
+	
 
-	<!-- 餐廳管理頁面 -->
-	<!-- 背景圖片+自動填滿 -->
-	<div class="image-container set-full-height"
-		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 col-sm-offset-2">
-					<form:form method="POST" modelAttribute="restaurant"
-						enctype='multipart/form-data'>
-						<!--綁定model中的restaurant-->
+	<div>
+		<h1>123</h1>
 
-						<div class="rest-infobox">
-							<h1 style="color: red">add rest</h1>
-							<h5 style="color: #FF1493">餐廳名稱：</h5>
-							<form:input path='restaurantName' />
-							<form:errors path="restaurantName" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' />
-							<form:errors path="restaurantAddress" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">聯絡方式：</h5>
-							<form:input path='restaurantContact' />
-							<form:errors path="restaurantContact" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳網站：</h5>
-							<form:input path='restaurantWebsite' />
-							<form:errors path="restaurantWebsite" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳照片：</h5>
-							<form:input path='productImage' type='file'
-								id="restaurant-picture" accept="image/*" />
-							<form:errors path="productImage" cssClass="error" />
-							<br> <input type='submit'>
-						</div>
-						<div class="rest-picbox">
-							<img
-								src="<c:url value="/images/NoImage/NoImage_restaurant.jpg"/>"
-								class="picture-src" id="restaurantPicturePreview" />
-						</div>
-
-
-					</form:form>
-				</div>
-			</div>
-		</div>
 	</div>
 
 
@@ -306,73 +236,59 @@ footer {
 	</div>
 
 	<script>
-		$(window).on('load', function() {
+ 		$(window).on('load', function() {
+			
+// 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
-			$(".header-sticky").css("height", "90px");
-			//$(".header-sticky").css("position","static ")
+ 			$(".header-sticky").css("height", "90px");
+			$(".header-sticky").css("position","static")
 
-			$('#preloader-active').delay(450).fadeOut('slow');
-			$('body').delay(450).css({
-				'overflow' : 'visible'
-			});
-		});
+ 			//讓loading圖動起來
+ 			$('#preloader-active').delay(450).fadeOut('slow');
+ 			$('body').delay(450).css({
+ 				'overflow' : 'visible'
+ 		});			
+			
+ 		});
 	</script>
 
 	<!-- JS here -->
-	<!--預覽照片 -->
-	<script>
-		$(function() {
-			$("#restaurant-picture").change(
-					function() {
-						if (this.files && this.files[0]) {
-							var reader = new FileReader();
-
-							reader.onload = function(e) {
-								$('#restaurantPicturePreview').attr('src',
-										e.target.result);
-							}
-
-							reader.readAsDataURL(this.files[0]);
-						}
-					});
-		});
-	</script>
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
 	<!-- Jquery, Popper, Bootstrap -->
 	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
 
-	<%-- 	<script src="<c:url value='/scripts/popper.min.js' />"></script> --%>
+		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 
-	<!-- 	<script type="text/javascript" -->
-	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+		<script type="text/javascript"
+			src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	<!-- Jquery Mobile Menu -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
+		<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
-	<%-- 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
+		<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
 
 
-	<%-- 	<script src="<c:url value='/scripts/slick.min.js' />"></script> --%>
+		<script src="<c:url value='/scripts/slick.min.js' />"></script>
 
 	<!-- One Page, Animated-HeadLin -->
-	<%-- 	<script src="<c:url value='/scripts/wow.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/animated.headline.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script> --%>
-	<!-- Nice-select, sticky -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
+		<script src="<c:url value='/scripts/wow.min.js' />"></script>
+		<script src="<c:url value='/scripts/animated.headline.js' />"></script>
+		<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
+	<!--  Nice-select, sticky-->
+		<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script>
+		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
 	<!-- contact js -->
-	<%-- 	<script src="<c:url value='/scripts/contact.js' />"></script> --%>
+		<script src="<c:url value='/scripts/contact.js' />"></script>
 
-	<%-- 	<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
+		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
+		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
+		<script src="<c:url value='/scripts/mail-script.js' />"></script>
+		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
 
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
-	<%-- 	<script src="<c:url value='/scripts/main.js' />"></script> --%>
+<%-- <script src="<c:url value='/scripts/main.js' />"></script>  --%>
 </body>
 </html>
