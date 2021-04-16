@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Component
 @Table(name = "companyDetail")
@@ -34,6 +36,21 @@ public class CompanyDetail {
 	
 	@Column(name = "level")
 	private String level;
+	
+
+	@OneToOne(mappedBy = "companyDetail")
+	@JsonIgnore
+	private UserAccount userAccount;
+	
+	
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
 
 	public Integer getCompanyDetailId() {
 		return companyDetailId;

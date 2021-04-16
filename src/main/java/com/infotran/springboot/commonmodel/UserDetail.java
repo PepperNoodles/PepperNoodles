@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="userDetail")
 @Component
@@ -50,6 +52,7 @@ public class UserDetail {
 	private Integer purseID;
 	
 	@OneToOne(mappedBy = "userAccountDetail")
+	@JsonIgnore
 	private UserAccount userAccount;
 	
 	public UserDetail() {

@@ -15,6 +15,10 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="ProductMainClass")
 @Component
@@ -29,6 +33,7 @@ public class ProductMainClass {
 	
 	/*對應子類別*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productMainClass",cascade =CascadeType.ALL)
+	@JsonManagedReference 
 	private List<ProductDetailClass> productDetailClass = new ArrayList<ProductDetailClass>();
 
 	public ProductMainClass() {

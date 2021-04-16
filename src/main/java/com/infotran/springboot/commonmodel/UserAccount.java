@@ -24,6 +24,8 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
 @Component
@@ -77,8 +79,12 @@ public class UserAccount {
 
 	// foodtags=============================================================
 	
-	@ManyToMany(mappedBy = "users")
-	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+//	@ManyToMany(mappedBy = "users")
+//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	@OneToMany(mappedBy = "fkuserid",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private Set<FoodTagUser> userTags = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	

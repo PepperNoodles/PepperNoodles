@@ -14,11 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
 
-import com.infotran.springboot.shoppingmall.model.Product;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.shoppingmall.model.FoodTagProduct;
 
 @Entity
 @Table(name="foodTag")
@@ -33,30 +34,30 @@ public class FoodTag {
 	@Column(name="FoodTagName")
 	private String foodTagName;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinTable(name="foodtag_user",joinColumns = {
-			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
-			@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
-	private Set<UserAccount> users = new HashSet<UserAccount>();
+//	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//	@JoinTable(name="foodtag_user",joinColumns = {
+//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+//			@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	private Set<UserAccount> users = new HashSet<UserAccount>();
 
+	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private Set<FoodTagUser> users = new HashSet<FoodTagUser>();
+	
 	
 
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name="Forum_tag",joinColumns = {
-			@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+			@JoinColumn(name="fk_tag_id" ,referencedColumnName = "foodTag_id")},inverseJoinColumns = {
 			@JoinColumn(name="fk_forum_id",referencedColumnName = "forum_id")})
 	private Set<Forum> forums = new HashSet<Forum>();
-//	
-//	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-//	@JoinTable(name="FoodTag_Product",joinColumns = {
-//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
-//			@JoinColumn(name="fk_Product_id",referencedColumnName = "Product_id")})
-//	private Set<Product> Product = new HashSet<Product>();
 	
-	
+	/* 所屬的tag */
+	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	
 	public FoodTag() {
-		super();
 	}
 
 	public int getFoodTagIid() {
@@ -75,12 +76,29 @@ public class FoodTag {
 		this.foodTagName = foodTagName;
 	}
 
-	public Set<UserAccount> getUsers() {
+	public Set<FoodTagUser> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Set<UserAccount> users) {
+	public void setUsers(Set<FoodTagUser> users) {
 		this.users = users;
 	}
 
+	public Set<Forum> getForums() {
+		return forums;
+	}
+
+	public void setForums(Set<Forum> forums) {
+		this.forums = forums;
+	}
+
+	public Set<FoodTagProduct> getProduct() {
+		return Product;
+	}
+
+	public void setProduct(Set<FoodTagProduct> product) {
+		Product = product;
+	}
+	
+	
 }

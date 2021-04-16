@@ -13,181 +13,170 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
-import com.infotran.springboot.commonmodel.FoodTag;
-
-
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.commonmodel.Restaurant;
 
 @Entity
 @Table(name="Product")
 @Component
+@JsonIgnoreProperties(value = {"productImage"})
 public class Product {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="Product_id")
-	private Integer ProductId;
+	private Integer productId;
 	
-	private String ProductName;
+	@Column(name="ProductName")
+	private String productName;
 	
-	private Integer ProductPrice;
+	@Column(name="ProductPrice")
+	private Integer productPrice;
 	
-	private String Description;
+	@Column(name="Description")
+	private String description;
 	
-	private Blob ProductImage;
+	@Column(name="ProductImage")
+	private Blob productImage;
 	
-	private Integer Quantity;
+	@Column(name="Quantity")
+	private Integer quantity;
 
 	/* 對應的餐廳 */
-	@Column(name="fk_Restaurant_id")
-	@Transient
-	private Integer FkRestaurantId;
+	@Column(name="fk_Restaurant_id",insertable = false,updatable = false)
+//	@Transient
+	private Integer fkRestaurantId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_Restaurant_id")
+	@JsonBackReference
 	private Restaurant restaurant;
 	
 	/* 對應的子分類 */
-	@Column(name="fk_ProductDetailClass_id")
-	@Transient
-	private Integer FkProductDetailClassId;
+	@Column(name="fk_ProductDetailClass_id",insertable = false,updatable = false)
+//	@Transient
+	private Integer fkProductDetailClassId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_ProductDetailClass_id")
+	@JsonBackReference 
 	private ProductDetailClass productDetailClass;
 	
-	/*ReleasedDate*/
-	private Date RealeasedDate;
+	@Column(name="RealeasedDate")
+	private Date realeasedDate;
 	
 	/* 所屬的tag */
-	@ManyToMany(mappedBy = "Product")
-	private Set<FoodTag> productTags = new HashSet<FoodTag>();
+	@OneToMany(mappedBy = "fkProductid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private Set<FoodTagProduct> productTags = new HashSet<FoodTagProduct>();
 	
 	/* 訂單編號多對多 */
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinTable(name="OrderDetail",joinColumns = {
-			@JoinColumn(name="fk_Product_id",referencedColumnName = "Product_id")},inverseJoinColumns = {
-			@JoinColumn(name="fk_Order_id",referencedColumnName = "Order_id")})
-	private Set<OrderList> OrderList = new HashSet<OrderList>();
+	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private Set<OrderDetail> orderList = new HashSet<OrderDetail>();
+	
+	@Transient
+	private Integer totalpage;
+	//
+	public Product() {
+	}
+	
+	public Integer getTotalpage() {
+		return totalpage;
+	}
+
+	public void setTotalpage(Integer totalpage) {
+		this.totalpage = totalpage;
+	}
 
 	public Integer getProductId() {
-		return ProductId;
+		return productId;
 	}
-
 	public void setProductId(Integer productId) {
-		ProductId = productId;
+		this.productId = productId;
 	}
-
 	public String getProductName() {
-		return ProductName;
+		return productName;
 	}
-
 	public void setProductName(String productName) {
-		ProductName = productName;
+		this.productName = productName;
 	}
-
 	public Integer getProductPrice() {
-		return ProductPrice;
+		return productPrice;
 	}
-
 	public void setProductPrice(Integer productPrice) {
-		ProductPrice = productPrice;
+		this.productPrice = productPrice;
 	}
-
 	public String getDescription() {
-		return Description;
+		return description;
 	}
-
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
-
 	public Blob getProductImage() {
-		return ProductImage;
+		return productImage;
 	}
-
 	public void setProductImage(Blob productImage) {
-		ProductImage = productImage;
+		this.productImage = productImage;
 	}
-
 	public Integer getQuantity() {
-		return Quantity;
+		return quantity;
 	}
-
 	public void setQuantity(Integer quantity) {
-		Quantity = quantity;
+		this.quantity = quantity;
 	}
-
 	public Integer getFkRestaurantId() {
-		return FkRestaurantId;
+		return fkRestaurantId;
 	}
-
 	public void setFkRestaurantId(Integer fkRestaurantId) {
-		FkRestaurantId = fkRestaurantId;
+		this.fkRestaurantId = fkRestaurantId;
 	}
-
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-
 	public Integer getFkProductDetailClassId() {
-		return FkProductDetailClassId;
+		return fkProductDetailClassId;
 	}
-
 	public void setFkProductDetailClassId(Integer fkProductDetailClassId) {
-		FkProductDetailClassId = fkProductDetailClassId;
+		this.fkProductDetailClassId = fkProductDetailClassId;
 	}
-
 	public ProductDetailClass getProductDetailClass() {
 		return productDetailClass;
 	}
-
 	public void setProductDetailClass(ProductDetailClass productDetailClass) {
 		this.productDetailClass = productDetailClass;
 	}
-
-	public Set<FoodTag> getProductTags() {
+	public Date getRealeasedDate() {
+		return realeasedDate;
+	}
+	public void setRealeasedDate(Date realeasedDate) {
+		this.realeasedDate = realeasedDate;
+	}
+	public Set<FoodTagProduct> getProductTags() {
 		return productTags;
 	}
-
-	public void setProductTags(Set<FoodTag> productTags) {
+	public void setProductTags(Set<FoodTagProduct> productTags) {
 		this.productTags = productTags;
 	}
-
-	public Set<OrderList> getOrder() {
-		return OrderList;
+	public Set<OrderDetail> getOrderList() {
+		return orderList;
 	}
-
-	public void setOrder(Set<OrderList> order) {
-		this.OrderList = order;
+	public void setOrderList(Set<OrderDetail> orderList) {
+		this.orderList = orderList;
 	}
-
-	public Date getRealeasedDate() {
-		return RealeasedDate;
-	}
-
-	public void setRealeasedDate(Date realeasedDate) {
-		RealeasedDate = realeasedDate;
-	}
-
-	public Set<OrderList> getOrderList() {
-		return OrderList;
-	}
-
-	public void setOrderList(Set<OrderList> orderList) {
-		OrderList = orderList;
-	}
+	
+	
 	
 }
