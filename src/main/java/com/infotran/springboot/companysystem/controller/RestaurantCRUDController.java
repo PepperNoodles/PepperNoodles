@@ -3,10 +3,12 @@ package com.infotran.springboot.companysystem.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -18,10 +20,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.companysystem.service.RestaurantService;
@@ -30,7 +36,7 @@ import com.infotran.springboot.companysystem.validator.RestaurantValidator;
 @Controller
 public class RestaurantCRUDController {
 	String noImage = "/images/NoImage/NoImage_restaurant.jpg";
-	
+
 	@Autowired
 	ServletContext context;
 
@@ -72,7 +78,7 @@ public class RestaurantCRUDController {
 	@GetMapping("/picture/{id}")
 	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
 		byte[] body = null;
-		ResponseEntity<byte[]> re = null; 
+		ResponseEntity<byte[]> re = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 
@@ -95,8 +101,10 @@ public class RestaurantCRUDController {
 	}
 
 //給圖用↑
+
+	// 連進新增餐廳時 給預設值
 	@GetMapping(value = "/addrest")
-	public String initRestaurant(Model model,Restaurant rest) {
+	public String initRestaurant(Model model, Restaurant rest) {
 		model.addAttribute("restaurant", rest);
 		rest.setRestaurantName("幽靈炒飯");
 		rest.setRestaurantAddress("台北興安街");
@@ -104,6 +112,14 @@ public class RestaurantCRUDController {
 		rest.setRestaurantWebsite("facebook.com");
 		return "companySystem/Insertrestaurant";
 
+	}
+
+	// 顯示所有餐廳資料
+	@GetMapping("/showAllrest")
+	public String list(Model model) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println(model.getAttribute("restaurants"));
+		return "companySystem/Allrestaurants";
 	}
 
 	// 新增餐廳
@@ -122,12 +138,37 @@ public class RestaurantCRUDController {
 			}
 			return "companySystem/Insertrestaurant";
 		}
-
-		Blob blob = rest.getRestaurantPhoto();
+//		從model取照片
+		MultipartFile picture = rest.getProductImage();
+		// 建立Blob物件，交由 Hibernate 寫入資料庫
+		if (picture != null && !picture.isEmpty()) {
+			try {
+				byte[] b = picture.getBytes();
+				Blob blob = new SerialBlob(b);
+				rest.setRestaurantPhoto(blob);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
+			}
+		}
 
 		restaurantService.save(rest);
 		System.out.println("新增成功");
-		return "/template/template";
+		return "redirect:/showAllrest";
 
+	}
+	//刪除餐廳
+	@DeleteMapping("/deleteRest/{restaurantId}")
+	public String deleterest(@PathVariable("restaurantId") Integer id) {
+		restaurantService.delete(id);
+		System.out.println("刪除了編號:"+id+"的餐廳");
+		return "redirect:/showAllrest";
+	}
+	
+	@PutMapping("/updateRest/{restaurantId}")
+	public String updaterest(@PathVariable("restaurantId") Integer id) {
+	
+		System.out.println("更新編號:"+id+"的餐廳");
+		return "redirect:/showAllrest";
 	}
 }
