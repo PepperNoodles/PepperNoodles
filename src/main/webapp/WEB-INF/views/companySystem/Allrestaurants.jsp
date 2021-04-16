@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type='text/javascript' src="<c:url value='/' />/scripts/jquery-1.9.1.min.js"></script>
 <meta charset="UTF-8">
 <title>restaurantCRUD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,32 +40,6 @@
 	background-color: #000000;
 }
 
-.rest-infobox {
-	float: left;
-	width: 30%;
-}
-
-.rest-picbox {
-	float: right;
-	margin: auto;
-	width: 60%;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	height: 50%;
-}
-
-#restaurantPicturePreview {
-	width: 100%;
-	heght: 100%;
-	object-fit: contain;
-}
-
-footer {
-	clear: both;
-	/* 	清除上面float影響 */
-}
 </style>
 
 </head>
@@ -163,51 +138,70 @@ footer {
 	<!-- 背景圖片+自動填滿 -->
 	<div class="image-container set-full-height"
 		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 col-sm-offset-2">
-					<form:form method="POST" modelAttribute="restaurant"
-						enctype='multipart/form-data'>
-						<!--綁定model中的restaurant-->
-
-						<div class="rest-infobox">
-							<h1 style="color: red">add rest</h1>
-							<h5 style="color: #FF1493">餐廳名稱：</h5>
-							<form:input path='restaurantName' />
-							<form:errors path="restaurantName" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' />
-							<form:errors path="restaurantAddress" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">聯絡方式：</h5>
-							<form:input path='restaurantContact' />
-							<form:errors path="restaurantContact" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳網站：</h5>
-							<form:input path='restaurantWebsite' />
-							<form:errors path="restaurantWebsite" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳照片：</h5>
-							<form:input path='productImage' type='file'
-								id="restaurant-picture" accept="image/*" />
-							<form:errors path="productImage" cssClass="error" />
-							<br> <input type='submit'>
-						</div>
-						<div class="rest-picbox">
-							<img
-								src="<c:url value="/images/NoImage/NoImage_restaurant.jpg"/>"
-								class="picture-src" id="restaurantPicturePreview" />
-						</div>
-
-
-					</form:form>
-				</div>
-			</div>
+		<div align='center'>
+			<h3 style="color: red">所有餐廳</h3>
+			<a href="<c:url value='/addrest'/> ">回新增頁</a>
+			<hr>
+			<c:choose>
+				<c:when test="${empty restaurants}">
+					<h5 style="color: #FF1493">沒有任何會員資料</h5>
+					<br>
+				</c:when>
+				<c:otherwise>
+				<table border='1' cellpadding="3" cellspacing="1" >
+							<tr>
+			   <th width='80'>餐廳名稱</th>
+			   <th width='120'>餐廳地址</th>
+			   <th width='80'>聯絡方式</th>
+			   <th width='80'>餐廳網站</th>
+			   <th width='80'>環境照片</th>
+			   <th colspan='2' width='72'>資料維護</th>
+			</tr>
+						<c:forEach var='restaurant' items='${restaurants}'>
+							<tr>
+								<td style="text-align: center;font-weight: bold">${restaurant.restaurantName}</td>
+								<td style="text-align: center;font-weight: bold">${restaurant.restaurantAddress}</td>
+								<td style="text-align: center;font-weight: bold">${restaurant.restaurantContact}</td>
+								<td style="text-align: center;font-weight: bold">${restaurant.restaurantWebsite}</td>
+								<td><img width='120' height='120'
+									src='picture/${restaurant.restaurantId}' id='restpicture' /></td>
+								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
+								<td style="font-weight: bold"><a class='deletelink' href="deleteRest/${restaurant.restaurantId}">刪除</a></td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:otherwise>
+			</c:choose>
+			<hr>
 		</div>
 	</div>
+<form id='deletefrom' method='POST'>
+	<input type='hidden' name='_method' value='DELETE'>
+</form>
+<form id='updateform' method='POST'>
+	<input type='hidden' name='_method' value='PUT'>
+</form>
 
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $('.deletelink').click(function() {
+        	if (confirm('確定刪除此筆紀錄? ')) {
+        		var href = $(this).attr('href');
+                $("#deletefrom").attr('action', href).submit();
+        	} 
+        	return false;
+            
+        });
+        
+        $('.updatelink').click(function() {
+        	alert("更新");
+        		var href = $(this).attr('href');
+                $("#updateform").attr('action', href).submit();
 
+            
+        });
+    })
+</script>
 
 
 
@@ -304,8 +298,7 @@ footer {
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-
-	<script>
+<script>
 		$(window).on('load', function() {
 			$(".header-sticky").addClass("sticky-bar");
 			$(".header-sticky").css("height", "90px");
@@ -337,6 +330,7 @@ footer {
 					});
 		});
 	</script>
+
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
@@ -346,7 +340,7 @@ footer {
 	<%-- 	<script src="<c:url value='/scripts/popper.min.js' />"></script> --%>
 
 	<!-- 	<script type="text/javascript" -->
-	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+<%-- <script type='text/javascript' src="<c:url value='/' />/scripts/jquery-1.9.1.min.js"></script> --%>
 	<!-- Jquery Mobile Menu -->
 	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
 

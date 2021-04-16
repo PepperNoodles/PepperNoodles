@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Component
@@ -48,9 +49,14 @@ public class Restaurant {
 	@Column(name = "restaurantWebsite")
 	private String restaurantWebsite;
 
+	//對應存入資料庫表格的屬性
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
-
+	
+	//新增修改時取圖的屬性
+	@Transient
+	MultipartFile productImage;
+	
 	@Column(name = "longitude")
 	private String longitude;
 
@@ -151,6 +157,15 @@ public class Restaurant {
 
 	public void setRestaurantPhoto(Blob restaurantPhoto) {
 		this.restaurantPhoto = restaurantPhoto;
+	}
+
+	
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
 	}
 
 	public String getLongitude() {
