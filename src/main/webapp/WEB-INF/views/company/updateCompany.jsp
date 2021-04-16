@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Update Company</title>
+<title>修改店家基本資料</title>
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />

@@ -1,11 +1,13 @@
 package com.infotran.springboot.companysystem.validator;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.infotran.springboot.commonmodel.Restaurant;
 
+@Component
 public class RestaurantValidator implements Validator {
 
 	@Override
