@@ -1,19 +1,39 @@
 package com.infotran.springboot.loginsystem.service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.exception.UserNotFoundException;
 import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
+	
+	@Autowired
+    private UserAccountRepository accountRepository ;
 
 	@Autowired
 	private UserAccountRepository UserDao;
+	
+	public UserAccount getByName(String name) {
+		Optional<UserAccount> uRep = accountRepository.findByAccountIndex(name);
+		//System.out.println("test1:" + uRep.get());		
+		
+		if(uRep.isEmpty()) {
+			throw new UserNotFoundException("Can't find User");
+		}
+		
+		return uRep.get();
+	}
+	
+	public UserAccount createUserProfiles(UserAccount userProfiles) {
+		return accountRepository.save(userProfiles);
+	}
 
 	@Override
 	public Integer save(UserAccount user) {
