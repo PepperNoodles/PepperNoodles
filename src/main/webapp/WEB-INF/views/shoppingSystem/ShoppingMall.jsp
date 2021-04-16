@@ -8,8 +8,6 @@
 <meta charset="UTF-8">
 <title>Shopping Mall</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
@@ -27,6 +25,825 @@
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 
+<script>
+$(document).ready(function() {
+	
+		var flag;
+		var ifprice
+		var len = 14;
+		
+		//興趣
+		$.ajax({
+			method:"GET",
+			url:"/PepperNoodles/tagproducts",
+			contentType: 'application/json; charset=utf-8', 
+	        async : true,
+	        cache: false,
+	        success: function (result) {
+	        	$("#Page1").show();
+	        	$("#PageEverthing").hide();
+	        	$('#pagination').hide();
+	        	$('#rangeprice').hide();
+	        	var $productCardDiv;
+	        	var $singlelisting;
+	        		$.each(result,
+	       			function(index, element){
+        			var text;
+	       			if (element.description.length>len){
+	       				text = element.description.substring(0,len-1)+"...";
+	       			}else {
+	       				text =  element.description;
+	       			}
+	       			$productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+	       			$singlelisting = $('<div></div>').addClass('single-listing mb-30')
+	       			$('<div class="list-img"></div>').appendTo($singlelisting)
+	       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+	       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+	       			.append("<input class='openproduct'  type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+	       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+	       			.append("<h3>"+element.productName+"</h3>")
+	       			.append("<p class='JQellipsis'>"+text+"</p>")
+	       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+	       			.append("<div class='list-footer'>"+
+	       					"<ul>"+
+	       						"<li>$"+element.productPrice+"</li>"+
+	       						"<li style='display:none;'>"+element.quantity+"</li>"+
+	       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       					"</ul>"+
+	       					"</div>");
+	       			$productCardDiv.append($singlelisting);
+	       			$productCardDiv.appendTo($(".row.productFrame"));
+	       			});
+	        },
+	        error: function (result) {
+	        	console.log(result);
+	        }
+		});
+		//全部商品
+		$.ajax({
+			method:"GET",
+			url:"/PepperNoodles/getallproducts",
+			contentType: 'application/json; charset=utf-8', 
+	        async : true,
+	        cache: false,
+	        success: function (allresult) {
+	        	var $productCardDiv;
+	        	var $singlelisting;
+	        		$.each(allresult,
+	       			function(index, element){
+	       			var text;
+	       			if (element.description.length>len){
+	       				text = element.description.substring(0,len-1)+"...";
+	       			}else {
+	       				text =  element.description;
+	       			}
+	       			$productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+	       			$singlelisting = $('<div></div>').addClass('single-listing mb-30')
+	       			$('<div class="list-img"></div>').appendTo($singlelisting)
+	       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+	       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+	       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+	       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+	       			.append("<h3>"+element.productName+"</h3>")
+	       			.append("<p>"+ text +"</p>")
+	       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+	       			.append("<div class='list-footer'>"+
+	       					"<ul>"+
+	       						"<li>$"+element.productPrice+"</li>"+
+	       						"<li style='display:none;'>"+element.quantity+"</li>"+
+	       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       					"</ul>"+
+	       					"</div>");
+	       			$productCardDiv.append($singlelisting);
+	       			$productCardDiv.appendTo($(".row.productFrame2"));
+	       			});
+	        },
+	        error: function (result) {
+	        	console.log(result);
+	        }
+		})
+
+		//興趣/查看全部
+		$("#seeMoreTagProducts").click(function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag=1;
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/seemoretagproducts",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,
+		        cache: false,
+		        success: function (allresult) {
+		        	console.log(allresult);
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+		        	var $productCardDiv;
+		        	var $singlelisting;
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			$productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			$singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        		
+		        
+		        },
+		        error: function (result) {
+		        	console.log("問題是:"+result);
+		        }
+			})
+		});
+		
+		//查看全部商品
+		$("#seeMoreAllProducts").click(function(e){
+			e.preventDefault();
+			ifprice=0;
+			flag = 2;
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/seemoreallproducts",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log("something wrong!");
+		        }
+			})
+		});
+		
+		//主類別
+		$("#mainclass").on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag = $(this).index("a")-50;
+			var mainname=$(this).attr("id");
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/mainclass?mainname="+mainname+"",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log("something wrong!");
+		        }
+			})
+		});
+		//主類別
+		$("#ingredientmainclass").on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag = $(this).index("a")-55;//59
+			var mainname=$(this).attr("id");
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/mainclass?mainname="+mainname+"",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log("something wrong!");
+		        }
+			})
+		});
+		
+			
+		//子類別coupon
+		$("#detailname").on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag = $(this).index("a")-49;//54
+			console.log(flag);
+			var detailname=$(this).attr("id");
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/detailclass?detailname="+detailname+"",
+				contentType: 'application/json; charset=utf-8', 
+				dataType: "json",
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        	},
+			        error: function (result) {
+			        	console.log("something wrong!");
+			        }
+			 })
+		});
+		//子類別ingredients
+		$("#ingredientname").on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag = $(this).index("a")-50;//60
+			console.log(flag);
+			var detailname=$(this).attr("id");
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/detailclass?detailname="+detailname+"",
+				contentType: 'application/json; charset=utf-8', 
+				dataType: "json",
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        	},
+			        error: function (result) {
+			        	console.log("something wrong!");
+			        }
+			 })
+		});
+		//TAGS根據標籤搜索
+		$("#puretag").on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 0;
+			flag = $(this).index("a")-55;//67
+			console.log("flag num is: "+flag);
+			var tagname=$(this).attr("id");
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/puretags?tagname="+tagname+"",
+				contentType: 'application/json; charset=utf-8', 
+				dataType: "json",
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        	},
+			        error: function (result) {
+			        	console.log("something wrong!");
+			        }
+			 })
+		});
+		//serach搜索
+		var input;
+		$("#google").on("click",function(e){
+			e.preventDefault();
+			ifprice = 0;
+// 			尚未修改start here
+			flag = 1001;
+			input = $("#searchall").val();
+			$("#pframeall > div").remove();
+			$("#Page1").hide();
+			$("#PageEverthing").show();
+			$('#pagination').show();
+			$('#rangeprice').show();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/search?input="+input+"",
+				contentType: 'application/json; charset=utf-8', 
+				dataType: "json",
+		        async : true,cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        	},
+			        error: function (result) {
+			        	console.log("something wrong!");
+			        }
+			 })
+		});
+		
+		
+		//回上頁
+		$('#goback').click(function(e){
+			e.preventDefault();
+			$("#Page1").show();
+			$("#PageEverthing").hide();
+			$('#pagination').hide();
+			$('#rangeprice').hide();
+		});
+		
+		//價格區段click事件
+		var price;
+		$('#pricerangeol').on("click","a",function(e){
+			e.preventDefault();
+			ifprice = 1;
+			price = $(this).attr("id");
+			input = $("#searchall").val();
+			console.log(input);
+			$("#pframeall > div").remove();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/getpricerange/"+price+"/"+flag+"?input="+input+"",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,
+		        cache: false,
+		        success: function (allresult) {
+		        	var productlist = allresult.productlist;
+		        	var totalpage = allresult.totalpage;//總頁數
+						//print btns	        	
+		        		$("#pagframe>li").remove();
+						for (var i=1;i<=totalpage;i++){
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+						}
+						//print products		        	
+		        		$.each(productlist,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			var $productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			var $singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log("問題是:"+result);
+		        }
+			})
+		});//END
+		
+		//分頁click事件
+		$('#pagframe').on("click",".page-link",function(e){
+			//ifprice判斷是不是在價格區段之間
+			//flag判斷在哪個click事件
+			//page判斷哪一個分頁btn
+			e.preventDefault();
+			if (ifprice==1){
+				ifprice = price;
+			}
+			var page = $(this).attr("id");//第一頁
+			$("#pframeall > div").remove();
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/getpage/"+ifprice+"/"+flag+"/"+(page-1)+"?input="+input+"",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,
+		        cache: false,
+		        success: function (allresult) {
+		        	var $productCardDiv;
+		        	var $singlelisting;
+						//print products		        	
+		        		$.each(allresult,
+		       			function(index, element){
+		       			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			$productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			$singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input class='openproduct' type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p>"+ text +"</p>").append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer'>"+
+		       					"<ul>"+
+		       						"<li>$"+element.productPrice+"</li>"+
+		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrameall"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log("問題是:"+result);
+		        }
+			})
+		});//END
+		
+		
+		$('body').on("click","#queryProduct",function(e){
+			e.preventDefault();
+			$(".modal-body>div").remove();
+			var productid = $(this).next().val();
+			var productname = $(this).nextAll("h3").text();
+			var description = $(this).nextAll("p:eq(1)").text();
+			var price = $(this).nextAll(".list-footer").find("ul li:eq(0)").text();
+			var quantity = $(this).nextAll(".list-footer").find("ul li:eq(1)").text();
+			//
+			var heading = $("#pnameheading");
+			var modalbody = $(".modal-body");
+			var modalfooter = $(".modal-footer");
+			var container = $('<div></div>').addClass("container");
+			var row = $('<div></div>').addClass("row");
+			var listimg = $("<div class='col-lg-4'></div>");
+			var detail = $("<div class='col-lg-8'></div>");
+			var content = $("<p></p>").text(description).css({"font-size":"20px","font-weight":"bolder"});
+			//
+			heading.text(productname);
+			detail.append(content);
+			container.append(row.append(listimg.append($("<img id='queryimage' src='../../PepperNoodles/getProductImages?no="+ productid+"'/>"))).append(detail))
+			modalbody.append(container);
+			
+			
+		});
+		
+		
+				
+});
+</script>
+
+<style>
+.left-column-div{
+	width:100%;
+	margin-bottom: 10px;
+}
+.totextcolor{
+	color:black;
+	
+}
+.mainclass{
+	margin-left: 10px;
+}
+.mainclass:hover h4{
+	color:#00008B;
+	cursor: pointer;
+}
+.detailclass{
+	margin-left: 15px;
+}
+.detailclass:hover a{
+	cursor: pointer;
+}
+.seeMore{
+	float:right;
+	color:#00008B;
+	cursor: pointer;
+	text-decoration: underline;
+}
+.seeMore:hover {
+	text-decoration: none;
+}
+.productFrame{
+	padding:5px;
+	clear: both;
+}
+.productFrame2{
+	padding:5px;
+	clear: both;
+}
+.productFrameall{
+	padding:5px;
+	clear: both;
+}
+.addcart{
+	cursor: pointer;
+	text-decoration: underline;
+}
+.addcart:hover {
+	text-decoration: none;
+}
+.openproduct:hover {
+	box-shadow: 0 0px 3px 0 rgba(0,0,0,0.24), 0 8px 15px 0 rgba(0,0,0,0.19);
+}
+.modal-img {
+	border-radius: 2em;
+	border:2px solid #DCDCDC;
+	overflow: hidden;
+	max-width: 220px;
+	max-height: 130px;
+}
+.modal-img img{
+	width: 100%;
+	height:100%;
+	 object-fit: cover;
+}
+#queryimage{
+	border-radius: 2em;
+	border:2px solid #DCDCDC;
+	overflow: hidden;
+	width: 100%;
+	max-height: 150px;
+	 object-fit: cover;
+}
+.contentfont{
+	font-size: 50px;
+	font-weight: bolder;
+}
+</style>
 </head>
 <body>
 	<!-- Preloader Start -->
@@ -45,7 +862,7 @@
 	<!-- Header Start -->
        <div class="header-area header-transparent">
             <div class="main-header">
-               <div class="header-bottom  header-sticky">
+               <div class="header-bottom  ">
                     <div class="container-fluid">
                         <div class="row align-items-center">
                             <!-- Logo -->
@@ -59,8 +876,6 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">                                                                                                                                     
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
                                             <li><a href="#">城市</a>
                                                 <ul class="submenu">
                                                     <li><a href="blog.html">台北</a></li>
@@ -96,6 +911,7 @@
                                             <li><a href="about.html">發表食記</a></li>
                                             <!-- <li><a href="contact.html">Contact</a></li> -->
                                             <!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
+                                            <li><a href="/PepperNoodles/shoppingSystem/ShoppingMall" id="shoppingMall">商城</a></li>
                                             <li class="login"><a href="loginSystem/loginPage">
                                                 <i class="ti-user"></i> Sign in or Register</a>
                                             </li>
@@ -117,35 +933,16 @@
 	  <main>
 
         <!-- Hero Start-->
-        <div class="hero-area3 hero-overly2 d-flex align-items-center " style="background-image:url(<c:url value="/images/hero/frechfries.jpg"/>)">
+        <div class="hero-area3 hero-overly2 d-flex align-items-center " style="background-image:url(<c:url value="/images/hero/frechfries.jpg"/>);">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-xl-8 col-lg-9">
-                        <div class="hero-cap text-center pt-50 pb-20">
-                            <h2>Our Listing</h2>
+<!--                 new section here -->
+					<div class="col-xl-8 col-lg-9">
+						<div class="hero-cap text-center pt-50 pb-20 ">
+                            <h3>Welcome to PepperNoodle</h3>
+                            <h2>new upcoming products</h2>
                         </div>
-                        <!--Hero form -->
-                        <form action="#" class="search-box search-box2">
-                            <div class="input-form">
-                                <input type="text" placeholder="What are you looking for?">
-                            </div>
-                            <div class="select-form">
-                                <div class="select-itms">
-                                    <select name="select" id="select1">
-                                        <option value="">All Catagories</option>
-                                        <option value="">Catagories One</option>
-                                        <option value="">Catagories Two</option>
-                                        <option value="">Catagories Three</option>
-                                        <option value="">Catagories Four</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- Search box -->
-                            <div class="search-form">
-                                <a href="#">Search</a>
-                            </div>	
-                        </form>	
-                    </div>
+					</div>
                 </div>
             </div>
         </div>
@@ -154,239 +951,140 @@
         <div class="listing-area pt-120 pb-120">
             <div class="container">
                 <div class="row">
+                
                     <!-- Left content -->
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="row">
-                            <div class="col-12">
-                                    <div class="small-section-tittle2 mb-45">
-									<!-- -->
-                                    <h4>商品類別</h4>
-                                </div>
-                            </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6" style="border:1px solid red;color:black;">
+                        <div class="row" style="border:1px solid red;padding:5px;">
+                        	<div class="left-column-div" >
+                        		<input type="search" id="searchall" style="width:85%;" placeholder="炸雞、咖哩、冰淇淋...">
+                        		<span ><button id="google" style="color: black"><i class="fas fa-search"></i></button></span>
+                        	</div>
+                        	<div class="left-column-div" style="margin-top: 10px;">
+                        		<h4><a>商品類別</a></h4>
+                        	</div>
+                        	<div class="left-column-div" >
+                        		<div class="mainclass" style="" id ="mainclass">
+                        			<h4><a id="coupon">票券</a></h4>
+                        		</div>
+                        		<div class="detailclass">
+                        			<ol class="ordered-list" id="detailname">
+                        				<li><a id="friedchicken">炸雞</a></li>
+                        				<li><a id="icecream">冰淇淋</a></li>
+                        				<li><a id="vegfruit">蔬菜水果</a></li>
+                        				<li><a id="desert">甜點</a></li>
+                        				<li><a id="steak">牛排</a></li>
+                        			</ol>
+                        		</div>
+                        	</div>
+                        	<div class="left-column-div" >
+                        		<div class="mainclass" style="" id ="ingredientmainclass">
+                        			<h4><a id="ingredient">食材</a></h4>
+                        		</div>
+                        		<div class="detailclass">
+                        			<ol class="ordered-list" id="ingredientname">
+                        				<li><a id="hotpot">火鍋</a></li>
+                        				<li><a id="lambstove">羊肉爐</a></li>
+                        			</ol>
+                        		</div>
+                        	</div>
+                        	<div class="left-column-div" id="rangeprice">
+                        		<div class="mainclass" style="">
+                        			<h4><a>價格區間</a></h4>
+                        		</div>
+                        		<div class="detailclass">
+                        			<ol class="ordered-list" id="pricerangeol">
+                        				<li><a id="0">$0 - $500</a></li>
+                        				<li><a id="500">$500 - $1000</a></li>
+                        				<li><a id="1000">$1000 - $1500</a></li>
+                        			</ol>
+                        		</div>
+                        	</div>
+                        	<div class="left-column-div" >
+                        		<div class="mainclass" style="">
+                        			<h4><a>TAGS</a></h4>
+                        		</div>
+                        		<div class="detailclass button-group-area mt-10" id="puretag">
+                        			<a class="genric-btn primary-border small" id="friedchicken">炸雞</a>
+                        			<a class="genric-btn primary-border small" id="icecream">冰淇淋</a>
+                        			<a class="genric-btn primary-border small" id="salad">沙拉</a>
+                        			<a class="genric-btn primary-border small" id="desert">甜點</a>
+                        			<a class="genric-btn primary-border small" id="hotpot">火鍋</a>
+                        		</div>
+                        	</div>
                         </div>
-                        <!-- Job Category Listing start -->
-                        <div class="category-listing mb-50">
-                            <!-- single one -->
-                            <div class="single-listing">
-                                <!-- input -->
-                                <div class="input-form">
-                                    <input type="text" placeholder="What are you finding?">
-                                </div>
-                                <!-- Select job items start -->
-                                <div class="select-job-items1">
-                                    <select name="select1">
-                                        <option value="">Choose categories</option>
-                                        <option value="">Category 1</option>
-                                        <option value="">Category 2</option>
-                                        <option value="">Category 3</option>
-                                    </select>
-                                </div>
-                                <!--  Select job items End-->
-                                <!-- Select job items start -->
-                                <div class="select-job-items2">
-                                    <select name="select2">
-                                        <option value="">Location</option>
-                                        <option value="">Dhaka</option>
-                                        <option value="">Mirpur</option>
-                                        <option value="">Dannondi</option>
-                                    </select>
-                                </div>
-                                <!--  Select job items End-->
-                                <!-- select-Categories start -->
-                                <div class="select-Categories pt-140 pb-20">
-                                    <label class="container">Full Time
-                                        <input type="checkbox" >
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="container">Ratings
-                                        <input type="checkbox" checked="checked active">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <!-- select-Categories End -->
-                                <!-- Select job items start -->
-                                <div class="select-job-items2">
-                                    <select name="select2">
-                                        <option value="">Area (km)</option>
-                                        <option value="">Dhaka- 1km</option>
-                                        <option value="">Dinajpur- 2km</option>
-                                        <option value="">Chittagong - 3km</option>
-                                    </select>
-                                </div>
-                                <!--  Select job items End-->
-                            </div>
-
-                            <div class="single-listing">
-                                <!-- Range Slider Start -->
-                                <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
-                                    <div class="small-section-tittle2">
-                                        <h4>Price range</h4>
-                                    </div>
-                                    <div class="widgets_inner">
-                                        <div class="range_item">
-                                            <!-- <div id="slider-range"></div> -->
-                                            <input type="text" class="js-range-slider" value="" />
-                                            <div class="d-flex align-items-center">
-                                                <div class="price_text">
-                                                    <p>Price :</p>
-                                                </div>
-                                                <div class="price_value d-flex justify-content-center">
-                                                    <input type="text" class="js-input-from" id="amount" readonly />
-                                                    <span>to</span>
-                                                    <input type="text" class="js-input-to" id="amount" readonly />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </aside>
-                              <!-- Range Slider End -->
-                                 <a href="#" class="btn list-btn mt-20">Reset</a>
-                            </div>
-                        </div>
-                        <!-- Job Category Listing End -->
                     </div>
                     <!-- Right content -->
-                    <div class="col-xl-8 col-lg-8 col-md-6">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="count mb-35">
-                                    <span>5432 Listings are available</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- listing Details Stat-->
+                    <div class="col-xl-8 col-lg-8 col-md-6" style="border:1px solid red;padding:20px;">
+                        <!-- listing Details Start-->
                         <div class="listing-details-area">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list1.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list2.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                 <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list3.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                 <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list4.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                 <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list5.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                 <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 ">
-                                        <div class="single-listing mb-30">
-                                            <div class="list-img">
-                                                <img src="assets/img/gallery/list6.png" alt="">
-                                                <!-- <span>Open</span> -->
-                                            </div>
-                                            <div class="list-caption">
-                                                <span>Open</span>
-                                                 <h3><a href="listing_details.html">Saintmartine</a></h3>
-                                                <p>700/D, Kings road, Green lane, 85/ London</p>
-                                                <div class="list-footer">
-                                                    <ul>
-                                                        <li>+10 278 367 9823</li>
-                                                        <li>contact@midnight.com</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        	<!-- test for bootstrap modal -->
+	                        <!-- Modal Start -->
+							<div class="modal fade" id="myModal" >
+							    <div class="modal-dialog modal-dialog-centered modal-lg">
+							      <div class="modal-content">
+							      
+							        <!-- Modal Header -->
+							        <div class="modal-header">
+								        <div class="container">
+								          <div class="row justify-content-center">
+	    									<h1 style="font-weight: bolder;" id="pnameheading"></h1>
+	  									  </div>
+	  									</div>
+							          <button type="button" class="close" data-dismiss="modal">&times;</button>
+							        </div>
+							        
+							        <!-- Modal body -->
+							        <div class="modal-body">
+							        </div>
+							        
+							        <!-- Modal footer -->
+							        <div class="modal-footer">
+							          <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
+							          <button type="button" class="genric-btn danger-border circle arrow small" >購買</button>
+							        </div>
+							        
+							      </div>
+							    </div>
+							 </div>	
+	                        <!-- Modal End -->
+	                        <div class="row" id="Page1" >
+	                            <div class=" col-lg-12">
+	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">您可能有興趣的商品</h3> 
+	                                <span class="seeMore" id="seeMoreTagProducts" ><a>查看更多</a></span>
+	                                <!-- product frame start -->
+	                                <div class="row productFrame"></div>
+	                            </div>
+								<!--全部商品start -->
+	                            <div class="col-lg-12">
+	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">全部商品</h3>
+	                                <span class="seeMore" id="seeMoreAllProducts" ><a>查看更多</a></span>
+	                                <div class="row productFrame2"></div>
+	                            
+	                            <!--全部商品end -->
+	                        	</div>
+                        	</div>
+                        	
+                        	<div class="row" id="PageEverthing">
+                        		<div class=" col-lg-12">
+                        		<span class="seeMore" id="goback" style="margin-bottom: 20px;"><a>回首頁</a></span>
+	                        		<div class="row productFrameall" id="pframeall">
+	                        		
+	                        		</div>
+                        		</div>
+                        	</div>
+                        
                         <!-- listing Details End -->
                         <!--Pagination Start  -->
-                        <div class="pagination-area pt-70 text-center">
+                        <div class="pagination-area pt-70 text-center" id="pagination" style= "border: 1px solid red" >
                             <div class="container">
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="single-wrap d-flex justify-content-center">
                                             <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-start">
-                                                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                                <ul class="pagination justify-content-start" id="pagframe">
+<!--                                                     <li class="page-item active"><a class="page-link" href="#">01</a></li> -->
+<!--                                                     <li class="page-item"><a class="page-link" href="#">02</a></li> -->
+<!--                                                     <li class="page-item"><a class="page-link" href="#">03</a></li> -->
                                                 <li class="page-item"><a class="page-link" href="#"><span class="ti-angle-right"></span></a></li>
                                                 </ul>
                                             </nav>
@@ -401,7 +1099,7 @@
             </div>
         </div>
         <!-- listing-area Area End -->
-
+	</div>
     </main>
     <footer>
         <!-- Footer Start-->
@@ -484,28 +1182,26 @@
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
     </div>
+    
+    	
 	
 		<!-- JS here -->
 		<!-- All JS Custom Plugins Link Here here -->
         <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-        
 		<!-- Jquery, Popper, Bootstrap -->
-		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-		
+<%-- 		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script> --%>
         <script src="<c:url value='/scripts/popper.min.js' />"></script>
-        
         <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	    <!-- Jquery Mobile Menu -->
         <script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
 		
 		<!-- Jquery Slick , Owl-Carousel Plugins -->
         <script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
-        
-        
         <script src="<c:url value='/scripts/slick.min.js' />"></script>
         
 		<!-- One Page, Animated-HeadLin -->
         <script src="<c:url value='/scripts/wow.min.js' />"></script>
+         <script src="<c:url value='/scripts/price-range.js' />"></script>
 		<script src="<c:url value='/scripts/animated.headline.js' />"></script>
         <script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
 		<!-- Nice-select, sticky -->
@@ -513,15 +1209,13 @@
 		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
         <!-- contact js -->
         <script src="<c:url value='/scripts/contact.js' />"></script>
-        
         <script src="<c:url value='/scripts/jquery.form.js' />"></script>
         <script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
         <script src="<c:url value='/scripts/mail-script.js' />"></script>
         <script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
-        
 		<!-- Jquery Plugins, main Jquery -->	
         <script src="<c:url value='/scripts/plugins.js' />"></script>
         <script src="<c:url value='/scripts/main.js' />"></script>
-	
+		
 </body>
 </html>

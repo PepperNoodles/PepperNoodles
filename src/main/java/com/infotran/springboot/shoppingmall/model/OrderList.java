@@ -11,11 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.commonmodel.UserAccount;
 
 
@@ -45,9 +48,14 @@ public class OrderList {
 	
 	private String Status;
 	
-	@ManyToMany(mappedBy = "order")
-	private Set<Product> products = new HashSet<Product>();
-
+	@OneToMany(mappedBy = "orderlist",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private Set<OrderDetail> products = new HashSet<OrderDetail>();
+	
+	
+	private Integer TotalCost;
+	//
+	
 	public Integer getOrderId() {
 		return OrderId;
 	}
@@ -104,12 +112,20 @@ public class OrderList {
 		Status = status;
 	}
 
-	public Set<Product> getProducts() {
+	public Set<OrderDetail> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<Product> products) {
+	public void setProducts(Set<OrderDetail> products) {
 		this.products = products;
+	}
+
+	public Integer getTotalCost() {
+		return TotalCost;
+	}
+
+	public void setTotalCost(Integer totalCost) {
+		TotalCost = totalCost;
 	}
 	
 	

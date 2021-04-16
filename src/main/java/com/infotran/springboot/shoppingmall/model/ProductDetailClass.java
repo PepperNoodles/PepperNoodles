@@ -1,7 +1,9 @@
 package com.infotran.springboot.shoppingmall.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,13 +16,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="ProductDetailClass")
 @Component
+
 public class ProductDetailClass {
 
 	@Id
@@ -31,17 +36,20 @@ public class ProductDetailClass {
 	private String DetailClassName;
 	
 	/*對應主類別(多對一)*/
-	@Column(name="fk_ProductMainClass_id")
-	@Transient
+	@Column(name="fk_ProductMainClass_id",insertable = false,updatable = false)
+//	@Transient
 	private Integer FkProductMainClassId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_ProductMainClass_id")
+	@JsonBackReference
 	private ProductMainClass productMainClass;
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productDetailClass",cascade =CascadeType.ALL)
-	private List<Product> products =new ArrayList<Product>();
+//	@JsonIgnore
+	@JsonManagedReference 
+	private Set<Product> products =new HashSet<Product>();
 
 	public Integer getDetailClassId() {
 		return DetailClassId;
@@ -75,11 +83,11 @@ public class ProductDetailClass {
 		this.productMainClass = productMainClass;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 	

@@ -58,8 +58,8 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">                                                                                                                                     
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
+<!--                                             <li><a href="index.html">Home</a></li> -->
+<!--                                             <li><a href="about.html">About</a></li> -->
                                             <li><a href="#">城市</a>
                                                 <ul class="submenu">
                                                     <li><a href="blog.html">台北</a></li>
@@ -95,6 +95,8 @@
                                             <li><a href="about.html">發表食記</a></li>
                                             <!-- <li><a href="contact.html">Contact</a></li> -->
                                             <!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
+                                            <li><a href="shoppingSystem/ShoppingMall">商城</a></li>
+                                            <li><a href="rearStage/rearStage">後台</a></li>
                                             <li class="login"><a href="loginSystem/loginPage">
                                                 <i class="ti-user"></i> Sign in or Register</a>
                                             </li>

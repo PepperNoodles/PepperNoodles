@@ -1,7 +1,9 @@
 package com.infotran.springboot.commonmodel;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,6 +23,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
 @Component
@@ -85,6 +91,11 @@ public class Restaurant {
 	@OneToOne(mappedBy = "restaurant" , cascade = CascadeType.ALL)
 	private RestaurantBusinHour restaurantBusinHour;
 
+	
+	/*對應產品*/
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
+	@JsonManagedReference 
+	private List<Product> products =new ArrayList<Product>();
 
 
 	public Integer getRestaurantId() {
