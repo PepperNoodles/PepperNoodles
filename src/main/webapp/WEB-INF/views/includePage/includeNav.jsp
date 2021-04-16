@@ -2,12 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Map</title>
+<title>includeNav</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
@@ -31,30 +30,17 @@
 <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slick.css' />">
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
-
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+
 <style>
 .header {
 	background-color: #000000;
 }
 </style>
 </head>
-<body>
-	<!-- 讀取圖案 -->
-	<div id="preloader-active">
-		<div
-			class="preloader d-flex align-items-center justify-content-center">
-			<div class="preloader-inner position-relative">
-				<div class="preloader-circle"
-					style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<!-- 最上層bar -->
+<body>
+<!-- 最上層bar -->
 	<header>
 		<!-- Header Start -->
 		<!-- 覆蓋用 -->
@@ -78,7 +64,7 @@
 								<div class="main-menu f-right d-none d-lg-block">
 									<nav>
 										<ul id="navigation">
-											<li><a href="index.html">Home</a></li>
+											<li><a href="index.html">Home111</a></li>
 											<li><a href="about.html">About</a></li>
 											<li><a href="#">城市</a>
 												<ul class="submenu">
@@ -129,166 +115,16 @@
 		</div>
 		<!-- Header End -->
 	</header>
-
-
-	<div>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-		<h1>test</h1>
-
-
-
-
-
-	</div>
-
-
-
-
-
-
-
-	<footer>
-		<!-- Footer Start-->
-		<div class="footer-area">
-			<div class="container">
-				<div class="footer-top footer-padding">
-					<div class="row justify-content-between">
-						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="single-footer-caption mb-30">
-									<!-- logo -->
-									<div class="footer-logo">
-										<a href="index.html"><img
-											src="<c:url value='/images/logo/peppernoodle.png'/>" alt=""></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Quick Link</h4>
-									<ul>
-										<li><a href="#">Home</a></li>
-										<li><a href="#">Listing</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Categories</h4>
-									<ul>
-										<li><a href="#">台北美食</a></li>
-										<li><a href="#">熱門餐廳</a></li>
-										<li><a href="#">點券優惠</a></li>
-										<li><a href="#">每周排行</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Download App</h4>
-									<ul>
-										<li class="app-log"><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo.png'/>" alt=""></a></li>
-										<li><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo2.png'/>" alt=""></a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-bottom">
-					<div class="row d-flex justify-content-between align-items-center">
-						<div class="col-xl-9 col-lg-8">
-							<div class="footer-copy-right">
-								<p>
-									Copyright &copy;
-									<script>
-										document
-												.write(new Date().getFullYear());
-									</script>
-									All rights reserved | U copy <i class="fa fa-heart"
-										aria-hidden="true"></i> <a href="https://colorlib.com"
-										target="_blank">U died</a>
-								</p>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-4">
-							<!-- Footer Social -->
-							<div class="footer-social f-right">
-								<a href="#"><i class="fab fa-facebook-f"></i></a> <a href="#"><i
-									class="fab fa-instagram"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Footer End-->
-	</footer>
-	<!-- Scroll Up -->
-	<div id="back-top">
-		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-	</div>
-
-	<script>
- 		$(window).on('load', function() {
-			
-// 			//讓bar固定在上面以及設定高度
-			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
-
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
-			
- 		});
-	</script>
+	
+	
+		</script>
 
 	<!-- JS here -->
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
 	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
 
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 
@@ -321,5 +157,6 @@
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
  	<script src="<c:url value='/scripts/main.js' />"></script> 
+	
 </body>
 </html>
