@@ -37,7 +37,7 @@ body{
 			<c:forEach var='companys' items='${companys}'>
 				<tr>
 					<td>${companys.companyDetailId}</td>
-					<td><img width='120' src='picture/${companys.companyDetailId}' /></td>
+					<td><img width='120' src='getComPicture/${companys.companyDetailId}' /></td>
 					<td>${companys.realname}</td>
 					<td>${companys.phonenumber}</td>
 					<td style="text-align:left">${companys.location}</td>

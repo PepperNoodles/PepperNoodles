@@ -57,7 +57,7 @@
 											
 											<div class="col-sm-4 col-sm-offset-1">
 												<br>
-												<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src"  />
+												<img src="<c:url value="/getComPicture/${comDetail.companyDetailId}"/>" class="picture-src"  />
 											</div>
 											<div class="col-sm-6">
 												<div class="form-group">
