@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "foodtag_user")
 @Component
@@ -39,12 +41,14 @@ public class FoodTagUser implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
+	@JsonBackReference
 	private UserAccount  fkuser;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
-    private FoodTag  fkfoodtag;
+	@JsonBackReference
+	private FoodTag  fkfoodtag;
 	
 
 	public FoodTagUser() {
@@ -100,42 +104,5 @@ public class FoodTagUser implements Serializable {
 		return serialVersionUID;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((FooTagUserId == null) ? 0 : FooTagUserId.hashCode());
-		result = prime * result + ((fkfoodtag == null) ? 0 : fkfoodtag.hashCode());
-		result = prime * result + ((fkuser == null) ? 0 : fkuser.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		FoodTagUser other = (FoodTagUser) obj;
-		if (FooTagUserId == null) {
-			if (other.FooTagUserId != null)
-				return false;
-		} else if (!FooTagUserId.equals(other.FooTagUserId))
-			return false;
-		if (fkfoodtag == null) {
-			if (other.fkfoodtag != null)
-				return false;
-		} else if (!fkfoodtag.equals(other.fkfoodtag))
-			return false;
-		if (fkuser == null) {
-			if (other.fkuser != null)
-				return false;
-		} else if (!fkuser.equals(other.fkuser))
-			return false;
-		return true;
-	}
-	
-
 }
+

@@ -215,7 +215,7 @@ public class UserAccountController {
 //		  System.out.println(x.toString());
 //		} 
 
-		FoodTagUsers =userAccount.getFoodTagUsers();
+		FoodTagUsers =userAccount.getUserTags();
 		for(int i=0;i<FoodTagUsers.size();i++){
 		     System.out.println(FoodTagUsers.size());
 		}
@@ -260,7 +260,7 @@ public class UserAccountController {
 			
 		
 		System.out.println(userAccount.getAccountIndex());
-		Set<FoodTagUser> userSet = userAccount.getFoodTagUsers();
+		Set<FoodTagUser> userSet = userAccount.getUserTags();
 		
 			for(int i = 0; i<interest.length; i++) {
 				System.out.println("json傳到server的值" + interest[i]);

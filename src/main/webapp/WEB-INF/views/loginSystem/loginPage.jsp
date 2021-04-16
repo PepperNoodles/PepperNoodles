@@ -347,8 +347,6 @@ window.onload = function() {
 			var birthday = $("#birthday").val();
 			var location = $("#location").val();
 			var checkAccountStatus2 = document.getElementById("checkAccountStatus2");
-			//
-			//
 			if (secondPageError){
 // 				var xhr1 = new XMLHttpRequest();
 // 				xhr1.open("POST", "<c:url value='/members' />", true);
