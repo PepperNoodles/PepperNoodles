@@ -70,18 +70,18 @@ footer {
 </head>
 <body>
 	<!-- 讀取圖案 -->
-<!-- 	<div id="preloader-active"> -->
-<!-- 		<div -->
-<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
-<!-- 			<div class="preloader-inner position-relative"> -->
-<!-- 				<div class="preloader-circle" -->
-<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
-<!-- 				<div class="preloader-img pere-text"> -->
-<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<div id="preloader-active">
+		<div
+			class="preloader d-flex align-items-center justify-content-center">
+			<div class="preloader-inner position-relative">
+				<div class="preloader-circle"
+					style="background-color: rgb(102, 102, 102);"></div>
+				<div class="preloader-img pere-text">
+					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 最上層bar -->
 	<header>
@@ -166,9 +166,11 @@ footer {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-sm-offset-2">
+				
 					<form:form method="POST" modelAttribute="restaurant"
 						enctype='multipart/form-data'>
 						<!--綁定model中的restaurant-->
+
 
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest</h1>
@@ -196,7 +198,7 @@ footer {
 						</div>
 						<div class="rest-picbox">
 							<img
-								src="<c:url value="/images/NoImage/NoImage_restaurant.jpg"/>"
+								src=<c:url value='/restpicture/${restaurant.restaurantId}'/>
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
 
