@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -31,23 +32,25 @@ public class FoodTagProduct implements Serializable {
 	private Integer foodProductId;
 	
 	
-	@Column(name="fk_Product_id",insertable = false,updatable = false)
-	private Integer fkproductid;
+	@Column(name="fk_Product_id")
+	@Transient
+	private Integer fkProductid;
 	
-	@Column(name="fk_foodTag_id",insertable = false,updatable = false)
-	private Integer fkFoodtagid;
+	@Column(name="fk_foodTag_id")
+	@Transient
+	private Integer fkfoodtagid;
 	
 	//////////////////////////////////////////////////
     
-    @ManyToOne(fetch = FetchType.LAZY, optional = false )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_Product_id")
     @JsonBackReference
-    private Product fkProductid;
+    private Product fkproductid;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_foodTag_id")
     @JsonBackReference
-    private FoodTag fkfoodtagid;
+    private FoodTag fkFoodtagid;
     
     
     
@@ -68,40 +71,36 @@ public class FoodTagProduct implements Serializable {
 		this.foodProductId = foodProductId;
 	}
 
-	public Integer getFkproductid() {
-		return fkproductid;
-	}
-
-	public void setFkproductid(Integer fkproductid) {
-		this.fkproductid = fkproductid;
-	}
-
-	public Integer getFkFoodtagid() {
-		return fkFoodtagid;
-	}
-
-	public void setFkFoodtagid(Integer fkFoodtagid) {
-		this.fkFoodtagid = fkFoodtagid;
-	}
-
-	public Product getFkProductid() {
+	public Integer getFkProductid() {
 		return fkProductid;
 	}
 
-	public void setFkProductid(Product fkProductid) {
+	public void setFkProductid(Integer fkProductid) {
 		this.fkProductid = fkProductid;
 	}
 
-	public FoodTag getFkfoodtagid() {
+	public Integer getFkfoodtagid() {
 		return fkfoodtagid;
 	}
 
-	public void setFkfoodtagid(FoodTag fkfoodtagid) {
+	public void setFkfoodtagid(Integer fkfoodtagid) {
 		this.fkfoodtagid = fkfoodtagid;
 	}
 
-	
+	public Product getFkproductid() {
+		return fkproductid;
+	}
 
-	
+	public void setFkproductid(Product fkproductid) {
+		this.fkproductid = fkproductid;
+	}
+
+	public FoodTag getFkFoodtagid() {
+		return fkFoodtagid;
+	}
+
+	public void setFkFoodtagid(FoodTag fkFoodtagid) {
+		this.fkFoodtagid = fkFoodtagid;
+	}
 	
 }

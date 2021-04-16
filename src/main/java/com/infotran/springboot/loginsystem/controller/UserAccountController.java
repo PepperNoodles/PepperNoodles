@@ -194,10 +194,10 @@ public class UserAccountController {
 	}
 	
 	
-	@PostMapping(value="/CheckMemberAccount",produces="application/json")
-	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody UserAccount user){
+	@PostMapping(value="/CheckMemberAccount",consumes="application/json",produces="application/json")
+	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody String user){
 		Map<String, String> map = new HashMap<>();
-		String userAccountName = service.checkUserAccount(user.getAccountIndex());
+		String userAccountName = service.checkUserAccount(user);
 		map.put("username",userAccountName );
 		return map;
 	}
@@ -232,13 +232,14 @@ public class UserAccountController {
 	}
 	
 	@PostMapping(value="/sendEmail",produces="application/json")
-	public  @ResponseBody Map<String,String> sendEmail(@RequestBody UserAccount user){
-		System.out.println("------controller-------"+user.getAccountIndex());
+	public  @ResponseBody Map<String,String> sendEmail(@RequestBody String user){
+		UserAccount user2 = new UserAccount();
 		Map<String,String> map = new HashMap<String, String>();
 		String code = sendemail.getRandom();
 		System.out.println(code);
-		user.setCode(code);
-		boolean emailResult = sendemail.sendEmail(user);
+		user2.setCode(code);
+		user2.setAccountIndex(user);
+		boolean emailResult = sendemail.sendEmail(user2);
 		if (emailResult) {
 			map.put("emailCode", code);
 		}
@@ -274,8 +275,8 @@ public class UserAccountController {
 				//設定一筆關聯表資料
 				FoodTagUser ftu = new FoodTagUser();
 				//分別將雙邊資料存入
-				ftu.setFkfoodtag(tag);
-				ftu.setFkuser(userAccount);
+				ftu.setFkfoodtagid(tag);
+				ftu.setFkuserid(userAccount);
 				
 				userSet.add(ftu);
 				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();

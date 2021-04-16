@@ -75,7 +75,7 @@ public class Product {
 	private Date realeasedDate;
 	
 	/* 所屬的tag */
-	@OneToMany(mappedBy = "fkProductid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fkproductid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<FoodTagProduct> productTags = new HashSet<FoodTagProduct>();
 	
