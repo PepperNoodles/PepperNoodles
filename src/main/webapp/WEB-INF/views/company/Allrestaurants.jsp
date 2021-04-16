@@ -178,9 +178,6 @@
 <form id='deleteform' method='POST'>
 	<input type='hidden' name='_method' value='DELETE'>
 </form>
-<form id='updateform' method='POST'>
-	<input type='hidden' name='_method' value='PUT'>
-</form>
 
 <script type='text/javascript'>
     $(document).ready(function() {
@@ -192,14 +189,7 @@
         	return false;
             
         });
-        
-        $('.updatelink').click(function() {
-        	if (confirm('test? ')) {
-        		var href = $(this).attr('href');
-                $("#updateform").attr('action', href).submit();
-        	}
-        	return false;
-        });
+
     })
 </script>
 
