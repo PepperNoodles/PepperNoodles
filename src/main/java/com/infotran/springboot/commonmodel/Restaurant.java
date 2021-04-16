@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.sql.Blob;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,73 +22,77 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Component
 @Table(name = "restaurant")
 public class Restaurant {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Restaurant_id")
+	@Column(name = "restaurant_id")
 	private Integer restaurantId;
-	
+	@Column(name = "restaurantName")
 	private String restaurantName;
-	
+	@Column(name = "totalScore")
 	private Integer totalScore;
-	
+	@Column(name = "restaurantAmount")
 	private Integer rankAmount;
-	
-	@Column(name = "RestaurantAddress")
+
+	@Column(name = "restaurantAddress")
 	private String restaurantAddress;
-	
-	@Column(name = "RestaurantContact")
+
+	@Column(name = "restaurantContact")
 	private String restaurantContact;
 
-	@Column(name = "RestaurantWebsite")
+	@Column(name = "restaurantWebsite")
 	private String restaurantWebsite;
 
-	@Column(name = "RestaurantPhotoName")
-	private byte[] restaurantPhotoName;
+	//對應存入資料庫表格的屬性
+	@Column(name = "restaurantPhoto")
+	private Blob restaurantPhoto;
 	
-	@Column(name = "Longitude")
+	//新增修改時取圖的屬性
+	@Transient
+	MultipartFile productImage;
+	
+	@Column(name = "longitude")
 	private String longitude;
-	
-	@Column(name = "Latitude")
+
+	@Column(name = "latitude")
 	private String latitude;
-	
+
 	@Transient
 	@Column(name = "fk_userAccount_id")
 	private Integer userAccountId;
 
 	/** 1個User可以有多個餐廳 **/
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_userAccount_id")  
+	@JoinColumn(name = "fk_userAccount_id")
 	private UserAccount userAccount;
-		
-	/** 1個餐廳可以有多個菜單 **/
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
-	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
-	
-	/** 1個餐廳可以有多個留言 **/
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
-	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
-	
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurant" , cascade = CascadeType.ALL)
-	Set<EventList> eventList = new LinkedHashSet<EventList>();
-	
-	/** 一家餐廳有多個營業時間 **/
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantBusinHourId" , cascade = CascadeType.ALL)
-	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
-	
-	@ManyToMany
-	@JoinTable(name = "foodtag_restaurant",joinColumns = {
-			@JoinColumn(name="fk_restaurant_id",referencedColumnName="Restaurant_id")},inverseJoinColumns = {
-					@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")})
-	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
-	
 
-	
+	/** 1個餐廳可以有多個菜單 **/
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
+
+	/** 1個餐廳可以有多個留言 **/
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	Set<EventList> eventList = new LinkedHashSet<EventList>();
+
+	/** 一家餐廳有多個營業時間 **/
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
+	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
+
+	@ManyToMany
+	@JoinTable(name = "foodtag_restaurant", joinColumns = {
+			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
+	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
+
 	/** Getter和Setter **/
 
 	public Integer getRestaurantId() {
@@ -146,12 +151,21 @@ public class Restaurant {
 		this.restaurantWebsite = restaurantWebsite;
 	}
 
-	public byte[] getRestaurantPhotoName() {
-		return restaurantPhotoName;
+	public Blob getRestaurantPhoto() {
+		return restaurantPhoto;
 	}
 
-	public void setRestaurantPhotoName(byte[] restaurantPhotoName) {
-		this.restaurantPhotoName = restaurantPhotoName;
+	public void setRestaurantPhoto(Blob restaurantPhoto) {
+		this.restaurantPhoto = restaurantPhoto;
+	}
+
+	
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
 	}
 
 	public String getLongitude() {

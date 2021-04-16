@@ -376,6 +376,7 @@ window.onload = function() {
 						accoutDetailPage2.classList.add("tohide");
 						tagPage3.classList.remove("tohide");
 						tagPage3.classList.add("toshow");
+						alert("123");
 			        },
 			        error: function (result) {
 			            $("#checkAccountStatus2").text(result.fail); //填入提示訊息到result標籤內
