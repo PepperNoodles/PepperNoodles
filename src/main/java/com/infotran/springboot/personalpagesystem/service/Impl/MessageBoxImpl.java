@@ -17,7 +17,7 @@ public class MessageBoxImpl {
 	private MessageBoxRepository messageBoxRepository;
 
 	public MessageBox findById(Integer id){
-		Optional<MessageBox> messageBox = messageBoxRepository.findByUserMessageId(id);
+		Optional<MessageBox> messageBox = messageBoxRepository.findById(id);
 		
 		if(messageBox!=null) {
 			return messageBox.get();
