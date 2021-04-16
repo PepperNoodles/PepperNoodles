@@ -168,7 +168,7 @@
 												<div class="col-sm-4 col-sm-offset-1">
 													<div class="picture-container">
 														<div class="picture">
-															<img src="<c:url value="/picture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
+															<img src="<c:url value="/getComPicture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
 															<form:input type="file" id="wizard-picture" accept="image/*" path="userphoto" />
 															<form:errors path="userphoto" cssClass="error" />
 														</div>

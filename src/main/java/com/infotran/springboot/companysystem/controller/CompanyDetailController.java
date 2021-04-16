@@ -153,8 +153,8 @@ public class CompanyDetailController {
 		}
 	
 	/**秀圖片**/
-	@GetMapping("/picture/{id}")
-	public ResponseEntity<byte[]> getPicture(@PathVariable("id") Integer id) {
+	@GetMapping("/getComPicture/{id}")
+	public ResponseEntity<byte[]> getComPicture(@PathVariable("id") Integer id) {
 		ResponseEntity<byte[]> re = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
