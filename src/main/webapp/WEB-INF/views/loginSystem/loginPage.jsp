@@ -50,13 +50,16 @@ window.onload = function() {
 			return;
 		}
 		var xhr = new XMLHttpRequest();
+
 		xhr.open("POST", "<c:url value='/CheckMemberAccount' />", true);
+
 		var jsonAccount = {
 			"accountIndex" : userValue
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
 //			alert(JSON.stringify(jsonAccount));//debug
 		xhr.send(JSON.stringify(jsonAccount));
+
 		var message = "";
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
@@ -64,6 +67,7 @@ window.onload = function() {
 //					alert(accountResulst);
 				if ( accountResult.username.length == 0  ) {
 					message = "<font color='green' size='-2'>帳號可用</font>";
+
 					userValueinput.style.border="2px solid green";
 					div1.innerHTML = message;
 					hasError = true;

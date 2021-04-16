@@ -1,14 +1,18 @@
 package com.infotran.springboot.loginsystem.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import com.infotran.springboot.commonmodel.UserAccount;
 
 
-public interface UserAccountRepository  extends JpaRepository<UserAccount, Integer>{
 
+public interface UserAccountRepository  extends JpaRepository<UserAccount, String>{
+
+	public Optional<UserAccount> findByAccountIndex(String name);
+	
 	//自訂email查詢單一使用者
 	@Query("select u FROM UserAccount u Where u.accountIndex= ?1")
 	public List<UserAccount> findByAccount(String AccountName);
