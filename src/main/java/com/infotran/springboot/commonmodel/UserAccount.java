@@ -42,6 +42,9 @@ public class UserAccount {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "enabled")
+	private boolean enabled;
+	
 	@Column(name = "accountType")
 	@Transient
 	private Integer accountType;
@@ -57,6 +60,8 @@ public class UserAccount {
 	@Column(name = "fk_levelDetail_id")
 	@Transient
 	private Integer levelDetailId;
+	
+
 
 	// =============================================================
 	
@@ -77,13 +82,23 @@ public class UserAccount {
 	@JoinColumn(name = "fk_levelDetail_id")
 	private CompanyDetail levelDetail;
 
+	// Roles=============================================================
+	
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id" , referencedColumnName = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id" , referencedColumnName = "role_id")
+            )
+	private Set<Roles> roles = new HashSet<Roles>();
+	 
 	// foodtags=============================================================
-	
-//	@ManyToMany(mappedBy = "users")
-//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
-	
-	 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
-	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
+		
+//		@ManyToMany(mappedBy = "users")
+//		private Set<FoodTag> userTags = new HashSet<FoodTag>();
+		
+		 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+		 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	
@@ -151,11 +166,11 @@ public class UserAccount {
 	
 	// ReplyMessageBox=============================================================
 
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "replyuserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> replyNetizenAccounts = new ArrayList<ReplyMessage>();
-	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "commentUserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
+//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "replyuserAccount",cascade = CascadeType.ALL)
+//	private List<ReplyMessage> replyNetizenAccounts = new ArrayList<ReplyMessage>();
+//	
+//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "commentUserAccount",cascade = CascadeType.ALL)
+//	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
 	
 	// ForumReplyMessageBox=============================================================
 	
@@ -304,5 +319,30 @@ public class UserAccount {
 		this.companyDetail = companyDetail;
 	}
 
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
+	}
+
+	
 	
 }
