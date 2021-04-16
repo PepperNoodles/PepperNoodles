@@ -1,8 +1,11 @@
 package com.infotran.springboot.companysystem.controller;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,13 +18,19 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
+import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
+import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 
 @Controller
 @SessionAttributes(names = {"comDetail","comDetailId"})
 public class CompanyDetailController {
+	
+	//test
+	@Autowired
+	private RolesService rolesService;
 	
 	@Autowired
 	private CompanyDetailService comDetailService;
@@ -57,9 +66,19 @@ public class CompanyDetailController {
 		//新增會員
 		addUserAccount.setAccountIndex(userName);
 		addUserAccount.setPassword(userPwd);
+		//幫密碼加密
+		String bcEncode1 = new BCryptPasswordEncoder().encode(addUserAccount.getPassword());
+		addUserAccount.setPassword(bcEncode1);
 		//建立OneToOne連結
 		addUserAccount.setCompanyDetail(addComDetail);
 		Integer flag;
+		
+		//建立帳號的企業權限
+		Roles userRole = rolesService.findById(2);
+		Set<Roles> userRoles =addUserAccount.getRoles();
+		userRoles.add(userRole);
+		addUserAccount.setRoles(userRoles);
+		
 		try {
 			flag = userAccountService.save(addUserAccount);
 			if(flag ==1) {

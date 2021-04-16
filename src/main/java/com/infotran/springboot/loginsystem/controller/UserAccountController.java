@@ -4,7 +4,6 @@ import java.io.File;
 import java.sql.Blob;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,12 +31,17 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
+import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
+import com.infotran.springboot.loginsystem.dao.RolesRepository;
 import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
+import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
+
 
 
 @Controller
@@ -46,6 +51,14 @@ public class UserAccountController {
 	String imageRootDirectory = "D:\\_SpringBoot\\image";
 	
 	File imageFolder = null; 
+	
+	//test
+	@Autowired
+	private RolesRepository rolesRepository;
+	
+	//test
+	@Autowired
+	private RolesService rolesService;
 	
 	//test
 	@Autowired
@@ -72,6 +85,22 @@ public class UserAccountController {
 			imageFolder.mkdirs();
 	}
 	
+	@Autowired
+	private UserAccountServiceImpl userAccountServiceLogIn;
+
+	@PostMapping("/userAccountCreate.controller")
+	public @ResponseBody UserAccount processCreateUser(@RequestBody UserAccount userAccount) {
+		String bcEncode1 = new BCryptPasswordEncoder().encode(userAccount.getPassword());
+		userAccount.setPassword(bcEncode1);
+		return userAccountServiceLogIn.createUserProfiles(userAccount);
+	}
+	
+//	@GetMapping(value="/login/welcome",produces="application/json")
+//	public String returncreate(){
+//	
+//		return "loginSystem/loginPage";
+//		} 
+//	
 	
 	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/webapp/imagedata";
 
@@ -93,12 +122,21 @@ public class UserAccountController {
 //		UserAccount useraccount1 = new UserAccount();
 		useraccount1.setAccountIndex(dispatch.get("accountIndex"));
 		useraccount1.setPassword(dispatch.get("password"));
+		//幫密碼加密
+		String bcEncode1 = new BCryptPasswordEncoder().encode(useraccount1.getPassword());
+		useraccount1.setPassword(bcEncode1);
 		userDetail.setRealName(dispatch.get("realName"));
 		userDetail.setNickName(dispatch.get("nickname"));
 		userDetail.setPhoneNumber(dispatch.get("phoneNumber"));
 		userDetail.setBirthDay(dispatch.get("birthDay"));
 		userDetail.setGender(dispatch.get("gender"));
 		userDetail.setLocation(dispatch.get("location"));
+		
+		Roles userRole = rolesService.findById(1);
+		Set<Roles> userRoles =useraccount1.getRoles();
+		userRoles.add(userRole);
+		useraccount1.setRoles(userRoles);
+		
 		System.out.println("fuck======================================================1");
 		String originalFilename = file.getOriginalFilename();
 		String extFilename = ""; 
@@ -118,7 +156,9 @@ public class UserAccountController {
 				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
 			}
 		}
+
 		useraccount1.setUserAccountDetail(userDetail);
+		
 //		m.addAttribute("useraccount",useraccount1);
 		Integer flag;
 		System.out.println("fuck======================================================4");
