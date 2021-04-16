@@ -14,7 +14,7 @@ public class BaseController {
 	
 	@GetMapping("/temp")
 	public String template() {
-		return "template/template";
+		return "template/template_new";
 	}
 	
 	@GetMapping("/map")
@@ -25,6 +25,11 @@ public class BaseController {
 	@GetMapping("/user/main")
 	public String userMain() {
 		return "userpage/usermain";
+	}
+	
+	@GetMapping("/include")
+	public String goInclude() {
+		return "includePage/includeNav";
 	}
 
 }

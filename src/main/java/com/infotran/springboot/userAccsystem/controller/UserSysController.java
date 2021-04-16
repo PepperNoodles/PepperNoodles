@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.servlet.ServletContext;
-
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -50,6 +47,27 @@ public class UserSysController {
 	ServletContext servletContext;	
 	
 	
+	//得到mainUser的friendList
+	@GetMapping(path="findMainfriend/{userAccountIndex}")
+	@ResponseBody
+	public List<UserAccount> findMainUserFriend(@PathVariable("userAccountIndex") String mainAccountIndex){
+		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);
+		 Hibernate.initialize(user.getFriends());
+		Set<FriendList> mainUserFriends = user.getFriends();
+
+		List<UserAccount> myFriend = new ArrayList<UserAccount>();
+		if (mainUserFriends.isEmpty()==false) {
+			for(FriendList flist:mainUserFriends) {
+				UserAccount myFriendList = flist.getFriends();
+				System.out.println(myFriendList.getAccountIndex());
+				myFriend.add(myFriendList);
+				}
+			return myFriend;
+		}else {
+			return null;
+		}
+	}
+	
 	//好友要求(主帳號在sessionAttribute,userAccount,with session,要加的在路徑裡),簡單來說向viewUser就是送出好友要求
 	@GetMapping(path="addfriend/{userAccountIndex}/{viewAccountIndex}")
 	@ResponseBody
@@ -64,41 +82,6 @@ public class UserSysController {
 
 		return "request is sending";
 	}
-//	//用postMap試試看新增朋友請求
-//	@GetMapping(path="addfriend")
-//	public String requestFriendPost(@RequestParam(name="userIndex") String userIndex,@RequestParam(name="friendIndex") String friendIndex) {
-//		
-//		UserAccount friend = uSysServiceImpl.findByAccountIndex(friendIndex);
-//		UserAccount user = uSysServiceImpl.findByAccountIndex(userIndex);
-//		System.out.println("================user id ="+user.getAccountId());
-//		System.out.println("================friend id ="+friend.getAccountId());
-//		 
-//		FriendList flist=new FriendList();
-//		flist.setMainUser(user);
-//		flist.setFriends(friend);
-//		flist.setFriendship("W");		
-//		friendSysServiceImpl.save(flist); 
-//		return "";
-//	}
-	//用postMap試試看查詢有誰想加我
-//	@GetMapping(path="addfriendComfirm",produces = "application/json")
-//	@ResponseBody
-//	public List<UserAccount> comfirmFriendPost(@RequestParam(name="userIndex") String userIndex,@RequestParam(name="friendIndex") String friendIndex,Model model) {
-//		
-//		UserAccount user = uSysServiceImpl.findByAccountIndex(userIndex);
-//		UserAccount friend = uSysServiceImpl.findByAccountIndex(friendIndex);
-//		Integer leftUserId = friend.getAccountId();
-//		Integer rightUserId = user.getAccountId();
-//		
-//		List<FriendList> flist = friendSysServiceImpl.findByFriendship(friend, user, "W");
-//		List<UserAccount> usersList = new ArrayList<>();
-//		for (int i = 0;i<flist.size();i++) {
-//			UserAccount users = flist.get(i).getMainUser();
-//			usersList.add(users);
-//		}
-//		
-//		return usersList;
-//	}
 	
 	//用postman判斷是否為好友關係,動態影響button的值(主帳號session,被加的是friendIndex),目前用法為在viewUser頁面時,可以動態改成符合型態
 	@GetMapping(path="judgeFriendShip")
