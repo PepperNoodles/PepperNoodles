@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.companysystem.dao.RestaurantRepository;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 
+@Service
 public class RestaurantServiceImpl implements RestaurantService {
 
 	@Autowired

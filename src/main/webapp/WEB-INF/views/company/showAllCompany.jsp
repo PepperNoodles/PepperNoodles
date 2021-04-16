@@ -37,13 +37,13 @@ body{
 			<c:forEach var='companys' items='${companys}'>
 				<tr>
 					<td>${companys.companyDetailId}</td>
-					<td><img width='120' src='picture/${companys.companyDetailId}' /></td>
+					<td><img width='120' src='getComPicture/${companys.companyDetailId}' /></td>
 					<td>${companys.realname}</td>
 					<td>${companys.phonenumber}</td>
 					<td style="text-align:left">${companys.location}</td>
 <%-- 					<td style="text-align:center">${companys.level}</td> --%>
 					<td>
-						<a href="<c:url value='/' />updateCom/${companys.companyDetailId}">修改</a>
+						<a href="<c:url value='/updateCom/${companys.companyDetailId}' />">修改</a>
                     </td>
                     <td>
                     	<a class='deletelink' href="<c:url value='/' />_02_member/mem/${companys.companyDetailId}">刪除</a>

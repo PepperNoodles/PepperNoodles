@@ -3,6 +3,7 @@ package com.infotran.springboot.companysystem.service;
 import java.util.List;
 
 
+
 import com.infotran.springboot.commonmodel.Restaurant;
 
 public interface RestaurantService {
