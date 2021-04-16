@@ -43,11 +43,99 @@ public class RestaurantCRUDController {
 
 	@Autowired
 	RestaurantService restaurantService; // 介面當作參用
-	
+
 	@Autowired
 	RestaurantValidator restvalidator;
 
-//給圖用↓
+	// 連進新增餐廳時 給預設值
+	@GetMapping(value = "/addrest")
+	public String initRestaurant(Model model, Restaurant rest) {
+		model.addAttribute("restaurant", rest);
+		rest.setRestaurantName("幽靈炒飯");
+		rest.setRestaurantAddress("台北興安街");
+		rest.setRestaurantContact("0909053909");
+		rest.setRestaurantWebsite("facebook.com");
+		return "company/Insertrestaurant";
+	}
+
+	// 顯示所有餐廳資料
+	@GetMapping("/showAllrest")
+	public String list(Model model) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println(model.getAttribute("restaurants"));
+		return "company/Allrestaurants";
+	}
+
+	// 新增餐廳
+	@PostMapping(value = "/addrest")
+	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
+			HttpServletRequest request) {
+		// 餐廳validator進行資料檢查
+		restvalidator.validate(rest, result);
+		if (result.hasErrors()) {
+			List<ObjectError> list = result.getAllErrors();
+			for (ObjectError error : list) {
+				System.out.println("有錯誤：" + error);
+			}
+			return "company/Insertrestaurant";
+		}
+		// 從model取照片
+		MultipartFile picture = rest.getProductImage();
+		// 建立Blob物件，交由 Hibernate 寫入資料庫
+		if (picture != null && !picture.isEmpty()) {
+			try {
+				byte[] b = picture.getBytes();
+				Blob blob = new SerialBlob(b);
+				rest.setRestaurantPhoto(blob);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
+			}
+		}
+
+		restaurantService.save(rest);
+		System.out.println("新增成功");
+		return "redirect:/showAllrest";
+
+	}
+
+	// 當使用者需要修改時，本方法送回含有餐廳資料的表單，讓使用者進行修改
+	// 由這個方法送回修改記錄的表單...
+	@GetMapping("/updateRest/{restaurantId}")
+	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
+		Restaurant rest = restaurantService.get(id);
+		model.addAttribute("restaurant", rest);
+		System.out.println("選擇更新編號:" + id + "的餐廳");
+		return "company/Updaterestaurant";
+	}
+
+	// 收到post更新後檢查
+	@PostMapping("/updateRest/{restaurantId}")
+	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
+			@PathVariable("restaurantId") Integer id) {
+
+		// validator檢查錯誤
+		restvalidator.validate(restaurant, result);
+		if (result.hasErrors()) {
+			List<ObjectError> list = result.getAllErrors();
+			for (ObjectError error : list) {
+				System.out.println("有錯誤：" + error);
+			}
+			return "company/Insertrestaurant";
+		}
+		MultipartFile pc = restaurant.getProductImage();
+		return "redirect:/showAllrest";
+	}
+
+	// 刪除餐廳
+	@DeleteMapping("/deleteRest/{restaurantId}")
+	public String deleterest(@PathVariable("restaurantId") Integer id) {
+		restaurantService.delete(id);
+		System.out.println("刪除了編號:" + id + "的餐廳");
+		return "redirect:/showAllrest";
+	}
+
+	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
 		byte[] result = null;
 		try (InputStream is = blob.getBinaryStream(); ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
@@ -104,87 +192,5 @@ public class RestaurantCRUDController {
 		return re;
 	}
 
-//給圖用↑
-
-	// 連進新增餐廳時 給預設值
-	@GetMapping(value = "/addrest")
-	public String initRestaurant(Model model, Restaurant rest) {
-		model.addAttribute("restaurant", rest);
-		rest.setRestaurantName("幽靈炒飯");
-		rest.setRestaurantAddress("台北興安街");
-		rest.setRestaurantContact("0909053909");
-		rest.setRestaurantWebsite("facebook.com");
-		return "company/Insertrestaurant";
-
-	}
-
-	// 顯示所有餐廳資料
-	@GetMapping("/showAllrest")
-	public String list(Model model) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println(model.getAttribute("restaurants"));
-		return "company/Allrestaurants";
-	}
-
-	// 新增餐廳
-	@PostMapping(value = "/addrest")
-	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
-			HttpServletRequest request) {
-
-		// 餐廳validator進行資料檢查
-		restvalidator.validate(rest, result);
-		if (result.hasErrors()) {
-//          下列敘述可以理解Spring MVC如何處理錯誤				
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
-				System.out.println("有錯誤：" + error);
-			}
-			return "company/Insertrestaurant";
-		}
-//		從model取照片
-		MultipartFile picture = rest.getProductImage();
-		// 建立Blob物件，交由 Hibernate 寫入資料庫
-		if (picture != null && !picture.isEmpty()) {
-			try {
-				byte[] b = picture.getBytes();
-				Blob blob = new SerialBlob(b);
-				rest.setRestaurantPhoto(blob);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
-			}
-		}
-
-		restaurantService.save(rest);
-		System.out.println("新增成功");
-		return "redirect:/showAllrest";
-
-	}
-
-	// 刪除餐廳
-	@DeleteMapping("/deleteRest/{restaurantId}")
-	public String deleterest(@PathVariable("restaurantId") Integer id) {
-		restaurantService.delete(id);
-		System.out.println("刪除了編號:" + id + "的餐廳");
-		return "redirect:/showAllrest";
-	}
-
-	// 當使用者需要修改時，本方法送回含有餐廳資料的表單，讓使用者進行修改
-	// 由這個方法送回修改記錄的表單...
-	@GetMapping("/updateRest/{restaurantId}")
-	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
-		Restaurant rest = restaurantService.get(id);
-		model.addAttribute("restaurant", rest);
-		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/Updaterestaurant";
-	}
-
-	// 收到post更新後檢查 無誤更新
-	@PostMapping("/updateRest/{restaurantId}")
-	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
-			@PathVariable("restaurantId") Integer id) {
-			
-		
-		return "redirect:/showAllrest";
-	}
+	// 給圖用↑
 }
