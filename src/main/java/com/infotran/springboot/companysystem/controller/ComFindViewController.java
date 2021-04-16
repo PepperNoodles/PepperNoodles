@@ -15,14 +15,14 @@ public class ComFindViewController {
 	@Autowired
 	private CompanyDetailService comDetailService;
 
-	// 顯示所有會員資料
+	/**顯示所有會員資料**/ 
 	@GetMapping("/showAllComs")
 	public String list(Model model) {
 		model.addAttribute("companys", comDetailService.getAllCompanys());
 		return "company/showAllCompany";
 	}
 	
-	// 顯示所有會員資料
+	/**顯示會員資料**/ 
 	@GetMapping("/showCompany/{comId}")
 	public String showCompany(@PathVariable("comId") Integer comId , CompanyDetail comDetail , Model model) {
 		comDetail = comDetailService.findById(comId);
