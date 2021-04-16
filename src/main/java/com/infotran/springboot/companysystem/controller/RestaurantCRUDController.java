@@ -43,6 +43,9 @@ public class RestaurantCRUDController {
 
 	@Autowired
 	RestaurantService restaurantService; // 介面當作參用
+	
+	@Autowired
+	RestaurantValidator restvalidator;
 
 //給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
@@ -128,8 +131,7 @@ public class RestaurantCRUDController {
 	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
 			HttpServletRequest request) {
 
-		// 建立餐廳validator進行資料檢查
-		RestaurantValidator restvalidator = new RestaurantValidator();
+		// 餐廳validator進行資料檢查
 		restvalidator.validate(rest, result);
 		if (result.hasErrors()) {
 //          下列敘述可以理解Spring MVC如何處理錯誤				
@@ -158,18 +160,31 @@ public class RestaurantCRUDController {
 		return "redirect:/showAllrest";
 
 	}
-	//刪除餐廳
+
+	// 刪除餐廳
 	@DeleteMapping("/deleteRest/{restaurantId}")
 	public String deleterest(@PathVariable("restaurantId") Integer id) {
 		restaurantService.delete(id);
-		System.out.println("刪除了編號:"+id+"的餐廳");
+		System.out.println("刪除了編號:" + id + "的餐廳");
 		return "redirect:/showAllrest";
 	}
-	
-	@PutMapping("/updateRest/{restaurantId}")
-	public String updaterest(@PathVariable("restaurantId") Integer id) {
-	
-		System.out.println("更新編號:"+id+"的餐廳");
+
+	// 當使用者需要修改時，本方法送回含有餐廳資料的表單，讓使用者進行修改
+	// 由這個方法送回修改記錄的表單...
+	@GetMapping("/updateRest/{restaurantId}")
+	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
+		Restaurant rest = restaurantService.get(id);
+		model.addAttribute("restaurant", rest);
+		System.out.println("選擇更新編號:" + id + "的餐廳");
+		return "company/Updaterestaurant";
+	}
+
+	// 收到post更新後檢查 無誤更新
+	@PostMapping("/updateRest/{restaurantId}")
+	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
+			@PathVariable("restaurantId") Integer id) {
+			
+		
 		return "redirect:/showAllrest";
 	}
 }
