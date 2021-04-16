@@ -29,4 +29,12 @@ public class ComFindViewController {
 		model.addAttribute("comDetail", comDetail);
 		return "company/showCompany";
 	}
+	
+	/**登入後的企業畫面**/ 
+	@GetMapping("/company/{comId}")
+	public String company(@PathVariable("comId") Integer comId , CompanyDetail comDetail , Model model) {
+		comDetail = comDetailService.findById(comId);
+		model.addAttribute("comDetail", comDetail);
+		return "company/company";
+	}
 }

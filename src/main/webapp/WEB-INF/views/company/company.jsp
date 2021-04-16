@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
@@ -7,23 +6,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>文章</title>
+<title>登入</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
+<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
 <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
 <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
@@ -34,13 +27,29 @@
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <!-- Bootstrap core CSS -->
-
 <link href="<c:url value='/vendor/bootstrap/css/bootstrap.min.css' />" rel="stylesheet">
 <style>
 .header {
 	background-color: #000000;
 }
+#page2{
+	background-color: blue;
+	padding:0;
+	margin: 0;
+}
+.nopadding{
+	padding:0 !important;
+	margin: 0 !important;
+}
+
 </style>
+<script>
+$(document).ready(function(){
+	$("#showCompany").click(function(){
+		$("#showCompany").attr("href","//www.jb51.net"));	
+	});
+});
+</script>
 </head>
 <body>
 	<!-- 讀取圖案 -->
@@ -76,7 +85,7 @@
 										src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""></a>
 								</div>
 							</div>
-							<div class="col-xl-10 col-lg-10 col-md-8">
+							<div class="col-xl-10 col-lg-10 col-md-8 nopadding" >
 								<!-- Main-menu -->
 								<div class="main-menu f-right d-none d-lg-block">
 									<nav>
@@ -132,171 +141,39 @@
 			</div>
 		</div>
 		<!-- Header End -->
-	</header>
-	
+	</header>	
 
-	<div>
 		
-		<div class="container">
+<div class="container-fluid">
 
     <div class="row">
-
-      <div class="col-lg-3">
+	
+      <div class="col-lg-2">
 
         <h1 class="my-4">${comDetail.realname}</h1>
         <div class="list-group">
-        <%@include file="../template/template_test.jsp" %>
           <a href="<c:url value='/showCompany/${comDetail.companyDetailId}' />" class="list-group-item">基本資料</a>
-          <a href="/" class="list-group-item">我的餐廳</a>
-          <a href="#" class="list-group-item"></a>
+          <a href="#" class="list-group-item" id="showCompany">我的餐廳</a>
+          <a href="#" class="list-group-item">我的餐廳</a>
+          <br>
         </div>
 
       </div>
       <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9">
-
-        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-          </ol>
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item One</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item Two</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item Three</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item Four</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item Five</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Item Six</a>
-                </h4>
-                <h5>$24.99</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- /.row -->
-
+      <div class="col-lg-10 nopadding" >
+      
+      	<div class="col-lg-12 container-fluid nopadding" id="page2">
+			<%@include file="showCompany2.jsp" %>
+     	 </div>
       </div>
       <!-- /.col-lg-9 -->
 
     </div>
     <!-- /.row -->
 
-  </div>
+</div>
 		
-
-	</div>
-
-
-
 
 
 
@@ -449,9 +326,8 @@
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 <%-- <script src="<c:url value='/scripts/main.js' />"></script>  --%>
  <!-- Bootstrap core JavaScript -->
-  <script src="<c:url value='/vendor/vendor/jquery/jquery.min.js' />"></script>
-  
-  <script src="<c:url value='/vendor/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+<%--   <script src="<c:url value='/vendor/vendor/jquery/jquery.min.js' />"></script> --%>
+<%--   <script src="<c:url value='/vendor/bootstrap/js/bootstrap.bundle.min.js' />"></script> --%>
   
   
 </body>
