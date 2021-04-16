@@ -24,6 +24,8 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
 @Component
@@ -77,25 +79,37 @@ public class UserAccount {
 
 	// foodtags=============================================================
 	
-	@ManyToMany(mappedBy = "users")
-	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+//	@ManyToMany(mappedBy = "users")
+//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	
 //	@ManyToMany(mappedBy = "userAccountIDs")
 //	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
 	
-	// 如果要做朋友的request請求要在新增一個表格??=============================================================
+	// 如果要做朋友的request請求要在新增一個表格??===我現在把request放在friend表單裡 並改成兩個ManyToOne
 	
-	@ManyToMany(mappedBy = "friends")
-	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
+//	@ManyToMany(mappedBy = "friends")
+//	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
+//	
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinTable(name = "FriendList", joinColumns = {
+//			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "account_id") }, inverseJoinColumns = {
+//					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "account_id") })
+//	private Set<UserAccount> friends = new HashSet<UserAccount>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "FriendList", joinColumns = {
-			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "account_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "account_id") })
-	private Set<UserAccount> friends = new HashSet<UserAccount>();
-
+	//從左邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "mainUser",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private Set<FriendList> friends = new HashSet<FriendList>();
+	
+	//被右邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "friends",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private Set<FriendList> beFriends = new HashSet<FriendList>();
 
 
 	// UserFollowerForm=============================================================
@@ -231,4 +245,64 @@ public class UserAccount {
 	}
 
 
+	//好友系統用
+
+	public Set<FriendList> getFriends() {
+		return friends;
+	}
+
+
+
+	public void setFriends(Set<FriendList> friends) {
+		this.friends = friends;
+	}
+
+
+
+	public Set<FriendList> getBeFriends() {
+		return beFriends;
+	}
+
+
+	public void setBeFriends(Set<FriendList> beFriends) {
+		this.beFriends = beFriends;
+	}
+
+
+
+	public Integer getAccountId() {
+		return accountId;
+	}
+
+
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
+	}
+
+	
+	//好友系統用
+	
+
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
+	}
+
+
+	public Set<FoodTagUser> getFoodTagUsers() {
+		return FoodTagUsers;
+	}
+
+
+
+
+	public CompanyDetail getCompanyDetail() {
+		return companyDetail;
+	}
+	
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
+	}
+
+	
 }

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -31,19 +32,22 @@ public class FoodTag {
 	@Column(name="FoodTagName")
 	private String foodTagName;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinTable(name="foodtag_user",joinColumns = {
-			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
-			@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
-	private Set<UserAccount> users = new HashSet<UserAccount>();
-
-	
-
+//	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//	@JoinTable(name="foodtag_user",joinColumns = {
+//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+//					@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	private Set<UserAccount> users = new HashSet<UserAccount>();
+//
+//	
+//
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name="Forum_tag",joinColumns = {
 			@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
 			@JoinColumn(name="fk_forum_id",referencedColumnName = "forum_id")})
 	private Set<Forum> forums = new HashSet<Forum>();
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkfoodtag",cascade = CascadeType.ALL)
+	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	
 	
@@ -67,12 +71,14 @@ public class FoodTag {
 		this.foodTagName = foodTagName;
 	}
 
-	public Set<UserAccount> getUsers() {
-		return users;
+	public Set<FoodTagUser> getFoodTagUsers() {
+		return FoodTagUsers;
 	}
 
-	public void setUsers(Set<UserAccount> users) {
-		this.users = users;
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
 	}
+
+
 
 }
