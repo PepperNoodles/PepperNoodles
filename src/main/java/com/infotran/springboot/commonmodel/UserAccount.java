@@ -23,8 +23,9 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
@@ -97,8 +98,15 @@ public class UserAccount {
 //		@ManyToMany(mappedBy = "users")
 //		private Set<FoodTag> userTags = new HashSet<FoodTag>();
 		
-		 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
-		 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
+//		 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+//		 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
+//	@ManyToMany(mappedBy = "users")
+//	private Set<FoodTag> userTags = new HashSet<FoodTag>();
+	
+	@OneToMany(mappedBy = "fkuserid",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private Set<FoodTagUser> userTags = new HashSet<FoodTagUser>();
+
 	
 	// RestaurantFollowerForm=============================================================
 	
@@ -299,14 +307,6 @@ public class UserAccount {
 	//好友系統用
 	
 
-	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
-		FoodTagUsers = foodTagUsers;
-	}
-
-
-	public Set<FoodTagUser> getFoodTagUsers() {
-		return FoodTagUsers;
-	}
 
 
 
@@ -315,6 +315,18 @@ public class UserAccount {
 		return companyDetail;
 	}
 	
+	public Set<FoodTagUser> getUserTags() {
+		return userTags;
+	}
+
+
+
+	public void setUserTags(Set<FoodTagUser> userTags) {
+		this.userTags = userTags;
+	}
+
+
+
 	public void setCompanyDetail(CompanyDetail companyDetail) {
 		this.companyDetail = companyDetail;
 	}

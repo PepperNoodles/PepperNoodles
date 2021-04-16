@@ -36,7 +36,6 @@
 
 </head>
 <body>
-
 	<!-- Preloader Start -->
 	<div id="preloader-active">
 		<div
@@ -109,6 +108,8 @@
 
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
+											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>
+                                            <li><a href="rearStage/rearStage">後台</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 

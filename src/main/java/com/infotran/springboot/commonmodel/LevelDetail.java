@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="levelDetail")
 @Component
@@ -44,6 +46,7 @@ public class LevelDetail {
 	private Integer purchaseAmount;
 	
 	@OneToOne(mappedBy = "levelDetail")
+	@JsonIgnore
 	private UserAccount userAccount;
 	
 	public LevelDetail() {

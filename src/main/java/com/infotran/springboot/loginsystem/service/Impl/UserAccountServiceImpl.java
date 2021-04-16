@@ -50,7 +50,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		}else if (user2==null) {
 			System.out.println("fuck======================================================4.null");
 			System.out.println(user.getAccountIndex());
-			System.out.println(user.getFoodTagUsers().size());
+			System.out.println(user.getUserTags().size());
 
 			UserDao.save(user);
 			System.out.println("fuck======================================================4.save");
