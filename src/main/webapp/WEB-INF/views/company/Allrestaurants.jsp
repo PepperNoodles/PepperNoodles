@@ -164,7 +164,7 @@
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantContact}</td>
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantWebsite}</td>
 								<td><img width='120' height='120'
-									src='picture/${restaurant.restaurantId}' id='restpicture' /></td>
+									src='restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
 								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
 								<td style="font-weight: bold"><a class='deletelink' href="deleteRest/${restaurant.restaurantId}">刪除</a></td>
 							</tr>
@@ -175,7 +175,7 @@
 			<hr>
 		</div>
 	</div>
-<form id='deletefrom' method='POST'>
+<form id='deleteform' method='POST'>
 	<input type='hidden' name='_method' value='DELETE'>
 </form>
 <form id='updateform' method='POST'>
@@ -187,18 +187,18 @@
         $('.deletelink').click(function() {
         	if (confirm('確定刪除此筆紀錄? ')) {
         		var href = $(this).attr('href');
-                $("#deletefrom").attr('action', href).submit();
+                $("#deleteform").attr('action', href).submit();
         	} 
         	return false;
             
         });
         
         $('.updatelink').click(function() {
-        	alert("更新");
+        	if (confirm('test? ')) {
         		var href = $(this).attr('href');
                 $("#updateform").attr('action', href).submit();
-
-            
+        	}
+        	return false;
         });
     })
 </script>
