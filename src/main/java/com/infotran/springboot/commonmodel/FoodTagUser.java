@@ -31,24 +31,22 @@ public class FoodTagUser implements Serializable {
 	
 	@Column(name="fk_userAccount_id")
 	@Transient
-	private Integer fkuserid;
-
+	private Integer fkuser;
+	
 	@Column(name="fk_foodTag_id")
 	@Transient
-	private Integer fkfoodtagid;
-
-	
+	private Integer fkfoodtag;
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
 	@JsonBackReference
-	private UserAccount  fkuser;
+	private UserAccount  fkuserid;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
 	@JsonBackReference
-	private FoodTag  fkfoodtag;
+	private FoodTag  fkfoodtagid;
 	
 
 	public FoodTagUser() {
@@ -63,46 +61,42 @@ public class FoodTagUser implements Serializable {
 		FooTagUserId = fooTagUserId;
 	}
 
-
-
-	
-
-
-	public UserAccount getFkuser() {
-		return fkuser;
-	}
-
-	public void setFkuser(UserAccount fkuser) {
-		this.fkuser = fkuser;
-	}
-
-	public FoodTag getFkfoodtag() {
-		return fkfoodtag;
-	}
-
-	public void setFkfoodtag(FoodTag fkfoodtag) {
-		this.fkfoodtag = fkfoodtag;
-	}
-
-	public Integer getFkuserid() {
-		return fkuserid;
-	}
-
-	public void setFkuserid(Integer fkuserid) {
-		this.fkuserid = fkuserid;
-	}
-
-	public Integer getFkfoodtagid() {
-		return fkfoodtagid;
-	}
-
-	public void setFkfoodtagid(Integer fkfoodtagid) {
-		this.fkfoodtagid = fkfoodtagid;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+	public Integer getFkuser() {
+		return fkuser;
+	}
+
+	public void setFkuser(Integer fkuser) {
+		this.fkuser = fkuser;
+	}
+
+	public Integer getFkfoodtag() {
+		return fkfoodtag;
+	}
+
+	public void setFkfoodtag(Integer fkfoodtag) {
+		this.fkfoodtag = fkfoodtag;
+	}
+
+	public UserAccount getFkuserid() {
+		return fkuserid;
+	}
+
+	public void setFkuserid(UserAccount fkuserid) {
+		this.fkuserid = fkuserid;
+	}
+
+	public FoodTag getFkfoodtagid() {
+		return fkfoodtagid;
+	}
+
+	public void setFkfoodtagid(FoodTag fkfoodtagid) {
+		this.fkfoodtagid = fkfoodtagid;
+	}
+
+	
 }
 

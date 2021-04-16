@@ -58,6 +58,7 @@ window.onload = function() {
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
 //			alert(JSON.stringify(jsonAccount));//debug
+		console.log(JSON.stringify(jsonAccount));
 		xhr.send(JSON.stringify(jsonAccount));
 
 		var message = "";
@@ -873,18 +874,18 @@ function privacyornot() {
 											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
 												<tr>
 													<td width="50px">興趣:</td>
-													<td><input type="checkbox" name="hobby" value="curry"
-														id="hobby">咖哩</td>
-													<td><input type="checkbox" name="hobby" value="BBQ"
-														id="hobby">烤肉</td>
-													<td><input type="checkbox" name="hobby" value="pizza"
-														id="hobby">披薩</td>
-													<td><input type="checkbox" name="hobby" value="fried"
-														id="hobby">炸物</td>
-													<td><input type="checkbox" name="hobby" value="hamburger"
-														id="hobby">漢堡</td>
-													<td><input type="checkbox" name="hobby" value="springRoll"
-														id="hobby">春捲</td>
+													<td><input type="checkbox" name="hobby" value="炸雞"
+														id="hobby">炸雞</td>
+													<td><input type="checkbox" name="hobby" value="冰淇淋"
+														id="hobby">冰淇淋</td>
+													<td><input type="checkbox" name="hobby" value="日式"
+														id="hobby">日式</td>
+													<td><input type="checkbox" name="hobby" value="沙拉"
+														id="hobby">沙拉</td>
+													<td><input type="checkbox" name="hobby" value="水果"
+														id="hobby">水果</td>
+													<td><input type="checkbox" name="hobby" value="牛排"
+														id="hobby">牛排</td>
 												</tr>
 											</table>
 											<br>

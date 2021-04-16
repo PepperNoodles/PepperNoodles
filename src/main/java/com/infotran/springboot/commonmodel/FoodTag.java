@@ -44,7 +44,7 @@ public class FoodTag {
 //	@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
 //	private Set<UserAccount> users = new HashSet<UserAccount>();
 
-	@OneToMany(mappedBy = "fkfoodtag",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
@@ -56,7 +56,7 @@ public class FoodTag {
 	private Set<Forum> forums = new HashSet<Forum>();
 	
 	/* 所屬的tag */
-	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fkFoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	

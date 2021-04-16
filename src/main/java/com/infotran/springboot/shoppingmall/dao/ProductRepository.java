@@ -55,10 +55,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	/*根據興趣推薦給使用者適合的產品*/
 	@Query(value="SELECT distinct p "
 				+"FROM Product p, FoodTag ft INNER JOIN "
-				+"FoodTagUser fu ON ft.foodTagIid = fu.fkfoodTagid INNER JOIN "
+				+"FoodTagUser fu ON ft.foodTagIid = fu.fkfoodtagid INNER JOIN "
 				+"FoodTagProduct fp ON ft.foodTagIid = fp.fkFoodtagid INNER JOIN "
 				+"Product p ON fp.fkproductid = p.productId INNER JOIN "
-				+"UserAccount ua ON fu.fkuserAccountid = ua.accountId "
+				+"UserAccount ua ON fu.fkuserid = ua.accountId "
 				+"where ua.accountIndex = ?1")
 	public Page<Product> findByTag(String accountindex,Pageable pageable);
 	
@@ -66,10 +66,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	/*根據興趣推薦給使用者適合的產品/價格間距  */
 	@Query(value="SELECT distinct p "
 				+"FROM Product p, FoodTag ft INNER JOIN "
-				+"FoodTagUser fu ON ft.foodTagIid = fu.fkfoodTagid INNER JOIN "
+				+"FoodTagUser fu ON ft.foodTagIid = fu.fkfoodtagid INNER JOIN "
 				+"FoodTagProduct fp ON ft.foodTagIid = fp.fkFoodtagid INNER JOIN "
 				+"Product p ON fp.fkproductid = p.productId INNER JOIN "
-				+"UserAccount ua ON fu.fkuserAccountid = ua.accountId "
+				+"UserAccount ua ON fu.fkuserid = ua.accountId "
 				+"where ua.accountIndex = ?1 and (p.productPrice BETWEEN ?2 AND ?3)")
 	public Page<Product> findByTag(String accountindex,Integer startPrice, Integer endPrice,Pageable pageable);
 	
