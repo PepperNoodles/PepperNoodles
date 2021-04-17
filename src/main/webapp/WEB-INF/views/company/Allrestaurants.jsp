@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type='text/javascript' src="<c:url value='/' />/scripts/jquery-1.9.1.min.js"></script>
+<script type='text/javascript' src="<c:url value='/scripts/jquery-1.9.1.min.js' />"></script>
 <meta charset="UTF-8">
 <title>restaurantCRUD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -166,7 +166,7 @@
 								<td><img width='120' height='120'
 									src='restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
 								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
-								<td style="font-weight: bold"><a class='deletelink' href="deleteRest/${restaurant.restaurantId}">刪除</a></td>
+								<td style="font-weight: bold"><a class='deletelink' href="<c:url value='/deleteRest/${restaurant.restaurantId}' />">刪除</a></td>
 							</tr>
 						</c:forEach>
 					</table>

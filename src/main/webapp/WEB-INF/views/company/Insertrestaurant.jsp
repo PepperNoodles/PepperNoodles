@@ -196,7 +196,7 @@ footer {
 						</div>
 						<div class="rest-picbox">
 							<img
-								src="<c:url value="/images/NoImage/NoImage_restaurant.jpg"/>"
+								src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
 
