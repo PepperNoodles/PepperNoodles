@@ -36,13 +36,15 @@ import com.infotran.springboot.companysystem.validator.RestaurantValidator;
 
 @Controller
 public class RestaurantCRUDController {
-	String noImage = "/images/NoImage/NoImage_restaurant.jpg";
+	
+//	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
+	String noImage = "/images/NoImage/restaurantdefault.png";
 
 	@Autowired
 	ServletContext context;
 
 	@Autowired
-	RestaurantService restaurantService; // 介面當作參用
+	RestaurantService restaurantService; 
 
 	@Autowired
 	RestaurantValidator restvalidator;
@@ -98,9 +100,8 @@ public class RestaurantCRUDController {
 		return "redirect:/showAllrest";
 
 	}
-
+/*更新餐廳↓*/
 	// 當使用者需要修改時，本方法送回含有餐廳資料的表單，讓使用者進行修改
-	// 由這個方法送回修改記錄的表單...
 	@GetMapping("/updateRest/{restaurantId}")
 	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
 		Restaurant rest = restaurantService.get(id);
@@ -109,7 +110,7 @@ public class RestaurantCRUDController {
 		return "company/Updaterestaurant";
 	}
 
-	// 收到post更新後檢查
+	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
 	@PostMapping("/updateRest/{restaurantId}")
 	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
 			@PathVariable("restaurantId") Integer id) {
@@ -121,17 +122,41 @@ public class RestaurantCRUDController {
 			for (ObjectError error : list) {
 				System.out.println("有錯誤：" + error);
 			}
-			return "company/Insertrestaurant";
+			//若有錯 回到修改頁面
+			return "company/Updaterestaurant";
 		}
+		//檢查提交表單的上傳圖片檔
 		MultipartFile pc = restaurant.getProductImage();
+		if (pc.getSize()==0) {
+			//表示使用者沒有要更新照片 拿舊的照片丟入提交表單 一併提交
+			
+			Blob oldRestPhoto = restaurantService.get(restaurant.getRestaurantId()).getRestaurantPhoto();
+			restaurant.setRestaurantPhoto(oldRestPhoto);
+			restaurantService.update(restaurant);
+		}
+		else {
+			//使用者有要更新照片 
+			try {
+				byte[] b = pc.getBytes();
+				Blob blob = new SerialBlob(b);
+				restaurant.setRestaurantPhoto(blob);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
+			}
+			restaurantService.update(restaurant);
+		}
+		
 		return "redirect:/showAllrest";
 	}
-
+/*更新餐廳↑*/
+	
+	
 	// 刪除餐廳
-	@DeleteMapping("/deleteRest/{restaurantId}")
-	public String deleterest(@PathVariable("restaurantId") Integer id) {
+	@DeleteMapping("/deleteRest/{Id}")
+	public String deleterest(@PathVariable("Id") Integer id) {
 		restaurantService.delete(id);
-		System.out.println("刪除了編號:" + id + "的餐廳");
+		System.out.println("刪除了編號:" + id + "的餐廳!!");
 		return "redirect:/showAllrest";
 	}
 
@@ -183,7 +208,7 @@ public class RestaurantCRUDController {
 		if (blob != null) {
 			body = blobToByteArray(blob);
 		} else {
-			String path = null;
+			String path = noImage;
 
 			body = fileToByteArray(path);
 		}
