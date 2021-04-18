@@ -57,7 +57,7 @@ public class RestaurantCRUDController {
 		rest.setRestaurantAddress("台北興安街");
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
-		return "company/Insertrestaurant";
+		return "company/InsertRestaurant";
 	}
 
 	// 顯示所有餐廳資料
@@ -65,7 +65,7 @@ public class RestaurantCRUDController {
 	public String list(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
 		System.out.println(model.getAttribute("restaurants"));
-		return "company/Allrestaurants";
+		return "company/AllRestaurants";
 	}
 
 	// 新增餐廳
@@ -77,9 +77,9 @@ public class RestaurantCRUDController {
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
-				System.out.println("有錯誤：" + error);
+				System.out.println(".validate()後有錯誤：" + error);
 			}
-			return "company/Insertrestaurant";
+			return "company/InsertRestaurant";
 		}
 		// 從model取照片
 		MultipartFile picture = rest.getProductImage();
@@ -107,7 +107,7 @@ public class RestaurantCRUDController {
 		Restaurant rest = restaurantService.get(id);
 		model.addAttribute("restaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/Updaterestaurant";
+		return "company/UpdateRestaurant";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
@@ -123,7 +123,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			//若有錯 回到修改頁面
-			return "company/Updaterestaurant";
+			return "company/UpdateRestaurant";
 		}
 		//檢查提交表單的上傳圖片檔
 		MultipartFile pc = restaurant.getProductImage();

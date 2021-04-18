@@ -65,23 +65,29 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
+.toshow{
+		display: block;
+	}
+.tohide{
+		display: none;
+	}
 </style>
 
 </head>
 <body>
 	<!-- 讀取圖案 -->
-<!-- 	<div id="preloader-active"> -->
-<!-- 		<div -->
-<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
-<!-- 			<div class="preloader-inner position-relative"> -->
-<!-- 				<div class="preloader-circle" -->
-<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
-<!-- 				<div class="preloader-img pere-text"> -->
-<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<!-- 	<div id="preloader-active"> -->
+	<!-- 		<div -->
+	<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
+	<!-- 			<div class="preloader-inner position-relative"> -->
+	<!-- 				<div class="preloader-circle" -->
+	<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
+	<!-- 				<div class="preloader-img pere-text"> -->
+	<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
 
 	<!-- 最上層bar -->
 	<header>
@@ -177,9 +183,17 @@ footer {
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' />
+							<form:input path='restaurantAddress' id="RAdd"/>
 							<form:errors path="restaurantAddress" cssClass="error" />
 							<br>
+							<div class="toshow">
+							<h5 style="color: #FF1493">經度：</h5>
+							<form:input path='longitude' id="RLong"/>
+							<br>
+							<h5 style="color: #FF1493">緯度：</h5>
+							<form:input path='latitude' id="RLati"/>
+							<br>
+							</div>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
@@ -195,8 +209,7 @@ footer {
 							<br> <input type='submit'>
 						</div>
 						<div class="rest-picbox">
-							<img
-								src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
+							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
 
@@ -337,6 +350,63 @@ footer {
 					});
 		});
 	</script>
+	<!-- 	地址轉座標 -->
+	<script>
+		var map;
+
+		function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+				center : {
+					lat : 25.033710,
+					lng : 121.564718
+				},
+				zoom : 15
+			});
+			var marker = new google.maps.Marker({
+				position : {
+					lat : 25.033710,
+					lng : 121.564718
+				},
+				map : map
+			});
+		}
+
+		function startTrans() {
+			let addr = document.getElementById("RAdd").value;
+			console.log(addr);
+			addressToLocation(addr);
+// 			console.log(document.getElementById("lat").value);      
+
+		}
+
+		function addressToLocation(addr) {
+			let longitude;
+			let latitude;
+			let loca;
+			var geocoder = new google.maps.Geocoder();
+			geocoder.geocode({
+				'address' : addr
+			}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					longitude = results[0].geometry.location.lng();
+
+					latitude = results[0].geometry.location.lat();
+
+					let lat = document.getElementById("RLati");
+					lat.value = latitude;
+					let lng = document.getElementById("RLong");
+					lng.value = longitude;
+				} else {
+				}
+			})
+
+		}
+
+		document.getElementById("RAdd").addEventListener("change", startTrans);
+	</script>
+
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"	async defer></script>
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
