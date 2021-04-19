@@ -65,14 +65,35 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
-.toshow{
-		display: block;
-	}
-.tohide{
-		display: none;
-	}
-</style>
 
+.toshow {
+	display: block;
+}
+
+.tohide {
+	display: none;
+}
+</style>
+<!--餐廳地址Ajax驗證不可重複 -->
+<script>
+		$(function() {
+
+			var Rid=${restaurant.restaurantId};
+			
+			${"#RName"}.click(function(){
+				
+				
+				alert("good");
+				
+				
+				
+			}
+					
+		});
+		
+	
+	
+	</script>
 </head>
 <body>
 	<!-- 讀取圖案 -->
@@ -179,20 +200,20 @@ footer {
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest</h1>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
-							<form:input path='restaurantName' />
+							<form:input path='restaurantName' id='RName' />
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' id="RAdd"/>
+							<form:input path='restaurantAddress' id="RAdd" />
 							<form:errors path="restaurantAddress" cssClass="error" />
 							<br>
 							<div class="toshow">
-							<h5 style="color: #FF1493">經度：</h5>
-							<form:input path='longitude' id="RLong"/>
-							<br>
-							<h5 style="color: #FF1493">緯度：</h5>
-							<form:input path='latitude' id="RLati"/>
-							<br>
+								<h5 style="color: #FF1493">經度：</h5>
+								<form:input path='longitude' id="RLong" />
+								<br>
+								<h5 style="color: #FF1493">緯度：</h5>
+								<form:input path='latitude' id="RLati" />
+								<br>
 							</div>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
@@ -206,7 +227,7 @@ footer {
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
-							<br> <input type='submit'>
+							<br> <input type='submit' id="checkRAddressBeforeSubmit">
 						</div>
 						<div class="rest-picbox">
 							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
@@ -350,7 +371,7 @@ footer {
 					});
 		});
 	</script>
-	<!-- 	地址轉座標 -->
+	<!--地址轉座標 -->
 	<script>
 		var map;
 
@@ -406,7 +427,9 @@ footer {
 	</script>
 
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"	async defer></script>
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"
+		async defer>
+	</script>
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 

@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,7 +52,8 @@ public class RestaurantCRUDController {
 	@Autowired
 	RestaurantValidator restvalidator;
 
-	// 連進新增餐廳時 給預設值
+	
+	// 連進新增餐廳時 給預設值 回傳新增頁
 	@GetMapping(value = "/addrest")
 	public String initRestaurant(Model model, Restaurant rest) {
 		model.addAttribute("restaurant", rest);
@@ -59,7 +63,6 @@ public class RestaurantCRUDController {
 		rest.setRestaurantWebsite("facebook.com");
 		return "company/InsertRestaurant";
 	}
-
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
 	public String list(Model model) {
@@ -113,8 +116,8 @@ public class RestaurantCRUDController {
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
 	@PostMapping("/updateRest/{restaurantId}")
 	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
-			@PathVariable("restaurantId") Integer id) {
-
+			@PathVariable("restaurantId") Integer id,@RequestPart("productImage")MultipartFile productImage ) {
+		System.out.println("餐廳名稱"+restaurant.getRestaurantName());
 		// validator檢查錯誤
 		restvalidator.validate(restaurant, result);
 		if (result.hasErrors()) {
@@ -126,24 +129,21 @@ public class RestaurantCRUDController {
 			return "company/UpdateRestaurant";
 		}
 		//檢查提交表單的上傳圖片檔
-		MultipartFile pc = restaurant.getProductImage();
-		if (pc.getSize()==0) {
-			//表示使用者沒有要更新照片 拿舊的照片丟入提交表單 一併提交
-			
-			Blob oldRestPhoto = restaurantService.get(restaurant.getRestaurantId()).getRestaurantPhoto();
-			restaurant.setRestaurantPhoto(oldRestPhoto);
-			restaurantService.update(restaurant);
-		}
-		else {
-			//使用者有要更新照片 
+	
+		if(productImage!=null&& !productImage.isEmpty()) {
 			try {
-				byte[] b = pc.getBytes();
+				byte[] b = productImage.getBytes();
 				Blob blob = new SerialBlob(b);
 				restaurant.setRestaurantPhoto(blob);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
 			}
+			restaurantService.update(restaurant);
+		}
+		else {
+			Blob oldRestPhoto = restaurantService.get(restaurant.getRestaurantId()).getRestaurantPhoto();
+			restaurant.setRestaurantPhoto(oldRestPhoto);
 			restaurantService.update(restaurant);
 		}
 		
@@ -159,7 +159,15 @@ public class RestaurantCRUDController {
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
 		return "redirect:/showAllrest";
 	}
-
+	
+	// check地址有無重複
+	@PostMapping("/checkRAddress/{Rid}")
+	public @ResponseBody String checkRAddress(@PathVariable("Rid") Integer rId,
+			@RequestParam("restaurantAddress")String rAdd ) {
+		System.out.println("驗證地址"+rId+rAdd);
+		
+		return rAdd;
+	}
 	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
 		byte[] result = null;
