@@ -876,7 +876,7 @@ $(document).ready(function() {
 		
 		//點購物車
 		$('body').on('click','#shopcart',function(e){
-			console.log(localStorage.getItem("item1").id);
+			console.log(localStorage.getItem("item1").["id"]);
 			e.preventDefault();	
 			$('tbody>tr').empty();
 			$('#pricetag>h4').empty();
