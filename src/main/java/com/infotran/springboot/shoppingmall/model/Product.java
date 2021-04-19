@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.commonmodel.Restaurant;
@@ -53,22 +54,20 @@ public class Product {
 
 	/* 對應的餐廳 */
 	@Column(name="fk_Restaurant_id",insertable = false,updatable = false)
-//	@Transient
 	private Integer fkRestaurantId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_Restaurant_id")
-	@JsonBackReference
+	@JsonIgnore
 	private Restaurant restaurant;
 	
 	/* 對應的子分類 */
 	@Column(name="fk_ProductDetailClass_id",insertable = false,updatable = false)
-//	@Transient
 	private Integer fkProductDetailClassId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_ProductDetailClass_id")
-	@JsonBackReference 
+	@JsonIgnore 
 	private ProductDetailClass productDetailClass;
 	
 	@Column(name="RealeasedDate")
@@ -76,12 +75,12 @@ public class Product {
 	
 	/* 所屬的tag */
 	@OneToMany(mappedBy = "fkProductid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<FoodTagProduct> productTags = new HashSet<FoodTagProduct>();
 	
 	/* 訂單編號多對多 */
 	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<OrderDetail> orderList = new HashSet<OrderDetail>();
 	
 	@Transient

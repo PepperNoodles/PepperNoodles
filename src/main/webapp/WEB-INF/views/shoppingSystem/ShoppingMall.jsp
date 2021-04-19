@@ -24,7 +24,6 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
-
 <script>
 $(document).ready(function() {
 	
@@ -68,7 +67,8 @@ $(document).ready(function() {
 	       					"<ul>"+
 	       						"<li>$"+element.productPrice+"</li>"+
 	       						"<li style='display:none;'>"+element.quantity+"</li>"+
-	       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 	       					"</ul>"+
 	       					"</div>");
 	       			$productCardDiv.append($singlelisting);
@@ -79,6 +79,7 @@ $(document).ready(function() {
 	        	console.log(result);
 	        }
 		});
+		
 		//全部商品
 		$.ajax({
 			method:"GET",
@@ -111,7 +112,8 @@ $(document).ready(function() {
 	       					"<ul>"+
 	       						"<li>$"+element.productPrice+"</li>"+
 	       						"<li style='display:none;'>"+element.quantity+"</li>"+
-	       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+	       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 	       					"</ul>"+
 	       					"</div>");
 	       			$productCardDiv.append($singlelisting);
@@ -173,7 +175,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -234,7 +237,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -294,7 +298,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -353,7 +358,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -416,7 +422,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -477,7 +484,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -538,7 +546,8 @@ $(document).ready(function() {
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -599,7 +608,9 @@ $(document).ready(function() {
 		       			.append("<div class='list-footer'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -667,7 +678,9 @@ $(document).ready(function() {
 		       			.append("<div class='list-footer'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -721,7 +734,9 @@ $(document).ready(function() {
 		       			.append("<div class='list-footer'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
-		       						"<li class='addcart' id='addcart'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart' value='1'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
 		       					"</ul>"+
 		       					"</div>");
 		       			$productCardDiv.append($singlelisting);
@@ -734,35 +749,193 @@ $(document).ready(function() {
 			})
 		});//END
 		
-		
+		//modal open product 事件
+		var productid ;
+		var productname ;
+		var description ;
+		var price ;
+		var quantity ;//庫存
 		$('body').on("click","#queryProduct",function(e){
 			e.preventDefault();
+// 			$("#footerbtn button").remove();
 			$(".modal-body>div").remove();
-			var productid = $(this).next().val();
-			var productname = $(this).nextAll("h3").text();
-			var description = $(this).nextAll("p:eq(1)").text();
-			var price = $(this).nextAll(".list-footer").find("ul li:eq(0)").text();
-			var quantity = $(this).nextAll(".list-footer").find("ul li:eq(1)").text();
+			productid 	= $(this).next().val();
+			productname = $(this).nextAll("h3").text();
+			description = $(this).nextAll("p:eq(1)").text();
+			price 		= $(this).nextAll(".list-footer").find("ul li:eq(0)").text();
+			quantity 	= $(this).nextAll(".list-footer").find("ul li:eq(1)").text();//庫存
 			//
-			var heading = $("#pnameheading");
-			var modalbody = $(".modal-body");
-			var modalfooter = $(".modal-footer");
-			var container = $('<div></div>').addClass("container");
-			var row = $('<div></div>').addClass("row");
-			var listimg = $("<div class='col-lg-4'></div>");
-			var detail = $("<div class='col-lg-8'></div>");
-			var content = $("<p></p>").text(description).css({"font-size":"20px","font-weight":"bolder"});
+			var heading 	 = $("#pnameheading");
+			var modalbody 	 = $(".modal-body");
+			var modalfooter  = $(".modal-footer");
+			var container 	 = $('<div></div>').addClass("container");
+			var row 		 = $('<div></div>').addClass("row");
+			var listimg 	 = $("<div class='col-lg-4'></div>");
+			var detail 		 = $("<div class='col-lg-8'></div>");
+			var detailfooter = $('<div></div>').addClass("detailfooter");
+			var pr 			 = $('<span id="eachprice">'+price+'</span>');
+			var content 	 = $("<p></p>").text(description).css({"font-size":"20px","font-weight":"bolder"});
+			var btn 		 = $('#purchase');
+			var out			 = $('#callout');
+			var footerbtn    = $('#footerbtn');
+// 			var buy          = $('<button type="button" id="purchase" value="1">購買</button>').addClass("genric-btn danger-border circle arrow small").attr("name",productname);
+// 			var nobuy        = $('<button type="button" id="callout" value="2" style="display: none;">取消</button>').addClass("genric-btn danger-border circle arrow small").attr("name",price);
 			//
+			modalfooter.attr("id",productid);
+			btn.attr("name",productname);
+// 			footerbtn.append(buy).append(nobuy);
 			heading.text(productname);
+			detailfooter.append(pr);
 			detail.append(content);
-			container.append(row.append(listimg.append($("<img id='queryimage' src='../../PepperNoodles/getProductImages?no="+ productid+"'/>"))).append(detail))
+			detail.append(detailfooter);
+			container.append(row.append(listimg.append($("<img id='queryimage' src='../../PepperNoodles/getProductImages?no="+ productid+"'/>"))).append(detail));
 			modalbody.append(container);
-			
+		});
+		//
+		var count = 0;
+		localStorage.clear();
+		$("body").on('click',('#addcart,#removecart'),function(e){
+			e.preventDefault();
+			var dot   = $('.dot');
+			var watid = $(this).attr('id');
+			var diff  = $(this).attr('value');
+			var pid ;
+			var pname ;
+			var pamount ;
+			var pprice ; 
+			//alert(diff+":"+watid);
+			if  (diff == 1){//加入購物車
+				count++;
+				$(this).hide();
+				$(this).next().show();
+				if (watid == "addcart") {
+					pid   	= $(this).parents("div").prevAll("#hiddenid").val();
+					pname 	= $(this).parents("div").prevAll("h3:eq(0)").text();
+					pamount = 1;
+					pprice 	= $(this).prevAll("ul li:eq(1)").text();
+					for (var i = count; i<= count; i++){
+						var pobject_i = {id:pid,name:pname,amount:pamount,price:pprice};
+						localStorage.setItem('item'+i+'', JSON.stringify(pobject_i));
+// 						alert('item'+i+'');
+// 						alert(JSON.stringify(pobject_i));
+					}
+				} 
+			} else if (diff == 2){//移出購物車
+				count--;
+				$(this).hide()
+				$(this).prev().show();
+				if (watid == "removecart"){
+					var pid = $(this).parents("#hiddenid").val();
+					alert("pid is"+pid);
+					for (var k = 1; k <= (count+1) ; k++){
+						var id = parseInt(JSON.parse(localStorage.getItem('item'+k+'')).id,10);
+						alert("id is"+id);
+						if (pid==id){
+							localStorage.removeItem('item'+k+'');
+						}
+					}
+				} 
+			}//移出購物車end
+			dot.text(count).show();
+			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
+			$('.toast').toast({delay: 3000});
+			$('.toast').toast('show');
+		});
+		////
+		
+		
+		$("body").on('click',('#purchase,#callout'),function(e){
+// 			sessionStorage.clear();
+			e.preventDefault();
+			var dot   = $('.dot');
+			var diff  = $(this).attr('value');
+			var watid = $(this).attr('id');
+			var realamount = $("#amount").val();//購買數量
+// 			alert("realamount is:"+realamount);
+			//alert(diff+":"+watid);
+			if  (diff == 1){//加入購物車
+				count++;
+				if (watid == "purchase") {
+					var pid 	= $(this).parents(".modal-footer").attr('id');
+					var pname 	= $(this).attr("name");
+					var pamount = realamount;
+					var pprice 	= $(this).next().attr("name");
+					for (var j 	= count;j <= count; j++){
+						var pobject_j = {id:pid,name:pname,amount:pamount,price:pprice};
+						localStorage.setItem('item'+j+'', JSON.stringify(pobject_j));
+						alert(JSON.stringify(pobject_j));
+// 						sessionStorage.clear();
+					}
+				}
+			}
+			dot.text(count).show();
+			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
+			$('.toast').toast({delay: 3000});
+			$('.toast').toast('show');
+		});
+		
+		//點購物車
+		$('body').on('click','#shopcart',function(e){
+			console.log(localStorage.getItem("item1").id);
+			e.preventDefault();	
+			$('tbody>tr').empty();
+			$('#pricetag>h4').empty();
+			var cart  	 = $('.cartmenu');
+			var tbody 	 = $('tbody');
+			var pricetag = $('#pricetag');
+			//
+			cart.toggle();
+			console.log("sessionstorage key:"+sessionStorage.key(0));
+// 			console.log("sessionstorage key:"+sessionStorage.getItem(item1));
+// 			console.log("sessionstorage key:"+JSON.parse(sessionStorage.getItem(sessionStorage.key(0))));
+			if (count!=0){
+				var temp= [0];
+				for(var i = 0; i < count; i ++){//每個商品
+					var id 	   = parseInt(JSON.parse(localStorage.getItem(''+sessionStorage.key(i)+'')).id,10);
+					var name   = JSON.parse(localStorage.getItem(sessionStorage.key(i))).name;
+					var amount = JSON.parse(localStorage.getItem(''+sessionStorage.key(i)+'')).amount;
+					alert("amount is wierd:"+amount+"name is wierd:"+name);
+					var price  = JSON.parse(localStorage.getItem(sessionStorage.key(i))).price;
+					for (var j = 0; j<temp.length;j++){
+						if (id != temp[j]){
+							var tr 	   = $('<tr></tr>');
+							var col1   = $('<td></td>').text(j+1).attr("id",id);
+							var col2   = $('<td></td>').text(name);
+// 							alert("amount2 is wierd:"+amount);
+							var col3   = $('<td>'+amount+'</td>');
+							var col4   = $('<td id="pr'+(j+1)+'"></td>').text(price);
+							var col5   = $('<td></td>').append('<i class="fas fa-trash-alt"></i>');
+							tr.append(col1);
+							tr.append(col2);
+							tr.append(col3);
+							tr.append(col4);
+							tr.append(col5);
+							tbody.append(tr);
+							temp.push(id);
+						} else {
+							var oa = $("#"+id+"").next().next().text();
+							oa += amount;
+							$("#"+id+"").next().next().text(oa);
+						}
+					}
+				}
+			} else {
+				var tr 	   = $('<tr></tr>');
+				var col1   = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
+				tr.append(col1);
+				tbody.append(tr);
+			}
+			var totalprice = 0;
+			for (var i = 0; i < count; i ++){
+				totalprice +=  parseInt($('#pr'+(i+1)+'').text().substring(1),10);
+			}
+			pricetag.append('<h4><strong>總價格: '+totalprice+' 元</strong></h4>');
 			
 		});
 		
 		
-				
+		
+		
 });
 </script>
 
@@ -784,6 +957,8 @@ $(document).ready(function() {
 }
 .detailclass{
 	margin-left: 15px;
+	font-size: 20px;
+	font-weight: bold;
 }
 .detailclass:hover a{
 	cursor: pointer;
@@ -842,6 +1017,50 @@ $(document).ready(function() {
 .contentfont{
 	font-size: 50px;
 	font-weight: bolder;
+}
+#amount{
+	float:left;
+	width: 100px;
+	height: 25px;
+	margin-right: 3%;
+}
+.detailfooter{
+	position:absolute;
+	width:100%;
+	left: 0px;
+	bottom: 0px;
+	text-align: center;
+	font-size: 17px;
+}
+.detailfooter span{
+	margin: 8px;
+
+}
+.dot{
+	border:1px solid red;
+	width: 20px;
+    height: 20px;
+	border-radius:50%;
+	background-color:red;
+	color:white;
+	position:absolute;
+    top: 10%;
+    left:70%;
+    transform: translate(-50%, -50%);
+	font-size: 10px;
+	text-align: center;
+	display: none;
+}
+.cartmenu{
+	position: fixed;
+	bottom: 45%;
+	right: 15px;
+	width: 500px;
+	height: 200px;
+	display: none;
+	background-color: white;
+	box-shadow: 2px 5px 8px #888888;
+ 	overflow-y: scroll; 
 }
 </style>
 </head>
@@ -953,18 +1172,18 @@ $(document).ready(function() {
                 <div class="row">
                 
                     <!-- Left content -->
-                    <div class="col-xl-4 col-lg-4 col-md-6" style="border:1px solid red;color:black;">
-                        <div class="row" style="border:1px solid red;padding:5px;">
+                    <div class="col-xl-4 col-lg-4 col-md-6" style="color:black;">
+                        <div class="row" style="padding:5px;">
                         	<div class="left-column-div" >
                         		<input type="search" id="searchall" style="width:85%;" placeholder="炸雞、咖哩、冰淇淋...">
                         		<span ><button id="google" style="color: black"><i class="fas fa-search"></i></button></span>
                         	</div>
                         	<div class="left-column-div" style="margin-top: 10px;">
-                        		<h4><a>商品類別</a></h4>
+                        		<h2><a>商品類別</a></h2>
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="" id ="mainclass">
-                        			<h4><a id="coupon">票券</a></h4>
+                        			<h3><a id="coupon">票券</a></h3>
                         		</div>
                         		<div class="detailclass">
                         			<ol class="ordered-list" id="detailname">
@@ -978,7 +1197,7 @@ $(document).ready(function() {
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="" id ="ingredientmainclass">
-                        			<h4><a id="ingredient">食材</a></h4>
+                        			<h3><a id="ingredient">食材</a></h3>
                         		</div>
                         		<div class="detailclass">
                         			<ol class="ordered-list" id="ingredientname">
@@ -989,7 +1208,7 @@ $(document).ready(function() {
                         	</div>
                         	<div class="left-column-div" id="rangeprice">
                         		<div class="mainclass" style="">
-                        			<h4><a>價格區間</a></h4>
+                        			<h3><a>價格區間</a></h3>
                         		</div>
                         		<div class="detailclass">
                         			<ol class="ordered-list" id="pricerangeol">
@@ -1001,7 +1220,7 @@ $(document).ready(function() {
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="">
-                        			<h4><a>TAGS</a></h4>
+                        			<h3><a>TAGS</a></h3>
                         		</div>
                         		<div class="detailclass button-group-area mt-10" id="puretag">
                         			<a class="genric-btn primary-border small" id="friedchicken">炸雞</a>
@@ -1014,7 +1233,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <!-- Right content -->
-                    <div class="col-xl-8 col-lg-8 col-md-6" style="border:1px solid red;padding:20px;">
+                    <div class="col-xl-8 col-lg-8 col-md-6" >
                         <!-- listing Details Start-->
                         <div class="listing-details-area">
                         	<!-- test for bootstrap modal -->
@@ -1039,9 +1258,20 @@ $(document).ready(function() {
 							        
 							        <!-- Modal footer -->
 							        <div class="modal-footer">
-							          <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
-							          <button type="button" class="genric-btn danger-border circle arrow small" >購買</button>
+								        <div class="container">
+									       <div class="row justify-content-center">
+									          <div class="col-lg"></div>
+									          <div class="col-lg " id="footerbtn">
+									            <input class="form-control" type="number" value="1" id="amount" min="1">
+									            <button type="button" class="genric-btn danger-border circle arrow small" id="purchase" value="1">購買</button>
+									          </div>
+									          <div class="col-lg text-right">
+									          	<button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
+									          </div>
+		  								   </div>
+		  								</div>
 							        </div>
+									<!--other people-->
 							        
 							      </div>
 							    </div>
@@ -1100,6 +1330,52 @@ $(document).ready(function() {
         </div>
         <!-- listing-area Area End -->
 	</div>
+
+	
+	<div class="cartmenu" >
+		<div class="container border table-responsive-sm">
+			<table class="table table-hover text-info text-justify ">
+				<thead>
+	                <tr class=" Active">
+	                    <th>編號</th>
+	                    <th>產品名</th>
+	                    <th>數量</th>
+	                    <th>價格</th>
+	                    <th>取消</th>
+	                </tr>
+                </thead>
+                <tbody>
+                <!-- product here -->
+            	</tbody>
+			</table>
+			<div style="text-align: right;" id="pricetag"></div>
+			<div style="text-align: right;">
+				<a href="#" class="genric-btn primary medium" id="checkout">結帳</a>
+			</div>
+		</div>
+	</div>
+	
+    <div style="position: fixed;bottom: 5%;right: 15px;" >
+		<a href="#" class="genric-btn primary circle arrow" id="shopcart">
+		<i class="fa fa-shopping-cart fa-3x fa-align-justify"></i> 
+		</a>
+		<span class="dot"></span> 
+  	</div>
+  	
+  	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+		  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
+		    <div class="toast-header">
+		      <strong class="mr-auto">貼心提醒</strong>
+		      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+		        <span aria-hidden="true">&times;</span>
+		      </button>
+		    </div>
+		    <div class="toast-body">
+		    	<p></p>
+		    </div>
+		  </div>
+	</div>
+	
     </main>
     <footer>
         <!-- Footer Start-->
@@ -1160,9 +1436,9 @@ $(document).ready(function() {
                     <div class="row d-flex justify-content-between align-items-center">
                         <div class="col-xl-9 col-lg-8">
                             <div class="footer-copy-right">
-                                <p>
-  								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | U copy <i class="fa fa-heart" aria-hidden="true"></i>    <a href="https://colorlib.com" target="_blank">U died</a>
-  								</p>
+                               <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-4">
@@ -1177,13 +1453,15 @@ $(document).ready(function() {
             </div>
         </div>
         <!-- Footer End-->
+
+        
+	    
     </footer>
     <!-- Scroll Up -->
-    <div id="back-top" >
-        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-    </div>
+<!--     <div id="back-top" > -->
+<!--         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a> -->
+<!--     </div> -->
     
-    	
 	
 		<!-- JS here -->
 		<!-- All JS Custom Plugins Link Here here -->
