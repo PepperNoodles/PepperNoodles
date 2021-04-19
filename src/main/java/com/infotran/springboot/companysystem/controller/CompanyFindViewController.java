@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 
 @Controller
-public class ComFindViewController {
+@RequestMapping("/Company")
+public class CompanyFindViewController {
+	
 	
 	@Autowired
 	private CompanyDetailService comDetailService;
@@ -36,5 +39,15 @@ public class ComFindViewController {
 		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail", comDetail);
 		return "company/company";
+	}
+	
+	@GetMapping("/menu")
+	public String menu() {
+		return "company/menu";
+	}
+	
+	@GetMapping("/blog")
+	public String blog() {
+		return "company/blog";
 	}
 }

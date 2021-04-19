@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -124,18 +122,25 @@ public class CompanyDetailController {
 	public  @ResponseBody Map<String,String> nextComPwd(@PathVariable("comId") Integer comId ,
 														@RequestParam("userPwd") String userPwd,
 														@RequestParam("nextUserPwd") String nextUserPwd,
-										   				Model model) {
+														Model model) {
 		System.out.println(comId+":"+userPwd+":"+nextUserPwd);
+		
 		Map<String,String> map = new HashMap<String, String>();
 		CompanyDetail  companyDetail = comDetailService.findById(comId);
-		String pwd = companyDetail.getUserAccount().getPassword();
+		UserAccount user = companyDetail.getUserAccount();
+		//查询舊密码
+		String pwd = user.getPassword();
 		System.out.println("原始密碼:"+pwd);
-		if (userPwd.equals(pwd)) {
-			UserAccount user = companyDetail.getUserAccount();
-			user.setPassword(nextUserPwd);
+		
+		//encode.matches比对密码是否相等(輸入的密碼<未加密>,GET出的舊密碼<加密的>)
+		BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+		if (encode.matches(userPwd, pwd)) {
+	        String bcryptPasswd = (encode.encode(nextUserPwd));
+			user.setPassword(bcryptPasswd);
 			userAccountService.update(user);
 			map.put("success", "修改密碼成功!");
-		}
+	    }
+		
 		else {
 			map.put("failure", "密碼錯誤，修改失敗!");
 		}

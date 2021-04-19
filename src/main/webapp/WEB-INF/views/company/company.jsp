@@ -159,11 +159,8 @@ $(document).ready(function(){
         </div>
 
       </div>
-      <!-- /.col-lg-3 -->
-
       <div class="col-lg-10 nopadding" >
-      
-      	<div class="col-lg-12 container-fluid nopadding" id="page2">
+      	<div class="col-lg-12 container-fluid nopadding" id="page1">
 			<%@include file="showCompany2.jsp" %>
      	 </div>
       </div>
