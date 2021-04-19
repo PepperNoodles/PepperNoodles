@@ -50,4 +50,9 @@ public class CompanyFindViewController {
 	public String blog() {
 		return "company/blog";
 	}
+	
+	@GetMapping("/left")
+	public String left() {
+		return "company/left";
+	}
 }
