@@ -16,13 +16,6 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
-<script>
-$(document).ready(function(){
-	$("#a").click(function(){
-		$("#showCompany").attr("href","//www.jb51.net"));		
-	});
-});
-</script>
 </head>
 <body>
 	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
