@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,42 +65,81 @@
 								<div class="main-menu f-right d-none d-lg-block">
 									<nav>
 										<ul id="navigation">
-											<li><a href="index.html">Home111</a></li>
-											<li><a href="about.html">About</a></li>
-											<li><a href="#">城市</a>
-												<ul class="submenu">
-													<li><a href="blog.html">台北</a></li>
-													<li><a href="blog_details.html">新北</a></li>
-													<li><a href="elements.html">基隆</a></li>
-													<li><a href="listing_details.html">桃園</a></li>
-												</ul></li>
-											<li><a href="#">美食</a>
-												<ul class="submenu">
-													<li><a href="blog.html">美式</a></li>
-													<li><a href="blog_details.html">日式燒烤</a></li>
-													<li><a href="elements.html">韓式</a></li>
-													<li><a href="listing_details.html">炸物</a></li>
-												</ul></li>
-											<li><a href="#">排行榜</a>
-												<ul class="submenu">
-													<li><a href="blog.html">免費排行</a></li>
-													<li><a href="blog_details.html">付費排行</a></li>
-													<li><a href="elements.html">周排行</a></li>
-													<li><a href="listing_details.html">綜合排行</a></li>
-												</ul></li>
-											<li><a href="about.html">論壇</a></li>
+<!-- 											<li><a href="index.html">Home111</a></li> -->
+<!-- 											<li><a href="about.html">About</a></li> -->
+<!-- 											<li><a href="#">城市</a> -->
+<!-- 												<ul class="submenu"> -->
+<!-- 													<li><a href="blog.html">台北</a></li> -->
+<!-- 													<li><a href="blog_details.html">新北</a></li> -->
+<!-- 													<li><a href="elements.html">基隆</a></li> -->
+<!-- 													<li><a href="listing_details.html">桃園</a></li> -->
+<!-- 												</ul></li> -->
+<!-- 											<li><a href="#">美食</a> -->
+<!-- 												<ul class="submenu"> -->
+<!-- 													<li><a href="blog.html">美式</a></li> -->
+<!-- 													<li><a href="blog_details.html">日式燒烤</a></li> -->
+<!-- 													<li><a href="elements.html">韓式</a></li> -->
+<!-- 													<li><a href="listing_details.html">炸物</a></li> -->
+<!-- 												</ul></li> -->
+<!-- 											<li><a href="#">排行榜</a> -->
+<!-- 												<ul class="submenu"> -->
+<!-- 													<li><a href="blog.html">免費排行</a></li> -->
+<!-- 													<li><a href="blog_details.html">付費排行</a></li> -->
+<!-- 													<li><a href="elements.html">周排行</a></li> -->
+<!-- 													<li><a href="listing_details.html">綜合排行</a></li> -->
+<!-- 												</ul></li> -->
+<!-- 											<li><a href="about.html">論壇</a></li> -->
+<!-- 											<li><a href="#">最新消息</a> -->
+<!-- 												<ul class="submenu"> -->
+<!-- 													<li><a href="blog.html">菜色新聞</a></li> -->
+<!-- 													<li><a href="blog_details.html">最新優惠</a></li> -->
+<!-- 													<li><a href="elements.html">新開幕</a></li> -->
+<!-- 												</ul></li> -->
+<!-- 											<li><a href="about.html">發表食記</a></li> -->
+<!-- 											<li><a href="contact.html">Contact</a></li> -->
+<!-- 											<li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
+<!-- 											<li class="login"><a href="loginSystem/loginPage"> <i -->
+<!-- 													class="ti-user"></i> Sign in or Register -->
+<!-- 											</a></li> -->
 											<li><a href="#">最新消息</a>
 												<ul class="submenu">
 													<li><a href="blog.html">菜色新聞</a></li>
 													<li><a href="blog_details.html">最新優惠</a></li>
 													<li><a href="elements.html">新開幕</a></li>
+													<li><a href="<c:url value='/loginSystem/normaluser'/>">normal
+															user page</a></li>
+													<li><a
+														href="<c:url value='/loginSystem/companyuser'/>">company
+															page</a></li>
+													<li><a href="<c:url value='/loginSystem/admin'/>">admin
+															page</a></li>
+
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
+											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>
+                                            <li><a href="rearStage/rearStage">後台</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
-											<li class="login"><a href="loginSystem/loginPage"> <i
-													class="ti-user"></i> Sign in or Register
-											</a></li>
+
+											<c:choose>
+												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login">
+												<a href="loginSystem/loginPage"> <i class="ti-user">												
+												</i> Sign in or Register</a>
+												<ul class="submenu">
+													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li>
+													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li>
+													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
+												</ul>	
+												</li></c:when>
+												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()">
+												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
+												<ul class="submenu">
+													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
+													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
+												</ul>	
+												</li></c:otherwise>
+												
+											</c:choose>
 										</ul>
 									</nav>
 								</div>
