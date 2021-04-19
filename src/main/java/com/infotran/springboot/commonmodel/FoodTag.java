@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.FoodTagProduct;
 
@@ -45,7 +46,7 @@ public class FoodTag {
 //	private Set<UserAccount> users = new HashSet<UserAccount>();
 
 	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 
@@ -57,7 +58,7 @@ public class FoodTag {
 	
 	/* 所屬的tag */
 	@OneToMany(mappedBy = "fkFoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	
 	public FoodTag() {
