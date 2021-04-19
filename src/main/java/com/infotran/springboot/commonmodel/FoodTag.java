@@ -16,8 +16,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.shoppingmall.model.FoodTagProduct;
 
 @Entity
 @Table(name="foodTag")
@@ -34,25 +37,31 @@ public class FoodTag {
 	
 //	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //	@JoinTable(name="foodtag_user",joinColumns = {
-//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
-//					@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+
+//	@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
 //	private Set<UserAccount> users = new HashSet<UserAccount>();
-//
-//	
-//
+
+//	@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	private Set<UserAccount> users = new HashSet<UserAccount>();
+
+	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
+	
+
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name="Forum_tag",joinColumns = {
-			@JoinColumn(name="fk_tag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+			@JoinColumn(name="fk_tag_id" ,referencedColumnName = "foodTag_id")},inverseJoinColumns = {
 			@JoinColumn(name="fk_forum_id",referencedColumnName = "forum_id")})
 	private Set<Forum> forums = new HashSet<Forum>();
 	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkfoodtag",cascade = CascadeType.ALL)
-	 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
-	
-	
+	/* 所屬的tag */
+	@OneToMany(mappedBy = "fkFoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	
 	public FoodTag() {
-		super();
 	}
 
 	public int getFoodTagIid() {
@@ -71,6 +80,22 @@ public class FoodTag {
 		this.foodTagName = foodTagName;
 	}
 
+	public Set<Forum> getForums() {
+		return forums;
+	}
+
+	public void setForums(Set<Forum> forums) {
+		this.forums = forums;
+	}
+
+	public Set<FoodTagProduct> getProduct() {
+		return Product;
+	}
+
+	public void setProduct(Set<FoodTagProduct> product) {
+		Product = product;
+	}
+
 	public Set<FoodTagUser> getFoodTagUsers() {
 		return FoodTagUsers;
 	}
@@ -78,7 +103,6 @@ public class FoodTag {
 	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
 		FoodTagUsers = foodTagUsers;
 	}
-
-
-
+	
+	
 }
