@@ -114,18 +114,8 @@ $(function() {
 			var id=${comDetail.companyDetailId};
 			var userPwd = $("#userPwd").val();
 			var nextUserPwd = $("#nextUserPwd").val();
-// 			alert("id:"+id);
-// 			alert("userPwd:"+userPwd);
-// 			alert("nextUserPwd:"+nextUserPwd);
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "<c:url value='/updatePwd/' />"+id, true);
-// 			var jsonAccount = {
-// 								"userPwd": userPwd, 					
-// 								"nextUserPwd": nextUserPwd, 	
-// 			};
-//  			alert("jsonMember:"+jsonMember.userPwd+":"+jsonMember.nextUserPwd);
-// 			xhr.setRequestHeader("Content-Type", "application/json");
-// 			xhr.send(JSON.stringify(jsonAccount));
 			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhr.send("userPwd=" + userPwd + "&nextUserPwd=" + nextUserPwd);
 			
@@ -149,7 +139,7 @@ $(function() {
 					$("#lblCount").html(seconds);
 				    if (seconds == 0) {
 				   	$("#dvCountDown").hide();
-				       window.location = "<c:url value='/showCompany/${comDetail.companyDetailId}' />";
+				       window.location = "<c:url value='/Company/showCompany/${comDetail.companyDetailId}' />";
 				    }
 				}, 1000);	
 			}			
@@ -251,7 +241,7 @@ function isPWD(pwd) {
 														<div class="pull-left">
 															<a class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
 												  			   style="margin-bottom: 20px; margin-top: 10px"
-												 			   href="<c:url value='/' />showCompany/${comDetail.companyDetailId}">回基本資料</a>
+												 			   href="<c:url value='/' />Company/showCompany/${comDetail.companyDetailId}">回基本資料</a>
 														</div>
 													</div>
 												</div>
