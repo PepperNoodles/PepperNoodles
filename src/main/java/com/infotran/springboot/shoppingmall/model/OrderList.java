@@ -49,7 +49,7 @@ public class OrderList {
 	private String Status;
 	
 	@OneToMany(mappedBy = "orderlist",cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<OrderDetail> products = new HashSet<OrderDetail>();
 	
 	

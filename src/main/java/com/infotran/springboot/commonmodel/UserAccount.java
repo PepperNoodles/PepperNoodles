@@ -104,7 +104,7 @@ public class UserAccount {
 //	private Set<FoodTag> userTags = new HashSet<FoodTag>();
 	
 	@OneToMany(mappedBy = "fkuserid",cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<FoodTagUser> userTags = new HashSet<FoodTagUser>();
 
 	

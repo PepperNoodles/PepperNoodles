@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "foodtag_user")
@@ -39,13 +40,13 @@ public class FoodTagUser implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
-	@JsonBackReference
+	@JsonIgnore
 	private UserAccount  fkuserid;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
-	@JsonBackReference
+	@JsonIgnore
 	private FoodTag  fkfoodtagid;
 	
 

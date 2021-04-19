@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -42,13 +43,12 @@ public class ProductDetailClass {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_ProductMainClass_id")
-	@JsonBackReference
+	@JsonIgnore
 	private ProductMainClass productMainClass;
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productDetailClass",cascade =CascadeType.ALL)
-//	@JsonIgnore
-	@JsonManagedReference 
+	@JsonIgnore
 	private Set<Product> products =new HashSet<Product>();
 
 	public Integer getDetailClassId() {

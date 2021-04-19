@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="OrderDetail")
@@ -34,13 +35,13 @@ public class OrderDetail implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_Order_id",insertable = false,updatable = false)
-	@JsonBackReference
+	@JsonIgnore
     private OrderList orderlist;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "fk_Product_id",insertable = false,updatable = false)
-	@JsonBackReference
+	@JsonIgnore
 	private  Product product;
 	
 	private Integer Amount;
