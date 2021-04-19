@@ -16,21 +16,27 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
-
+<script>
+$(document).ready(function(){
+	$("#a").click(function(){
+		$("#showCompany").attr("href","//www.jb51.net"));		
+	});
+});
+</script>
 </head>
 <body>
-	<div class="image-container set-full-height"
-		style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
-		<div class="logo-container">
-			<div class="logo">
-				<a href="/PepperNoodles"> <img
-					src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px"
-					height="100px" style="margin-left: 93%;">
-				</a>
-			</div>
-		</div>
+	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
+<!-- 左上角小圓標 -->
+<!-- 		<div class="logo-container"> -->
+<!-- 			<div class="logo"> -->
+<!-- 				<a href="/PepperNoodles"> <img -->
+<%-- 					src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px" --%>
+<!-- 					height="100px" style="margin-left: 93%;"> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<!-- container   -->
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
 					<!--      Wizard container        -->
@@ -57,7 +63,7 @@
 											
 											<div class="col-sm-4 col-sm-offset-1">
 												<br>
-												<img src="<c:url value="/getComPicture/${comDetail.companyDetailId}"/>" class="picture-src"  />
+												<img src="<c:url value="/getComPicture/${comDetail.companyDetailId}"/>" width="100%"  />
 											</div>
 											<div class="col-sm-6">
 												<div class="form-group">
@@ -80,7 +86,8 @@
 												<div class="pull-right">
 													<a class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
 													   style="margin-bottom: 20px; margin-top: 10px"
-													   href="<c:url value='/' />updateCom/${comDetail.companyDetailId}">修改資料</a>
+													   href="#" id="a">修改資料</a>
+<%-- 													   href="<c:url value='/updateCom/${comDetail.companyDetailId}' />">修改資料</a> --%>
 												</div>
 											</div>
 											</c:if>
