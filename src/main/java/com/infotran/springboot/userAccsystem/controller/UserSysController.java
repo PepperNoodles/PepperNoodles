@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.servlet.ServletContext;
+
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +50,25 @@ public class UserSysController {
 	
 	@Autowired
 	ServletContext servletContext;	
+	
+	//從Authentication取得登入者的名字字串的方法
+	@GetMapping("/userLoggin/getName")
+	@ResponseBody
+	 public String returnNamePath(Model model) {
+	  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	  String currentUserName="";
+	  if (!(authentication instanceof AnonymousAuthenticationToken)) {
+	      currentUserName = authentication.getName();
+	      System.out.println(currentUserName);
+			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);		
+			model.addAttribute("userAccount", user);
+	      return currentUserName;
+	   }
+	  System.out.println("no logging user currently!!");
+	   return null;
+	 }
+	
+	
 	
 	
 	//得到mainUser的friendList
@@ -151,7 +175,7 @@ public class UserSysController {
 	}
 	
 	//main登入後找到誰要加main,簡單來說就是看誰對目前登入的user發出請求
-	@GetMapping(path="findWhoWannaJoinMe")
+	@GetMapping(path="/findWhoWannaJoinMe")
 	@ResponseBody
 	public List<UserAccount> findWhoWannaJoinMe(@RequestParam(name="mainUserIdx") String userIdx){
 		UserAccount user = uSysServiceImpl.findByAccountIndex(userIdx);
@@ -171,6 +195,12 @@ public class UserSysController {
 	public String goViewWithSession(@PathVariable("userAccountIndex") String uAccIndx,Model model) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(uAccIndx);		
 		model.addAttribute("userAccount", user);
+		return "userpage/usermain";
+	}
+	
+	//真的登入
+	@GetMapping(path="/user/login")
+	public String goUserMainSession(Model model) {
 		return "userpage/usermain";
 	}
 	
