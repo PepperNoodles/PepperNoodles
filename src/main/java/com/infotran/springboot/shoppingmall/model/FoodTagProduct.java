@@ -41,12 +41,12 @@ public class FoodTagProduct implements Serializable {
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false )
     @JoinColumn(name = "fk_Product_id")
-    @JsonBackReference
+    @JsonIgnore
     private Product fkProductid;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_foodTag_id")
-    @JsonBackReference
+    @JsonIgnore
     private FoodTag fkfoodtagid;
     
     

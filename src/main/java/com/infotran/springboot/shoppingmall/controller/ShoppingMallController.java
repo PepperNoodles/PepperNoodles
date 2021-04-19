@@ -6,22 +6,24 @@ import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infotran.springboot.shoppingmall.model.Product;
 import com.infotran.springboot.shoppingmall.service.ShoppingMallService;
+
+import javassist.NotFoundException;
 
 @RestController
 public class ShoppingMallController {
@@ -36,7 +38,7 @@ public class ShoppingMallController {
 	ServletContext ctx;
 	
 	@GetMapping(value="/tagproducts", produces = { "application/json; charset=UTF-8" })
-	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn(){
+	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn() {
 		List<Product> productList = shopservice.getPagedProductsByTag("chris@gmail.com", 0, 4);
 		return productList;
 	}
