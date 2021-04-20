@@ -34,7 +34,9 @@
 	padding:0 !important;
 	margin: 0 !important;
 }
-
+.updatePwd {
+	color: 	#00AEAE;
+}
 </style>
 </head>
 <body>
@@ -101,7 +103,7 @@
 												<div class="form-group">
 													<label><h5>會員帳號 :&nbsp;${comDetail.userAccount.accountIndex}</h5></label>
 													&nbsp;&nbsp; 
-													<a href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
+													<a class="updatePwd" href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
 												</div>
 												
 												<div class="form-group">
