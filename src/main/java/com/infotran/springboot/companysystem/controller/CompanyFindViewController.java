@@ -43,7 +43,7 @@ public class CompanyFindViewController {
 	
 	@GetMapping("/menu")
 	public String menu() {
-		return "company/menu";
+		return "company/addMenu";
 	}
 	
 	@GetMapping("/blog")
@@ -55,4 +55,5 @@ public class CompanyFindViewController {
 	public String left() {
 		return "company/left";
 	}
+	
 }

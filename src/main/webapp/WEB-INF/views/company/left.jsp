@@ -26,7 +26,6 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <style>
 	li a:hover{
-		color:;
 		background-color:#BEBEBE;
 	}
 	.leftBar{
