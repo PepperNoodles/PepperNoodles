@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -160,13 +162,26 @@ public class RestaurantCRUDController {
 		return "redirect:/showAllrest";
 	}
 	
-	// check地址有無重複
-	@PostMapping("/checkRAddress/{Rid}")
-	public @ResponseBody String checkRAddress(@PathVariable("Rid") Integer rId,
-			@RequestParam("restaurantAddress")String rAdd ) {
-		System.out.println("驗證地址"+rId+rAdd);
+	// check地址有無餐廳註冊
+	@PostMapping("/checkRAddress")
+	public @ResponseBody Map<String,String> checkRAddress(@RequestParam("value") String rAdd) {
+		System.out.println("驗證地址:"+rAdd);
+		Restaurant rest=restaurantService.findByRestaurantAddress(rAdd);
+		Map<String,String> map = new HashMap<String, String>();
 		
-		return rAdd;
+		try {
+			String restName = rest.getRestaurantName();
+			System.out.println("驗證餐廳為"+restName);
+			map.put("result", "此地址有餐廳註冊 不可新增");
+			map.put("checkboolean", "false");
+		}
+		catch (NullPointerException e) {
+			map.put("result", "此地址可以新增");
+			map.put("checkboolean", "true");
+		}
+		System.out.println(map.get("result"));
+		System.out.println(map.get("checkboolean"));
+		return map;
 	}
 	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
