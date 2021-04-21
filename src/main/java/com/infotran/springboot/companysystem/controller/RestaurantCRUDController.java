@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,6 +42,7 @@ import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
 
 @Controller
+@SessionAttributes(names = "updateRestaurant" )
 public class RestaurantCRUDController {
 	
 //	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
@@ -110,14 +113,14 @@ public class RestaurantCRUDController {
 	@GetMapping("/updateRest/{restaurantId}")
 	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
 		Restaurant rest = restaurantService.get(id);
-		model.addAttribute("restaurant", rest);
+		model.addAttribute("updateRestaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
 		return "company/UpdateRestaurant";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
 	@PostMapping("/updateRest/{restaurantId}")
-	public String modify(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult result, Model model,
+	public String modify(@ModelAttribute("updateRestaurant") Restaurant restaurant, BindingResult result, Model model,
 			@PathVariable("restaurantId") Integer id,@RequestPart("productImage")MultipartFile productImage ) {
 		System.out.println("餐廳名稱"+restaurant.getRestaurantName());
 		// validator檢查錯誤
