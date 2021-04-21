@@ -12,4 +12,5 @@ public interface RestaurantService {
 	Restaurant get(Integer id);
 	void update(Restaurant member);
 	List<Restaurant> getAllRestaurant();
+	Restaurant findByRestaurantAddress(String RAddress);
 }
