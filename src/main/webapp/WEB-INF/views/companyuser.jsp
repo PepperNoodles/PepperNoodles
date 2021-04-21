@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Welcome companyuser</title>
+
+<script type="text/javascript"
+	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 </head>
 <body>
 <div align="center">
@@ -13,7 +18,7 @@ Welcome companyuser<br/>
 <script>
 $(window).on('load', function () {
 	let urls="${pageContext.request.contextPath}/";
-	urls+="<c:url value='userLoggin/getName'/>";
+	urls+="<c:url value='Company/login/company'/>";
 	console.log(urls);
 	
 	$.ajax({
@@ -39,7 +44,7 @@ $(window).on('load', function () {
 		time = parseInt(time);
 		time--;
 		if (time <= 0) {
-		window.location.href = "${pageContext.request.contextPath}/user/login";
+		window.location.href = "${pageContext.request.contextPath}/Company/company";
 		} else {
 		$("#time").text(time);
 		}

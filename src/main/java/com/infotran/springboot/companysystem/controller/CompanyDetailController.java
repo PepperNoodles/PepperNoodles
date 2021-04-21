@@ -34,6 +34,7 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
 @SessionAttributes(names = {"comDetail","comDetailId"})
@@ -50,6 +51,8 @@ public class CompanyDetailController {
 	
 	@Autowired
 	private UserAccountService userAccountService;
+	
+
 	
 	@Autowired
 	ServletContext context;
