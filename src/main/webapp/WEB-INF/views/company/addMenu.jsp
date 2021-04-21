@@ -11,26 +11,61 @@
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
+<script>
+	
+$(function(){
+	$("#add").click(function(){
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "<c:url value='/CheckMemberAccount' />", true);
+	});
+});
+	
+function()
+</script>
 
 <style>
 .nopadding{
 	padding:0 !important;
 	margin: 0 !important;
 }
-.picture{
-	border-style:dashed;
+#picture{
+ 	border-style:dashed;
+/*  	cursor:hand; */
 /* 	object-fit: */
+}
+/* div{ */
+/* 	text-align: center; */
+/* } */
+.top{
+	margin-top:30px; 
+}
+.toshow{
+	display: block;
+}
+.tohide{
+	display: none;
+}
+.infobox {
+	float: left;
+/* 	width: 10%; */
+ 	margin: 30px 0% 0% 20%; 
+}
+.picbox {
+	float: right;
+	margin: 0% 40% 0% 0%; 
+/* 	margin: auto; */
+/* 	width: 50%; */
+/* 	padding: 0px 10px 10px 10px; */
+/* 	height: 50%; */
+}
+.top{
+height: 500px;
 }
 </style>
 </head>
@@ -62,25 +97,26 @@
       </div>
    	  <!-- 右邊顯示的資料 -->  
       <div class="col-lg-10 nopadding " >
-      	<div class="image-container set-full-height">
-      
-      		<h1>新增菜單</h1>
-      		
-      		<div class="col-sm-4 col-sm-offset-1">
-				<div class="picture-container">
-					<div>
-					<label for="wizardPicturePreview">
-						<img src="<c:url value="/images/company/+.png"/>"
-							 width="100px" class="picture" />
-					</label>
-						<input hidden type="file" id="wizardPicturePreview" accept="image/*" name="photo">
-					</div>
-				</div>
+		<!-- 上傳圖案的部分 -->
+      	<div class="top">
+			<div class="infobox">
+				<label for="wizardPicturePreview">
+					<img src="<c:url value="/images/company/++.png"/>" width="100px" id="picture"/>
+				</label>
+				<input hidden type="file" id="wizardPicturePreview" accept="image/*" name="photo">
 			</div>
-			
-      
-      	
+				
+			<div class="picbox">
+				<img class="picture-src" id="PicturePreview" width="300px" /><br>
+				<div>
+					<input class='picbox tohide' type='button'  value='新增菜單' id="add" style="margin-bottom: 20px;margin-top: 10px"/>
+				</div>						
+			</div>
       	</div>
+      	<!-- 顯示資料庫的菜單 -->
+      	<hr>
+      	
+      	
 	  <!-- 右邊顯示的資料結束 -->  
       </div>
     </div>
@@ -93,25 +129,34 @@
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
 
-	<script>
- 		$(window).on('load', function() {
+<script>
+	$(window).on('load', function() {
+// 		//讓bar固定在上面以及設定高度
+		$(".header-sticky").addClass("sticky-bar");
+		$(".header-sticky").css("height", "90px");
+		$(".header-sticky").css("position","static")
+		//讓loading圖動起來
+		$('#preloader-active').delay(450).fadeOut('slow');
+		$('body').delay(450).css({'overflow' : 'visible'});			
 			
-// 			//讓bar固定在上面以及設定高度
-			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
-
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
-			
- 		});
- 	</script>
-	<!-- JS here -->
-
-
+	});
+</script>
+<!--預覽照片 -->
+<script>
+$(function() {
+	$("#wizardPicturePreview").change(function() {
+		if (this.files && this.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#PicturePreview').attr('src',e.target.result);
+			}
+			reader.readAsDataURL(this.files[0]);
+			$("#add").removeClass("tohide");
+			$("#add").addClass("toshow");
+		}
+	});
+});
+</script>
 
 </body>
 </html>

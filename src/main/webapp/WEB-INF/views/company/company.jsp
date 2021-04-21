@@ -102,8 +102,8 @@
 											<div class="col-sm-7">
 												<div class="form-group">
 													<label><h5>會員帳號 :&nbsp;${comDetail.userAccount.accountIndex}</h5></label>
-													&nbsp;&nbsp; 
-													<a class="updatePwd" href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
+<!-- 													 <br> -->
+<%-- 													<a class="updatePwd" href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a> --%>
 												</div>
 												
 												<div class="form-group">

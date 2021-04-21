@@ -1,5 +1,7 @@
 package com.infotran.springboot.companysystem.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,14 @@ public class CompanyFindViewController {
 	public String list(Model model) {
 		model.addAttribute("companys", comDetailService.getAllCompanys());
 		return "company/showAllCompany";
+	}
+	
+	@GetMapping("/showAllComsJ")
+	@ResponseBody
+	public List<CompanyDetail> Alllist(Model model) {
+		List<CompanyDetail> coms = comDetailService.getAllCompanys();
+		model.addAttribute("companys", comDetailService.getAllCompanys());
+		return coms;
 	}
 	
 	/**顯示會員資料**/ 
@@ -75,11 +85,6 @@ public class CompanyFindViewController {
 		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail", comDetail);
 		return "company/company";
-	}
-	
-	@GetMapping("/menu")
-	public String menu() {
-		return "company/addMenu";
 	}
 	
 	@GetMapping("/blog")
