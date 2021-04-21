@@ -15,6 +15,9 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "foodtag_user")
 @Component
@@ -29,22 +32,22 @@ public class FoodTagUser implements Serializable {
 	
 	@Column(name="fk_userAccount_id")
 	@Transient
-	private Integer fkuserid;
-
+	private Integer fkuser;
+	
 	@Column(name="fk_foodTag_id")
 	@Transient
-	private Integer fkfoodtagid;
-
-	
+	private Integer fkfoodtag;
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
-	private UserAccount  fkuser;
+	@JsonIgnore
+	private UserAccount  fkuserid;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
-    private FoodTag  fkfoodtag;
+	@JsonIgnore
+	private FoodTag  fkfoodtagid;
 	
 
 	public FoodTagUser() {
@@ -59,83 +62,42 @@ public class FoodTagUser implements Serializable {
 		FooTagUserId = fooTagUserId;
 	}
 
-
-
-	
-
-
-	public UserAccount getFkuser() {
-		return fkuser;
-	}
-
-	public void setFkuser(UserAccount fkuser) {
-		this.fkuser = fkuser;
-	}
-
-	public FoodTag getFkfoodtag() {
-		return fkfoodtag;
-	}
-
-	public void setFkfoodtag(FoodTag fkfoodtag) {
-		this.fkfoodtag = fkfoodtag;
-	}
-
-	public Integer getFkuserid() {
-		return fkuserid;
-	}
-
-	public void setFkuserid(Integer fkuserid) {
-		this.fkuserid = fkuserid;
-	}
-
-	public Integer getFkfoodtagid() {
-		return fkfoodtagid;
-	}
-
-	public void setFkfoodtagid(Integer fkfoodtagid) {
-		this.fkfoodtagid = fkfoodtagid;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((FooTagUserId == null) ? 0 : FooTagUserId.hashCode());
-		result = prime * result + ((fkfoodtag == null) ? 0 : fkfoodtag.hashCode());
-		result = prime * result + ((fkuser == null) ? 0 : fkuser.hashCode());
-		return result;
+	public Integer getFkuser() {
+		return fkuser;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		FoodTagUser other = (FoodTagUser) obj;
-		if (FooTagUserId == null) {
-			if (other.FooTagUserId != null)
-				return false;
-		} else if (!FooTagUserId.equals(other.FooTagUserId))
-			return false;
-		if (fkfoodtag == null) {
-			if (other.fkfoodtag != null)
-				return false;
-		} else if (!fkfoodtag.equals(other.fkfoodtag))
-			return false;
-		if (fkuser == null) {
-			if (other.fkuser != null)
-				return false;
-		} else if (!fkuser.equals(other.fkuser))
-			return false;
-		return true;
+	public void setFkuser(Integer fkuser) {
+		this.fkuser = fkuser;
 	}
+
+	public Integer getFkfoodtag() {
+		return fkfoodtag;
+	}
+
+	public void setFkfoodtag(Integer fkfoodtag) {
+		this.fkfoodtag = fkfoodtag;
+	}
+
+	public UserAccount getFkuserid() {
+		return fkuserid;
+	}
+
+	public void setFkuserid(UserAccount fkuserid) {
+		this.fkuserid = fkuserid;
+	}
+
+	public FoodTag getFkfoodtagid() {
+		return fkfoodtagid;
+	}
+
+	public void setFkfoodtagid(FoodTag fkfoodtagid) {
+		this.fkfoodtagid = fkfoodtagid;
+	}
+
 	
-
 }
+
