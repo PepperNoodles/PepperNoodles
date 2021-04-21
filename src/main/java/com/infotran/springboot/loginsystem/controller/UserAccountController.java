@@ -232,13 +232,14 @@ public class UserAccountController {
 	}
 	
 	@PostMapping(value="/sendEmail",produces="application/json")
-	public  @ResponseBody Map<String,String> sendEmail(@RequestBody String user){
+	public  @ResponseBody Map<String,String> sendEmail(@RequestBody UserAccount user){
 		UserAccount user2 = new UserAccount();
 		Map<String,String> map = new HashMap<String, String>();
 		String code = sendemail.getRandom();
 		System.out.println(code);
 		user2.setCode(code);
-		user2.setAccountIndex(user);
+		user2.setAccountIndex(user.getAccountIndex());
+//		System.out.println("user2========="+user2.getAccountIndex());
 		boolean emailResult = sendemail.sendEmail(user2);
 		if (emailResult) {
 			map.put("emailCode", code);
