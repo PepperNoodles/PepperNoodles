@@ -27,6 +27,7 @@ public class CompanyDetail {
 	@Column(name = "phonenumber")
 	private String phonenumber;
 	
+	@JsonIgnore
 	@Column(name = "userphoto")
 	private byte[] userphoto;
 	

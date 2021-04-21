@@ -28,18 +28,21 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
+import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.loginsystem.dao.RolesRepository;
 import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
+import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
 
 
 
@@ -74,6 +77,9 @@ public class UserAccountController {
 	
 	@Autowired
 	private UserAccountRepository usp;
+	
+	@Autowired
+	UserSysServiceImpl uSysServiceImpl;
 //	
 //	@Autowired
 //	private UserAccount useraccount1;
@@ -83,6 +89,9 @@ public class UserAccountController {
 //	
 	@Autowired
 	private SendEmail sendemail;
+	
+	@Autowired
+	private CompanyDetailService comDetailService;
 
 	public UserAccountController() {
 		imageFolder = new File(imageRootDirectory, "images");
@@ -300,4 +309,21 @@ public class UserAccountController {
 	public String logincheck(@RequestBody Map<String,String> userAccount) {
 		return "ok";
 	}
+	
+	
+	@GetMapping(value = "/enabled/{accountIndex}")
+	public String enabled(@PathVariable("accountIndex") String accountIndex , Model model) {
+		UserAccount account = uSysServiceImpl.findByAccountIndex(accountIndex);
+		if (account.isEnabled()) {
+			account.setEnabled(false);
+		}
+		else {
+			account.setEnabled(true);
+		}
+		service.update(account); 
+		model.addAttribute("companys", comDetailService.getAllCompanys());
+		return "redirect:/Company/showAllComs";
+	}
+	
+	
 }

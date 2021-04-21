@@ -85,6 +85,7 @@ public class CompanyDetailController {
 		//新增會員
 		addUserAccount.setAccountIndex(userName);
 		addUserAccount.setPassword(userPwd);
+		addUserAccount.setEnabled(true);
 		//幫密碼加密
 		String bcEncode1 = new BCryptPasswordEncoder().encode(addUserAccount.getPassword());
 		addUserAccount.setPassword(bcEncode1);
