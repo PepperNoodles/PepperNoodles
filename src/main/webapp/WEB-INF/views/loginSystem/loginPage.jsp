@@ -58,6 +58,7 @@ window.onload = function() {
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
 //			alert(JSON.stringify(jsonAccount));//debug
+		console.log(JSON.stringify(jsonAccount));
 		xhr.send(JSON.stringify(jsonAccount));
 
 		var message = "";
@@ -347,8 +348,6 @@ window.onload = function() {
 			var birthday = $("#birthday").val();
 			var location = $("#location").val();
 			var checkAccountStatus2 = document.getElementById("checkAccountStatus2");
-			//
-			//
 			if (secondPageError){
 // 				var xhr1 = new XMLHttpRequest();
 // 				xhr1.open("POST", "<c:url value='/members' />", true);
@@ -876,17 +875,17 @@ function privacyornot() {
 												<tr>
 													<td width="50px">興趣:</td>
 													<td><input type="checkbox" name="hobby" value="curry"
-														id="hobby">咖哩</td>
+														id="hobby">炸雞</td>
 													<td><input type="checkbox" name="hobby" value="BBQ"
-														id="hobby">烤肉</td>
+														id="hobby">冰淇淋</td>
 													<td><input type="checkbox" name="hobby" value="pizza"
-														id="hobby">披薩</td>
+														id="hobby">日式</td>
 													<td><input type="checkbox" name="hobby" value="fried"
-														id="hobby">炸物</td>
+														id="hobby">沙拉</td>
 													<td><input type="checkbox" name="hobby" value="hamburger"
-														id="hobby">漢堡</td>
+														id="hobby">水果</td>
 													<td><input type="checkbox" name="hobby" value="springRoll"
-														id="hobby">春捲</td>
+														id="hobby">牛排</td>
 												</tr>
 											</table>
 											<br>

@@ -207,7 +207,7 @@
 														<div class="pull-left">
 															<a class='btn btn-previous btn-fill btn-default btn-wd btn-sm'
 												  			   style="margin-bottom: 20px; margin-top: 10px"
-												 			   href="<c:url value='/' />showCompany/${comDetail.companyDetailId}">回基本資料</a>
+												 			   href="<c:url value='/' />Company/showCompany/${comDetail.companyDetailId}">回基本資料</a>
 														</div>
 													</div>
 												</div>
