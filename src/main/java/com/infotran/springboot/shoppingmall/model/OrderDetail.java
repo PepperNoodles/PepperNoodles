@@ -10,10 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -27,20 +24,20 @@ public class OrderDetail implements Serializable{
 	@Column(name="OrderDetail_id")
 	private Integer OrderDetailId;
 	
-	@Column(name="fk_Order_id")
+	@Column(name="fk_Order_id",insertable = false,updatable = false)
 	private Integer fkOrderId;
 	
-	@Column(name="fk_Product_id")
+	@Column(name="fk_Product_id",insertable = false,updatable = false)
 	private Integer fkProductId;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_Order_id",insertable = false,updatable = false)
+    @JoinColumn(name = "fk_Order_id")
 	@JsonIgnore
     private OrderList orderlist;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "fk_Product_id",insertable = false,updatable = false)
+	@JoinColumn(name = "fk_Product_id")
 	@JsonIgnore
 	private  Product product;
 	

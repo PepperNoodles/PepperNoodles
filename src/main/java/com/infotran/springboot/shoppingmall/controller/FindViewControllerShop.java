@@ -22,4 +22,10 @@ public class FindViewControllerShop {
 		return "shoppingSystem/ShoppingMall";
 	}
 	
+	@GetMapping("/checkOutPage")
+	public String checkOutPage() {
+		return "shoppingSystem/checkOutPage";
+	}
+	
+	
 }
