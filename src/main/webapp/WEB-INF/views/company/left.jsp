@@ -26,10 +26,13 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <style>
 	li a:hover{
-		color:#FFFFFF;
 		background-color:#BEBEBE;
 	}
-
+	.leftBar{
+		color:#000000;
+		background-color:#FFFFFF;
+	}
+	
 
 </style>
 
@@ -38,21 +41,21 @@
 
 <ul class="nav flex-column nav-justified">
   <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/' />Company/company/${comDetail.companyDetailId}">基本資料</a>
+    <a class="nav-link leftBar" href="<c:url value='/' />Company/company/${comDetail.companyDetailId}">基本資料</a>
     
   </li>
   <li class="nav-item">
-    <a class="nav-link"  href="#">我的餐廳</a>
+    <a class="nav-link leftBar"  href="#">我的餐廳</a>
    
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">活動資訊</a>
+    <a class="nav-link leftBar" href="#">活動資訊</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#">評論專區</a>
+    <a class="nav-link leftBar" href="#">評論專區</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#">效益分析</a>
+    <a class="nav-link leftBar" href="#">效益分析</a>
   </li>
 </ul>
 
