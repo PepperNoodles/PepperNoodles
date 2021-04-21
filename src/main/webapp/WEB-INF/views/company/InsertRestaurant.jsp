@@ -25,13 +25,7 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-<%-- <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
+
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
@@ -65,29 +59,93 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
-.toshow{
-		display: block;
-	}
-.tohide{
-		display: none;
-	}
 </style>
 
+<script>
+<!--餐廳地址Ajax驗證不可重複 -->
+	$(function() {
+
+		var checkboolean = "false";
+		// 		blur驗證地址是否重複
+		$("#RAdd").blur(
+				function() {
+
+					let value = $(this).val();
+					let text = "";
+					if (value == "") {
+						$("#RAdd").css({
+							"border" : "2px solid orange"
+						});
+						txt = "<span>地址不可為空白</span>";
+						$("#RAddError").html(txt);
+						checkboolean = false;
+					} else {
+
+						var xhr = new XMLHttpRequest();
+						xhr.open("POST", "<c:url value='/checkRAddress' />",
+								true);
+						xhr.setRequestHeader("Content-type",
+								"application/x-www-form-urlencoded");
+						xhr.send("value=" + value);
+
+						xhr.onreadystatechange = function() {
+							// 伺服器請求完成
+							if (xhr.readyState == 4 && xhr.status == 200) {
+								var resultmap = JSON.parse(xhr.responseText);
+								var resultmsg = resultmap.result;
+								checkboolean = resultmap.checkboolean;
+
+								if (checkboolean == "false") {
+
+									$("#RAdd").css({
+										"border" : "2px solid red"
+									});
+									txt = "此地址已經被註冊!";
+									$("#RAddError").html(txt);
+								} else {
+									$("#RAdd").css({
+										"border" : "2px solid green"
+									});
+									txt = "OK!";
+									$("#RAddError").html(txt);
+
+								}
+
+							}
+						}
+					}
+				});
+
+		$("#checkBeforeSubmit").click(function() {
+			var type = $(this).attr('type');
+			if (checkboolean == "true") {
+				$("#submitError").html("地址驗證成功!");
+				$("#insertform").submit();
+			} else {
+
+				$("#submitError").html("地址驗證失敗!");
+				return false;
+			}
+
+		});
+
+	});
+</script>
 </head>
 <body>
-	<!-- 讀取圖案 -->
-	<!-- 	<div id="preloader-active"> -->
-	<!-- 		<div -->
-	<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
-	<!-- 			<div class="preloader-inner position-relative"> -->
-	<!-- 				<div class="preloader-circle" -->
-	<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
-	<!-- 				<div class="preloader-img pere-text"> -->
-	<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
+	<!-- 	讀取圖案 -->
+	<div id="preloader-active">
+		<div
+			class="preloader d-flex align-items-center justify-content-center">
+			<div class="preloader-inner position-relative">
+				<div class="preloader-circle"
+					style="background-color: rgb(102, 102, 102);"></div>
+				<div class="preloader-img pere-text">
+					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 最上層bar -->
 	<header>
@@ -172,28 +230,26 @@ footer {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-sm-offset-2">
-					<form:form method="POST" modelAttribute="restaurant"
-						enctype='multipart/form-data'>
+					<form:form id="insertform" method="POST"
+						modelAttribute="restaurant" enctype='multipart/form-data'>
 						<!--綁定model中的restaurant-->
 
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest</h1>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
-							<form:input path='restaurantName' />
+							<form:input path='restaurantName' id='RName' />
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' id="RAdd"/>
+							<form:input path='restaurantAddress' id="RAdd" />
+							<span id="RAddError"></span>
 							<form:errors path="restaurantAddress" cssClass="error" />
-							<br>
-							<div class="toshow">
-							<h5 style="color: #FF1493">經度：</h5>
-							<form:input path='longitude' id="RLong"/>
-							<br>
-							<h5 style="color: #FF1493">緯度：</h5>
-							<form:input path='latitude' id="RLati"/>
-							<br>
-							</div>
+							<br> <span style="color: #FF1493">經度<form:input
+									path='longitude' id="RLong" size="10" />
+							</span><br> <span style="color: #FF1493">緯度<form:input
+									path='latitude' id="RLati" size="10" /></span>
+
+
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
@@ -206,7 +262,8 @@ footer {
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
-							<br> <input type='submit'>
+							<br> <input type='button' value="提交" id="checkBeforeSubmit">
+							<span id="submitError"></span>
 						</div>
 						<div class="rest-picbox">
 							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
@@ -350,7 +407,7 @@ footer {
 					});
 		});
 	</script>
-	<!-- 	地址轉座標 -->
+	<!--地址轉座標 -->
 	<script>
 		var map;
 
@@ -373,9 +430,9 @@ footer {
 
 		function startTrans() {
 			let addr = document.getElementById("RAdd").value;
-			console.log(addr);
+			// 			console.log(addr);
 			addressToLocation(addr);
-// 			console.log(document.getElementById("lat").value);      
+			// 			console.log(document.getElementById("lat").value);      
 
 		}
 
@@ -406,43 +463,34 @@ footer {
 	</script>
 
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"	async defer></script>
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"
+		async defer>
+		
+	</script>
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
 	<!-- Jquery, Popper, Bootstrap -->
 	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
 
-	<%-- 	<script src="<c:url value='/scripts/popper.min.js' />"></script> --%>
+
 
 	<!-- 	<script type="text/javascript" -->
-	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+
 	<!-- Jquery Mobile Menu -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
+
 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
-	<%-- 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
 
-
-	<%-- 	<script src="<c:url value='/scripts/slick.min.js' />"></script> --%>
 
 	<!-- One Page, Animated-HeadLin -->
-	<%-- 	<script src="<c:url value='/scripts/wow.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/animated.headline.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script> --%>
-	<!-- Nice-select, sticky -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
-	<!-- contact js -->
-	<%-- 	<script src="<c:url value='/scripts/contact.js' />"></script> --%>
 
-	<%-- 	<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
+	<!-- Nice-select, sticky -->
+
+	<!-- contact js -->
 
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
-	<%-- 	<script src="<c:url value='/scripts/main.js' />"></script> --%>
+
 </body>
 </html>

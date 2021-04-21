@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +33,7 @@ import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
 @Component
-@Table(name = "restaurant")
+@Table(name = "restaurant",uniqueConstraints={@UniqueConstraint(columnNames = {"restaurantAddress"})})
 public class Restaurant {
 
 	@Id
