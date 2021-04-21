@@ -68,6 +68,14 @@ public class UserSysController {
 	   return null;
 	 }
 	
+	//取得單個user
+	@GetMapping("/usercheck/{userAccountIndex}")
+	@ResponseBody
+	public UserAccount findUserd(@PathVariable("userAccountIndex") String mainAccountIndex){
+		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);	
+		return user;
+
+	}
 	
 	
 	

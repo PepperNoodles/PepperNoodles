@@ -61,6 +61,11 @@ public class FoodTag {
 	@JsonIgnore
 	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "foodTag")
+	private Set<Restaurant> restaurant = new HashSet<Restaurant>();
+	
+	
 	public FoodTag() {
 	}
 
@@ -102,6 +107,14 @@ public class FoodTag {
 
 	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
 		FoodTagUsers = foodTagUsers;
+	}
+
+	public Set<Restaurant> getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Set<Restaurant> restaurant) {
+		this.restaurant = restaurant;
 	}
 	
 	

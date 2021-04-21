@@ -874,17 +874,17 @@ function privacyornot() {
 											<table border="1px solid black"  style="border-collapse: collapse;font-size: 20px;" class="totextcenter col-sm-10 col-sm-offset-1">
 												<tr>
 													<td width="50px">興趣:</td>
-													<td><input type="checkbox" name="hobby" value="炸雞"
+													<td><input type="checkbox" name="hobby" value="curry"
 														id="hobby">炸雞</td>
-													<td><input type="checkbox" name="hobby" value="冰淇淋"
+													<td><input type="checkbox" name="hobby" value="BBQ"
 														id="hobby">冰淇淋</td>
-													<td><input type="checkbox" name="hobby" value="日式"
+													<td><input type="checkbox" name="hobby" value="pizza"
 														id="hobby">日式</td>
-													<td><input type="checkbox" name="hobby" value="沙拉"
+													<td><input type="checkbox" name="hobby" value="fried"
 														id="hobby">沙拉</td>
-													<td><input type="checkbox" name="hobby" value="水果"
+													<td><input type="checkbox" name="hobby" value="hamburger"
 														id="hobby">水果</td>
-													<td><input type="checkbox" name="hobby" value="牛排"
+													<td><input type="checkbox" name="hobby" value="springRoll"
 														id="hobby">牛排</td>
 												</tr>
 											</table>
