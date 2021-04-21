@@ -23,7 +23,7 @@
 
 <style>
 .header {
-	background-color: #000000;
+	background-color: green;
 }
 #page2{
 	background-color: blue;
@@ -69,7 +69,7 @@
     <!-- 右邊顯示的資料 -->  
       <div class="col-lg-10 nopadding " >
       	<!-- 背景圖 -->
-      	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
+      	<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/conpany.jpg"/>)">
       		<div class="container">
 			<div class="row d-flex align-items-center justify-content-center">
 				<div class="col-sm-8 col-sm-offset-2">
