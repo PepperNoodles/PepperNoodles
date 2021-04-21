@@ -3,9 +3,12 @@ package com.infotran.springboot.shoppingmall.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -17,19 +20,29 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.shoppingmall.model.OrderDetail;
+import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.model.Product;
+import com.infotran.springboot.shoppingmall.service.OrderListService;
 import com.infotran.springboot.shoppingmall.service.ShoppingMallService;
-
-import javassist.NotFoundException;
 
 @RestController
 public class ShoppingMallController {
 
 	@Autowired
 	ShoppingMallService shopservice;
+	
+	@Autowired
+	OrderListService orlistservice;
 	
 	@Autowired
 	Product product;
@@ -116,22 +129,7 @@ public class ShoppingMallController {
 	//子類別
 	@GetMapping(value="/detailclass",consumes = {"application/json"},produces ={ "application/json; charset=UTF-8" } )
 	public Map<String,Object> getAllProductsByClickOnDetailClass(@RequestParam("detailname")String detailname){
-		String detailClassName = "";
-		if ("friedchicken".equals(detailname)) {
-			detailClassName = "炸雞";
-		} else if ("icecream".equals(detailname)) {
-			detailClassName = "冰淇淋";
-		} else if ("vegfruit".equals(detailname)) {
-			detailClassName = "蔬菜水果";
-		} else if ("desert".equals(detailname)) {
-			detailClassName = "甜點";
-		} else if ("steak".equals(detailname)) {
-			detailClassName = "牛排";
-		} else if ("hotpot".equals(detailname)) {
-			detailClassName = "火鍋";
-		} else if ("lambstove".equals(detailname)) {
-			detailClassName = "羊肉爐";
-		}
+		String detailClassName = translationForDetailClass(detailname);
 		List<Product> productList = shopservice.findProductByDetailClass(detailClassName, 0, 6);
 		Integer totalpage = shopservice.getBtnFromDetailClass(detailClassName, 0, 6).get("TotalPages");
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -142,22 +140,7 @@ public class ShoppingMallController {
 	//純tag
 	@GetMapping(value="/puretags",consumes = {"application/json"},produces ={ "application/json; charset=UTF-8" } )
 	public Map<String,Object> getAllProductsByClickOnExactTags(@RequestParam("tagname")String detailname){
-		String tagname = "";
-		if ("friedchicken".equals(detailname)) {
-			tagname = "炸雞";
-		} else if ("icecream".equals(detailname)) {
-			tagname = "冰淇淋";
-		} else if ("salad".equals(detailname)) {
-			tagname = "沙拉";
-		} else if ("desert".equals(detailname)) {
-			tagname = "甜點";
-		} else if ("steak".equals(detailname)) {
-			tagname = "牛排";
-		} else if ("hotpot".equals(detailname)) {
-			tagname = "火鍋";
-		} else if ("lambstove".equals(detailname)) {
-			tagname = "羊肉爐";
-		}
+		String tagname = translationForTag(detailname);
 		List<Product> productList = shopservice.getProductsByExactTag(tagname, 0, 6);
 		Integer totalpage = shopservice.getBtnFromExactTag(tagname, 0, 6).get("TotalPages");
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -362,6 +345,69 @@ public class ShoppingMallController {
 		return productList;
 	}
 	
+	@PostMapping(value="/checkoutURL",consumes={"multipart/mixed","multipart/form-data","application/json"})
+	public String urlToCheckOut(@RequestPart("idlist")String toId,@RequestPart("amountlist")String toAmount) throws JsonMappingException, JsonProcessingException {
+		String url = "http://localhost:9090/PepperNoodles/shoppingSystem/checkOutPage" ;
+		ArrayList<Integer> idlist =  new ObjectMapper().readValue(toId, new TypeReference<ArrayList<Integer>>() {});
+		ArrayList<Integer> amountlist =  new ObjectMapper().readValue(toAmount, new TypeReference<ArrayList<Integer>>() {});
+		Integer len = idlist.size();
+		OrderDetail odetail = null;
+		OrderList olist = new OrderList();
+		Set <OrderDetail> odset = new LinkedHashSet<OrderDetail>();
+		for (int i=0;i<len;i++) {
+			odetail = new OrderDetail();
+			odetail.setFkProductId(idlist.get(i));
+			odetail.setAmount(amountlist.get(i));
+			odset.add(odetail);
+		}
+		olist.setProducts(odset);
+		orlistservice.save(olist);
+		return url;
+	}
+	
+	
+	
+	
 	
 
+	private String translationForDetailClass (String detailname) {
+		String detailClassName = "";
+		if ("friedchicken".equals(detailname)) {
+			detailClassName = "炸雞";
+		} else if ("icecream".equals(detailname)) {
+			detailClassName = "冰淇淋";
+		} else if ("vegfruit".equals(detailname)) {
+			detailClassName = "蔬菜水果";
+		} else if ("desert".equals(detailname)) {
+			detailClassName = "甜點";
+		} else if ("steak".equals(detailname)) {
+			detailClassName = "牛排";
+		} else if ("hotpot".equals(detailname)) {
+			detailClassName = "火鍋";
+		} else if ("lambstove".equals(detailname)) {
+			detailClassName = "羊肉爐";
+		}
+		return detailClassName;
+	}
+
+	
+	private String translationForTag(String detailname) {
+		String tagname = "";
+		if ("friedchicken".equals(detailname)) {
+			tagname = "炸雞";
+		} else if ("icecream".equals(detailname)) {
+			tagname = "冰淇淋";
+		} else if ("salad".equals(detailname)) {
+			tagname = "沙拉";
+		} else if ("desert".equals(detailname)) {
+			tagname = "甜點";
+		} else if ("steak".equals(detailname)) {
+			tagname = "牛排";
+		} else if ("hotpot".equals(detailname)) {
+			tagname = "火鍋";
+		} else if ("lambstove".equals(detailname)) {
+			tagname = "羊肉爐";
+		}
+		return tagname;
+	}
 }

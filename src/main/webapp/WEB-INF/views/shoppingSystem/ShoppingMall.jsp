@@ -63,7 +63,7 @@ $(document).ready(function() {
 	       			.append("<h3>"+element.productName+"</h3>")
 	       			.append("<p class='JQellipsis'>"+text+"</p>")
 	       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-	       			.append("<div class='list-footer'>"+
+	       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 	       					"<ul>"+
 	       						"<li>$"+element.productPrice+"</li>"+
 	       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -79,6 +79,10 @@ $(document).ready(function() {
 	        	console.log(result);
 	        }
 		});
+		
+		
+		
+		
 		
 		//全部商品
 		$.ajax({
@@ -108,7 +112,7 @@ $(document).ready(function() {
 	       			.append("<h3>"+element.productName+"</h3>")
 	       			.append("<p>"+ text +"</p>")
 	       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-	       			.append("<div class='list-footer'>"+
+	       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 	       					"<ul>"+
 	       						"<li>$"+element.productPrice+"</li>"+
 	       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -171,7 +175,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -233,7 +237,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -294,7 +298,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -354,7 +358,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -418,7 +422,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -480,7 +484,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -542,7 +546,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -605,7 +609,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -675,7 +679,7 @@ $(document).ready(function() {
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>")
 		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -731,7 +735,7 @@ $(document).ready(function() {
 		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
 		       			.append("<h3>"+element.productName+"</h3>")
 		       			.append("<p>"+ text +"</p>").append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
-		       			.append("<div class='list-footer'>"+
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
 		       					"<ul>"+
 		       						"<li>$"+element.productPrice+"</li>"+
 		       						"<li style='display:none;'>"+element.quantity+"</li>"+
@@ -757,7 +761,6 @@ $(document).ready(function() {
 		var quantity ;//庫存
 		$('body').on("click","#queryProduct",function(e){
 			e.preventDefault();
-// 			$("#footerbtn button").remove();
 			$(".modal-body>div").remove();
 			productid 	= $(this).next().val();
 			productname = $(this).nextAll("h3").text();
@@ -776,14 +779,12 @@ $(document).ready(function() {
 			var pr 			 = $('<span id="eachprice">'+price+'</span>');
 			var content 	 = $("<p></p>").text(description).css({"font-size":"20px","font-weight":"bolder"});
 			var btn 		 = $('#purchase');
-			var out			 = $('#callout');
 			var footerbtn    = $('#footerbtn');
-// 			var buy          = $('<button type="button" id="purchase" value="1">購買</button>').addClass("genric-btn danger-border circle arrow small").attr("name",productname);
-// 			var nobuy        = $('<button type="button" id="callout" value="2" style="display: none;">取消</button>').addClass("genric-btn danger-border circle arrow small").attr("name",price);
+			var amount       = $('#amount');
 			//
+			amount.attr("name",price);
 			modalfooter.attr("id",productid);
 			btn.attr("name",productname);
-// 			footerbtn.append(buy).append(nobuy);
 			heading.text(productname);
 			detailfooter.append(pr);
 			detail.append(content);
@@ -793,160 +794,380 @@ $(document).ready(function() {
 		});
 		//
 		var count = 0;
-		localStorage.clear();
-		$("body").on('click',('#addcart,#removecart'),function(e){
+		var result = {};
+		var temp = new Array();
+		var judge = new Set();
+		var findMissingNumArray = [0];
+		var tempfindmiss = new Set();
+		var id,name,amount,price;
+		sessionStorage.clear();
+		$("body").on('click',('#addcart,#removecart,#purchase'),function(e){
 			e.preventDefault();
 			var dot   = $('.dot');
 			var watid = $(this).attr('id');
 			var diff  = $(this).attr('value');
-			var pid ;
-			var pname ;
-			var pamount ;
-			var pprice ; 
-			//alert(diff+":"+watid);
-			if  (diff == 1){//加入購物車
-				count++;
-				$(this).hide();
-				$(this).next().show();
-				if (watid == "addcart") {
-					pid   	= $(this).parents("div").prevAll("#hiddenid").val();
-					pname 	= $(this).parents("div").prevAll("h3:eq(0)").text();
-					pamount = 1;
-					pprice 	= $(this).prevAll("ul li:eq(1)").text();
-					for (var i = count; i<= count; i++){
-						var pobject_i = {id:pid,name:pname,amount:pamount,price:pprice};
-						localStorage.setItem('item'+i+'', JSON.stringify(pobject_i));
-// 						alert('item'+i+'');
-// 						alert(JSON.stringify(pobject_i));
-					}
-				} 
-			} else if (diff == 2){//移出購物車
-				count--;
-				$(this).hide()
-				$(this).prev().show();
-				if (watid == "removecart"){
-					var pid = $(this).parents("#hiddenid").val();
-					alert("pid is"+pid);
-					for (var k = 1; k <= (count+1) ; k++){
-						var id = parseInt(JSON.parse(localStorage.getItem('item'+k+'')).id,10);
-						alert("id is"+id);
-						if (pid==id){
-							localStorage.removeItem('item'+k+'');
-						}
-					}
-				} 
-			}//移出購物車end
-			dot.text(count).show();
-			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
-			$('.toast').toast({delay: 3000});
-			$('.toast').toast('show');
-		});
-		////
-		
-		
-		$("body").on('click',('#purchase,#callout'),function(e){
-// 			sessionStorage.clear();
-			e.preventDefault();
-			var dot   = $('.dot');
-			var diff  = $(this).attr('value');
-			var watid = $(this).attr('id');
-			var realamount = $("#amount").val();//購買數量
-// 			alert("realamount is:"+realamount);
-			//alert(diff+":"+watid);
-			if  (diff == 1){//加入購物車
-				count++;
-				if (watid == "purchase") {
-					var pid 	= $(this).parents(".modal-footer").attr('id');
-					var pname 	= $(this).attr("name");
-					var pamount = realamount;
-					var pprice 	= $(this).next().attr("name");
-					for (var j 	= count;j <= count; j++){
-						var pobject_j = {id:pid,name:pname,amount:pamount,price:pprice};
-						localStorage.setItem('item'+j+'', JSON.stringify(pobject_j));
-						alert(JSON.stringify(pobject_j));
-// 						sessionStorage.clear();
-					}
-				}
-			}
-			dot.text(count).show();
-			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
-			$('.toast').toast({delay: 3000});
-			$('.toast').toast('show');
-		});
-		
-		//點購物車
-		$('body').on('click','#shopcart',function(e){
-			console.log(localStorage.getItem("item1").["id"]);
-			e.preventDefault();	
-			$('tbody>tr').empty();
-			$('#pricetag>h4').empty();
 			var cart  	 = $('.cartmenu');
 			var tbody 	 = $('tbody');
 			var pricetag = $('#pricetag');
-			//
-			cart.toggle();
-			console.log("sessionstorage key:"+sessionStorage.key(0));
-// 			console.log("sessionstorage key:"+sessionStorage.getItem(item1));
-// 			console.log("sessionstorage key:"+JSON.parse(sessionStorage.getItem(sessionStorage.key(0))));
-			if (count!=0){
-				var temp= [0];
-				for(var i = 0; i < count; i ++){//每個商品
-					var id 	   = parseInt(JSON.parse(localStorage.getItem(''+sessionStorage.key(i)+'')).id,10);
-					var name   = JSON.parse(localStorage.getItem(sessionStorage.key(i))).name;
-					var amount = JSON.parse(localStorage.getItem(''+sessionStorage.key(i)+'')).amount;
-					alert("amount is wierd:"+amount+"name is wierd:"+name);
-					var price  = JSON.parse(localStorage.getItem(sessionStorage.key(i))).price;
-					for (var j = 0; j<temp.length;j++){
-						if (id != temp[j]){
-							var tr 	   = $('<tr></tr>');
-							var col1   = $('<td></td>').text(j+1).attr("id",id);
-							var col2   = $('<td></td>').text(name);
-// 							alert("amount2 is wierd:"+amount);
-							var col3   = $('<td>'+amount+'</td>');
-							var col4   = $('<td id="pr'+(j+1)+'"></td>').text(price);
-							var col5   = $('<td></td>').append('<i class="fas fa-trash-alt"></i>');
-							tr.append(col1);
-							tr.append(col2);
-							tr.append(col3);
-							tr.append(col4);
-							tr.append(col5);
-							tbody.append(tr);
-							temp.push(id);
+			if  (diff == 1){//加入購物車
+				if (watid == "addcart") {
+					count++;
+					$(this).hide();
+					$(this).next().show();
+					$('tbody').children("tr").remove();
+					$('#pricetag>h4').empty();
+					var pid   	= $(this).parents("div").prevAll("#hiddenid").val();
+					var pname 	= $(this).parents("div").prevAll("h3:eq(0)").text();
+					var pamount = 1;
+					var pprice 	= $(this).prevAll("ul li:eq(1)").text();
+					for (var i = count; i<= count; i++){
+						var json = new Object(); 
+						json = {"id":pid,"name":pname,"amount":pamount,"price":pprice};
+						temp.push(pid);
+						judge.add(pid);
+						var missingnum;
+						if (tempfindmiss.has(i)){
+							mno = missingnums(findMissingNumArray);
+							sessionStorage.setItem('item'+mno+'', JSON.stringify(json));
 						} else {
-							var oa = $("#"+id+"").next().next().text();
-							oa += amount;
-							$("#"+id+"").next().next().text(oa);
+							sessionStorage.setItem('item'+i+'', JSON.stringify(json));
+							findMissingNumArray.push(i);
+							tempfindmiss.add(i);
+						}
+					}
+					////repeattimes(temp);
+					var boo = true;
+					for(var i = 0; i < count; i ++){//每個商品
+						var item   = sessionStorage.key(i);
+						var object = JSON.parse(sessionStorage.getItem(item));
+						for (var key in object){
+							if (key=="id"){
+								id = object[key];
+								if ($("#cart"+id+"").attr("id") != null){
+									if (judge.has(id) && $("#cart"+id+"").attr("id").substring(4)==id){
+										var inum = parseInt(item.substring(4),10);
+										sessionStorage.removeItem("item"+inum+"");
+										boo=false;
+										temp.pop(id);
+										count--;
+										$(this).show();
+										$(this).next().hide();
+										alert("您已選取過此商品，請查看購物車");
+									}
+								}
+							} else if (key=="name"){
+								name = object[key];
+							} else if (key=="amount"){
+								amount = parseInt(object[key],10);
+							} else if (key=="price"){
+								price = parseInt(object[key].substring(1),10);
+							}
+						}
+						if (boo){
+							var tr 	 = $('<tr></tr>');
+							var col1 = $('<td></td>').text(i+1).attr("id","cart"+parseInt(id,10));
+							var col2 = $('<td></td>').text(name);
+							var col3 = $('<td></td>').html('<input type="number" value="'+amount+'" min="1" style="width:40px;height:20px;">');
+							var col4 = $('<td id="pr'+(i+1)+'"></td>').text(price);
+							var col5 = $('<td></td>').append('<i class="fas fa-trash-alt" id="garbage"></i>');
+							tr.append(col1).append(col2).append(col3).append(col4).append(col5);
+							tbody.append(tr);
+						}
+					}
+					//新增購物車end 
+				} else if (watid == "purchase"){
+					count++;
+					$('tbody').children("tr").empty();
+					$('#pricetag>h4').empty();
+					var pid 	= $(this).parents(".modal-footer").attr('id');
+					var pname 	= $(this).attr("name");
+					var pamount = $("#amount").val();
+					var pprice 	= $(this).prev().attr("name");
+					for (var j 	= count;j <= count; j++){
+						var json = new Object(); 
+						json = {"id":pid,"name":pname,"amount":pamount,"price":pprice};
+						sessionStorage.setItem('item'+j+'', JSON.stringify(json));
+						temp.push(pid);
+						judge.add(pid);
+						var missingnum;
+						if (tempfindmiss.has(j)){
+							mno = missingnums(findMissingNumArray);
+							sessionStorage.setItem('item'+mno+'', JSON.stringify(json));
+						} else {
+							sessionStorage.setItem('item'+j+'', JSON.stringify(json));
+							findMissingNumArray.push(j);
+							tempfindmiss.add(j);
+						}
+					}
+					var boo = true;
+					for(var i = 0; i < count; i ++){//每個商品
+						var item   = sessionStorage.key(i);
+						var object = JSON.parse(sessionStorage.getItem(item));
+						for (var key in object){
+							if (key=="id"){
+								id = object[key];
+								if ($("#cart"+id+"").attr("id") != null){
+									if (judge.has(id) && $("#cart"+id+"").attr("id").substring(4)==id){
+										var inum = parseInt(item.substring(4),10);
+										sessionStorage.removeItem("item"+inum+"");
+										boo=false;
+										temp.pop(id);
+										count--;
+										$(this).show();
+										alert("您已選取過此商品，請查看購物車");
+									}
+								}
+							} else if (key=="name"){
+								name = object[key];
+							} else if (key=="amount"){
+								amount = parseInt(object[key],10);
+							} else if (key=="price"){
+								price = parseInt(object[key].substring(1),10);
+							}
+						}
+						if (boo){
+							var tr 	 = $('<tr></tr>');
+							var col1 = $('<td></td>').text(i+1).attr("id","cart"+parseInt(id,10));
+							var col2 = $('<td></td>').text(name);
+							var col3 = $('<td></td>').html('<input type="number" value="'+amount+'" min="1" style="width:40px;height:20px;">');
+							var col4 = $('<td id="pr'+(i+1)+'"></td>').text(price);
+							var col5 = $('<td></td>').append('<i class="fas fa-trash-alt" id="garbage"></i>');
+							tr.append(col1).append(col2).append(col3).append(col4).append(col5);
+							tbody.append(tr);
 						}
 					}
 				}
-			} else {
-				var tr 	   = $('<tr></tr>');
-				var col1   = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
-				tr.append(col1);
-				tbody.append(tr);
-			}
+			} else if (diff == 2){//移出購物車
+				if (watid == "removecart"){
+					count--;
+					$(this).hide()
+					$(this).prev().show();
+					$('tbody').children("tr").remove();
+					$('#pricetag>h4').empty();
+					var pid = $(this).parents("div").prevAll("#hiddenid").val();
+					var idd;
+					for (var k = 1; k <= (count+1); k++){
+						var object = JSON.parse(sessionStorage.getItem('item'+k+''));
+						for (var key in object){
+							if (key=="id") idd = object[key];
+						}
+						if (pid==idd){
+							sessionStorage.removeItem('item'+k+'');
+							temp.pop(pid);
+							judge.delete(pid);
+							tempfindmiss.delete(k);
+							findMissingNumArray.splice(k,1);
+						}
+					}//
+					var boo = true
+					for(var i = 0; i < count; i ++){//每個商品
+						var item   = sessionStorage.key(i);
+						var object = JSON.parse(sessionStorage.getItem(item));
+						for (var key in object){
+							if (key=="id"){
+								id = object[key];
+								if ($("#cart"+id+"").attr("id") != null){
+									if (judge.has(id) && $("#cart"+id+"").attr("id").substring(4)==id){
+										boo=false;
+										temp.pop(id);
+										count--;
+										$(this).show();
+									}
+								}
+							} else if (key=="name"){
+								name = object[key];
+							} else if (key=="amount"){
+								amount = parseInt(object[key],10);
+							} else if (key=="price"){
+								price = parseInt(object[key].substring(1),10);
+							}
+						}
+						//
+						if (boo){
+							var tr 	 = $('<tr></tr>');
+							var col1 = $('<td></td>').text(i+1).attr("id","cart"+parseInt(id,10));
+							var col2 = $('<td></td>').text(name);
+							var col3 = $('<td></td>').html('<input  type="number" value="'+amount+'" min="1" style="width:30px;height:20px;">');
+							var col4 = $('<td id="pr'+(i+1)+'"></td>').text(price);
+							var col5 = $('<td></td>').append('<i class="fas fa-trash-alt" id="garbage" id="garbage"></i>');
+							tr.append(col1).append(col2).append(col3).append(col4).append(col5);
+							tbody.append(tr);
+						}
+					  }
+					}
+				}
+			//移出購物車end
+			dot.text(count).show();
+			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
+			$('.toast').toast({delay: 3000});
+			$('.toast').toast('show');
 			var totalprice = 0;
 			for (var i = 0; i < count; i ++){
-				totalprice +=  parseInt($('#pr'+(i+1)+'').text().substring(1),10);
+				amount = $('#pr'+(i+1)+'').prev().children("input").val();
+				totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
 			}
 			pricetag.append('<h4><strong>總價格: '+totalprice+' 元</strong></h4>');
 			
 		});
 		
+		//點垃圾桶
+		$('body').on('click','#garbage',function(e){
+			e.preventDefault();
+			count--;
+			var idd;
+			var dot = $('.dot');
+			var tbody 	 = $('tbody');
+			var pricetag = $('#pricetag');
+			var pid = parseInt($(this).parent().prevAll("tr td:first-child").attr("id").substring(4),10);
+			var row = parseInt($(this).parent().prevAll("tr td:first-child").text(),10)-1;
+			alert(pid);
+			for (var k = 1; k <= (count+1); k++){
+				var object = JSON.parse(sessionStorage.getItem('item'+k+''));
+				for (var key in object){
+					if (key=="id")idd = parseInt(object[key],10);
+				}
+				if (pid==idd){
+					sessionStorage.removeItem('item'+k+'');
+					temp.pop(pid);
+					judge.delete(pid);
+					tempfindmiss.delete(k);
+					findMissingNumArray.splice(k,1);
+					$('tbody').find('tr:eq('+row+')').remove();
+					$('#pricetag>h4').empty();
+				}
+			}
+			var totalprice = 0;
+			if (count!=0){
+				for (var i = 0; i < count; i ++){
+					amount = $('#pr'+(i+1)+'').prev().children("input").val();
+					totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
+				}
+			}else if (count==0){
+				$('tbody').children("tr").remove();
+				$('#pricetag>h4').empty();
+				var tr 	 = $('<tr></tr>');
+				var col1 = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
+				tr.append(col1);
+				tbody.append(tr);
+			}
+			pricetag.append('<h4><strong>總價格: '+totalprice+' 元</strong></h4>');
+			dot.text(count).show();
+			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
+			$('.toast').toast({delay: 3000});
+			$('.toast').toast('show');
+			//
+			var theone = parseInt($('#pro'+pid+'').attr('id').substring(3),10);
+			var $display = $('#pro'+pid+'').children().children('li:eq(3)').val();//為NONE
+			if (theone==pid && $display==2){
+				$('#pro'+pid+'').children().children('li:eq(3)').hide();
+				$('#pro'+pid+'').children().children('li:eq(2)').show();
+			}
+		});
 		
 		
+		//點數字
+		$('body').on('change','table tbody tr td:nth-child(3) input[type=number]',function(e){
+			e.preventDefault();
+			$('#pricetag>h4').empty();
+			var pricetag = $('#pricetag');
+			var sum = 0;
+			$('tbody tr').each(function(){
+				var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
+				var price  = $('table tbody tr td:nth-child(4)').text();
+				sum += amount*price;
+			});	
+			pricetag.append('<h4><strong>總價格: '+sum+' 元</strong></h4>');
+		});
+		
+				
+		//點購物車
+		$('body').on('click','#shopcart',function(e){
+			e.preventDefault();
+			var cart  = $('.cartmenu');
+			var tbody 	 = $('tbody');
+			var pricetag = $('#pricetag');
+			cart.toggle();
+			if (count == 0) {
+				$('tbody').children("tr").empty();
+				$('#pricetag>h4').empty();
+				var tr 	 = $('<tr></tr>');
+				var col1 = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
+				tr.append(col1);
+				tbody.append(tr);
+			var totalprice = 0;
+			for (var i = 0; i < count; i ++){
+				totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10);
+			}
+			pricetag.append('<h4><strong>總價格: '+totalprice+' 元</strong></h4>');
+			}
+		});
+		
+	
+	$('#checkout').on('click',function(e){
+		e.preventDefault();
+		var idlist = new Array();
+		var amountlist = new Array();
+		$('tbody tr').each(function(){
+			var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
+			var pid    = $('table tbody tr td:first-child').attr('id').substring(4);
+			idlist.push(pid);
+			amountlist.push(amount);
+		});	
+		console.log("idlist");
+		console.log(idlist);
+		console.log("amountlist");
+		console.log(amountlist);
+		data = new FormData();
+		data.append('idlist',JSON.stringify(idlist));
+		data.append('amountlist',JSON.stringify(amountlist));
+		$.ajax({
+			method:"POST",
+			url:"/PepperNoodles/checkoutURL",
+			contentType: 'application/json; charset=utf-8', 
+			data:data,
+			processData: false,
+			dataType: 'json',
+			contentType: false, 
+	        async : true,
+	        cache: false,
+	        success: function (url) {
+	        	window.location.href = url,false;
+	        },
+	        error: function (result) {
+	        	console.log("問題是:"+result);
+	        }	
+		});    
+	});
+	
+	//useless
+	function repeattimes(temp){
+		temp.forEach(function(item){
+			result[item] = result[item] ? result[item] + 1 : 1;
+		});
+	}
+	
+	function missingnums(nums){
+		 var n=0,len=nums.length;
+		    for(var i=0;i<len;i++){
+		        n+=nums[i];
+		    }
+		return missnum = (1+len)*(len/2)-n;
+	}
+	
 		
 });
 </script>
 
 <style>
+#garbage:hover{
+	cursor: pointer;
+}
 .left-column-div{
 	width:100%;
 	margin-bottom: 10px;
 }
 .totextcolor{
 	color:black;
-	
 }
 .mainclass{
 	margin-left: 10px;
@@ -1004,7 +1225,7 @@ $(document).ready(function() {
 .modal-img img{
 	width: 100%;
 	height:100%;
-	 object-fit: cover;
+	object-fit: cover;
 }
 #queryimage{
 	border-radius: 2em;
@@ -1012,7 +1233,7 @@ $(document).ready(function() {
 	overflow: hidden;
 	width: 100%;
 	max-height: 150px;
-	 object-fit: cover;
+	object-fit: cover;
 }
 .contentfont{
 	font-size: 50px;
@@ -1053,7 +1274,7 @@ $(document).ready(function() {
 }
 .cartmenu{
 	position: fixed;
-	bottom: 45%;
+	bottom: 25%;
 	right: 15px;
 	width: 500px;
 	height: 200px;
