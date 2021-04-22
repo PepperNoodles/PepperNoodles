@@ -32,7 +32,7 @@ public class checkOutController {
 	snowfFlakeUUID uuidgen;
 
 	@PostMapping(value="/checkoutURL")
-	public @ResponseBody String urlToCheckOut(@RequestPart("idlist")String toId,@RequestPart("amountlist")String toAmount,Model m) throws Exception {
+	public @ResponseBody String urlToCheckOut(@RequestPart("idlist")String toId,@RequestPart("amountlist")String toAmount) throws Exception {
 		ArrayList<Integer> idlist =  new ObjectMapper().readValue(toId, new TypeReference<ArrayList<Integer>>() {});
 		ArrayList<Integer> amountlist =  new ObjectMapper().readValue(toAmount, new TypeReference<ArrayList<Integer>>() {});
 		Integer len = idlist.size();
@@ -49,7 +49,6 @@ public class checkOutController {
 		}
 		olist.setOdetails(odset);
 		orlistservice.save(olist);
-		m.addAttribute("odset",odset);
 		return "/shoppingSystem/checkOutPage";
 	}
 	

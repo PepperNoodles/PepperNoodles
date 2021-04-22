@@ -1520,7 +1520,7 @@ $(document).ready(function() {
                         
                         <!-- listing Details End -->
                         <!--Pagination Start  -->
-                        <div class="pagination-area pt-70 text-center" id="pagination" style= "border: 1px solid red" >
+                        <div class="pagination-area pt-70 text-center" id="pagination"  >
                             <div class="container">
                                 <div class="row">
                                     <div class="col-xl-12">
@@ -1682,7 +1682,6 @@ $(document).ready(function() {
 		<!-- All JS Custom Plugins Link Here here -->
         <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<!-- Jquery, Popper, Bootstrap -->
-<%-- 		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script> --%>
         <script src="<c:url value='/scripts/popper.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	    <!-- Jquery Mobile Menu -->
