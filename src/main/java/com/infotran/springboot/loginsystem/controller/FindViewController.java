@@ -21,4 +21,26 @@ public class FindViewController {
 		return "edit/editMember";
 	}
 	
+	@GetMapping(value="/normaluser")
+	public String normaluserpage() {
+		return "normaluser";
+	}
+	
+	@GetMapping(value="/companyuser")
+	public String companyuser() {
+		return "companyuser";
+	}
+	
+	@GetMapping(value="/admin")
+	public String admin() {
+		return "admin";
+	}
+	
+	@GetMapping(value="/403")
+	public String error403() {
+		return "403";
+	}
+	
+	
+	
 }

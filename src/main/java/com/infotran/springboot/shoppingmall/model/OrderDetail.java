@@ -11,9 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,13 +32,16 @@ public class OrderDetail {
 	@Transient
 	private Integer fkProductId;
 	
+
 	private Integer Amount;
+
 	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_Order_id")
 	@JsonIgnore
     private OrderList orderlist;
 	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_Product_id")
 	@JsonIgnore

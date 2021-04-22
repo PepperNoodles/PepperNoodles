@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.FoodTagProduct;
 
@@ -36,14 +37,17 @@ public class FoodTag {
 	
 //	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //	@JoinTable(name="foodtag_user",joinColumns = {
-//			@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
-//			@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	@JoinColumn(name="fk_foodTag_id",referencedColumnName = "foodTag_id")},inverseJoinColumns = {
+
+//	@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
+//	private Set<UserAccount> users = new HashSet<UserAccount>();
+
+//	@JoinColumn(name="fk_userAccount_id",referencedColumnName = "account_id")})
 //	private Set<UserAccount> users = new HashSet<UserAccount>();
 
 	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
-	private Set<FoodTagUser> users = new HashSet<FoodTagUser>();
-	
+	@JsonIgnore
+	private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -53,9 +57,14 @@ public class FoodTag {
 	private Set<Forum> forums = new HashSet<Forum>();
 	
 	/* 所屬的tag */
-	@OneToMany(mappedBy = "fkfoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@OneToMany(mappedBy = "fkFoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "foodTag")
+	private Set<Restaurant> restaurant = new HashSet<Restaurant>();
+	
 	
 	public FoodTag() {
 	}
@@ -76,14 +85,6 @@ public class FoodTag {
 		this.foodTagName = foodTagName;
 	}
 
-	public Set<FoodTagUser> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Set<FoodTagUser> users) {
-		this.users = users;
-	}
-
 	public Set<Forum> getForums() {
 		return forums;
 	}
@@ -98,6 +99,22 @@ public class FoodTag {
 
 	public void setProduct(Set<FoodTagProduct> product) {
 		Product = product;
+	}
+
+	public Set<FoodTagUser> getFoodTagUsers() {
+		return FoodTagUsers;
+	}
+
+	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
+		FoodTagUsers = foodTagUsers;
+	}
+
+	public Set<Restaurant> getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Set<Restaurant> restaurant) {
+		this.restaurant = restaurant;
 	}
 	
 	

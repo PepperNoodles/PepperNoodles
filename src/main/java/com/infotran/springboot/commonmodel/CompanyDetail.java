@@ -1,6 +1,5 @@
 package com.infotran.springboot.commonmodel;
 
-import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +27,7 @@ public class CompanyDetail {
 	@Column(name = "phonenumber")
 	private String phonenumber;
 	
+	@JsonIgnore
 	@Column(name = "userphoto")
 	private byte[] userphoto;
 	

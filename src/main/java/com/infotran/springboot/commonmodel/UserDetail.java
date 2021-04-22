@@ -4,6 +4,7 @@ import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +40,7 @@ public class UserDetail {
 	@Column(name="userphotoname")
 	private String userPhotoName;
 	
+	@JsonIgnore
 	@Column(name = "userphoto")
 	private Blob userPhoto;
 	
@@ -51,8 +53,9 @@ public class UserDetail {
 	@Column(name = "fk_purse_id")
 	private Integer purseID;
 	
-	@OneToOne(mappedBy = "userAccountDetail")
+
 	@JsonIgnore
+	@OneToOne(mappedBy = "userAccountDetail",fetch = FetchType.LAZY)
 	private UserAccount userAccount;
 	
 	public UserDetail() {

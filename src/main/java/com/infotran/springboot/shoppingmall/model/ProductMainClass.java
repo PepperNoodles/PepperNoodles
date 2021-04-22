@@ -33,7 +33,7 @@ public class ProductMainClass {
 	
 	/*對應子類別*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productMainClass",cascade =CascadeType.ALL)
-	@JsonIgnore
+	@JsonIgnore 
 	private List<ProductDetailClass> productDetailClass = new ArrayList<ProductDetailClass>();
 
 	public ProductMainClass() {
