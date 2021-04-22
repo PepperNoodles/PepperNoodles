@@ -51,4 +51,11 @@ public class RestaurantServiceImpl implements RestaurantService {
 		return restaurantDao.findAll();
 	}
 
+	@Override
+	public Restaurant findByRestaurantAddress(String RAddress) {
+		return restaurantDao.findByRestaurantAddress(RAddress);
+	}
+
+
+
 }

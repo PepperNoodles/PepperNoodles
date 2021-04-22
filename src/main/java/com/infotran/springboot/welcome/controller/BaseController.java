@@ -22,9 +22,9 @@ public class BaseController {
 		return "mappage/showmap";
 	}
 	
-	@GetMapping("/user/main")
+	@GetMapping("/user/websocket")
 	public String userMain() {
-		return "userpage/usermain";
+		return "websocket/index";
 	}
 	
 	@GetMapping("/include")
@@ -37,5 +37,6 @@ public class BaseController {
 	public String template123() {
 		return "ok";
 	}
+
 
 }

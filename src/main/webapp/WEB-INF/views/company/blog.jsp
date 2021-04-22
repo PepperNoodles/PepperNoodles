@@ -114,8 +114,9 @@
 											<li><a href="about.html">發表食記</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
-											<li class="login"><a href="loginSystem/loginPage"> <i
-													class="ti-user"></i> Sign in or Register
+											<li class="login">
+											<a href="<c:url value='/loginSystem/loginPage' />">  
+												<i class="ti-user"></i> Sign in or Register
 											</a></li>
 										</ul>
 									</nav>
@@ -136,26 +137,10 @@
 
 	<div>
 		
-		<div class="container">
-
+<div class="container">
     <div class="row">
-
-      <div class="col-lg-3">
-
-        <h1 class="my-4">${comDetail.realname}</h1>
-        <div class="list-group">
-        
-          <a href="<c:url value='/showCompany/${comDetail.companyDetailId}' />" class="list-group-item">基本資料</a>
-          <a href="/" class="list-group-item">我的餐廳</a>
-          <a href="#" class="list-group-item"></a>
-        </div>
-
-      </div>
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-9">
-
-        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+<!--       <div class="col-lg-9"> -->
+        <div id="carouselExampleIndicators" class="carousel slide my-6" data-ride="carousel">
           <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -279,20 +264,14 @@
               </div>
             </div>
           </div>
-
         </div>
         <!-- /.row -->
-
       </div>
       <!-- /.col-lg-9 -->
-
     </div>
     <!-- /.row -->
-
   </div>
-		
-
-	</div>
+<!-- 	</div> -->
 
 
 
@@ -300,93 +279,6 @@
 
 
 
-	<footer>
-		<!-- Footer Start-->
-		<div class="footer-area">
-			<div class="container">
-				<div class="footer-top footer-padding">
-					<div class="row justify-content-between">
-						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="single-footer-caption mb-30">
-									<!-- logo -->
-									<div class="footer-logo">
-										<a href="index.html"><img
-											src="<c:url value='/images/logo/peppernoodle.png'/>" alt=""></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Quick Link</h4>
-									<ul>
-										<li><a href="#">Home</a></li>
-										<li><a href="#">Listing</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Categories</h4>
-									<ul>
-										<li><a href="#">台北美食</a></li>
-										<li><a href="#">熱門餐廳</a></li>
-										<li><a href="#">點券優惠</a></li>
-										<li><a href="#">每周排行</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Download App</h4>
-									<ul>
-										<li class="app-log"><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo.png'/>" alt=""></a></li>
-										<li><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo2.png'/>" alt=""></a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-bottom">
-					<div class="row d-flex justify-content-between align-items-center">
-						<div class="col-xl-9 col-lg-8">
-							<div class="footer-copy-right">
-								<p>
-									Copyright &copy;
-									<script>
-										document
-												.write(new Date().getFullYear());
-									</script>
-									All rights reserved | U copy <i class="fa fa-heart"
-										aria-hidden="true"></i> <a href="https://colorlib.com"
-										target="_blank">U died</a>
-								</p>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-4">
-							<!-- Footer Social -->
-							<div class="footer-social f-right">
-								<a href="#"><i class="fab fa-facebook-f"></i></a> <a href="#"><i
-									class="fab fa-instagram"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Footer End-->
-	</footer>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>

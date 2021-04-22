@@ -21,14 +21,14 @@
 <body>
 	<div class="image-container set-full-height"
 		style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
-		<div class="logo-container">
-			<div class="logo">
-				<a href="/PepperNoodles"> <img
-					src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px"
-					height="100px" style="margin-left: 93%;">
-				</a>
-			</div>
-		</div>
+<!-- 		<div class="logo-container"> -->
+<!-- 			<div class="logo"> -->
+<!-- 				<a href="/PepperNoodles"> <img -->
+<%-- 					src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px" --%>
+<!-- 					height="100px" style="margin-left: 93%;"> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<!-- container   -->
 		<div class="container">
 			<div class="row">

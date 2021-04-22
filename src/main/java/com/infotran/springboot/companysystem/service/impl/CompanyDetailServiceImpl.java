@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.dao.CompanyDetailRepository;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 
@@ -47,5 +48,7 @@ public class CompanyDetailServiceImpl implements CompanyDetailService {
 	public List<CompanyDetail> getAllCompanys() {
 		return ComDetailDao.findAll();
 	}
+
+
 
 }
