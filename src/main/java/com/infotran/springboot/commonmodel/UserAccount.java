@@ -1,11 +1,13 @@
 package com.infotran.springboot.commonmodel;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.LinkedHashSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,16 +23,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
 @Component
-public class UserAccount {
-	
+public class UserAccount implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
@@ -70,20 +75,19 @@ public class UserAccount {
 	private UserDetail userAccountDetail;
 
 	// =============================================================
-	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_companyDetail_id")
 	private CompanyDetail companyDetail;
 
 	// =============================================================
 	
-	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_levelDetail_id")
 	private CompanyDetail levelDetail;
 
 	// Roles=============================================================
-	
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -96,9 +100,9 @@ public class UserAccount {
 		
 //		@ManyToMany(mappedBy = "users")
 //		private Set<FoodTag> userTags = new HashSet<FoodTag>();
-		
-		 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
-		 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+	private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 	
 	// RestaurantFollowerForm=============================================================
 	
@@ -128,10 +132,10 @@ public class UserAccount {
 
 
 	// UserFollowerForm=============================================================
-	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "followers")
 	private Set<UserAccount> followersinmap = new HashSet<UserAccount>();
-	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "UserFollowerForm", joinColumns = {
 			@JoinColumn(name = "fk_userAccount_id", referencedColumnName = "account_id") }, inverseJoinColumns = {
@@ -141,26 +145,27 @@ public class UserAccount {
 
 
 	// MessageBox=============================================================
-
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "netizenAccount",cascade = CascadeType.ALL)
 	private List<MessageBox> netizens = new ArrayList<MessageBox>();
 	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "UserAccount",cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "userAccount",cascade = CascadeType.ALL)
 	private List<MessageBox> msnBox = new ArrayList<MessageBox>();
 	
 	// Forum=============================================================
-
+		@JsonIgnore
 		@OneToMany(fetch = FetchType.LAZY,mappedBy = "userAccount",cascade = CascadeType.ALL)
 		private List<Forum> forums = new ArrayList<Forum>();
 		
 	// ForumCollections=============================================================
-	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "colloctors")
 	private Set<Forum> collectedforums = new HashSet<Forum>();
 
 
 	// ForumMessageBox=============================================================
-
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumNetizenAccount",cascade = CascadeType.ALL)
 	private List<ForumMessageBox> forumNetizens = new ArrayList<ForumMessageBox>();
 	
@@ -173,24 +178,27 @@ public class UserAccount {
 //	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
 	
 	// ForumReplyMessageBox=============================================================
-	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumReplyuserAccount",cascade = CascadeType.ALL)
 	private List<ForumReplyMessage> forumReplyNetizenAccounts = new ArrayList<ForumReplyMessage>();
-	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "forumCommentUserAccount",cascade = CascadeType.ALL)
 	private List<ForumReplyMessage> forumCommentnetizenAccounts = new ArrayList<ForumReplyMessage>();
 	
 	// =============================================================
   
   	/** 1個User可以有多個餐廳 **/
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
 	Set<Restaurant> Restaurant = new LinkedHashSet<Restaurant>();
 	
 	/** 1個User可以對多個餐廳留言表留言 **/
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
 	Set<RestaurantMessageBox> RestaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
 	
 	/** 一個會員可以有多個回覆留言 **/
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
 	Set<RestaurantReplyMessage> RestaurantReplyMessage = new LinkedHashSet<RestaurantReplyMessage>();
 	
@@ -341,6 +349,30 @@ public class UserAccount {
 
 	public void setRoles(Set<Roles> roles) {
 		this.roles = roles;
+	}
+
+
+
+	public List<MessageBox> getNetizens() {
+		return netizens;
+	}
+
+
+
+	public void setNetizens(List<MessageBox> netizens) {
+		this.netizens = netizens;
+	}
+
+
+
+	public List<MessageBox> getMsnBox() {
+		return msnBox;
+	}
+
+
+
+	public void setMsnBox(List<MessageBox> msnBox) {
+		this.msnBox = msnBox;
 	}
 
 	

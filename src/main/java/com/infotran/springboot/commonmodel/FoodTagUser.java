@@ -15,6 +15,9 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "foodtag_user")
 @Component
@@ -35,13 +38,12 @@ public class FoodTagUser implements Serializable {
 	@Transient
 	private Integer fkfoodtagid;
 
-	
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
 	private UserAccount  fkuser;
-	
-	
+		
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
     private FoodTag  fkfoodtag;
