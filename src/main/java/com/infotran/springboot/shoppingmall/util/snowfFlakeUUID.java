@@ -1,6 +1,8 @@
 package com.infotran.springboot.shoppingmall.util;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class snowfFlakeUUID {
 
 	/**
@@ -60,6 +62,9 @@ public class snowfFlakeUUID {
 	    private long lastTimestamp = -1L;
 
 	    //==============================Constructors=====================================
+	    
+	    
+	    
 	    /**
 	     * 构造函数
 	     * @param workerId 工作ID (0~31)
@@ -76,7 +81,10 @@ public class snowfFlakeUUID {
 	        this.datacenterId = datacenterId;
 	    }
 
-	    // ==============================Methods==========================================
+	    public snowfFlakeUUID() {
+		}
+
+		// ==============================Methods==========================================
 	    /**
 	     * 获得下一个ID (该方法是线程安全的)
 	     * @return SnowflakeId
