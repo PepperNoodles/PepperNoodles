@@ -5,8 +5,6 @@
 
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
-=======
 <head>
 <meta charset="UTF-8">
 <title>Template For inClude</title>
@@ -24,27 +22,6 @@
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
-<head>
-=======
-<style>
-	.header {
-			background-color: #000000;
-			}
-	a{
-			color:#000000;	
-			}
-	a:hover{
-			color:blue;
-			}
-	tr:hover{
-			background-color:#BEBEBE;
-			}
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
 <!--抓取原本路徑用-->
 <base localhref= />
 
@@ -128,102 +105,6 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 }
 </script>
 </head>
-
-<body>
-	<!-- 讀取圖案 -->
-	<div id="preloader-active">
-		<div
-			class="preloader d-flex align-items-center justify-content-center">
-			<div class="preloader-inner position-relative">
-				<div class="preloader-circle"
-					style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png" />" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- 最上層bar -->
-	<header>
-		<!-- Header Start -->
-		<!-- 覆蓋用 -->
-		<div style="height: 90px"></div>
-
-		<div class="header-area header">
-			<!--  header-transparent -->
-			<div class="main-header sticky-top">
-				<div class="header-bottom header-sticky">
-					<div class="container-fluid">
-						<div class="row align-items-center">
-							<!-- Logo -->
-							<div class="col-xl-2 col-lg-2 col-md-1">
-								<div class="logo">
-									<a href="/PepperNoodles"><img style="height: 80px"
-										src="<c:url value="/images/logo/peppernoodle.png" />" alt=""></a>
-								</div>
-							</div>
-							<div class="col-xl-10 col-lg-10 col-md-8">
-								<!-- Main-menu -->
-								<div class="main-menu f-right d-none d-lg-block">
-									<nav>
-										<ul id="navigation">
-											<li><a href="index.html">Home</a></li>
-											<li><a href="about.html">About</a></li>
-											<li><a href="#">城市</a>
-												<ul class="submenu">
-													<li><a href="blog.html">台北</a></li>
-													<li><a href="blog_details.html">新北</a></li>
-													<li><a href="elements.html">基隆</a></li>
-													<li><a href="listing_details.html">桃園</a></li>
-												</ul></li>
-											<li><a href="#">美食</a>
-												<ul class="submenu">
-													<li><a href="blog.html">美式</a></li>
-													<li><a href="blog_details.html">日式燒烤</a></li>
-													<li><a href="elements.html">韓式</a></li>
-													<li><a href="listing_details.html">炸物</a></li>
-												</ul></li>
-											<li><a href="#">排行榜</a>
-												<ul class="submenu">
-													<li><a href="blog.html">免費排行</a></li>
-													<li><a href="blog_details.html">付費排行</a></li>
-													<li><a href="elements.html">周排行</a></li>
-													<li><a href="listing_details.html">綜合排行</a></li>
-												</ul></li>
-											<li><a href="about.html">論壇</a></li>
-											<li><a href="#">最新消息</a>
-												<ul class="submenu">
-													<li><a href="blog.html">菜色新聞</a></li>
-													<li><a href="blog_details.html">最新優惠</a></li>
-													<li><a href="elements.html">新開幕</a></li>
-												</ul></li>
-											<li><a href="about.html">發表食記</a></li>
-											<!-- <li><a href="contact.html">Contact</a></li> -->
-											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
-											<li class="login"><a href="loginSystem/loginPage"> <i
-													class="ti-user"></i> Sign in or Register
-											</a></li>
-										</ul>
-									</nav>
-								</div>
-							</div>
-							<!-- Mobile Menu -->
-							<div class="col-12">
-								<div class="mobile_menu d-block d-lg-none"></div>
-							</div>
-						</div>
-					</div>
-=======
-	td>img{
-			height: 100px;
-			}
-	.nav-link{
-		color:#000000;	
-	}
-						
-</style>
-</head>
 <body>
  	<%@include file="../includePage/includeNav.jsp" %>
 	<!-- 讀取圖案 -->
@@ -235,14 +116,9 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 					style="background-color: rgb(102, 102, 102);"></div>
 				<div class="preloader-img pere-text">
 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
-		<!-- Header End -->
-	</header>
-=======
 	</div>
 
 	<div>
@@ -334,10 +210,6 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 					</div>		
 			 </div>
 			</div>		
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
-
 
 	<div class="container mt-10" style="width: 80%">
 		<!--有照片的那個bar  -->
@@ -594,11 +466,9 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 							</div>
 						</div>
 					</div>
-=======
 				<!-- Scroll Up -->
 				<div id="back-top">
 					<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 				</div>
 			</div>
 		</div>
@@ -1125,67 +995,12 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 					
 				</script>
 
-<<<<<<< HEAD
-	<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
-
-	<!-- 	<script type="text/javascript" -->
-	src="
-	<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js' />
-	">
-	</script>
-	<!-- Jquery Mobile Menu -->
-	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
-
-	<!-- Jquery Slick , Owl-Carousel Plugins -->
-	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
-=======
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-
-<<<<<<< HEAD
-	<script src="<c:url value='/scripts/slick.min.js' />"></script>
-=======
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
-	<!-- One Page, Animated-HeadLin -->
-	<script src="<c:url value='/scripts/wow.min.js' />"></script>
-	<script src="<c:url value='/scripts/animated.headline.js' />"></script>
-	<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
-	<!-- Nice-select, sticky -->
-	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script>
-	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
-	<!-- contact js -->
-	<script src="<c:url value='/scripts/contact.js' />"></script>
-=======
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
-	<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
-	<script src="<c:url value='/scripts/mail-script.js' />"></script>
-	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
-=======
 	<%@include file="../includePage/includeFooter.jsp" %>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
-
-<<<<<<< HEAD
-	<!-- Jquery Plugins, main Jquery -->
-	<script src="<c:url value='/scripts/plugins.js' />"></script>
-	<script src="<c:url value='/scripts/main.js' />"></script>
-</body>
-=======
+	
 	<script>
  		$(window).on('load', function() {
 			
@@ -1193,10 +1008,7 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 			$(".header-sticky").addClass("sticky-bar");
  			$(".header-sticky").css("height", "90px");
 			$(".header-sticky").css("position","static")
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
-<<<<<<< HEAD
-=======
  			//讓loading圖動起來
  			$('#preloader-active').delay(450).fadeOut('slow');
  			$('body').delay(450).css({
@@ -1214,5 +1026,4 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 
 
 </body>
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 </html>
