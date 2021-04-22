@@ -23,8 +23,9 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "userAccount",uniqueConstraints = { @UniqueConstraint(columnNames = "acoount_index") })
@@ -42,6 +43,9 @@ public class UserAccount {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "enabled")
+	private boolean enabled;
+	
 	@Column(name = "accountType")
 	@Transient
 	private Integer accountType;
@@ -57,6 +61,8 @@ public class UserAccount {
 	@Column(name = "fk_levelDetail_id")
 	@Transient
 	private Integer levelDetailId;
+	
+
 
 	// =============================================================
 	
@@ -77,31 +83,56 @@ public class UserAccount {
 	@JoinColumn(name = "fk_levelDetail_id")
 	private CompanyDetail levelDetail;
 
-	// foodtags=============================================================
+	// Roles=============================================================
 	
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id" , referencedColumnName = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id" , referencedColumnName = "role_id")
+            )
+	private Set<Roles> roles = new HashSet<Roles>();
+	 
+	// foodtags=============================================================
+		
+//		@ManyToMany(mappedBy = "users")
+//		private Set<FoodTag> userTags = new HashSet<FoodTag>();
+		
+//		 @OneToMany(fetch = FetchType.LAZY,mappedBy = "fkuser",cascade = CascadeType.ALL)
+//		 private Set<FoodTagUser> FoodTagUsers = new HashSet<FoodTagUser>();
 //	@ManyToMany(mappedBy = "users")
 //	private Set<FoodTag> userTags = new HashSet<FoodTag>();
 	
 	@OneToMany(mappedBy = "fkuserid",cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<FoodTagUser> userTags = new HashSet<FoodTagUser>();
+
 	
 	// RestaurantFollowerForm=============================================================
 	
 //	@ManyToMany(mappedBy = "userAccountIDs")
 //	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
 	
-	// 如果要做朋友的request請求要在新增一個表格??=============================================================
+	// 如果要做朋友的request請求要在新增一個表格??===我現在把request放在friend表單裡 並改成兩個ManyToOne
 	
-	@ManyToMany(mappedBy = "friends")
-	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
+//	@ManyToMany(mappedBy = "friends")
+//	private Set<UserAccount> friendsinmap = new HashSet<UserAccount>();
+//	
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinTable(name = "FriendList", joinColumns = {
+//			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "account_id") }, inverseJoinColumns = {
+//					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "account_id") })
+//	private Set<UserAccount> friends = new HashSet<UserAccount>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "FriendList", joinColumns = {
-			@JoinColumn(name = "fk_UserAccount", referencedColumnName = "account_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "fk_FriendAccount", referencedColumnName = "account_id") })
-	private Set<UserAccount> friends = new HashSet<UserAccount>();
-
+	//從左邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "mainUser",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private Set<FriendList> friends = new HashSet<FriendList>();
+	
+	//被右邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "friends",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private Set<FriendList> beFriends = new HashSet<FriendList>();
 
 
 	// UserFollowerForm=============================================================
@@ -143,11 +174,11 @@ public class UserAccount {
 	
 	// ReplyMessageBox=============================================================
 
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "replyuserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> replyNetizenAccounts = new ArrayList<ReplyMessage>();
-	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "commentUserAccount",cascade = CascadeType.ALL)
-	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
+//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "replyuserAccount",cascade = CascadeType.ALL)
+//	private List<ReplyMessage> replyNetizenAccounts = new ArrayList<ReplyMessage>();
+//	
+//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "commentUserAccount",cascade = CascadeType.ALL)
+//	private List<ReplyMessage> commentnetizenAccounts = new ArrayList<ReplyMessage>();
 	
 	// ForumReplyMessageBox=============================================================
 	
@@ -237,4 +268,93 @@ public class UserAccount {
 	}
 
 
+	//好友系統用
+
+	public Set<FriendList> getFriends() {
+		return friends;
+	}
+
+
+
+	public void setFriends(Set<FriendList> friends) {
+		this.friends = friends;
+	}
+
+
+
+	public Set<FriendList> getBeFriends() {
+		return beFriends;
+	}
+
+
+	public void setBeFriends(Set<FriendList> beFriends) {
+		this.beFriends = beFriends;
+	}
+
+
+
+	public Integer getAccountId() {
+		return accountId;
+	}
+
+
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
+	}
+
+	
+	//好友系統用
+	
+
+
+
+
+
+	public CompanyDetail getCompanyDetail() {
+		return companyDetail;
+	}
+	
+	public Set<FoodTagUser> getUserTags() {
+		return userTags;
+	}
+
+
+
+	public void setUserTags(Set<FoodTagUser> userTags) {
+		this.userTags = userTags;
+	}
+
+
+
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
+	}
+
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
+	}
+
+	
+	
 }

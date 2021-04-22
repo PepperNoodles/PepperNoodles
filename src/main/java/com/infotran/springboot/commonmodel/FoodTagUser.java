@@ -11,15 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "foodtag_user")
+@Component
 public class FoodTagUser implements Serializable {
-//	
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -27,28 +30,28 @@ public class FoodTagUser implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer FooTagUserId;
 	
-	@Column(name="fk_foodTag_id",insertable = false,updatable = false)
-	private Integer fkfoodTagid;
+	@Column(name="fk_userAccount_id")
+	@Transient
+	private Integer fkuser;
 	
-	@Column(name="fk_userAccount_id",insertable = false,updatable = false)
-	private Integer fkuserAccountid;
+	@Column(name="fk_foodTag_id")
+	@Transient
+	private Integer fkfoodtag;
+	
+	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
+    @JoinColumn(name = "fk_userAccount_id"/*,insertable = false,updatable = false*/)
+	@JsonIgnore
+	private UserAccount  fkuserid;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_userAccount_id")
-	@JsonBackReference
-	private UserAccount fkuserid;
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fk_foodTag_id")
-	@JsonBackReference
-	private FoodTag fkfoodtagid;
+	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
+    @JoinColumn(name = "fk_foodTag_id"/*,insertable = false,updatable = false*/)
+	@JsonIgnore
+	private FoodTag  fkfoodtagid;
 	
 
 	public FoodTagUser() {
 	}
-
 
 	public Integer getFooTagUserId() {
 		return FooTagUserId;
@@ -59,55 +62,42 @@ public class FoodTagUser implements Serializable {
 		FooTagUserId = fooTagUserId;
 	}
 
-
-	public Integer getFkfoodTagid() {
-		return fkfoodTagid;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-
-	public void setFkfoodTagid(Integer fkfoodTagid) {
-		this.fkfoodTagid = fkfoodTagid;
+	public Integer getFkuser() {
+		return fkuser;
 	}
 
-
-	public Integer getFkuserAccountid() {
-		return fkuserAccountid;
+	public void setFkuser(Integer fkuser) {
+		this.fkuser = fkuser;
 	}
 
-
-	public void setFkuserAccountid(Integer fkuserAccountid) {
-		this.fkuserAccountid = fkuserAccountid;
+	public Integer getFkfoodtag() {
+		return fkfoodtag;
 	}
 
+	public void setFkfoodtag(Integer fkfoodtag) {
+		this.fkfoodtag = fkfoodtag;
+	}
 
 	public UserAccount getFkuserid() {
 		return fkuserid;
 	}
 
-
 	public void setFkuserid(UserAccount fkuserid) {
 		this.fkuserid = fkuserid;
 	}
-
 
 	public FoodTag getFkfoodtagid() {
 		return fkfoodtagid;
 	}
 
-
 	public void setFkfoodtagid(FoodTag fkfoodtagid) {
 		this.fkfoodtagid = fkfoodtagid;
 	}
 
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
 	
-
-	
-	
-
 }
+

@@ -2,9 +2,15 @@ package com.infotran.springboot.loginsystem.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
+
 
 public interface UserAccountService {
+	
+
 
 	// 存檔
 	public Integer save(UserAccount user);
