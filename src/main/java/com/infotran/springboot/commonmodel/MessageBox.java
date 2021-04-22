@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +19,15 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="messageBox")
 @Component
-public class MessageBox {
-	
+public class MessageBox implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_message_id")
@@ -50,15 +55,18 @@ public class MessageBox {
 	@Transient
 	private Integer fk_reply_user_messageBox;
 	
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_netizen_account")
 	private UserAccount netizenAccount;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_userAccount")
-	private UserAccount UserAccount;
+	private UserAccount userAccount;
 	
 	//replyMessageBox
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY/*, optional = false*/)
     @JoinColumn(name = "fk_reply_users_messageBox_id"/*,insertable = false,updatable = false*/)
 	private MessageBox messageBox;
@@ -123,13 +131,13 @@ public class MessageBox {
 
 
 	public UserAccount getUserAccount() {
-		return UserAccount;
+		return userAccount;
 	}
 
 
 
 	public void setUserAccount(UserAccount userAccount) {
-		UserAccount = userAccount;
+		this.userAccount = userAccount;
 	}
 
 
@@ -154,6 +162,18 @@ public class MessageBox {
 
 	public void setReplyMessageBoxes(List<MessageBox> replyMessageBoxes) {
 		this.replyMessageBoxes = replyMessageBoxes;
+	}
+
+
+
+	public Integer getUserMessageId() {
+		return userMessageId;
+	}
+
+
+
+	public void setUserMessageId(Integer userMessageId) {
+		this.userMessageId = userMessageId;
 	}
 
 

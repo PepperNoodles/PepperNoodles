@@ -2,6 +2,7 @@ package com.infotran.springboot.welcome.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BaseController {
@@ -31,5 +32,10 @@ public class BaseController {
 		return "includePage/includeNav";
 	}
 
+	@GetMapping("/temp123")
+	@ResponseBody
+	public String template123() {
+		return "ok";
+	}
 
 }

@@ -36,17 +36,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers("/login/page","/logout/page", "/logout", "/login/welcome").permitAll()
 		.antMatchers("/loginSystem/normaluser").hasAnyAuthority("normal" , "admin")
+		.antMatchers("/user/**").hasAnyAuthority("normal" , "admin")
+		.antMatchers("/userView/**").hasAnyAuthority("normal" , "admin")
 		.antMatchers("/loginSystem/companyuser").hasAnyAuthority("company" , "admin")
 		.antMatchers("/loginSystem/admin").hasAnyAuthority("admin")
 		.anyRequest().permitAll()
         .and()
-//        .formLogin()
         .formLogin().loginPage("/login/page").defaultSuccessUrl("/login/welcome")
-//        .formLogin().loginPage("/login/page")
-//        .formLogin().loginPage("/login_page").loginProcessingUrl("/perform_login").failureUrl("/login_page?error")
         .and()
-//        .logout()
-//        .logout().logoutUrl("/logout/page")
         .logout().logoutUrl("/logout/page").logoutSuccessUrl("/logout")
         .and()
         .exceptionHandling().accessDeniedPage("/loginSystem/403")
@@ -54,8 +51,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf().disable();
 
 
+//      .formLogin()
+//      .formLogin().loginPage("/login/page")
+//      .formLogin().loginPage("/login_page").loginProcessingUrl("/perform_login").failureUrl("/login_page?error")
+//        .logout()
+//        .logout().logoutUrl("/logout/page")
 //		
-		
 //		.antMatchers(HttpMethod.GET,"/users/**","/loginSystem/**").authenticated()
 //		.antMatchers(HttpMethod.GET).permitAll()
 //		.antMatchers(HttpMethod.POST,"/users/**" ,"/loginSystem/**").authenticated()
