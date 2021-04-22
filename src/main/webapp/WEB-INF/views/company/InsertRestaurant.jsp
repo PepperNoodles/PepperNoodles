@@ -230,12 +230,12 @@ footer {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-sm-offset-2">
-					<form:form id="insertform" method="POST"
-						modelAttribute="restaurant" enctype='multipart/form-data'>
+					<form:form id="insertform" method="POST" modelAttribute="restaurant" enctype='multipart/form-data'>
 						<!--綁定model中的restaurant-->
-
+							
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest</h1>
+							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' id='RName' />
 							<form:errors path="restaurantName" cssClass="error" />

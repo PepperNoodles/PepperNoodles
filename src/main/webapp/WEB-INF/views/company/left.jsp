@@ -45,7 +45,7 @@
     
   </li>
   <li class="nav-item">
-    <a class="nav-link leftBar"  href="#">我的餐廳</a>
+    <a class="nav-link leftBar"  href="<c:url value='/showAllrest' />">我的餐廳</a>
    
   </li>
   <li class="nav-item">

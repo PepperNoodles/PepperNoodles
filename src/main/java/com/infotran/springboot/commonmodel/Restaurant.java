@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,10 +66,10 @@ public class Restaurant {
 	MultipartFile productImage;
 	
 	@Column(name = "longitude")
-	private String longitude;
+	private BigDecimal longitude;
 
 	@Column(name = "latitude")
-	private String latitude;
+	private BigDecimal latitude;
 
 	@Transient
 	@Column(name = "fk_userAccount_id")
@@ -182,20 +183,30 @@ public class Restaurant {
 		this.productImage = productImage;
 	}
 
-	public String getLongitude() {
+
+
+	public BigDecimal getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public Integer getUserAccountId() {
