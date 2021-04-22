@@ -138,7 +138,6 @@
     <!-- 左邊的Bar -->
     	<div class="col-lg-2 nopadding">
       		<br>
-        	<h3 class="container">${comDetail.realname}</h3>
         	<div class="list-group">
         		<%@include file="left.jsp" %>
         	</div>
