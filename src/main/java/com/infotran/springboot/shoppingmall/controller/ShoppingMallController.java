@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -345,25 +347,6 @@ public class ShoppingMallController {
 		return productList;
 	}
 	
-	@PostMapping(value="/checkoutURL",consumes={"multipart/mixed","multipart/form-data","application/json"})
-	public String urlToCheckOut(@RequestPart("idlist")String toId,@RequestPart("amountlist")String toAmount) throws JsonMappingException, JsonProcessingException {
-		String url = "http://localhost:9090/PepperNoodles/shoppingSystem/checkOutPage" ;
-		ArrayList<Integer> idlist =  new ObjectMapper().readValue(toId, new TypeReference<ArrayList<Integer>>() {});
-		ArrayList<Integer> amountlist =  new ObjectMapper().readValue(toAmount, new TypeReference<ArrayList<Integer>>() {});
-		Integer len = idlist.size();
-		OrderDetail odetail = null;
-		OrderList olist = new OrderList();
-		Set <OrderDetail> odset = new LinkedHashSet<OrderDetail>();
-		for (int i=0;i<len;i++) {
-			odetail = new OrderDetail();
-			odetail.setFkProductId(idlist.get(i));
-			odetail.setAmount(amountlist.get(i));
-			odset.add(odetail);
-		}
-		olist.setProducts(odset);
-		orlistservice.save(olist);
-		return url;
-	}
 	
 	
 	

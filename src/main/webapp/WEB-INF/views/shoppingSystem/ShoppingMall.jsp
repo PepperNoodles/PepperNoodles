@@ -1020,7 +1020,6 @@ $(document).ready(function() {
 			var pricetag = $('#pricetag');
 			var pid = parseInt($(this).parent().prevAll("tr td:first-child").attr("id").substring(4),10);
 			var row = parseInt($(this).parent().prevAll("tr td:first-child").text(),10)-1;
-			alert(pid);
 			for (var k = 1; k <= (count+1); k++){
 				var object = JSON.parse(sessionStorage.getItem('item'+k+''));
 				for (var key in object){
@@ -1113,28 +1112,23 @@ $(document).ready(function() {
 			idlist.push(pid);
 			amountlist.push(amount);
 		});	
-		console.log("idlist");
-		console.log(idlist);
-		console.log("amountlist");
-		console.log(amountlist);
 		data = new FormData();
 		data.append('idlist',JSON.stringify(idlist));
 		data.append('amountlist',JSON.stringify(amountlist));
 		$.ajax({
 			method:"POST",
 			url:"/PepperNoodles/checkoutURL",
-			contentType: 'application/json; charset=utf-8', 
 			data:data,
+			dataType: 'html',
 			processData: false,
-			dataType: 'json',
 			contentType: false, 
 	        async : true,
 	        cache: false,
 	        success: function (url) {
-	        	window.location.href = url,false;
+	        	location.href = "http://localhost:9090/PepperNoodles"+url;
 	        },
-	        error: function (result) {
-	        	console.log("問題是:"+result);
+	        error: function (url) {
+	        	console.log("Problems everywhere");
 	        }	
 		});    
 	});

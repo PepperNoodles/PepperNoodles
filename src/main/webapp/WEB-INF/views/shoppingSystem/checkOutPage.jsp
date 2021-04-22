@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>check out page</title>
+<title>Checkout Page</title>
+
+
 </head>
 <body>
-	hi bitch
+		
+
+
+
 </body>
 </html>
