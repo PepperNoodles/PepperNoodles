@@ -55,12 +55,8 @@ $(document).ready(function(){
 }
 #picture{
  	border-style:dashed;
-/*  	cursor:hand; */
-/* 	object-fit: */
+	cursor: pointer;
 }
-/* div{ */
-/* 	text-align: center; */
-/* } */
 .top{
 	margin-top:30px; 
 }
@@ -78,10 +74,6 @@ $(document).ready(function(){
 .picbox {
 	float: right;
 	margin: 0% 40% 0% 0%; 
-/* 	margin: auto; */
-/* 	width: 50%; */
-/* 	padding: 0px 10px 10px 10px; */
-/* 	height: 50%; */
 }
 .top{
 height: 500px;
@@ -112,7 +104,6 @@ height: 500px;
     <!-- 左邊的Bar -->
       <div class="col-lg-2 nopadding" id=leftBar>
       	<br>
-        <h3 class="container">${comDetail.realname}</h3>
         <div class="list-group">
         	<%@include file="left.jsp" %>
         </div>

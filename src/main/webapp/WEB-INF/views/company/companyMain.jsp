@@ -37,6 +37,9 @@
 .updatePwd {
 	color: 	#00AEAE;
 }
+h3{
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -61,7 +64,6 @@
     <!-- 左邊的Bar -->
       <div class="col-lg-2 nopadding" id=leftBar>
       	<br>
-        <h3 class="container">${comDetail.realname}</h3>
         <div class="list-group">
         	<%@include file="left.jsp" %>
         </div>

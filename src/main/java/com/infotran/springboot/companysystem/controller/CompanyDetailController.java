@@ -155,7 +155,7 @@ public class CompanyDetailController {
 	public String updateCompany(@PathVariable("comId") Integer comId , Model model , CompanyDetail comDetail) {
 		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail",	comDetail);
-		return "company/updateCompany2";
+		return "company/updateCompany";
 	}
 	
 	/**修改會員-接收修改後的資料**/
@@ -175,7 +175,7 @@ public class CompanyDetailController {
 		
 		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
-			return "company/showCompany";
+			return "company/companyMain";
 		}
 	
 	/**秀圖片**/
