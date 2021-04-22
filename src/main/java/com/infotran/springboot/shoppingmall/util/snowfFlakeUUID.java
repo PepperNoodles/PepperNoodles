@@ -1,6 +1,8 @@
 package com.infotran.springboot.shoppingmall.util;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class snowfFlakeUUID {
 
 	/**
@@ -60,6 +62,12 @@ public class snowfFlakeUUID {
 	    private long lastTimestamp = -1L;
 
 	    //==============================Constructors=====================================
+	    
+	    public snowfFlakeUUID() {
+	    	
+	    }
+	    
+	    
 	    /**
 	     * 构造函数
 	     * @param workerId 工作ID (0~31)
