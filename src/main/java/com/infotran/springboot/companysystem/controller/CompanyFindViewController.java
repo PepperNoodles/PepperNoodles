@@ -80,7 +80,7 @@ public class CompanyFindViewController {
 	/**登入後的企業畫面**/
 	@GetMapping("/company")
 	public String companyloginByIndex(Model model) {
-		return "company/company";
+		return "company/companyMain";
 	}
 	
 
@@ -90,7 +90,7 @@ public class CompanyFindViewController {
 
 		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail", comDetail);
-		return "company/company";
+		return "company/companyMain";
 	}
 	
 	@GetMapping("/blog")
