@@ -2,10 +2,13 @@ package com.infotran.springboot.shoppingmall.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.infotran.springboot.shoppingmall.model.Product;
 
 public interface ShoppingMallService {
+	
+	public Product findById(Integer productId);
 	
 	public Product get(Integer productId);
 	

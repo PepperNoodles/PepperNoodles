@@ -305,8 +305,16 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		}
 		return product;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public Product findById(Integer productId) {
+		Optional<Product> op = productrepository.findById(productId);
+		Product product = null;
+		if (op.isPresent()) {
+			product = op.get();
+		}
+		return product;
+	}
 	
 	
 }

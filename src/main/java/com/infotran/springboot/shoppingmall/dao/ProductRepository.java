@@ -1,6 +1,8 @@
 package com.infotran.springboot.shoppingmall.dao;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +11,8 @@ import com.infotran.springboot.shoppingmall.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
+	
+	Optional<Product> findById(Integer product);
 	
 	
 	@Query(value= "SELECT distinct p "

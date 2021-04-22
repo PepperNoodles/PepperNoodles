@@ -1,26 +1,26 @@
 package com.infotran.springboot.shoppingmall.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.commonmodel.UserAccount;
 
 
@@ -30,11 +30,12 @@ import com.infotran.springboot.commonmodel.UserAccount;
 public class OrderList {
 	
 	@Id
-	@Column(name="Order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer OrderId;
+	@Column(name="Order_id")
+	private Integer orderId;
 	
-	private Date OrderCreatedDate;
+	@Column(name="OrderCreatedDate")
+	private Date orderCreatedDate;
 	
 	/* 多對一 */
 	@Column(name="fk_userAccount_id")
@@ -45,42 +46,47 @@ public class OrderList {
 	@JoinColumn(name="fk_userAccount_id")
 	private UserAccount user;
 	
-	private String ReceiveAddress;
+	@Column(name="ReceiveAddress")
+	private String receiveAddress;
 	
-	private Date PaidDate;
+	@Column(name="PaidDate")
+	private Date paidDate;
 	
-	private String Status;
+	@Column(name="Status")
+	private String status;
 	
-	@OneToMany(mappedBy = "orderlist",cascade = CascadeType.ALL)
+	@Column(name="TotalCost")
+	private Integer totalCost;
+	
+	@OneToMany(mappedBy = "orderlist",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonIgnore
-	private Set<OrderDetail> products = new HashSet<OrderDetail>();
-	
-	
-	private Integer TotalCost;
-	
-//	@PrePersist
-//	protected void onCreate() {
-//		setOrderId(java.util.UUID.randomUUID());
-//	}
+	private Set<OrderDetail> odetails = new HashSet<OrderDetail>();
 	
 	//
-
+	@PrePersist
+	protected void createOrderDate() {
+		orderCreatedDate = new Date();
+	}
 	
-	
-	public Date getOrderCreatedDate() {
-		return OrderCreatedDate;
+	@PreUpdate
+	protected void updateOrderDate() {
+		orderCreatedDate = new Date();
 	}
 
 	public Integer getOrderId() {
-		return OrderId;
+		return orderId;
 	}
 
 	public void setOrderId(Integer orderId) {
-		OrderId = orderId;
+		this.orderId = orderId;
+	}
+
+	public Date getOrderCreatedDate() {
+		return orderCreatedDate;
 	}
 
 	public void setOrderCreatedDate(Date orderCreatedDate) {
-		OrderCreatedDate = orderCreatedDate;
+		this.orderCreatedDate = orderCreatedDate;
 	}
 
 	public Integer getFkUserAccountId() {
@@ -100,44 +106,46 @@ public class OrderList {
 	}
 
 	public String getReceiveAddress() {
-		return ReceiveAddress;
+		return receiveAddress;
 	}
 
 	public void setReceiveAddress(String receiveAddress) {
-		ReceiveAddress = receiveAddress;
+		this.receiveAddress = receiveAddress;
 	}
 
 	public Date getPaidDate() {
-		return PaidDate;
+		return paidDate;
 	}
 
 	public void setPaidDate(Date paidDate) {
-		PaidDate = paidDate;
+		this.paidDate = paidDate;
 	}
 
 	public String getStatus() {
-		return Status;
+		return status;
 	}
 
 	public void setStatus(String status) {
-		Status = status;
-	}
-
-	public Set<OrderDetail> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Set<OrderDetail> products) {
-		this.products = products;
+		this.status = status;
 	}
 
 	public Integer getTotalCost() {
-		return TotalCost;
+		return totalCost;
 	}
 
 	public void setTotalCost(Integer totalCost) {
-		TotalCost = totalCost;
+		this.totalCost = totalCost;
 	}
+
+	public Set<OrderDetail> getOdetails() {
+		return odetails;
+	}
+
+	public void setOdetails(Set<OrderDetail> odetails) {
+		this.odetails = odetails;
+	}
+
+	//
 	
 	
 }
