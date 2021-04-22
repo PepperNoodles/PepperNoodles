@@ -1,8 +1,10 @@
 package com.infotran.springboot.commonmodel;
 
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,13 +22,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.shoppingmall.model.Product;
+
 @Entity
 @Component
-@Table(name = "restaurant")
+@Table(name = "restaurant",uniqueConstraints={@UniqueConstraint(columnNames = {"restaurantAddress"})})
 public class Restaurant {
 
 	@Id
@@ -93,7 +100,14 @@ public class Restaurant {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
-	/** Getter和Setter **/
+
+	
+	/*對應產品*/
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
+	@JsonManagedReference 
+	private List<Product> products =new ArrayList<Product>();
+
+
 
 	public Integer getRestaurantId() {
 		return restaurantId;

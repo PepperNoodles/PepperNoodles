@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +34,7 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
 @SessionAttributes(names = {"comDetail","comDetailId"})
@@ -52,6 +51,8 @@ public class CompanyDetailController {
 	
 	@Autowired
 	private UserAccountService userAccountService;
+	
+
 	
 	@Autowired
 	ServletContext context;
@@ -84,6 +85,7 @@ public class CompanyDetailController {
 		//新增會員
 		addUserAccount.setAccountIndex(userName);
 		addUserAccount.setPassword(userPwd);
+		addUserAccount.setEnabled(true);
 		//幫密碼加密
 		String bcEncode1 = new BCryptPasswordEncoder().encode(addUserAccount.getPassword());
 		addUserAccount.setPassword(bcEncode1);
@@ -124,18 +126,25 @@ public class CompanyDetailController {
 	public  @ResponseBody Map<String,String> nextComPwd(@PathVariable("comId") Integer comId ,
 														@RequestParam("userPwd") String userPwd,
 														@RequestParam("nextUserPwd") String nextUserPwd,
-										   				Model model) {
+														Model model) {
 		System.out.println(comId+":"+userPwd+":"+nextUserPwd);
+		
 		Map<String,String> map = new HashMap<String, String>();
 		CompanyDetail  companyDetail = comDetailService.findById(comId);
-		String pwd = companyDetail.getUserAccount().getPassword();
+		UserAccount user = companyDetail.getUserAccount();
+		//查询舊密码
+		String pwd = user.getPassword();
 		System.out.println("原始密碼:"+pwd);
-		if (userPwd.equals(pwd)) {
-			UserAccount user = companyDetail.getUserAccount();
-			user.setPassword(nextUserPwd);
+		
+		//encode.matches比对密码是否相等(輸入的密碼<未加密>,GET出的舊密碼<加密的>)
+		BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+		if (encode.matches(userPwd, pwd)) {
+	        String bcryptPasswd = (encode.encode(nextUserPwd));
+			user.setPassword(bcryptPasswd);
 			userAccountService.update(user);
 			map.put("success", "修改密碼成功!");
-		}
+	    }
+		
 		else {
 			map.put("failure", "密碼錯誤，修改失敗!");
 		}

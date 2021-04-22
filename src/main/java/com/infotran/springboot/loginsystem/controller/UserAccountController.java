@@ -28,18 +28,21 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
+import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.loginsystem.dao.RolesRepository;
 import com.infotran.springboot.loginsystem.dao.UserAccountRepository;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
+import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
 
 
 
@@ -74,6 +77,9 @@ public class UserAccountController {
 	
 	@Autowired
 	private UserAccountRepository usp;
+	
+	@Autowired
+	UserSysServiceImpl uSysServiceImpl;
 //	
 //	@Autowired
 //	private UserAccount useraccount1;
@@ -83,6 +89,9 @@ public class UserAccountController {
 //	
 	@Autowired
 	private SendEmail sendemail;
+	
+	@Autowired
+	private CompanyDetailService comDetailService;
 
 	public UserAccountController() {
 		imageFolder = new File(imageRootDirectory, "images");
@@ -193,10 +202,10 @@ public class UserAccountController {
 	}
 	
 	
-	@PostMapping(value="/CheckMemberAccount",produces="application/json")
-	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody UserAccount user){
+	@PostMapping(value="/CheckMemberAccount",consumes="application/json",produces="application/json")
+	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody String user){
 		Map<String, String> map = new HashMap<>();
-		String userAccountName = service.checkUserAccount(user.getAccountIndex());
+		String userAccountName = service.checkUserAccount(user);
 		map.put("username",userAccountName );
 		return map;
 	}
@@ -214,7 +223,7 @@ public class UserAccountController {
 //		  System.out.println(x.toString());
 //		} 
 
-		FoodTagUsers =userAccount.getFoodTagUsers();
+		FoodTagUsers =userAccount.getUserTags();
 		for(int i=0;i<FoodTagUsers.size();i++){
 		     System.out.println(FoodTagUsers.size());
 		}
@@ -232,12 +241,14 @@ public class UserAccountController {
 	
 	@PostMapping(value="/sendEmail",produces="application/json")
 	public  @ResponseBody Map<String,String> sendEmail(@RequestBody UserAccount user){
-		System.out.println("------controller-------"+user.getAccountIndex());
+		UserAccount user2 = new UserAccount();
 		Map<String,String> map = new HashMap<String, String>();
 		String code = sendemail.getRandom();
 		System.out.println(code);
-		user.setCode(code);
-		boolean emailResult = sendemail.sendEmail(user);
+		user2.setCode(code);
+		user2.setAccountIndex(user.getAccountIndex());
+//		System.out.println("user2========="+user2.getAccountIndex());
+		boolean emailResult = sendemail.sendEmail(user2);
 		if (emailResult) {
 			map.put("emailCode", code);
 		}
@@ -259,7 +270,7 @@ public class UserAccountController {
 			
 		
 		System.out.println(userAccount.getAccountIndex());
-		Set<FoodTagUser> userSet = userAccount.getFoodTagUsers();
+		Set<FoodTagUser> userSet = userAccount.getUserTags();
 		
 			for(int i = 0; i<interest.length; i++) {
 				System.out.println("json傳到server的值" + interest[i]);
@@ -273,8 +284,8 @@ public class UserAccountController {
 				//設定一筆關聯表資料
 				FoodTagUser ftu = new FoodTagUser();
 				//分別將雙邊資料存入
-				ftu.setFkfoodtag(tag);
-				ftu.setFkuser(userAccount);
+				ftu.setFkfoodtagid(tag);
+				ftu.setFkuserid(userAccount);
 				
 				userSet.add(ftu);
 				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
@@ -297,4 +308,21 @@ public class UserAccountController {
 	public String logincheck(@RequestBody Map<String,String> userAccount) {
 		return "ok";
 	}
+	
+	
+	@GetMapping(value = "/enabled/{accountIndex}")
+	public String enabled(@PathVariable("accountIndex") String accountIndex , Model model) {
+		UserAccount account = uSysServiceImpl.findByAccountIndex(accountIndex);
+		if (account.isEnabled()) {
+			account.setEnabled(false);
+		}
+		else {
+			account.setEnabled(true);
+		}
+		service.update(account); 
+		model.addAttribute("companys", comDetailService.getAllCompanys());
+		return "redirect:/Company/showAllComs";
+	}
+	
+	
 }

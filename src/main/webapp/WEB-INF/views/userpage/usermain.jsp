@@ -5,9 +5,46 @@
 
 <!DOCTYPE html>
 <html>
-
+<<<<<<< HEAD
+=======
 <head>
+<meta charset="UTF-8">
+<title>Template For inClude</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- site.webmanifest run offline -->
+<link rel="manifest" href="site.webmanifest">
+<!-- favicon的圖-每頁都要加 -->
+<link rel="Shortcut icon"
+	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel='stylesheet'
+	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<link rel="stylesheet"
+	href="<c:url value='/css/fontawesome-all.min.css' />" />
+<script type="text/javascript"
+	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript"
+	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
+<<<<<<< HEAD
+<head>
+=======
+<style>
+	.header {
+			background-color: #000000;
+			}
+	a{
+			color:#000000;	
+			}
+	a:hover{
+			color:blue;
+			}
+	tr:hover{
+			background-color:#BEBEBE;
+			}
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
+
+<<<<<<< HEAD
 <!--抓取原本路徑用-->
 <base localhref= />
 
@@ -177,12 +214,129 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 							</div>
 						</div>
 					</div>
+=======
+	td>img{
+			height: 100px;
+			}
+	.nav-link{
+		color:#000000;	
+	}
+						
+</style>
+</head>
+<body>
+ 	<%@include file="../includePage/includeNav.jsp" %>
+	<!-- 讀取圖案 -->
+	<div id="preloader-active">
+		<div
+			class="preloader d-flex align-items-center justify-content-center">
+			<div class="preloader-inner position-relative">
+				<div class="preloader-circle"
+					style="background-color: rgb(102, 102, 102);"></div>
+				<div class="preloader-img pere-text">
+					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 		<!-- Header End -->
 	</header>
+=======
+	</div>
 
+	<div>
+	<div class="container mt-10" style="width:80%;height:100vh">
+					<!--有照片的那個bar  -->
+					<div class="d-flex">
+						<div class="p-2">
+							<img style="height: 100px"
+								src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
+						</div>
+
+						<div class="p-2 flex-fill align-self-end justify-content-center">
+							<h1>${userAccount.userAccountDetail.nickName}</h1>
+						</div>
+						
+
+					</div>
+					<div class="flex-fill bg-secondary p-1 mb-5">						
+					</div>
+					
+					<!--左邊的分隔用-->
+					<div class="d-flex">
+					<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab"    data-toggle="pill" href="#v-pills-home"		      role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a>
+						<a class="nav-link" id="v-pills-friend-tab" 	    data-toggle="pill" href="#v-pills-friend" 		  role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a>
+						<a class="nav-link" id="v-pills-aboutUser-tab" 	    data-toggle="pill" href="#v-pills-aboutUser"	  role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
+						<a class="nav-link" id="v-pills-userMessage-tab"    data-toggle="pill" href="#v-pills-userMessage" 	  role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
+						<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
+
+						</div>
+							<div class="tab-content" id="v-pills-tabContent col-9">
+								<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+									<h2>基本資料</h2>
+									<p id="accountIndex">email: ${userAccount.accountIndex} </p>
+									<p>性別：${userAccount.userAccountDetail.gender}</p>
+									<p>地區：${userAccount.userAccountDetail.location}</p>
+								</div>
+								<div class="tab-pane fade" id="v-pills-friend" role="tabpanel" aria-labelledby="v-pills-friend-tab">
+									
+									
+									<!--好友分區用-->
+									<nav>
+										<div class="nav nav-tabs" id="nav-tab" role="tablist">
+										  <a class="nav-item nav-link active" id="nav-myFriend-tab" data-toggle="tab" href="#nav-myFriend" role="tab" aria-controls="nav-myFriend" aria-selected="true">
+											<button id="checkFriendList" style="color:black">我的好友</button></a>
+										  <a class="nav-item nav-link" id="nav-searchFriend-tab" data-toggle="tab" href="#nav-searchFriend" role="tab" aria-controls="nav-searchFriend" aria-selected="false">
+											<button id="checkFriendList" style="color:black">搜尋使用者</button></a>
+										  <a class="nav-item nav-link" id="nav-friendQequest-tab" data-toggle="tab" href="#nav-friendQequest" role="tab" aria-controls="nav-friendQequest" aria-selected="false">
+											<button class="btn-link" id="checkRequestList" style="color:black">查看邀請</button></a>
+										</div>
+									  </nav>
+									  <div class="tab-content" id="nav-tabContent">
+										<div class="tab-pane fade show active" id="nav-myFriend" role="tabpanel" aria-labelledby="nav-myFriend-tab">
+											<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
+											<div id="userFriendList">
+											</div>
+											
+											</div>
+										<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel" aria-labelledby="nav-searchFriend-tab">
+											<div class="d-flex mt-3">
+												<input class="m-2" id="nameSearch" type="search" placeholder="Search By nickName" aria-label="Search">
+												<button class="btn btn-primary my-2 my-sm-0 " id="btn-search" >Search</button>
+											</div>					
+											<div id="searchResult">
+											</div>
+										</div>
+										
+										
+										<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel" aria-labelledby="nav-friendQequest-tab">
+											<h6>好友邀請</h6>
+											<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
+											<div id="friendRequest">	
+										</div>
+									  </div>
+								</div>
+								</div>	
+								<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
+									<h2>關於我</h2>
+								</div>
+								<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel" aria-labelledby="v-pills-userMessage-tab">
+									<h2>userMessage</h2>
+
+								</div>
+								<div class="tab-pane fade" id="v-pills-userCollection" role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
+									<h2>userCollection</h2>
+
+								</div>
+					</div>		
+					</div>		
+			 </div>
+			</div>		
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
+
+<<<<<<< HEAD
 
 
 	<div class="container mt-10" style="width: 80%">
@@ -440,6 +594,11 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 							</div>
 						</div>
 					</div>
+=======
+				<!-- Scroll Up -->
+				<div id="back-top">
+					<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 				</div>
 			</div>
 		</div>
@@ -966,6 +1125,7 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 					
 				</script>
 
+<<<<<<< HEAD
 	<!-- JS here -->
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
@@ -985,10 +1145,16 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
 
+<<<<<<< HEAD
 	<script src="<c:url value='/scripts/slick.min.js' />"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
+<<<<<<< HEAD
 	<!-- One Page, Animated-HeadLin -->
 	<script src="<c:url value='/scripts/wow.min.js' />"></script>
 	<script src="<c:url value='/scripts/animated.headline.js' />"></script>
@@ -998,15 +1164,55 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
 	<!-- contact js -->
 	<script src="<c:url value='/scripts/contact.js' />"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
+<<<<<<< HEAD
 	<script src="<c:url value='/scripts/jquery.form.js' />"></script>
 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
 	<script src="<c:url value='/scripts/mail-script.js' />"></script>
 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
+=======
+	<%@include file="../includePage/includeFooter.jsp" %>
+	<!-- Scroll Up -->
+	<div id="back-top">
+		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+	</div>
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
+<<<<<<< HEAD
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 	<script src="<c:url value='/scripts/main.js' />"></script>
 </body>
+=======
+	<script>
+ 		$(window).on('load', function() {
+			
+// 			//讓bar固定在上面以及設定高度
+			$(".header-sticky").addClass("sticky-bar");
+ 			$(".header-sticky").css("height", "90px");
+			$(".header-sticky").css("position","static")
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 
+<<<<<<< HEAD
+=======
+ 			//讓loading圖動起來
+ 			$('#preloader-active').delay(450).fadeOut('slow');
+ 			$('body').delay(450).css({
+ 				'overflow' : 'visible'
+ 		});			
+			
+ 		});
+ 	</script>
+	<!-- JS here -->
+	<!-- All JS Custom Plugins Link Here here -->
+	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+	<!-- Jquery, Popper, Bootstrap -->
+	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+
+
+</body>
+>>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
 </html>

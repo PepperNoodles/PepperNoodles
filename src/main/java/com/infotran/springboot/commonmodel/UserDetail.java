@@ -53,6 +53,7 @@ public class UserDetail {
 	@Column(name = "fk_purse_id")
 	private Integer purseID;
 	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "userAccountDetail",fetch = FetchType.LAZY)
 	private UserAccount userAccount;

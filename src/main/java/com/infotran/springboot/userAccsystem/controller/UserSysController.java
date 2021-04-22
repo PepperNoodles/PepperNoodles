@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.util.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,9 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.ServletContext;
-
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -382,6 +379,31 @@ public class UserSysController {
 		//Hibernate.initialize(user);
 		return user;
 	}
+	//從Authentication取得登入者的名字字串的方法
+	@GetMapping("/userLoggin/getName")
+	@ResponseBody
+	 public String returnNamePath(Model model) {
+	  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	  String currentUserName="";
+	  if (!(authentication instanceof AnonymousAuthenticationToken)) {
+	      currentUserName = authentication.getName();
+	      System.out.println(currentUserName);
+			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);		
+			model.addAttribute("userAccount", user);
+	      return currentUserName;
+	   }
+	  System.out.println("no logging user currently!!");
+	   return null;
+	 }
+	
+	//取得單個user
+	@GetMapping("/usercheck/{userAccountIndex}")
+	@ResponseBody
+	public UserAccount findUserd(@PathVariable("userAccountIndex") String mainAccountIndex){
+		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);	
+		return user;
+
+	}
 	
 	
 	
@@ -489,7 +511,7 @@ public class UserSysController {
 	}
 	
 	//main登入後找到誰要加main,簡單來說就是看誰對目前登入的user發出請求
-	@GetMapping(path="findWhoWannaJoinMe")
+	@GetMapping(path="/findWhoWannaJoinMe")
 	@ResponseBody
 	public List<UserAccount> findWhoWannaJoinMe(@RequestParam(name="mainUserIdx") String userIdx){
 		UserAccount user = uSysServiceImpl.findByAccountIndex(userIdx);
@@ -512,6 +534,12 @@ public class UserSysController {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(uAccIndx);		
 		model.addAttribute("userAccount", user);
 		System.out.println(returnNamePath());
+		return "userpage/usermain";
+	}
+	
+	//真的登入
+	@GetMapping(path="/user/login")
+	public String goUserMainSession(Model model) {
 		return "userpage/usermain";
 	}
 	
