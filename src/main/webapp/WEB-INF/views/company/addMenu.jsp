@@ -19,14 +19,33 @@
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
 <script>
 	
-$(function(){
-	$("#add").click(function(){
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "<c:url value='/CheckMemberAccount' />", true);
+$(document).ready(function(){
+	$("#addMenu").click(function(){
+		var restaurantId = 1;
+		data = new FormData();
+    	data.append('file', $('#menuPicture')[0].files[0]);
+		data.append('restInfo',new Blob([JSON.stringify( {"restaurantId": restaurantId} )],{type: "application/json"}));
+		data.append('restInfo', restaurantId);
+
+    	$.ajax({
+			method:"POST",
+			url:"/PepperNoodles/rest/addMenu",
+			data:data,
+			processData: false,
+			contentType: false, 
+			cache: false,  //不做快取
+	        async : true,
+	        success: function (result) {
+				alert("新增成功");
+	            $("#menuList").text(result);//填入提示訊息到result標籤內
+	        },
+	        error: function (result) {
+	            $("#menuList").text(result.fail); //填入提示訊息到result標籤內
+	        }
+		})
 	});
 });
 	
-function()
 </script>
 
 <style>
@@ -67,6 +86,9 @@ function()
 .top{
 height: 500px;
 }
+.menuList{
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -100,23 +122,25 @@ height: 500px;
 		<!-- 上傳圖案的部分 -->
       	<div class="top">
 			<div class="infobox">
-				<label for="wizardPicturePreview">
+				<label for="menuPicture">
 					<img src="<c:url value="/images/company/++.png"/>" width="100px" id="picture"/>
 				</label>
-				<input hidden type="file" id="wizardPicturePreview" accept="image/*" name="photo">
+				<input hidden type="file" id="menuPicture" accept="image/*" name="photo">
 			</div>
 				
 			<div class="picbox">
 				<img class="picture-src" id="PicturePreview" width="300px" /><br>
 				<div>
-					<input class='picbox tohide' type='button'  value='新增菜單' id="add" style="margin-bottom: 20px;margin-top: 10px"/>
+					<input class='picbox tohide' type='button'  value='新增菜單' id="addMenu" style="margin-bottom: 20px;margin-top: 10px"/>
 				</div>						
 			</div>
       	</div>
       	<!-- 顯示資料庫的菜單 -->
       	<hr>
+      	<!-- ajax回傳 -->
+      	<div id="menuList">
       	
-      	
+      	</div>
 	  <!-- 右邊顯示的資料結束 -->  
       </div>
     </div>
@@ -144,17 +168,18 @@ height: 500px;
 <!--預覽照片 -->
 <script>
 $(function() {
-	$("#wizardPicturePreview").change(function() {
+	$("#menuPicture").change(function() {
 		if (this.files && this.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
 				$('#PicturePreview').attr('src',e.target.result);
 			}
 			reader.readAsDataURL(this.files[0]);
-			$("#add").removeClass("tohide");
-			$("#add").addClass("toshow");
+			$("#addMenu").removeClass("tohide");
+			$("#addMenu").addClass("toshow");
 		}
 	});
+	
 });
 </script>
 

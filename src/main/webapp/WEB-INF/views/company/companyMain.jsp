@@ -41,19 +41,19 @@
 </head>
 <body>
 	<%@include file="../includePage/includeNav.jsp" %>
-	<!-- 讀取圖案 -->
-	<div id="preloader-active">
-		<div
-			class="preloader d-flex align-items-center justify-content-center">
-			<div class="preloader-inner position-relative">
-				<div class="preloader-circle"
-					style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
+<!-- 	<!-- 讀取圖案 --> 
+<!-- 	<div id="preloader-active"> -->
+<!-- 		<div -->
+<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
+<!-- 			<div class="preloader-inner position-relative"> -->
+<!-- 				<div class="preloader-circle" -->
+<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
+<!-- 				<div class="preloader-img pere-text"> -->
+<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 
 		
 <div class="container-fluid">
