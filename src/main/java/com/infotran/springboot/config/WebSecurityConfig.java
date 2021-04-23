@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/login/page","/logout/page", "/logout", "/login/welcome").permitAll()
 		.antMatchers("/loginSystem/normaluser").hasAnyAuthority("normal" , "admin")
 		.antMatchers("/user/**").hasAnyAuthority("normal" , "admin")
+		.antMatchers("/shoppingSystem/**").hasAnyAuthority("normal" , "admin")
 		.antMatchers("/userView/**").hasAnyAuthority("normal" , "admin")
 		.antMatchers("/loginSystem/companyuser").hasAnyAuthority("company" , "admin")
 		.antMatchers("/loginSystem/admin").hasAnyAuthority("admin")

@@ -1,11 +1,16 @@
 package com.infotran.springboot.companysystem.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.infotran.springboot.commonmodel.MenuDetail;
+import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.companysystem.dao.MenuDetailRepository;
 import com.infotran.springboot.companysystem.service.MenuDetailService;
 
@@ -40,6 +45,13 @@ public class MenuDetailServiceImpl implements MenuDetailService {
 			throw new RuntimeException("menu(id=" + id + ")不存在");
 		}
 		return menuDetail;
+	}
+
+	@Override
+	public List<MenuDetail> getByRest(Restaurant rest) {
+		Pageable pageable = PageRequest.of(0, 200, Sort.Direction.ASC, "menuDetailId");
+		List<MenuDetail> menudetail = MenuDetailDao.getByRest(rest, pageable);
+		return menudetail;
 	}
 
 }
