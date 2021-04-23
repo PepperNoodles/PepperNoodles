@@ -192,11 +192,31 @@ public class UserSysController {
 		return "userpage/usermain";
 	}
 	
-	//顯示留言的ajax方法
+	//顯示自己頁面留言的ajax方法
 	@GetMapping(value="/user/showAllCommentAjax" ,produces= "application/json")
 	@ResponseBody
 	public List<MessageBox> showAllComments(Model model) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+//		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
+		List<MessageBox> userMsn = user.getMsnBox();
+		Hibernate.initialize(userMsn);
+
+		List<MessageBox> userMsnNull = new ArrayList<MessageBox>();
+		for(int i =0; i<userMsn.size(); i++) {
+			if(userMsn.get(i).getMessageBox()==null) {
+				userMsnNull.add(userMsn.get(i));
+				
+			}	
+		}
+		System.out.println("放進去了");
+		return userMsnNull;
+	}
+	
+	//顯示他人頁面留言的ajax方法
+	@GetMapping(value="/user/showOtherPageAllCommentAjax" ,produces= "application/json")
+	@ResponseBody
+	public List<MessageBox> showOtherPageAllComments(@RequestParam(value = "viewUserAccount") String accountIndex) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(accountIndex);
 //		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
 		List<MessageBox> userMsn = user.getMsnBox();
 		Hibernate.initialize(userMsn);
@@ -227,6 +247,32 @@ public class UserSysController {
 		newMSN.setLikeAmount(0);
 		newMSN.setNetizenAccount(commenter);
 		newMSN.setUserAccount(commenter);
+		Integer save =msnServiceImpl.save(newMSN);
+		if(save==1) {
+			status="訊息已傳送";
+		}else {
+			status="訊息傳送失敗";
+		}
+		return status;
+	}
+	
+	//他人頁面新增留言的方法ajax
+	@GetMapping(value="user/addNewOtherCommentAjax" )
+	@ResponseBody 
+	public String addOtherPageNewCommentAjax(@RequestParam(value = "comment") String comment
+			,@RequestParam(value = "viewUserAccount")String useraccount)
+	{
+		System.out.println("Hi I'm Here for adding new other page's comment");
+		String status ="";
+		UserAccount viewUserAccount = uSysServiceImpl.findByAccountIndex(useraccount);
+		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
+
+		MessageBox newMSN = new MessageBox();
+		newMSN.setText(comment);
+		newMSN.setTime(new Date());
+		newMSN.setLikeAmount(0);
+		newMSN.setNetizenAccount(commenter);
+		newMSN.setUserAccount(viewUserAccount);
 		Integer save =msnServiceImpl.save(newMSN);
 		if(save==1) {
 			status="訊息已傳送";

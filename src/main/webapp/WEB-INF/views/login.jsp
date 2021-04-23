@@ -74,7 +74,8 @@
 				</div>
 
 				<div class="mt-10 col-24">
-					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me"><br><a href="" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a>
+					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me">
+					<br><a href="" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a>
 				</div>
 				<div class="mt-10 ">
 					<button type="submit" value="login"

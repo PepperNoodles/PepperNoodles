@@ -121,28 +121,16 @@ table {
 
 			<!--左邊的分隔用-->
 			<div class="d-flex" >
-				<div class="nav flex-column nav-pills col-3" id="v-pills-tab"
-					role="tablist" aria-orientation="vertical">
+				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a> 
 					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a> 
-					<a
-						class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill"
-						href="#v-pills-aboutUser" role="tab"
-						aria-controls="v-pills-aboutUser" aria-selected="false"><i
-						class="fas fa-file-alt"></i>關於我</a> <a class="nav-link"
-						id="v-pills-userMessage-tab" data-toggle="pill"
-						href="#v-pills-userMessage" role="tab"
-						aria-controls="v-pills-userMessage" aria-selected="false"><i
-						class="fas fa-comments"></i>留言區</a> <a class="nav-link"
-						id="v-pills-userCollection-tab" data-toggle="pill"
-						href="#v-pills-userCollection" role="tab"
-						aria-controls="v-pills-userCollection" aria-selected="false"><i
-						class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
+					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
+					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
 
 				</div>
 				<div class="tab-content" id="v-pills-tabContent col-9">
-					<div class="tab-pane fade show active" id="v-pills-home"
-						role="tabpanel" aria-labelledby="v-pills-home-tab">
+					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 						<h2>基本資料</h2>
 						<p id="accountIndex">email: ${userAccount.accountIndex}</p>
 						<p>性別：${userAccount.userAccountDetail.gender}</p>
