@@ -9,18 +9,12 @@
 <title>Checkout Page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
+<link rel="Shortcut icon"	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<script type="text/javascript"	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<link rel='stylesheet'	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<link rel="stylesheet"	href="<c:url value='/css/fontawesome-all.min.css' />" />
+<script type="text/javascript"	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<link rel="stylesheet"	href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
 <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
 <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
@@ -31,19 +25,282 @@
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 <script>
-	var triggerEl = document.querySelector('#myTab a[href="#profile"]')
-	bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name
-
-	var triggerFirstTabEl = document.querySelector('#myTab li:first-child a')
-	bootstrap.Tab.getInstance(triggerFirstTabEl).show() // Select first tab
+	$(document).ready(function() {
+		
+			//讀取商品
+			myStorage = window.localStorage;
+			var len   = myStorage.length;
+			var pricetag = $('#pricetag');
+			var id, name, amount, price,totalprice;
+			var tbody = $('tbody');
+			$('#pricetag>h2').remove();
+			if (len==0){
+				totalprice = 0;
+				$('tbody').children("tr").remove();
+				$('#pricetag>h2').remove();
+				var tr 	 = $('<tr></tr>');
+				var col1 = $('<td colspan="5">目前訂單沒有商品</td>').css({"text-align":"center"});
+				tr.append(col1);
+				tbody.append(tr);
+				pricetag.append('<h2><strong>總價格: '+totalprice+' 元</strong></h2>');
+			} else{
+				for (var i = 0; i < len; i++) {//每個商品
+				var item = localStorage.key(i);
+				var object = JSON.parse(localStorage.getItem(item));
+				for ( var key in object) {
+					if (key == "id") {
+						id = object[key];
+					} else if (key == "name") {
+						name = object[key];
+					} else if (key == "amount") {
+						amount = parseInt(object[key], 10);
+					} else if (key == "price") {
+						price = parseInt(object[key].substring(1),10);
+					}
+				}
+				var tr = $('<tr></tr>');
+				var col1 = $('<td></td>').text(i + 1).attr("id","cart" + parseInt(id, 10));
+				var col2 = $('<td></td>').text(name);
+				var col3 = $('<td></td>')
+						.html('<input type="number" value="'+amount+'" min="1" style="width:40px;height:20px;">');
+				var col4 = $('<td id="pr' + (i + 1) + '"></td>')
+						.text(price);
+				var col5 = $('<td></td>')
+						.append('<i class="fas fa-trash-alt" id="garbage"></i>');
+				tr.append(col1).append(col2).append(col3).append(col4).append(col5);
+				tbody.append(tr);
+				totalprice=0;
+				$('#pricetag>h2').remove();
+				for (var j = 0; j < len; j ++){
+					amount = $('#pr'+(j+1)+'').prev().children("input").val();
+					totalprice +=  parseInt($('#pr'+(j+1)+'').text(),10)*amount;
+				}
+				pricetag.append('<h2><strong>總價格: '+totalprice+' 元</strong></h2>');
+			}
+			
+			};
+			
+			
+			//點數字
+			$('body').on('change','table tbody tr td:nth-child(3) input[type=number]',function(e){
+				e.preventDefault();
+				totalprice=0;
+				var pricetag = $('#pricetag');
+ 					for (var i = 0; i < myStorage.length; i ++){
+					amount = $('#pr'+(i+1)+'').prev().children("input").val();
+					totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
+				}
+				$('#pricetag>h2').remove();
+				pricetag.append('<h2><strong>總價格: '+totalprice+' 元</strong></h2>');
+			});
+			
+			//點垃圾桶
+			$('body').on('click','#garbage',function(e){
+				e.preventDefault();
+				var idd;
+				var tbody 	 = $('tbody');
+				var pricetag = $('#pricetag');
+				var pid = parseInt($(this).parent().prevAll("tr td:first-child").attr("id").substring(4),10);
+				var row = parseInt($(this).parent().prevAll("tr td:first-child").text(),10)-1;
+				for (var k = 1; k <= (len+1); k++){
+					var object = JSON.parse(localStorage.getItem('item'+k+''));
+					for (var key in object){
+						if (key=="id")idd = parseInt(object[key],10);
+					}
+					if (pid==idd){
+						localStorage.removeItem('item'+k+'');
+						$('tbody').find('tr:eq('+row+')').remove();
+						$('#pricetag>h2').remove();
+					}
+				}
+				totalprice = 0;
+				if (len!=0){
+					for (var i = 0; i < len; i ++){
+						amount = $('#pr'+(i+1)+'').prev().children("input").val();
+						totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
+					}
+				}else if (len==0){
+					$('tbody').children("tr").remove();
+					$('#pricetag>h4').remove();
+					var tr 	 = $('<tr></tr>');
+					var col1 = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
+					tr.append(col1);
+					tbody.append(tr);
+				}
+				pricetag.append('<h2><strong>總價格: '+totalprice+' 元</strong></h2>');
+			});
+			
+			
+			
+			//打開地址事件
+			$('#address').hide();
+			$('#inputReciever').hide();
+			$('#inputPhone').hide();
+			$('body').on('change','#inlineRadio1,#inlineRadio2',function(e){
+				e.preventDefault();
+				 var watid = $(this).attr('id');
+				 if (watid=='inlineRadio1'){
+					 $('#address').show();
+					 $('#inputReciever').show();
+					 $('#inputPhone').show();
+				 }else {
+					 $('#address').hide();
+					 $('#inputReciever').hide();
+					 $('#inputPhone').hide();
+				 }
+			});
+			
+			//請求興趣商品事件
+			var len = 14;
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/tagproducts",
+				contentType: 'application/json; charset=utf-8', 
+		        async : true,
+		        cache: false,
+		        success: function (result) {
+		        	$("#Page1").show();
+		        	var $productCardDiv;
+		        	var $singlelisting;
+		        		$.each(result,
+		       			function(index, element){
+	        			var text;
+		       			if (element.description.length>len){
+		       				text = element.description.substring(0,len-1)+"...";
+		       			}else {
+		       				text =  element.description;
+		       			}
+		       			$productCardDiv = $('<div id="productCard"></div>').addClass("col-lg-6");
+		       			$singlelisting = $('<div></div>').addClass('single-listing mb-30')
+		       			$('<div class="list-img"></div>').appendTo($singlelisting)
+		       			.append("<img id='pimage' src='../../PepperNoodles/getProductImages?no="+ element.productId+"'/>" )
+		       			$('<div class="list-caption"></div>').appendTo($singlelisting)
+		       			.append("<input style='display:none;' class='openproduct'  type='submit' id='queryProduct' value='Open' data-toggle='modal' data-target='#myModal'>")
+		       			.append("<input type='hidden' id='hiddenid' value='"+element.productId+"'/>")
+		       			.append("<h3>"+element.productName+"</h3>")
+		       			.append("<p class='JQellipsis'>"+text+"</p>")
+		       			.append("<p class='JQellipsis' style='display:none;'>"+element.description+"</p>")
+		       			.append("<div class='list-footer' id='pro"+element.productId+"'>"+
+		       					"<ul>"+
+		       						"<li style='font-size:20px;'>$"+element.productPrice+"</li>"+
+		       						"<li style='display:none;'>"+element.quantity+"</li>"+
+		       						"<li class='addcart' id='addcart' value='1' style='display:none;'>add to cart&nbsp<i class='fas fa-shopping-cart'></i></li>"+
+		       						"<li class='addcart' id='removecart' value='2' style='display:none'>remove from cart&nbsp<i class='fas fa-trash-alt'></i></li>"+
+		       					"</ul>"+
+		       					"</div>");
+		       			$productCardDiv.append($singlelisting);
+		       			$productCardDiv.appendTo($(".row.productFrame"));
+		       			});
+		        },
+		        error: function (result) {
+		        	console.log(result);
+		        }
+			});
+			
+			//查看更多商品
+			$('body').on('click','#seeMoreTagProducts',function(e){
+				e.preventDefault();
+				window.open("http://localhost:9090/PepperNoodles/shoppingSystem/ShoppingMall", '_blank');
+			});
+			
+			
+			
+			//結帳
+			$('body').on('click','#checkout',function(e){
+				e.preventDefault();
+				var idlist = new Array();
+				var amountlist = new Array();
+				$('tbody tr').each(function(){
+					var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
+					var pid    = $('table tbody tr td:first-child').attr('id').substring(4);
+					idlist.push(pid);
+					amountlist.push(amount);
+				});	
+				var address  = $('#inputAddress2').val();
+				var reciever = $('#inputReciever4').val();
+				var rphone   = $('#inputPhone4').val();
+				alert(address+";"+reciever+";"+rphone);
+				var robject = new Object();
+				robject = {"address":address,"reciever":reciever,"rphone":rphone}
+				data = new FormData();
+				data.append('idlist',JSON.stringify(idlist));
+				data.append('amountlist',JSON.stringify(amountlist));
+				data.append('robject',JSON.stringify(robject));
+				$.ajax({
+					method:"POST",
+					url:"/PepperNoodles/cheqInvoicecheckOutController",
+					data:data,
+					processData: false,
+					contentType: false, 
+					dataType: 'html',
+					cache: false,  //不做快取
+			        async : true,
+			        success: function (url) {
+			        	myStorage.clear();
+			        	location.href = "http://localhost:9090/PepperNoodles"+url;
+			        },
+			        error: function (url) {
+			        	console.log("Problems everywhere");
+			        }	
+				});    
+				
+			});
+		
+			//一件新增
+			$('body').on('click','#oneclick',function(e){
+				e.preventDefault();
+				$('#inputAddress2').val("106台北市大安區復興南路一段390號2樓") ;
+				$('#inputReciever4').val("天真妹");
+				$('#inputPhone4').val("0512789456");
+			});
+			
+	
+});	
 </script>
 
 <style>
 .ghostwhite {
 	background-color: #F8F8FF;
 }
-</style>
 
+.row {
+	margin: 40px;
+}
+
+.cartmenu {
+	width: 100%;
+	height: auto;
+	box-shadow: 2px 3px 5px #888888;
+	border-radius: 10px;
+}
+
+#garbage:hover {
+	cursor: pointer;
+}
+#linepay{
+	cursor: pointer;
+}
+.seeMore{
+	float:right;
+	color:#00008B;
+	cursor: pointer;
+	text-decoration: underline;
+}
+.seeMore:hover {
+	text-decoration: none;
+}
+.productFrame{
+	padding:5px;
+	clear: both;
+}
+.openproduct:hover {
+	box-shadow: 0 0px 3px 0 rgba(0,0,0,0.24), 0 8px 15px 0 rgba(0,0,0,0.19);
+}
+.blue{
+	color: darkblue;
+}
+
+</style>
 </head>
 <body>
 	<!-- Preloader Start -->
@@ -149,85 +406,115 @@
 		<!--Hero End -->
 		<div class="listing-area pt-120 pb-120">
 			<div class="container">
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-							data-bs-target="#home" type="button" role="tab"
-							aria-controls="home" aria-selected="true">Home</button>
-					</li>
-					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-							data-bs-target="#profile" type="button" role="tab"
-							aria-controls="profile" aria-selected="false">Profile</button>
-					</li>
-					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="contact-tab" data-bs-toggle="tab"
-							data-bs-target="#contact" type="button" role="tab"
-							aria-controls="contact" aria-selected="false">Contact</button>
-					</li>
-				</ul>
-				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade show active" id="home" role="tabpanel"
-						aria-labelledby="home-tab">...</div>
-					<div class="tab-pane fade" id="profile" role="tabpanel"
-						aria-labelledby="profile-tab">...</div>
-					<div class="tab-pane fade" id="contact" role="tabpanel"
-						aria-labelledby="contact-tab">...</div>
+				<div class="row">
+					<h2 style="border-bottom: 1px solid #D3D3D3;">
+						<strong>訂單明細</strong>
+					</h2>
 				</div>
-
-
-
-
 				<div class="row">
 					<div class="col-xl-12 col-sm-offset-2">
-						<div class="container border table-responsive-sm">
-							<table class="table table-striped table-hover ghostwhite">
-								<thead>
-									<tr class=" Active">
-										<th>No.</th>
-										<th>訂單編號</th>
-										<th>產品名</th>
-										<th>數量</th>
-										<th>價格</th>
-										<th>取消</th>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- product here -->
-									<tr>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-										<td>1</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="cartmenu">
+							<div class="table-responsive-sm">
+								<table class="table table-hover text-info text-justify ">
+									<thead>
+										<tr class=" Active">
+											<th>編號</th>
+											<th>產品名</th>
+											<th>數量</th>
+											<th>價格</th>
+											<th>取消</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- product here -->
+									</tbody>
+								</table>
+<!-- 								<div style="text-align: right;" id="pricetag"></div> -->
+								
+							</div>
 						</div>
 					</div>
 				</div>
+				<!-- table row ends -->
+				<!-- 配送方式 -->
+				<div class="row">
+					<div class="col-12" style="text-align: left;" id="myform">
+					<h4 style="text-decoration: underline;">配送方式：</h4>
+						<div class="form-check form-check-inline ">
+						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" >
+						  <label class="form-check-label" for="inlineRadio1">宅配取貨</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+						  <label class="form-check-label" for="inlineRadio2">超商取貨</label>
+						</div>
+					</div>
+				</div>
+				<!-- 大空白 -->
+				<div class="row g-3" style="height: 300px;">
+				 	<div class="col-6" id="inputReciever">
+				    	<label for="inputEmail4" class="form-label">收件人:</label>
+				    	<input type="email" class="form-control" id="inputReciever4">
+				  	</div>
+				  	<div class="col-6" id="inputPhone">
+				    	<label for="inputPassword4" class="form-label">收件人電話:</label>
+				    	<input type="text" class="form-control" id="inputPhone4">
+				  	</div>
+					 <div class="col-12" id="address">
+					    <label for="inputAddress2" class="form-label">地址:</label>
+					    <input type="text" class="form-control" id="inputAddress2" placeholder="XX市, XX區, XX路...">
+					  </div>
+				</div>
+				<!-- 付款方式 -->
+				<div class="row">
+					<div class="col-3" id="linepay">
+					<h4 style="text-decoration: underline;">付款方式：</h4>
+						<img src="<c:url value='../images/Product/linepay.png'/>" style="border:1px solid #DCDCDC;border-radius:20px;width: 130px;height: 50px;object-fit:cover;display: block;">
+						<a style="margin-left: 30px;">LinePay</a>
+					</div>
+					<div class="col-3"></div>
+					<div class="col-3"></div>
+					<div class="col-3"></div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div style="text-align: right;" id="pricetag"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div style="text-align: right;">
+							<a href="#" class="genric-btn primary medium" id="checkout">結帳</a>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-xl-center"> 
+					<div class="col-xl-12 ">
+						<div class="listing-details-area">
+							<div class="row" id="Page1" >
+								<div class=" col-lg-12">
+			                        <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">猜您可能有興趣的商品</h3> 
+			                        <span class="seeMore" id="seeMoreTagProducts" >
+			                        <a>查看更多</a>
+			                        </span>
+			                        <!-- product frame start -->
+			                        <div class="row productFrame"  ></div>
+			                    </div>
+							
+							</div>
+						</div>
+					</div>
+				</div>	
 			</div>
 			<!-- container ends -->
 		</div>
 		<!--  ends -->
 
+	<div>
+		<button id="oneclick" style="position: fixed;bottom: 10%;right:5%;background-color: black;color:white">一鍵新增</button>
+	</div>
+	
+	
 	</main>
 	<footer>
 		<!-- Footer Start-->
@@ -318,7 +605,6 @@
 		</div>
 		<!-- Footer End-->
 	</footer>
-
 
 
 

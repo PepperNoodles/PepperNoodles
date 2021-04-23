@@ -34,6 +34,9 @@ public class OrderList {
 	@Column(name="Order_id")
 	private Integer orderId;
 	
+	@Column(name="UUID")
+	private Long uuid;
+	
 	@Column(name="OrderCreatedDate")
 	private Date orderCreatedDate;
 	
@@ -45,6 +48,12 @@ public class OrderList {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_userAccount_id")
 	private UserAccount user;
+	
+	@Column(name="ReceiveName")
+	private String receiveName;
+	
+	@Column(name="ReceivePhone")
+	private String receivePhone;
 	
 	@Column(name="ReceiveAddress")
 	private String receiveAddress;
@@ -71,6 +80,22 @@ public class OrderList {
 	@PreUpdate
 	protected void updateOrderDate() {
 		orderCreatedDate = new Date();
+	}
+
+	public String getReceiveName() {
+		return receiveName;
+	}
+
+	public void setReceiveName(String receiveName) {
+		this.receiveName = receiveName;
+	}
+
+	public String getReceivePhone() {
+		return receivePhone;
+	}
+
+	public void setReceivePhone(String receivePhone) {
+		this.receivePhone = receivePhone;
 	}
 
 	public Integer getOrderId() {
@@ -145,7 +170,14 @@ public class OrderList {
 		this.odetails = odetails;
 	}
 
-	//
+	public Long getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(Long uuid) {
+		this.uuid = uuid;
+	}
+
 	
 	
 }
