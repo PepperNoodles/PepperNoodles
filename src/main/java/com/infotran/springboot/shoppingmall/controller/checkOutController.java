@@ -70,11 +70,18 @@ public class checkOutController {
 		OrderList olist = new OrderList();
 		olist.setUser(accessuser);
 		Set <OrderDetail> odset = new LinkedHashSet<OrderDetail>();
+		//商品遍歷
 		for (int i=0;i<len;i++) {
+			int amount = amountlist.get(i);
+			int id = idlist.get(i);
 			odetail = new OrderDetail();
-			Product product = shopservice.findById(idlist.get(i));
+			Product product = shopservice.findById(id);
+			//要更新Product 數量
+			product.setQuantity(product.getQuantity()-amount);
+			shopservice.save(product);
+			//
 			odetail.setProduct(product);
-			odetail.setAmount(amountlist.get(i));
+			odetail.setAmount(amount);
 			odset.add(odetail);
 			odetail.setOrderlist(olist);
 		}
@@ -93,7 +100,6 @@ public class checkOutController {
 			Totalcost += product.getProductPrice()*amountlist.get(j);
 			pset.add(shopservice.findById(idlist.get(j)));
 		}
-		System.out.println(Totalcost);
 		olist.setTotalCost(Totalcost);
 //		ObjectMapper objectMapper = new ObjectMapper();
 //		objectMapper.writeValue(new File(jsonFileDirectory,"Order"+uuid), pset);

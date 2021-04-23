@@ -9,24 +9,23 @@
 <meta charset="UTF-8">
 <title>Template For inClude</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <!-- <link rel='stylesheet' -->
 <%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-		<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js' />"></script>
+<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
+<!-- All JS Custom Plugins Link Here here -->
+<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+<script src="<c:url value='/scripts/popper.min.js' />"></script>
+ <!-- DataTables v1.10.16 -->
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 <style>
@@ -122,11 +121,18 @@ table {
 			<!--左邊的分隔用-->
 			<div class="d-flex" >
 				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a> 
-					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a> 
-					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
-					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
-					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+						<i class="fas fa-home"></i>Home</a> 
+					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
+						<i class="fas fa-users"></i>好友</a> 
+					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false">
+						<i class="fas fa-file-alt"></i>關於我</a>
+					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
+						<i class="fas fa-comments"></i>留言區</a>
+					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
+						<i class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link" id="v-pills-userOrderList-tab" data-toggle="pill" href="#v-pills-userOrderList" role="tab" aria-controls="v-pills-userOrderList" aria-selected="false">
+						<i class="fas fa-file-alt"></i>查詢訂單</a>
 
 				</div>
 				<div class="tab-content" id="v-pills-tabContent col-9">
@@ -251,7 +257,35 @@ table {
 					<div class="tab-pane fade" id="v-pills-userCollection"
 						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
 						<h2>userCollection</h2>
-
+					</div>
+					
+					<!-- 訂單表 -->
+					<div class="tab-pane fade" id="v-pills-userOrderList"
+						role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+						<h2>User OrderList</h2>
+						
+						<table class="example">
+							<thead>
+								<tr>
+									<th>編號</th>
+									<th>產品名</th>
+									<th>價格</th>
+									<th>數量</th>
+									<th>刪除</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>1</td>
+									<td>1</td>
+									<td>1</td>
+									<td>1</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						
 					</div>
 				</div>
 			</div>
@@ -266,6 +300,28 @@ table {
 	<script>
 // 					$(document).ready(function(){ 
 					$(window).on('load', function () {
+						url ="<c:url value='getOrderList'/>";	
+						$( ".example" ).DataTable({
+					  		// 參數設定[註1]
+					  		"paging": true, // 顯示換頁
+					  		"searching": true, // 顯示搜尋
+					  		"info":	true, // 顯示資訊
+					  		"fixedHeader": true, // 標題置頂
+					  		"ordering": false, //排序功能, 預設是開啟
+					  		"lengthMenu": [10, 20]
+					  		"ajax": {
+					  	        "url": "", //要抓哪個地方的資料
+					  	        "type": "GET", //使用什麼方式抓
+					  	        "dataType": 'json', //回傳資料的類型
+					  	        "success": function(){
+					  	            console.log("你是右邊!!");
+					  	        }, //成功取得回傳時的事件
+					  	        "error": function(){
+					  	            console.log("資料取得失敗 回去檢討檢討")
+					  	        } //失敗事件
+					  	    }
+					  	});
+						
 						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
@@ -455,7 +511,7 @@ table {
 						}
 						//addFriend按鈕的function
 						function addFriend(){
-							alert(this.value);
+// 							alert(this.value);
 							let urls="${pageContext.request.contextPath}/";
 							urls+="<c:url value='MainUserAddFriendwithIndex'/>";
 							urls+="/${userAccount.accountIndex}"
@@ -499,7 +555,7 @@ table {
 //							dataType:"text",
 //							data: JSON.stringify(RequestContent),
 				        success: function (result) {
-			        		alert(result.length);
+// 			        		alert(result.length);
 			        		commentsLength =result.length;
 //				        		alert(result[0].replyMessageBoxes);
 			        		console.log(JSON.stringify(result));
@@ -557,7 +613,7 @@ table {
 				        	
 				        },
 				        error: function (result) {
-				        	alert(result);
+// 				        	alert(result);
 				            $("#commentsForUser").text("fail"); //填入提示訊息到result標籤內
 				        }
 					});
@@ -575,7 +631,7 @@ table {
 								url:  urls,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -590,8 +646,8 @@ table {
 							var messageIdValue = $(this).next().text();
 							var urls           ="/PepperNoodles/user/addNewReplyCommentAjax/" + messageIdValue;
 							var text           =$(this).prev().val();
-							alert(messageIdValue);
-							alert(text);
+// 							alert(messageIdValue);
+// 							alert(text);
 							
 							var data =
 							{
@@ -613,7 +669,7 @@ table {
 								data:JSON.stringify(data),
 								
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -627,14 +683,14 @@ table {
 		        			e.preventDefault;
 		        			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
 							var id =$(this).next().text();
-							alert(id);
+// 							alert(id);
 							urls += id;
 							$.ajax({
 								type:"GET",
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
