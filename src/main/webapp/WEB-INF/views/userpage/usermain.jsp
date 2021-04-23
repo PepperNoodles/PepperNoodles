@@ -584,7 +584,7 @@ table {
 							});
 						});
 						
-						//新增回覆留言(usermain頁面的 useraccount 之後會抓預設的值)
+						//新增回覆留言
 						$('body').on('click','button[name^="addreply"]',function(e){
 							
 							var messageIdValue = $(this).next().text();
@@ -604,7 +604,6 @@ table {
 							           "messageBox": null,
 							    "replyMessageBoxes": null
 							};
-//	 						+ "&useraccount=chrislo5311@gmail.com"
 							$.ajax({
 								type:"POST",
 								url:  urls,

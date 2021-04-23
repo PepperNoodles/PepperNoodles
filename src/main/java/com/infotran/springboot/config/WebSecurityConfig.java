@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .exceptionHandling().accessDeniedPage("/loginSystem/403")
 		.and()
 		.csrf().disable()
-		.rememberMe().tokenValiditySeconds(120).key("rememberMe");
+		.rememberMe().tokenValiditySeconds(1200).key("rememberMe");
 
 
 //      .formLogin()
