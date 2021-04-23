@@ -166,7 +166,7 @@ public class UserSysController {
 		return "userpage/usermain";
 	}
 	
-	//刪除留言、回覆留言的方法test
+	//刪除留言&回覆留言的方法test
 	@GetMapping(value="user/deleteReplyComment" )
 	public String deleteReplyComment(Model model) {
 		//test
@@ -325,52 +325,78 @@ public class UserSysController {
 	@ResponseBody
 	public String deleteMainComment(@RequestParam(value = "id") Integer id) {
 		String message = "";
+		
+		
+		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
 		MessageBox msn = msnServiceImpl.findById(id);
-		msn.setNetizenAccount(null);
-		msn.setUserAccount(null);
-		msn.setReplyMessageBoxes(null);
-		
-		
-		List<MessageBox> listMsn = msn.getReplyMessageBoxes();
-		if(listMsn!=null) {
-			for(MessageBox otherMSN :listMsn ) {
-				otherMSN.setMessageBox(null);
-				msnServiceImpl.save(otherMSN);
+		if(commenter.getAccountId()!=msn.getNetizenAccount().getAccountId()){
+			message = "別人的留言不能刪啦~";
+			return  message;
+		}else{
+			msn.setNetizenAccount(null);
+			msn.setUserAccount(null);
+			
+			List<MessageBox> listMsn = msn.getReplyMessageBoxes();
+			List<Integer> messageIdToDelete = new ArrayList<>();
+			
+			if(listMsn!=null) {
+				for(MessageBox otherMSN :listMsn ) {
+					
+					otherMSN.setMessageBox(null);
+					otherMSN.setNetizenAccount(null);
+					otherMSN.setUserAccount(null);
+					messageIdToDelete.add(otherMSN.getUserMessageId());
+					msnServiceImpl.delete(otherMSN);
+
+//					msnServiceImpl.save(otherMSN);
+				}
 			}
-		}
-
-		
-		Integer success =msnServiceImpl.delete(msn);
-		if(success==1) {
-			message="訊息刪除成功";
-		}else {
-			message="訊息尚未刪除";
+			Integer success =msnServiceImpl.delete(msn);
+			if(success==1) {
+				message="訊息刪除成功";
+			}else {
+				message="訊息尚未刪除";
+			}
 
 		}
+
 
 		return message;
 	}
 	
-	//Update 更新主要留言的Ajax方法
+	//Update 更新留言的Ajax方法
 	@PostMapping(value="/user/updateCommentAjax/", consumes= {"application/json"})
 	@ResponseBody
 	public String updateMainComment( @RequestBody MessageBox updateMSN) {
 		String message = "";
-		MessageBox msn = msnServiceImpl.findById(updateMSN.getUserMessageId());
-		System.out.println("======================================="+updateMSN.getText());
-		msn.setText(updateMSN.getText());
-		msn.setTime(new Date());
-        
-
-		msn.setLikeAmount(updateMSN.getLikeAmount());
-
-		Integer success =msnServiceImpl.save(msn);
-		if(success==1) {
-			message="訊息修改成功";
+		UserAccount talker = uSysServiceImpl.
+				findByAccountIndex( msnServiceImpl.findById(updateMSN.getUserMessageId()).
+				getNetizenAccount().getAccountIndex());
+		UserAccount loginner = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
+		if(loginner.getAccountId()!=talker.getAccountId()){
+			message = "別人的留言不能改啦~麥笑想";
+			return message;
 		}else {
-			message="訊息尚未修改";
+			
+			MessageBox msn = msnServiceImpl.findById(updateMSN.getUserMessageId());
+			System.out.println("======================================="+updateMSN.getText());
+			msn.setText(updateMSN.getText());
+			msn.setTime(new Date());
+	        
 
+			msn.setLikeAmount(updateMSN.getLikeAmount());
+
+			Integer success =msnServiceImpl.save(msn);
+			if(success==1) {
+				message="訊息修改成功";
+			}else {
+				message="訊息尚未修改";
+
+			}
 		}
+		
 
 		return message;
 	}
