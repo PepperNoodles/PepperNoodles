@@ -33,19 +33,21 @@
 		background-color:#FFFFFF;
 	}
 	
-
+	h3{
+		text-align: center;
+	}
 </style>
 
 </head>
 <body>
-
+ <h3 class="container">${comDetail.realname}</h3>
 <ul class="nav flex-column nav-justified">
   <li class="nav-item">
-    <a class="nav-link leftBar" href="<c:url value='/' />Company/company/${comDetail.companyDetailId}">基本資料</a>
+    <a class="nav-link leftBar" href="<c:url value='/' />Company/company/">基本資料</a>
     
   </li>
   <li class="nav-item">
-    <a class="nav-link leftBar"  href="#">我的餐廳</a>
+    <a class="nav-link leftBar"  href="<c:url value='/showAllrest' />">我的餐廳</a>
    
   </li>
   <li class="nav-item">

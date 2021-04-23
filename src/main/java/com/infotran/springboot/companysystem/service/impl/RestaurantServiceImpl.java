@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.infotran.springboot.commonmodel.MenuDetail;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.companysystem.dao.RestaurantRepository;
 import com.infotran.springboot.companysystem.service.RestaurantService;
@@ -54,6 +55,18 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Override
 	public Restaurant findByRestaurantAddress(String RAddress) {
 		return restaurantDao.findByRestaurantAddress(RAddress);
+	}
+
+	@Override
+	public Restaurant findById(Integer id) {
+		Optional<Restaurant> restDetailOptional = restaurantDao.findById(id);
+		Restaurant restDetail = null;
+		if (restDetailOptional.isPresent()) {
+			restDetail = restDetailOptional.get();
+		} else {
+			throw new RuntimeException("rest(id=" + id + ")不存在");
+		}
+		return restDetail;
 	}
 
 

@@ -3,13 +3,12 @@ package com.infotran.springboot.companysystem.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,26 +20,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.Restaurant;
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
+import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
-@SessionAttributes(names = "updateRestaurant" )
+@SessionAttributes(names = {"updateRestaurant"} )
 public class RestaurantCRUDController {
 	
 //	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
@@ -54,30 +52,40 @@ public class RestaurantCRUDController {
 
 	@Autowired
 	RestaurantValidator restvalidator;
-
 	
-	// 連進新增餐廳時 給預設值 回傳新增頁
-	@GetMapping(value = "/addrest")
-	public String initRestaurant(Model model, Restaurant rest) {
-		model.addAttribute("restaurant", rest);
-		rest.setRestaurantName("幽靈炒飯");
-		rest.setRestaurantAddress("台北興安街");
-		rest.setRestaurantContact("0909053909");
-		rest.setRestaurantWebsite("facebook.com");
-		return "company/InsertRestaurant";
-	}
+	@Autowired
+	UserSysService userSysService;
+	
+	
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
 	public String list(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println(model.getAttribute("restaurants"));
+		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/AllRestaurants";
 	}
+	
+	
+	
+	// 連進新增餐廳時 給預設值 回傳新增頁
+	@GetMapping(value = "/addrest")
+	public String initRestaurant(Model model) {
+		Restaurant rest= new Restaurant();
+		rest.setRestaurantName("幽靈炒飯");
+		rest.setRestaurantAddress("台北興安街");
+		rest.setRestaurantContact("0909053909");
+		rest.setRestaurantWebsite("facebook.com");
+		model.addAttribute("restaurant", rest);
+		return "company/InsertRestaurant";
+	}
+
 
 	// 新增餐廳
 	@PostMapping(value = "/addrest")
 	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
-			HttpServletRequest request) {
+			HttpSession session) {
+		
+		
 		// 餐廳validator進行資料檢查
 		restvalidator.validate(rest, result);
 		if (result.hasErrors()) {
@@ -100,6 +108,15 @@ public class RestaurantCRUDController {
 				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
 			}
 		}
+//		綁定account_id
+		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
+		UserAccount useracc=comDetail.getUserAccount();
+//		useracc是detached狀態 必須用userSysService在抓一次
+		String index=useracc.getAccountIndex();
+		UserAccount user = userSysService.findByAccountIndex(index);
+		//String index=useracc.getAccountIndex();
+		rest.setUserAccount(user);  //會報錯detached entity passed to persist:com.infotran.springboot.commonmodel.UserAccount
+		
 
 		restaurantService.save(rest);
 		System.out.println("新增成功");
@@ -156,7 +173,7 @@ public class RestaurantCRUDController {
 	
 	
 	// 刪除餐廳
-	@DeleteMapping("/deleteRest/{Id}")
+	@PostMapping("/deleteRest/{Id}")
 	public String deleterest(@PathVariable("Id") Integer id) {
 		restaurantService.delete(id);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
@@ -181,7 +198,6 @@ public class RestaurantCRUDController {
 			map.put("checkboolean", "true");
 		}
 		System.out.println(map.get("result"));
-		System.out.println(map.get("checkboolean"));
 		return map;
 	}
 	// 給圖用↓
