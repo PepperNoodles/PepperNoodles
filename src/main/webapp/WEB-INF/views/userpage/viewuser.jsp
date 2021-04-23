@@ -18,10 +18,17 @@
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+	<!-- JS here -->
+	<!-- All JS Custom Plugins Link Here here -->
+	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+	<!-- Jquery, Popper, Bootstrap -->
+	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+	<script type="text/javascript"
+	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 
 <style>
 	#body{
@@ -76,7 +83,7 @@
 			
 			<div class="d-flex">
 				<div class="p-2  flex-fill bg-dark">
-					<a href="#"><i class="fas fa-users"></i>好友</a>		
+					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-users"></i>好友</a>		
 				</div>
 				<div class="p-2  flex-fill bg-dark">
 					<a href="#"><i class="fas fa-file-alt"></i>關於我</a>							
@@ -89,6 +96,7 @@
 				</div>	
 			</div>
 			
+			<div class="tab-content" id="v-pills-tabContent col-9">
 			<div class="mt-5" id="basicInfo">
 				<h2>基本資料</h2>
 				<p>email: ${viewUserAccount.accountIndex} </p>
@@ -98,6 +106,7 @@
 
 			<div class="" id="friend">
 				<h2>好友區</h2>			
+			</div>
 			</div>
 	</div>
 
@@ -110,7 +119,7 @@
 	<script>
  		$(window).on('load', function() {
 			
-// 			//讓bar固定在上面以及設定高度
+ 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
  			$(".header-sticky").css("height", "90px");
 			$(".header-sticky").css("position","static")
@@ -121,15 +130,64 @@
  				'overflow' : 'visible'
  		});			
 			
- 		});
- 	</script>
-	<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+ 			judgeRelation();
 
+			function judgeRelation(){
+				let mainUser = "${userAccount.accountIndex}";
+				let viewUser = "${viewUserAccount.accountIndex}";
+				let urls="${pageContext.request.contextPath}/";
+					urls+="<c:url value='judgeFriendShip'/>";
+					urls+="?userIndex="+mainUser+"&friendIndex="+viewUser;
+					console.log(urls);
+			$.ajax({
+					type: "GET",
+					url: urls,							
+					dataType: "text",
+					success: function (response) {		
+					if (response =="noFriendShip"){
+						$("#AddFriendChecker").html("addFriend");
+						$("#AddFriendChecker").on("click",sendFriendRequest);
+					}else if(response == "wait_check"){
+						$("#AddFriendChecker").html("RequestSended");
+					}else if(response =="friend"){
+						$("#AddFriendChecker").html("Friend");
+					}else if(response == "reject"){
+						$("#AddFriendChecker").html("rejected");
+					}else{
+						console.log("somethingWrong")
+					}
+					},
+						error: function (thrownError) {
+						console.log(thrownError);
+					}
+	    			});
+			}
+			
+			
+
+			function sendFriendRequest(){
+				alert("送出邀請");
+				let mainUser = "${userAccount.accountIndex}";
+				let viewUser = "${viewUserAccount.accountIndex}";
+				let urls="${pageContext.request.contextPath}/";
+					urls+="<c:url value='addfriend'/>";
+					urls+="/"+mainUser+"/"+viewUser;
+				$.ajax({
+					type: "GET",
+					url: urls,							
+					dataType: "text",
+					success: function (response) {		
+						alert(response);
+						judgeRelation();
+					},
+						error: function (thrownError) {
+						console.log(thrownError);
+					}
+	    			});
+			}
+ 		});
+
+ 		</script>
 
 </body>
 </html>

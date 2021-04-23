@@ -30,7 +30,7 @@ $(window).on('load', function () {
 		success: function (response) {
 			console.log(response);	
 			$(function () {
-				setInterval(ChangeTime, 500);
+				setInterval(ChangeTime, 100);
 				});		
 		},
 		error: function (thrownError) {

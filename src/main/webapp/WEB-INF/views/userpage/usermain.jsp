@@ -14,52 +14,33 @@
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<!-- <link rel='stylesheet' -->
+<%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+		<!-- JS here -->
+	<!-- All JS Custom Plugins Link Here here -->
+	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+	<!-- Jquery, Popper, Bootstrap -->
+	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+	<script src="<c:url value='/scripts/popper.min.js' />"></script>
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<!--抓取原本路徑用-->
-<base localhref= />
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js' />"></script>
 
-<meta charset="UTF-8">
-<title>userMain</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
 
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
-
-<link rel="manifest" href="site.webmanifest">
-<!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
-<link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
-<link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
-<link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
-<link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />">
-<link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />">
-<link rel="stylesheet" href="<c:url value='/css/slick.css' />">
-<link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
-<link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
+
+
 .header {
 	background-color: #000000;
 }
 
 a {
+	color: black;
+}
+
+.nav a {
 	color: black;
 }
 
@@ -74,41 +55,41 @@ tr:hover {
 td>img {
 	height: 100px;
 }
- table {
-     border-collapse:separate; 
-    border:solid black 1px; 
-     border-radius:6px; 
-     -moz-border-radius:6px; 
- } 
-/* td, th { */
-/*     border-left:solid black 1px; */
-/*     border-top:solid black 1px; */
-/* } */
 
-/* th { */
-/*     background-color: blue; */
-/*     border-top: none; */
-/* } */
+table {
+	border-collapse: separate;
+	border: solid black 1px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+}
+/*  td, th {  */
+/*      border-left:solid black 1px;  */
+/*      border-top:solid black 1px;  */
+/*  }  */
 
-/* td:first-child, th:first-child { */
-/*      border-left: none; */
-/* } */
+/*  th {  */
+/*      background-color: blue;  */
+/*     border-top: none;  */
+/* }  */
+
+/*  td:first-child, th:first-child {  */
+/*       border-left: none;  */
+/*  }  */
 </style>
-<script type="text/javascript" language="javascript">
-window.onload = fackbooklike;
-function fackbooklike() {
-var fbLike = document.getElementById("fbLike");
-if (fbLike)
-{
-document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.php?href=" + location.href + "&layout=standard&show_faces=true&width=350&action=like&colorscheme=light&height=25";
-}
-}
+<script>
+	window.onload = fackbooklike;
+		function fackbooklike() {
+			var fbLike = document.getElementById("fbLike");
+		if (fbLike){
+			document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.php?href=" + location.href + "&layout=standard&show_faces=true&width=350&action=like&colorscheme=light&height=25";
+			}
+		}
 </script>
 </head>
 <body>
- 	<%@include file="../includePage/includeNav.jsp" %>
+	<%@include file="../includePage/includeNav.jsp"%>
 	<!-- 讀取圖案 -->
-	<div id="preloader-active">
+	<div id="preloader-active" >
 		<div
 			class="preloader d-flex align-items-center justify-content-center">
 			<div class="preloader-inner position-relative">
@@ -121,364 +102,177 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 		</div>
 	</div>
 
-	<div>
-	<div class="container mt-10" style="width:80%;height:100vh">
-					<!--有照片的那個bar  -->
-					<div class="d-flex">
-						<div class="p-2">
-							<img style="height: 100px"
-								src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
-						</div>
-
-						<div class="p-2 flex-fill align-self-end justify-content-center">
-							<h1>${userAccount.userAccountDetail.nickName}</h1>
-						</div>
-						
-
-					</div>
-					<div class="flex-fill bg-secondary p-1 mb-5">						
-					</div>
-					
-					<!--左邊的分隔用-->
-					<div class="d-flex">
-					<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-						<a class="nav-link active" id="v-pills-home-tab"    data-toggle="pill" href="#v-pills-home"		      role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a>
-						<a class="nav-link" id="v-pills-friend-tab" 	    data-toggle="pill" href="#v-pills-friend" 		  role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a>
-						<a class="nav-link" id="v-pills-aboutUser-tab" 	    data-toggle="pill" href="#v-pills-aboutUser"	  role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
-						<a class="nav-link" id="v-pills-userMessage-tab"    data-toggle="pill" href="#v-pills-userMessage" 	  role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
-						<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
-
-						</div>
-							<div class="tab-content" id="v-pills-tabContent col-9">
-								<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-									<h2>基本資料</h2>
-									<p id="accountIndex">email: ${userAccount.accountIndex} </p>
-									<p>性別：${userAccount.userAccountDetail.gender}</p>
-									<p>地區：${userAccount.userAccountDetail.location}</p>
-								</div>
-								<div class="tab-pane fade" id="v-pills-friend" role="tabpanel" aria-labelledby="v-pills-friend-tab">
-									
-									
-									<!--好友分區用-->
-									<nav>
-										<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										  <a class="nav-item nav-link active" id="nav-myFriend-tab" data-toggle="tab" href="#nav-myFriend" role="tab" aria-controls="nav-myFriend" aria-selected="true">
-											<button id="checkFriendList" style="color:black">我的好友</button></a>
-										  <a class="nav-item nav-link" id="nav-searchFriend-tab" data-toggle="tab" href="#nav-searchFriend" role="tab" aria-controls="nav-searchFriend" aria-selected="false">
-											<button id="checkFriendList" style="color:black">搜尋使用者</button></a>
-										  <a class="nav-item nav-link" id="nav-friendQequest-tab" data-toggle="tab" href="#nav-friendQequest" role="tab" aria-controls="nav-friendQequest" aria-selected="false">
-											<button class="btn-link" id="checkRequestList" style="color:black">查看邀請</button></a>
-										</div>
-									  </nav>
-									  <div class="tab-content" id="nav-tabContent">
-										<div class="tab-pane fade show active" id="nav-myFriend" role="tabpanel" aria-labelledby="nav-myFriend-tab">
-											<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
-											<div id="userFriendList">
-											</div>
-											
-											</div>
-										<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel" aria-labelledby="nav-searchFriend-tab">
-											<div class="d-flex mt-3">
-												<input class="m-2" id="nameSearch" type="search" placeholder="Search By nickName" aria-label="Search">
-												<button class="btn btn-primary my-2 my-sm-0 " id="btn-search" >Search</button>
-											</div>					
-											<div id="searchResult">
-											</div>
-										</div>
-										
-										
-										<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel" aria-labelledby="nav-friendQequest-tab">
-											<h6>好友邀請</h6>
-											<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
-											<div id="friendRequest">	
-										</div>
-									  </div>
-								</div>
-								</div>	
-								<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
-									<h2>關於我</h2>
-								</div>
-								<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel" aria-labelledby="v-pills-userMessage-tab">
-									<h2>userMessage</h2>
-
-								</div>
-								<div class="tab-pane fade" id="v-pills-userCollection" role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
-									<h2>userCollection</h2>
-
-								</div>
-					</div>		
-					</div>		
-			 </div>
-			</div>		
-
-	<div class="container mt-10" style="width: 80%">
-		<!--有照片的那個bar  -->
-		<div class="d-flex">
-			<div class="p-2">
-				<img style="height: 100px"
-					src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
-			</div>
-
-			<div class="p-2 flex-fill align-self-end justify-content-center">
-				<h1>${userAccount.userAccountDetail.nickName}</h1>
-			</div>
-
-
-		</div>
-		<div class="flex-fill bg-secondary p-1 mb-5"></div>
-
-		<!--左邊的分隔用-->
-		<div class="d-flex">
-			<div class="nav flex-column nav-pills col-3" id="v-pills-tab"
-				role="tablist" aria-orientation="vertical">
-				<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill"
-					href="#v-pills-home" role="tab" aria-controls="v-pills-home"
-					aria-selected="true"><i class="fas fa-home"></i>Home</a> <a
-					class="nav-link" id="v-pills-friend-tab" data-toggle="pill"
-					href="#v-pills-friend" role="tab" aria-controls="v-pills-friend"
-					aria-selected="false"><i class="fas fa-users"></i>好友</a> <a
-					class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill"
-					href="#v-pills-aboutUser" role="tab"
-					aria-controls="v-pills-aboutUser" aria-selected="false"><i
-					class="fas fa-file-alt"></i>關於我</a> <a class="nav-link"
-					id="v-pills-userMessage-tab" data-toggle="pill"
-					href="#v-pills-userMessage" role="tab"
-					aria-controls="v-pills-userMessage" aria-selected="false"><i
-					class="fas fa-comments"></i>留言區</a> <a class="nav-link"
-					id="v-pills-userCollection-tab" data-toggle="pill"
-					href="#v-pills-userCollection" role="tab"
-					aria-controls="v-pills-userCollection" aria-selected="false"><i
-					class="fas fa-heart"></i>收藏區</a>
-
-			</div>
-			<div class="tab-content" id="v-pills-tabContent col-9">
-				<div class="tab-pane fade show active" id="v-pills-home"
-					role="tabpanel" aria-labelledby="v-pills-home-tab">
-					<h2>基本資料</h2>
-					<p id="accountIndex">email: ${userAccount.accountIndex}</p>
-					<p>性別：${userAccount.userAccountDetail.gender}</p>
-					<p>地區：${userAccount.userAccountDetail.location}</p>
+	<div class="container-fluid">
+		<div class="container mt-10" style="width: 80%; height: 100vh">
+			<!--有照片的那個bar  -->
+			<div class="d-flex">
+				<div class="p-2">
+					<img style="height: 100px"
+						src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
 				</div>
-				<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
-					aria-labelledby="v-pills-friend-tab">
+
+				<div class="p-2 flex-fill align-self-end justify-content-center">
+					<h1>${userAccount.userAccountDetail.nickName}</h1>
+				</div>
 
 
-					<!--好友分區用-->
-					<nav>
-						<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							<a class="nav-item nav-link active" id="nav-myFriend-tab"
-								data-toggle="tab" href="#nav-myFriend" role="tab"
-								aria-controls="nav-myFriend" aria-selected="true">
-								<button id="checkFriendList" style="color: black">我的好友</button>
-							</a> <a class="nav-item nav-link" id="nav-searchFriend-tab"
-								data-toggle="tab" href="#nav-searchFriend" role="tab"
-								aria-controls="nav-searchFriend" aria-selected="false">
-								<button id="checkFriendList" style="color: black">搜尋使用者</button>
-							</a> <a class="nav-item nav-link" id="nav-friendQequest-tab"
-								data-toggle="tab" href="#nav-friendQequest" role="tab"
-								aria-controls="nav-friendQequest" aria-selected="false">
-								<button class="btn-link" id="checkRequestList"
-									style="color: black">查看邀請</button>
-							</a>
-						</div>
-					</nav>
-					<div class="tab-content" id="nav-tabContent">
-						<div class="tab-pane fade show active" id="nav-myFriend"
-							role="tabpanel" aria-labelledby="nav-myFriend-tab">
-							<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
-							<div id="userFriendList"></div>
+			</div>
+			<div class="flex-fill bg-secondary p-1 mb-5"></div>
 
-						</div>
-						<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel"
-							aria-labelledby="nav-searchFriend-tab">
-							<div class="d-flex mt-3">
-								<input class="m-2" id="nameSearch" type="search"
-									placeholder="Search By nickName" aria-label="Search">
-								<button class="btn btn-primary my-2 my-sm-0 " id="btn-search">Search</button>
+			<!--左邊的分隔用-->
+			<div class="d-flex" >
+				<div class="nav flex-column nav-pills col-3" id="v-pills-tab"
+					role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a> 
+					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a> 
+					<a
+						class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill"
+						href="#v-pills-aboutUser" role="tab"
+						aria-controls="v-pills-aboutUser" aria-selected="false"><i
+						class="fas fa-file-alt"></i>關於我</a> <a class="nav-link"
+						id="v-pills-userMessage-tab" data-toggle="pill"
+						href="#v-pills-userMessage" role="tab"
+						aria-controls="v-pills-userMessage" aria-selected="false"><i
+						class="fas fa-comments"></i>留言區</a> <a class="nav-link"
+						id="v-pills-userCollection-tab" data-toggle="pill"
+						href="#v-pills-userCollection" role="tab"
+						aria-controls="v-pills-userCollection" aria-selected="false"><i
+						class="fas fa-heart"></i>收藏區</a>
+
+				</div>
+				<div class="tab-content" id="v-pills-tabContent col-9">
+					<div class="tab-pane fade show active" id="v-pills-home"
+						role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<h2>基本資料</h2>
+						<p id="accountIndex">email: ${userAccount.accountIndex}</p>
+						<p>性別：${userAccount.userAccountDetail.gender}</p>
+						<p>地區：${userAccount.userAccountDetail.location}</p>
+					</div>
+					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
+						aria-labelledby="v-pills-friend-tab">
+
+
+						<!--好友分區用-->
+						<nav>
+							<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								<a class="nav-item nav-link active" id="nav-myFriend-tab"
+									data-toggle="tab" href="#nav-myFriend" role="tab"
+									aria-controls="nav-myFriend" aria-selected="true">
+									<button id="checkFriendList" style="color: black">我的好友</button>
+								</a> <a class="nav-item nav-link" id="nav-searchFriend-tab"
+									data-toggle="tab" href="#nav-searchFriend" role="tab"
+									aria-controls="nav-searchFriend" aria-selected="false">
+									<button id="checkFriendList" style="color: black">搜尋使用者</button>
+								</a> <a class="nav-item nav-link" id="nav-friendQequest-tab"
+									data-toggle="tab" href="#nav-friendQequest" role="tab"
+									aria-controls="nav-friendQequest" aria-selected="false">
+									<button class="btn-link" id="checkRequestList"
+										style="color: black">查看邀請</button>
+								</a>
 							</div>
-							<div id="searchResult"></div>
-						</div>
+						</nav>
+						<div class="tab-content" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="nav-myFriend"
+								role="tabpanel" aria-labelledby="nav-myFriend-tab">
+								<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
+								<div id="userFriendList"></div>
+
+							</div>
+							<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel"
+								aria-labelledby="nav-searchFriend-tab">
+								<div class="d-flex mt-3">
+									<input class="m-2" id="nameSearch" type="search"
+										placeholder="Search By nickName" aria-label="Search">
+									<button class="btn btn-primary my-2 my-sm-0 " id="btn-search">Search</button>
+								</div>
+								<div id="searchResult"></div>
+							</div>
 
 
-						<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel"
-							aria-labelledby="nav-friendQequest-tab">
-							<h6>好友邀請</h6>
-							<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
-							<div id="friendRequest"></div>
+							<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel"
+								aria-labelledby="nav-friendQequest-tab">
+								<h6>好友邀請</h6>
+								<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
+								<div id="friendRequest"></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel"
-					aria-labelledby="v-pills-aboutUser-tab">
-					<h2>關於我</h2>
-				</div>
+					<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel"
+						aria-labelledby="v-pills-aboutUser-tab">
+						<h2>關於我</h2>
+					</div>
+					<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel"
+						aria-labelledby="v-pills-userMessage-tab">
+
+						<h2>${userAccount.userAccountDetail.nickName}的留言區</h2>
 
 
-				<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel"
-					aria-labelledby="v-pills-userMessage-tab">
-
-					<h2>${userAccount.userAccountDetail.nickName}的留言區</h2>
-
-
-					<iframe allowtransparency="" frameborder="0" id="fbLike"
-						scrolling="no" src=""
-						style="border-bottom: medium none; border-left: medium none; width: 250px; height: 30px; overflow: hidden; border-top: medium none; border-right: medium none"></iframe>
+						<iframe allowtransparency="" frameborder="0" id="fbLike"
+							scrolling="no" src=""
+							style="border-bottom: medium none; border-left: medium none; width: 250px; height: 30px; overflow: hidden; border-top: medium none; border-right: medium none"></iframe>
 
 
-					<!-- 新增主要留言input & 按鈕 -->
-					<input placeholder='Hello....' id="commentInput"></input>
-					<button type="button" class="genric-btn default circle arrow" id="addNewComment">新增留言</button>
+						<!-- 						新增主要留言input & 按鈕 -->
+						<input placeholder='Hello....' id="commentInput"></input>
+						<button type="button" class="genric-btn default circle arrow"
+							id="addNewComment">新增留言</button>
 
-					<!-- 使用Ajax的方法 -->
-					<div class="container-fluid" style="overflow: scroll; height: 400px;"
-						id="commentsForUser" class="table"></div>
-
-
-					<!-- 					使用jstl的方法 -->
-					<%-- 					<c:choose> --%>
-					<%-- 						<c:when test="${not empty userAccount.msnBox}"> --%>
-					<!-- 							<br> -->
-					<%-- 							<c:forEach var='msn' items='${userAccount.msnBox}' varStatus='ms'> --%>
-					<%-- 								<c:if test="${msn.messageBox == null }"> --%>
-
-					<!-- 									<div class="row " style="border: 1px solid red"> -->
-					<!-- 										<img> -->
-					<%-- 										<h4>留言${ms.count }</h4> --%>
-					<%-- 										&nbsp; <span>${msn.netizenAccount.userAccountDetail.nickName }</span>&nbsp;<span>於 --%>
-					<%-- 											${msn.time }</span> --%>
-					<!-- 										<div class="col-12 "> -->
-					<%-- 											<blockquote class="generic-blockquote">${msn.text}</blockquote> --%>
-					<!-- 											<button class="pull-right" value="" style="color: black">回覆留言</button> -->
-					<%-- 											<c:forEach var='msnReply' items='${msn.replyMessageBoxes}' --%>
-					<%-- 												varStatus='rms'> --%>
-					<!-- 												<img> -->
-					<%-- 												<h5>回覆${rms.count}</h5>&nbsp; --%>
-					<%-- 										<span>${msnReply.netizenAccount.userAccountDetail.nickName}</span>&nbsp;<span>於 --%>
-					<%-- 													${msnReply.time }</span> --%>
-					<!-- 												<div class="col-10"> -->
-					<%-- 													<blockquote class="generic-blockquote">${msnReply.text}</blockquote> --%>
-					<!-- 												</div> -->
-					<%-- 											</c:forEach> --%>
-					<!-- 										</div> -->
-					<!-- 									</div> -->
-					<%-- 								</c:if> --%>
-
-					<%-- 							</c:forEach> --%>
-
-					<%-- 						</c:when> --%>
-					<%-- 						<c:otherwise> --%>
-					<!--      					沒有留言給您 -->
-					<%-- 						</c:otherwise> --%>
-					<%-- 					</c:choose> --%>
+						<!-- 						使用Ajax的方法 -->
+						<div class="container-fluid"
+							style="overflow: scroll; height: 400px;" id="commentsForUser"
+							class="table"></div>
 
 
+						<!--      使用jstl的方法 -->
+						<%--      <c:choose> --%>
+						<%--       <c:when test="${not empty userAccount.msnBox}"> --%>
+						<!--        <br> -->
+						<%--        <c:forEach var='msn' items='${userAccount.msnBox}' varStatus='ms'> --%>
+						<%--         <c:if test="${msn.messageBox == null }"> --%>
 
-				</div>
-				<div class="tab-pane fade" id="v-pills-userCollection"
-					role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
-					<h2>userCollection</h2>
+						<!--          <div class="row " style="border: 1px solid red"> -->
+						<!--           <img> -->
+						<%--           <h4>留言${ms.count }</h4> --%>
+						<%--           &nbsp; <span>${msn.netizenAccount.userAccountDetail.nickName }</span>&nbsp;<span>於 --%>
+						<%--            ${msn.time }</span> --%>
+						<!--           <div class="col-12 "> -->
+						<%--            <blockquote class="generic-blockquote">${msn.text}</blockquote> --%>
+						<!--            <button class="pull-right" value="" style="color: black">回覆留言</button> -->
+						<%--            <c:forEach var='msnReply' items='${msn.replyMessageBoxes}' --%>
+						<%--             varStatus='rms'> --%>
+						<!--             <img> -->
+						<%--             <h5>回覆${rms.count}</h5>&nbsp; --%>
+						<%--           <span>${msnReply.netizenAccount.userAccountDetail.nickName}</span>&nbsp;<span>於 --%>
+						<%--              ${msnReply.time }</span> --%>
+						<!--             <div class="col-10"> -->
+						<%--              <blockquote class="generic-blockquote">${msnReply.text}</blockquote> --%>
+						<!--             </div> -->
+						<%--            </c:forEach> --%>
+						<!--           </div> -->
+						<!--          </div> -->
+						<%--         </c:if> --%>
 
+						<%--        </c:forEach> --%>
+
+						<%--       </c:when> --%>
+						<%--       <c:otherwise> --%>
+						<!--           沒有留言給您 -->
+						<%--       </c:otherwise> --%>
+						<%--      </c:choose> --%>
+					</div>
+					<div class="tab-pane fade" id="v-pills-userCollection"
+						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
+						<h2>userCollection</h2>
+
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div></div>
-
-	<footer>
-		<!-- Footer Start-->
-		<div class="footer-area">
-			<div class="container">
-				<div class="footer-top footer-padding">
-					<div class="row justify-content-between">
-						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="single-footer-caption mb-30">
-									<!-- logo -->
-									<div class="footer-logo">
-										<a href="index.html"><img
-											src="<c:url value='/images/logo/peppernoodle.png'/>" alt=""></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Quick Link</h4>
-									<ul>
-										<li><a href="#">Home</a></li>
-										<li><a href="#">Listing</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Categories</h4>
-									<ul>
-										<li><a href="#">台北美食</a></li>
-										<li><a href="#">熱門餐廳</a></li>
-										<li><a href="#">點券優惠</a></li>
-										<li><a href="#">每周排行</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Download App</h4>
-									<ul>
-										<li class="app-log"><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo.png'/>" alt=""></a></li>
-										<li><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo2.png'/>" alt=""></a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-bottom">
-					<div class="row d-flex justify-content-between align-items-center">
-						<div class="col-xl-9 col-lg-8">
-							<div class="footer-copy-right">
-								<p>
-									Copyright &copy;
-									<script>
-													document
-														.write(new Date().getFullYear());
-												</script>
-									All rights reserved | U copy <i class="fa fa-heart"
-										aria-hidden="true"></i> <a href="https://colorlib.com"
-										target="_blank">U died</a>
-								</p>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-4">
-							<!-- Footer Social -->
-							<div class="footer-social f-right">
-								<a href="#"><i class="fab fa-facebook-f"></i></a> <a href="#"><i
-									class="fab fa-instagram"></i></a>
-							</div>
-						</div>
-					</div>
-				<!-- Scroll Up -->
-				<div id="back-top">
-					<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-				</div>
-			</div>
-		</div>
-		<!-- Footer End-->
-	</footer>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-
 
 
 	<script>
@@ -986,21 +780,18 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 									alert(thrownError);
 								}
 							});
-		        		});
-					
-
-					
-	
-					
-					
+		        		});	
 				</script>
 
-	<%@include file="../includePage/includeFooter.jsp" %>
+
+
+
+	<%@include file="../includePage/includeFooter.jsp"%>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-	
+
 	<script>
  		$(window).on('load', function() {
 			
@@ -1017,13 +808,12 @@ document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.ph
 			
  		});
  	</script>
-	<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+
 
 
 </body>
 </html>
+
+
+
+
