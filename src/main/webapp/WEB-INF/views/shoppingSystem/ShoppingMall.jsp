@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,7 +133,8 @@ $(document).ready(function() {
 		//興趣/查看全部
 		$("#seeMoreTagProducts").click(function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
+			//
 			flag=1;
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -198,7 +200,8 @@ $(document).ready(function() {
 		//查看全部商品
 		$("#seeMoreAllProducts").click(function(e){
 			e.preventDefault();
-			ifprice=0;
+			ifprice=5;
+			//
 			flag = 2;
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -258,7 +261,7 @@ $(document).ready(function() {
 		//主類別
 		$("#mainclass").on("click","a",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 			flag = $(this).index("a")-50;
 			var mainname=$(this).attr("id");
 			$("#pframeall > div").remove();
@@ -318,7 +321,7 @@ $(document).ready(function() {
 		//主類別
 		$("#ingredientmainclass").on("click","a",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 			flag = $(this).index("a")-55;//59
 			var mainname=$(this).attr("id");
 			$("#pframeall > div").remove();
@@ -380,7 +383,7 @@ $(document).ready(function() {
 		//子類別coupon
 		$("#detailname").on("click","a",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 			flag = $(this).index("a")-49;//54
 			console.log(flag);
 			var detailname=$(this).attr("id");
@@ -442,7 +445,7 @@ $(document).ready(function() {
 		//子類別ingredients
 		$("#ingredientname").on("click","a",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 			flag = $(this).index("a")-50;//60
 			console.log(flag);
 			var detailname=$(this).attr("id");
@@ -504,7 +507,7 @@ $(document).ready(function() {
 		//TAGS根據標籤搜索
 		$("#puretag").on("click","a",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 			flag = $(this).index("a")-55;//67
 			console.log("flag num is: "+flag);
 			var tagname=$(this).attr("id");
@@ -567,16 +570,21 @@ $(document).ready(function() {
 		var input;
 		$("#google").on("click",function(e){
 			e.preventDefault();
-			ifprice = 0;
+			ifprice = 5;
 // 			尚未修改start here
 			flag = 1001;
 			input = $("#searchall").val();
-			$("#pframeall > div").remove();
-			$("#Page1").hide();
-			$("#PageEverthing").show();
-			$('#pagination').show();
-			$('#rangeprice').show();
-			$.ajax({
+			var insertornot = false;
+			if (input != ""){
+				insertornot = true;
+			}
+			if (insertornot){
+				$("#pframeall > div").remove();
+				$("#Page1").hide();
+				$("#PageEverthing").show();
+				$('#pagination').show();
+				$('#rangeprice').show();
+				$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/search?input="+input+"",
 				contentType: 'application/json; charset=utf-8', 
@@ -625,6 +633,10 @@ $(document).ready(function() {
 			        	console.log("something wrong!");
 			        }
 			 })
+			} else {
+				alert("請輸入內容");
+			}
+			
 		});
 		
 		
@@ -793,6 +805,7 @@ $(document).ready(function() {
 			modalbody.append(container);
 		});
 		//
+		//新增產品
 		var count = 0;
 		var result = {};
 		var temp = new Array();
@@ -800,7 +813,8 @@ $(document).ready(function() {
 		var findMissingNumArray = [0];
 		var tempfindmiss = new Set();
 		var id,name,amount,price;
-		sessionStorage.clear();
+		var totalprice;
+		localStorage.clear();
 		$("body").on('click',('#addcart,#removecart,#purchase'),function(e){
 			e.preventDefault();
 			var dot   = $('.dot');
@@ -815,7 +829,7 @@ $(document).ready(function() {
 					$(this).hide();
 					$(this).next().show();
 					$('tbody').children("tr").remove();
-					$('#pricetag>h4').empty();
+					$('#pricetag>h4').remove();
 					var pid   	= $(this).parents("div").prevAll("#hiddenid").val();
 					var pname 	= $(this).parents("div").prevAll("h3:eq(0)").text();
 					var pamount = 1;
@@ -828,25 +842,25 @@ $(document).ready(function() {
 						var missingnum;
 						if (tempfindmiss.has(i)){
 							mno = missingnums(findMissingNumArray);
-							sessionStorage.setItem('item'+mno+'', JSON.stringify(json));
+							localStorage.setItem('item'+mno+'', JSON.stringify(json));
 						} else {
-							sessionStorage.setItem('item'+i+'', JSON.stringify(json));
+							localStorage.setItem('item'+i+'', JSON.stringify(json));
 							findMissingNumArray.push(i);
 							tempfindmiss.add(i);
 						}
 					}
 					////repeattimes(temp);
 					var boo = true;
-					for(var i = 0; i < count; i ++){//每個商品
-						var item   = sessionStorage.key(i);
-						var object = JSON.parse(sessionStorage.getItem(item));
+					for(var i = 0; i < localStorage.length ; i ++){//每個商品
+						var item   = localStorage.key(i);
+						var object = JSON.parse(localStorage.getItem(item));
 						for (var key in object){
 							if (key=="id"){
 								id = object[key];
 								if ($("#cart"+id+"").attr("id") != null){
 									if (judge.has(id) && $("#cart"+id+"").attr("id").substring(4)==id){
 										var inum = parseInt(item.substring(4),10);
-										sessionStorage.removeItem("item"+inum+"");
+										localStorage.removeItem("item"+inum+"");
 										boo=false;
 										temp.pop(id);
 										count--;
@@ -877,8 +891,8 @@ $(document).ready(function() {
 					//新增購物車end 
 				} else if (watid == "purchase"){
 					count++;
-					$('tbody').children("tr").empty();
-					$('#pricetag>h4').empty();
+					$('tbody').children("tr").remove();
+					$('#pricetag>h4').remove();
 					var pid 	= $(this).parents(".modal-footer").attr('id');
 					var pname 	= $(this).attr("name");
 					var pamount = $("#amount").val();
@@ -886,30 +900,30 @@ $(document).ready(function() {
 					for (var j 	= count;j <= count; j++){
 						var json = new Object(); 
 						json = {"id":pid,"name":pname,"amount":pamount,"price":pprice};
-						sessionStorage.setItem('item'+j+'', JSON.stringify(json));
+						localStorage.setItem('item'+j+'', JSON.stringify(json));
 						temp.push(pid);
 						judge.add(pid);
 						var missingnum;
 						if (tempfindmiss.has(j)){
 							mno = missingnums(findMissingNumArray);
-							sessionStorage.setItem('item'+mno+'', JSON.stringify(json));
+							localStorage.setItem('item'+mno+'', JSON.stringify(json));
 						} else {
-							sessionStorage.setItem('item'+j+'', JSON.stringify(json));
+							localStorage.setItem('item'+j+'', JSON.stringify(json));
 							findMissingNumArray.push(j);
 							tempfindmiss.add(j);
 						}
 					}
 					var boo = true;
-					for(var i = 0; i < count; i ++){//每個商品
-						var item   = sessionStorage.key(i);
-						var object = JSON.parse(sessionStorage.getItem(item));
+					for(var i = 0; i < localStorage.length ; i ++){//每個商品
+						var item   = localStorage.key(i);
+						var object = JSON.parse(localStorage.getItem(item));
 						for (var key in object){
 							if (key=="id"){
 								id = object[key];
 								if ($("#cart"+id+"").attr("id") != null){
 									if (judge.has(id) && $("#cart"+id+"").attr("id").substring(4)==id){
 										var inum = parseInt(item.substring(4),10);
-										sessionStorage.removeItem("item"+inum+"");
+										localStorage.removeItem("item"+inum+"");
 										boo=false;
 										temp.pop(id);
 										count--;
@@ -943,16 +957,16 @@ $(document).ready(function() {
 					$(this).hide()
 					$(this).prev().show();
 					$('tbody').children("tr").remove();
-					$('#pricetag>h4').empty();
+					$('#pricetag>h4').remove();
 					var pid = $(this).parents("div").prevAll("#hiddenid").val();
 					var idd;
-					for (var k = 1; k <= (count+1); k++){
-						var object = JSON.parse(sessionStorage.getItem('item'+k+''));
+					for (var k = 1; k <= (localStorage.length+1); k++){
+						var object = JSON.parse(localStorage.getItem('item'+k+''));
 						for (var key in object){
 							if (key=="id") idd = object[key];
 						}
 						if (pid==idd){
-							sessionStorage.removeItem('item'+k+'');
+							localStorage.removeItem('item'+k+'');
 							temp.pop(pid);
 							judge.delete(pid);
 							tempfindmiss.delete(k);
@@ -960,9 +974,9 @@ $(document).ready(function() {
 						}
 					}//
 					var boo = true
-					for(var i = 0; i < count; i ++){//每個商品
-						var item   = sessionStorage.key(i);
-						var object = JSON.parse(sessionStorage.getItem(item));
+					for(var i = 0; i < localStorage.length ; i ++){//每個商品
+						var item   = localStorage.key(i);
+						var object = JSON.parse(localStorage.getItem(item));
 						for (var key in object){
 							if (key=="id"){
 								id = object[key];
@@ -1001,7 +1015,7 @@ $(document).ready(function() {
 			$('.toast-body p').text('您有 '+count+' 項商品在購物車中');
 			$('.toast').toast({delay: 3000});
 			$('.toast').toast('show');
-			var totalprice = 0;
+			totalprice = 0;
 			for (var i = 0; i < count; i ++){
 				amount = $('#pr'+(i+1)+'').prev().children("input").val();
 				totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
@@ -1020,30 +1034,30 @@ $(document).ready(function() {
 			var pricetag = $('#pricetag');
 			var pid = parseInt($(this).parent().prevAll("tr td:first-child").attr("id").substring(4),10);
 			var row = parseInt($(this).parent().prevAll("tr td:first-child").text(),10)-1;
-			for (var k = 1; k <= (count+1); k++){
-				var object = JSON.parse(sessionStorage.getItem('item'+k+''));
+			for (var k = 1; k <= (localStorage.length+1); k++){
+				var object = JSON.parse(localStorage.getItem('item'+k+''));
 				for (var key in object){
 					if (key=="id")idd = parseInt(object[key],10);
 				}
 				if (pid==idd){
-					sessionStorage.removeItem('item'+k+'');
+					localStorage.removeItem('item'+k+'');
 					temp.pop(pid);
 					judge.delete(pid);
 					tempfindmiss.delete(k);
 					findMissingNumArray.splice(k,1);
 					$('tbody').find('tr:eq('+row+')').remove();
-					$('#pricetag>h4').empty();
+					$('#pricetag>h4').remove();
 				}
 			}
-			var totalprice = 0;
+			totalprice = 0;
 			if (count!=0){
-				for (var i = 0; i < count; i ++){
+				for (var i = 0; i < localStorage.length; i ++){
 					amount = $('#pr'+(i+1)+'').prev().children("input").val();
 					totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
 				}
 			}else if (count==0){
 				$('tbody').children("tr").remove();
-				$('#pricetag>h4').empty();
+				$('#pricetag>h4').remove();
 				var tr 	 = $('<tr></tr>');
 				var col1 = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
 				tr.append(col1);
@@ -1067,15 +1081,14 @@ $(document).ready(function() {
 		//點數字
 		$('body').on('change','table tbody tr td:nth-child(3) input[type=number]',function(e){
 			e.preventDefault();
-			$('#pricetag>h4').empty();
 			var pricetag = $('#pricetag');
-			var sum = 0;
-			$('tbody tr').each(function(){
-				var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
-				var price  = $('table tbody tr td:nth-child(4)').text();
-				sum += amount*price;
-			});	
-			pricetag.append('<h4><strong>總價格: '+sum+' 元</strong></h4>');
+			totalprice = 0;
+			for (var i = 0; i < localStorage.length; i ++){
+				amount = $('#pr'+(i+1)+'').prev().children("input").val();
+				totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
+			}
+			$('#pricetag>h4').remove();
+			pricetag.append('<h4><strong>總價格: '+totalprice+' 元</strong></h4>');
 		});
 		
 				
@@ -1087,8 +1100,8 @@ $(document).ready(function() {
 			var pricetag = $('#pricetag');
 			cart.toggle();
 			if (count == 0) {
-				$('tbody').children("tr").empty();
-				$('#pricetag>h4').empty();
+				$('tbody').children("tr").remove();
+				$('#pricetag>h4').remove();
 				var tr 	 = $('<tr></tr>');
 				var col1 = $('<td colspan="5">目前購物車沒有商品</td>').css({"text-align":"center"});
 				tr.append(col1);
@@ -1104,28 +1117,28 @@ $(document).ready(function() {
 	
 	$('#checkout').on('click',function(e){
 		e.preventDefault();
-		var idlist = new Array();
-		var amountlist = new Array();
-		$('tbody tr').each(function(){
-			var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
-			var pid    = $('table tbody tr td:first-child').attr('id').substring(4);
-			idlist.push(pid);
-			amountlist.push(amount);
-		});	
-		data = new FormData();
-		data.append('idlist',JSON.stringify(idlist));
-		data.append('amountlist',JSON.stringify(amountlist));
+// 		var idlist = new Array();
+// 		var amountlist = new Array();
+// 		$('tbody tr').each(function(){
+// 			var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
+// 			var pid    = $('table tbody tr td:first-child').attr('id').substring(4);
+// 			idlist.push(pid);
+// 			amountlist.push(amount);
+// 		});	
+// 		data = new FormData();
+// 		data.append('idlist',JSON.stringify(idlist));
+// 		data.append('amountlist',JSON.stringify(amountlist));
 		$.ajax({
 			method:"POST",
 			url:"/PepperNoodles/checkoutURL",
-			data:data,
 			dataType: 'html',
 			processData: false,
 			contentType: false, 
 	        async : true,
 	        cache: false,
 	        success: function (url) {
-	        	location.href = "http://localhost:9090/PepperNoodles"+url;
+// 	        	location.href = "";
+	        	window.open("http://localhost:9090/PepperNoodles"+url, '_blank');
 	        },
 	        error: function (url) {
 	        	console.log("Problems everywhere");
@@ -1166,7 +1179,7 @@ $(document).ready(function() {
 .mainclass{
 	margin-left: 10px;
 }
-.mainclass:hover h4{
+.mainclass:hover h3 {
 	color:#00008B;
 	cursor: pointer;
 }
@@ -1268,7 +1281,7 @@ $(document).ready(function() {
 }
 .cartmenu{
 	position: fixed;
-	bottom: 25%;
+	bottom: 35%;
 	right: 15px;
 	width: 500px;
 	height: 200px;
@@ -1346,9 +1359,28 @@ $(document).ready(function() {
                                             <!-- <li><a href="contact.html">Contact</a></li> -->
                                             <!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
                                             <li><a href="/PepperNoodles/shoppingSystem/ShoppingMall" id="shoppingMall">商城</a></li>
-                                            <li class="login"><a href="loginSystem/loginPage">
-                                                <i class="ti-user"></i> Sign in or Register</a>
-                                            </li>
+                                            
+                                            <c:choose>
+												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login">
+												<a href="loginSystem/loginPage"> <i class="ti-user">												
+												</i> Sign in or Register</a>
+												<ul class="submenu">
+													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li>
+													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li>
+													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
+												</ul>	
+												</li></c:when>
+												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()">
+												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
+												<ul class="submenu">
+													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
+													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
+												</ul>	
+												</li></c:otherwise>
+												
+											</c:choose>
+                                            
+                                        
                                         </ul>
                                     </nav>
                                 </div>
@@ -1520,7 +1552,7 @@ $(document).ready(function() {
                         
                         <!-- listing Details End -->
                         <!--Pagination Start  -->
-                        <div class="pagination-area pt-70 text-center" id="pagination" style= "border: 1px solid red" >
+                        <div class="pagination-area pt-70 text-center" id="pagination"  >
                             <div class="container">
                                 <div class="row">
                                     <div class="col-xl-12">
@@ -1548,7 +1580,7 @@ $(document).ready(function() {
 
 	
 	<div class="cartmenu" >
-		<div class="container border table-responsive-sm">
+		<div class="table-responsive-sm">
 			<table class="table table-hover text-info text-justify ">
 				<thead>
 	                <tr class=" Active">
@@ -1565,7 +1597,7 @@ $(document).ready(function() {
 			</table>
 			<div style="text-align: right;" id="pricetag"></div>
 			<div style="text-align: right;">
-				<a href="#" class="genric-btn primary medium" id="checkout">結帳</a>
+				<a href="#" class="genric-btn primary medium" id="checkout">查看訂單</a>
 			</div>
 		</div>
 	</div>
@@ -1682,7 +1714,6 @@ $(document).ready(function() {
 		<!-- All JS Custom Plugins Link Here here -->
         <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<!-- Jquery, Popper, Bootstrap -->
-<%-- 		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script> --%>
         <script src="<c:url value='/scripts/popper.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	    <!-- Jquery Mobile Menu -->
