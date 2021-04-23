@@ -104,13 +104,14 @@ public class CompanyDetailController {
 				System.out.println("新增會員成功，新增ComDetail");
 				CompanyDetail companyDetail = comDetailService.insert(addComDetail);
 				model.addAttribute("comDetailId", companyDetail.getCompanyDetailId());
+				return "redirect:/loginSystem/companyuser"; 
 			}else if(flag==-1) {
 				System.out.println("會員帳號重複，新增失敗");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "company/loginCompany";
+		return "redirect:/loginSystem/loginPage";
 	}
 	/**修改會員密碼-讀取要修改的會員資料傳到修改會員頁面**/
 	@GetMapping(value = {"/updateComPwd/{comId}"} )

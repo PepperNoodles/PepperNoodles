@@ -20,6 +20,19 @@
 <script>
 	
 $(document).ready(function(){
+	//預覽圖片
+	$("#menuPicture").change(function() {
+		if (this.files && this.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#PicturePreview').attr('src',e.target.result);
+			}
+			reader.readAsDataURL(this.files[0]);
+			$("#addMenu").removeClass("tohide");
+			$("#addMenu").addClass("toshow");
+		}
+	});
+	
 	$("#addMenu").click(function(){
 		var restaurantId = 1;
 		data = new FormData();
@@ -38,12 +51,26 @@ $(document).ready(function(){
 	        success: function (result) {
 				alert("新增成功");
 	            $("#menuList").text(result);//填入提示訊息到result標籤內
+	            console.log(result);
+	            location.href="http://localhost:9090/PepperNoodles"+result;
 	        },
 	        error: function (result) {
 	            $("#menuList").text(result.fail); //填入提示訊息到result標籤內
 	        }
 		})
 	});
+	
+	//刪除時出現確認訊息
+    $('.delete').click(function() {
+    	if (confirm('確定刪除此筆紀錄? ')) {
+    		var href = $(this).attr('href');
+//     		alert(href);
+            $('#deleteform').attr('action', href).submit();
+    	} 
+    	return false;
+        
+    });
+	
 });
 	
 </script>
@@ -58,7 +85,8 @@ $(document).ready(function(){
 	cursor: pointer;
 }
 .top{
-	margin-top:30px; 
+/* 	margin-top:30px;  */
+	height: 500px;
 }
 .toshow{
 	display: block;
@@ -75,11 +103,18 @@ $(document).ready(function(){
 	float: right;
 	margin: 0% 40% 0% 0%; 
 }
-.top{
-height: 500px;
-}
+
 .menuList{
 	text-align: center;
+}
+.picbox{
+ 	margin-top:30px;  
+}
+.delete{
+	color: #842B00;
+}
+td a:hover{
+	color:	#F75000;
 }
 </style>
 </head>
@@ -110,6 +145,8 @@ height: 500px;
       </div>
    	  <!-- 右邊顯示的資料 -->  
       <div class="col-lg-10 nopadding " >
+      	<div class="image-container set-full-height " style="background-image: url(<c:url value="/images/menu/menu.jpg"/>)">
+      
 		<!-- 上傳圖案的部分 -->
       	<div class="top">
 			<div class="infobox">
@@ -130,12 +167,42 @@ height: 500px;
       	<hr>
       	<!-- ajax回傳 -->
       	<div id="menuList">
-      	
+      		<form id='deleteform' method='POST' name='form1'>
+					<input type='hidden' name='_method' value='DELETE'>
+				</form>
+				
+				<c:choose>
+					<c:when test="${empty menus}">
+	    				沒有任何菜單<br> 
+					</c:when>
+					<c:otherwise>
+						<table style="text-align:center">
+							<tr><th height="100px"><h1>我的菜單</h1></th></tr>
+							<c:forEach var='menus' items='${menus}'>
+								<tr>
+<%-- 									<td>${menus.menuDetailId}</td> --%>
+									<td>
+										<a href="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>">
+											<img width='20%' src="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>" />
+										</a>
+										<br>
+									</td>
+								</tr>
+								<tr>
+									<td height="80px">
+										<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:otherwise>
+				</c:choose>
       	</div>
 	  <!-- 右邊顯示的資料結束 -->  
       </div>
     </div>
     <!-- /.row -->
+</div>
 </div>
 
 	<%@include file="../includePage/includeFooter.jsp" %>
@@ -155,23 +222,7 @@ height: 500px;
 		$('body').delay(450).css({'overflow' : 'visible'});			
 			
 	});
-</script>
-<!--預覽照片 -->
-<script>
-$(function() {
-	$("#menuPicture").change(function() {
-		if (this.files && this.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#PicturePreview').attr('src',e.target.result);
-			}
-			reader.readAsDataURL(this.files[0]);
-			$("#addMenu").removeClass("tohide");
-			$("#addMenu").addClass("toshow");
-		}
-	});
-	
-});
+
 </script>
 
 </body>
