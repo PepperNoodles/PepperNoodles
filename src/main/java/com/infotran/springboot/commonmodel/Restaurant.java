@@ -182,7 +182,6 @@ public class Restaurant {
 	}
 
 
-
 	public BigDecimal getLongitude() {
 		return longitude;
 	}

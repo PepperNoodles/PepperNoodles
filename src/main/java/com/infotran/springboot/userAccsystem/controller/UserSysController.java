@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -195,12 +196,12 @@ public class UserSysController {
 	//顯示自己頁面留言的ajax方法
 	@GetMapping(value="/user/showAllCommentAjax" ,produces= "application/json")
 	@ResponseBody
-	public List<MessageBox> showAllComments(Model model) {
+	public List<MessageBox> showAllComments(Model model,@ModelAttribute("userAccount")UserAccount useraccount) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 //		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
 		List<MessageBox> userMsn = user.getMsnBox();
 		Hibernate.initialize(userMsn);
-
+		System.out.println("=============================>>>>>>>>>>這裡"+useraccount.getAccountIndex());
 		List<MessageBox> userMsnNull = new ArrayList<MessageBox>();
 		for(int i =0; i<userMsn.size(); i++) {
 			if(userMsn.get(i).getMessageBox()==null) {
@@ -460,7 +461,8 @@ public class UserSysController {
 	  if (!(authentication instanceof AnonymousAuthenticationToken)) {
 	      currentUserName = authentication.getName();
 	      System.out.println(currentUserName);
-			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);		
+			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
+			System.out.println(user.getAccountIndex());
 			model.addAttribute("userAccount", user);
 	      return currentUserName;
 	   }
