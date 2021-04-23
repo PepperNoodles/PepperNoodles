@@ -309,7 +309,7 @@ public class UserAccountController {
 		return "ok";
 	}
 	
-	
+	//權限異動
 	@GetMapping(value = "/enabled/{accountIndex}")
 	public String enabled(@PathVariable("accountIndex") String accountIndex , Model model) {
 		UserAccount account = uSysServiceImpl.findByAccountIndex(accountIndex);
