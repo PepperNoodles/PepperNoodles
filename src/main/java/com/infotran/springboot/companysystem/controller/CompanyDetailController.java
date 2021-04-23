@@ -34,7 +34,6 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
-import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
 @SessionAttributes(names = {"comDetail","comDetailId"})
@@ -176,7 +175,7 @@ public class CompanyDetailController {
 		
 		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
-			return "company/showCompany";
+			return "company/companyMain";
 		}
 	
 	/**秀圖片**/

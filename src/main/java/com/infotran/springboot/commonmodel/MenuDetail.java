@@ -1,5 +1,7 @@
 package com.infotran.springboot.commonmodel;
 
+import java.sql.Blob;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +27,7 @@ public class MenuDetail {
 	private Integer menuDetailId;
 	
 	@Column(name = "MenuDetail")
-	private String dishImageName;
+	private Blob dishImage;
 	
 	@Transient
 	@Column(name = "fk_restaurant_id")
@@ -43,12 +45,13 @@ public class MenuDetail {
 		this.menuDetailId = menuDetailId;
 	}
 
-	public String getDishImageName() {
-		return dishImageName;
+
+	public Blob getDishImage() {
+		return dishImage;
 	}
 
-	public void setDishImageName(String dishImageName) {
-		this.dishImageName = dishImageName;
+	public void setDishImage(Blob dishImage) {
+		this.dishImage = dishImage;
 	}
 
 	public Integer getRestaurantId() {

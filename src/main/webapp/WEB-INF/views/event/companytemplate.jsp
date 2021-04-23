@@ -128,12 +128,6 @@
 	padding:0 !important;
 	margin: 0 !important;
 }
-.form-group a:hover{
-	color:	#FF79BC;
-}
-.updatePwd{
-	color: #00CACA;
-}
 </style>
 </head>
 <body>
@@ -150,103 +144,8 @@
         </div>
         
 		<div class="col-lg-10 nopadding " >
-      		<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/conpany.jpg"/>)">
-				<div class="container">
-					<div class="row d-flex align-items-center justify-content-center">
-						<div class="col-sm-8 col-sm-offset-2">
-						<!--      Wizard container        -->
-							<div class="wizard-container">
-								<div class="card wizard-card" data-color="blue"	id="wizardProfile">
-									<div class="wizard-header">
-										<h3>
-											<b>修改 店家資料</b><br>
-										</h3>
-									</div>
-									<br>
-									<form:form method="POST" modelAttribute="comDetail"	enctype='multipart/form-data' name="form1">
-										<div class="ml-10">
-											<!-- 整大包的div -->
-											<div class="" id="accoutPage1">
-												<div>
-													<c:if test='${comDetail.companyDetailId == null}'>
-														<br>帳號：<br>&nbsp;
-														<form:input path='realname' />
-														<br>&nbsp;
-														<form:errors path="realname" cssClass="error" />
-													</c:if>
-												</div>
-												<div class="row">
-													<c:if test='${comDetail.companyDetailId != null}'>
-														<div class="col-sm-4 col-sm-offset-1">
-														</div>
-														<div class="col-sm-8">
-															<div class="form-group">
-																<label><h5>會員帳號：${comDetail.userAccount.accountIndex}</h5></label>
-																&emsp;&emsp;<a class="updatePwd" href="<c:url value='/' />updateComPwd/${comDetail.companyDetailId}">修改密碼</a>
-															</div>
-														</div>
-													</c:if>
-												<div class="ml-4">
-												</div>
-												<div class="col-sm-4 col-sm-offset-1">
-													<div class="picture-container">
-														<div class="picture">
-															<img src="<c:url value="/getComPicture/${comDetail.companyDetailId}"/>" class="picture-src" id="wizardPicturePreview" />
-															<form:input type="file" id="wizard-picture" accept="image/*" path="userphoto" />
-															<form:errors path="userphoto" cssClass="error" />
-														</div>
-														<h6>更換圖片</h6>
-													</div>
-												</div>
-												<div class="col-sm-6 ml-1">
-													<div class="form-group">
-														<label>企業名稱: <small>(1.不可空白，2.至少兩個字以上)</small></label>
-														<form:input class="form-control" type="text" path="realname" id="comRealname" />
-														<span id="comRealnameResult">&emsp;</span>
-														<form:errors path='realname' cssClass="error" />
-													</div>
-													<div class="form-group">
-														<label>連絡電話: <small>(請輸入數字。例:09xxxxxxxx)</small></label>
-														<form:input class="form-control" type="text" path="phonenumber" id="comPhonenumber" />
-														<span id="comPhotoResult">&emsp;</span>
-														<form:errors path='phonenumber' cssClass="error" />
-													</div>
-												</div>
-												
-												<div class="col-sm-10 col-sm-offset-3 mx-5">
-													<div class="form-group">
-														<label>地址:<small>(請輸入公司地址)</small></label>
-														<form:input class="form-control" type="text" path="location" id="comLocation" />
-														<span id="comLocationResult">&emsp;</span>
-														<form:errors path='location' cssClass="error" />
-														<br>	<br>
-														<div class="pull-right">
-															<input type="button" class='btn btn-fill btn-warning btn-wd btn-sm' 
-																  value='確認修改' id="nextSlide" style="margin-bottom: 20px; margin-top: 10px" />
-														</div>
-														<div class="pull-right" style="margin-right: 20%;" id="comStatus">
-															<div style="width: 150px;height: 30px;"></div>
-														</div> 
-														<div class="pull-left">
-															<a class='btn btn-fill btn-default btn-wd btn-sm'
-												  			   style="margin-bottom: 20px; margin-top: 10px"
-												 			   href="<c:url value='/' />Company/company">回基本資料</a>
-														</div>
-													</div>
-												</div>
-										</div>
-									</div>
-								</div>
-							</form:form>
-						</div>
-					</div>
-					<!-- wizard container -->
-					</div>
-				</div>
-			</div>
-			
-<!-- 修改資料的div結束 -->			
-			
+			<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
+
 			</div>
 		<!--  big container -->
 		</div>
