@@ -26,13 +26,7 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-<%-- <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
+
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
@@ -44,19 +38,19 @@
 
 </head>
 <body>
-	<!-- 讀取圖案 -->
-	<div id="preloader-active">
-		<div
-			class="preloader d-flex align-items-center justify-content-center">
-			<div class="preloader-inner position-relative">
-				<div class="preloader-circle"
-					style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
+<!-- 	<!-- 讀取圖案 --> -->
+<!-- 	<div id="preloader-active"> -->
+<!-- 		<div -->
+<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
+<!-- 			<div class="preloader-inner position-relative"> -->
+<!-- 				<div class="preloader-circle" -->
+<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
+<!-- 				<div class="preloader-img pere-text"> -->
+<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 
 	<!-- 最上層bar -->
 	<header>
@@ -140,6 +134,7 @@
 		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
 		<div align='center'>
 			<h3 style="color: red">所有餐廳</h3>
+			<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 			<a href="<c:url value='/addrest'/> ">回新增頁</a>
 			<hr>
 			<c:choose>
@@ -175,11 +170,12 @@
 			<hr>
 		</div>
 	</div>
+	
 <form id='deleteform' method='POST'>
 	<input type='hidden' name='_method' value='DELETE'>
 </form>
 
-<script type='text/javascript'>
+<script>
     $(document).ready(function() {
         $('.deletelink').click(function() {
         	if (confirm('確定刪除此筆紀錄? ')) {

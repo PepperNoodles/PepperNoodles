@@ -14,7 +14,7 @@
 <div align="center">
 Welcome companyuser<br/>
 </div>
-<div id="time">3</div>
+<div id="time">2</div>
 <script>
 $(window).on('load', function () {
 	let urls="${pageContext.request.contextPath}/";
