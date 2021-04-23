@@ -138,15 +138,6 @@
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
 											<c:choose>
-<<<<<<< HEAD
-											
-												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login"><a href="loginSystem/loginPage"> <i class="ti-user"></i> Sign in or Register</a></li></c:when>
-												<c:otherwise><li><a href="#">個人資訊</a><ul class="submenu">
-													<li class="login"><sec:authorize access="isAuthenticated()"><a href="personalPage/edit"><!-- <i class="ti-user"></i> --><sec:authentication   property="principal.username" /> </a></sec:authorize></li>
-													<li><a href="blog.html">登出</a></li>
-													</ul></li></c:otherwise>
-											
-=======
 												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login">
 												<a href="loginSystem/loginPage"> <i class="ti-user">												
 												</i> Sign in or Register</a>
@@ -162,9 +153,7 @@
 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
 													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
 												</ul>	
-												</li></c:otherwise>
-												
->>>>>>> branch 'master' of https://github.com/PepperNoodles/PepperNoodles.git
+												</li></c:otherwise>					
 											</c:choose>
 										</ul>
 									</nav>
