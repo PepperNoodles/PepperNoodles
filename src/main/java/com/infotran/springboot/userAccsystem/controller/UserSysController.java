@@ -43,6 +43,8 @@ import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.shoppingmall.model.OrderListView;
+import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserDetailServiceImpl;
@@ -67,6 +69,8 @@ public class UserSysController {
 	@Autowired
 	MessageBoxServiceImpl msnServiceImpl;
 	
+	@Autowired
+	OrderListServiceImpl olistservice;
 	
 	//MessageBox 新增訊息的方法
 	@PostMapping(value = "/saveMessageBox")
@@ -675,5 +679,14 @@ public class UserSysController {
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(uPhoto,headers,HttpStatus.OK);		
 	}
+	
+	@GetMapping(value="/getOrderList")
+	public Map<String,ArrayList<OrderListView>> findUserOrderListByUserName(@ModelAttribute("userAccount")UserAccount user){
+		Map<String,ArrayList<OrderListView>> mapview = new HashMap<String,ArrayList<OrderListView>>();
+		ArrayList<OrderListView>  orderViewList = olistservice.findOrderListView(user.getAccountIndex());
+		mapview.put("AccountMemberOrderList", orderViewList);
+		return mapview;
+	}
+	
 	
 }
