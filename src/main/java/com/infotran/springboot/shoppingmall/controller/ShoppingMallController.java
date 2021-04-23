@@ -265,17 +265,15 @@ public class ShoppingMallController {
 		List<Product> productList = null ; 
 		Integer startPrice =0;
 		Integer endPrice = 0;
-		if (ifprice>0) {
+		if (ifprice!=5) {
 			startPrice = ifprice;
 			endPrice = ifprice + 500;
 		}
-		if (0==ifprice) {//非 價格區間
+		if (5==ifprice) {//非 價格區間
 			if (1==flag) {//see more tag products
 				productList = shopservice.getPagedProductsByTag("chris@gmail.com", page, 6);
-				System.out.println("1");
 			} else if (2==flag) {//see more all products
 				productList = shopservice.getAllProducts(page, 6);
-				System.out.println("2");
 			} else if (3==flag) {//main class coupon
 				productList = shopservice.findByProductByMainClass("票券",page, 6);
 			} else if (4==flag) {//main class coupon
@@ -313,9 +311,9 @@ public class ShoppingMallController {
 			} else if (2==flag) {
 				productList = shopservice.findProductByPriceBetween(startPrice, endPrice, page, 6);
 			} else if (3==flag) {
-				productList = shopservice.findByProductByMainClassAndPriceRange("票券", startPrice, endPrice, page, 0);
+				productList = shopservice.findByProductByMainClassAndPriceRange("票券", startPrice, endPrice, page, 6);
 			} else if (4==flag) {
-				productList = shopservice.findByProductByMainClassAndPriceRange("食材", startPrice, endPrice, page, 0);
+				productList = shopservice.findByProductByMainClassAndPriceRange("食材", startPrice, endPrice, page, 6);
 			} else if (5==flag) {
 				productList = shopservice.findProductByDetailClassAndPriceRange("炸雞", startPrice, endPrice, page, 6);
 			} else if (6==flag) {

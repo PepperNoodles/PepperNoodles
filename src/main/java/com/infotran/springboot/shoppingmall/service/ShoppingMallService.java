@@ -17,6 +17,8 @@ public interface ShoppingMallService {
 	
 	public void delete(Product product);
 	
+	
+	
 	public void update(Product product);
 	
 	/*全.封面組*/
