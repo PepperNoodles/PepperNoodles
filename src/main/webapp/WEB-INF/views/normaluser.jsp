@@ -15,6 +15,7 @@ Welcome normaluser  <br/>
 <sec:authorize access="isAuthenticated()">
     authenticated as <sec:authentication property="principal.username" /> 
 </sec:authorize>
+
 <div id="time">1</div>
 
 <script>
