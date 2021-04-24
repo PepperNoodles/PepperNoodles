@@ -77,7 +77,7 @@ public class CompanyFindViewController {
 		   return null;
 		 }
 		
-	/**登入後的企業畫面**/
+	/**登入後的企業畫面-備用**/
 	@GetMapping("/company")
 	public String companyloginByIndex(Model model) {
 		return "company/companyMain";
