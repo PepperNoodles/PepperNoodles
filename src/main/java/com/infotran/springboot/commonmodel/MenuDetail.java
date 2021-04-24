@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Component
@@ -26,13 +28,16 @@ public class MenuDetail {
 	@Column(name = "MenuDetail_id")
 	private Integer menuDetailId;
 	
+	@JsonIgnore
 	@Column(name = "MenuDetail")
 	private Blob dishImage;
+	
 	
 	@Transient
 	@Column(name = "fk_restaurant_id")
 	private Integer restaurantId;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_restaurant_id")
 	private Restaurant restaurant;

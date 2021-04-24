@@ -362,7 +362,7 @@ tr a:hover{
 		  let urls="Http://localhost:9090";
 		      urls+="<c:url value='/restSearch/restNear' />";
 			  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
-			 // console.log(urls);
+			  console.log(urls);
 		  $.ajax({
 				type: "GET",
 				url: urls,				
@@ -371,7 +371,9 @@ tr a:hover{
 					//console.log(response);
 					loca=[];
 					loca = JSON.parse(response);
-					//console.log(location[0].restaurantName);
+					console.log(loca[0].restaurantName);
+					console.log(loca.length);
+					
 					createSideMemo(loca,1);
 					addMapMarker(loca);
 					let page =Math.ceil(loca.length/6);
@@ -535,6 +537,7 @@ tr a:hover{
 					url: urls,				
 					dataType: "json",
 					success: function (response) {
+						console.log(response);
 						let tags = response;
 						let select = document.createElement("select");
 						select.classList.add("form-control")
@@ -543,16 +546,15 @@ tr a:hover{
 							
 							let option = document.createElement("option");
 							
-							if (i == 0){
-								
+							if (i == 0){								
 								option.innerHTML="All";
 								option.value = "NULL";
 							}else{
-								option.innerHTML=tags[i+1];
+								option.innerHTML=tags[i-1];
 							}	
 							select.appendChild(option);						
 							
-							console.log(tags[i+1]);
+							console.log(tags[i-1]);
 						}
 						
 						let divSelect = document.getElementById("tagSelect");
