@@ -132,9 +132,28 @@ table {
 				<div class="tab-content" id="v-pills-tabContent col-9">
 					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 						<h2>基本資料</h2>
-						<p id="accountIndex">email: ${userAccount.accountIndex}</p>
-						<p>性別：${userAccount.userAccountDetail.gender}</p>
-						<p>地區：${userAccount.userAccountDetail.location}</p>
+						<table border='1' style="color:black">
+						<tr>
+						<td><span id="accountIndex">email:</span></td><td><span > ${userAccount.accountIndex}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td  ><a style='color:black' href:"#xx"  ><span >密碼：</span></td><td colspan="2">修改密碼</a></span></td></tr>
+						<tr>
+						<td  ><a style='color:black' href:"#xx" ><span >照片：</span></td><td colspan="2">修改個人照片</a></span></td></tr>
+						<tr>
+						<td><span >綽號：</span></td><td><span >${userAccount.userAccountDetail.nickName}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td><span >生日：</span></td><td><span >${userAccount.userAccountDetail.birthDay}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td><span >性別：</span></td><td><span >${userAccount.userAccountDetail.gender}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td><span >地區：</span></td><td><span >${userAccount.userAccountDetail.location}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td><span >電話：</span></td><td><span >${userAccount.userAccountDetail.phoneNumber}</span></td><td><button>修改</button></td></tr>
+						<tr>
+						<td><span >真實姓名：</span></td><td><span >${userAccount.userAccountDetail.realName}</span></td><td><button>修改</button></td></tr>
+						<td><span >興趣：</span></td><td><span >${userAccount.userAccountDetail.hobby}</span></td><td><button>修改</button></td></tr>
+
+						</table>
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
 						aria-labelledby="v-pills-friend-tab">
@@ -621,7 +640,6 @@ table {
 							});
 						});
 						
-						//delete 留言
 						$('body').on('click','button[name^="deleteCo"]',function(e){
 		        			e.preventDefault;
 		        			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
