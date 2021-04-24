@@ -20,10 +20,20 @@
 <%-- <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" /> --%>
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
 
+<script>
+
+</script>
+
 <style>
 .nopadding{
 	padding:0 !important;
 	margin: 0 !important;
+}
+.delete{
+	color: #842B00;
+}
+td a:hover{
+	color:	#F75000;
 }
 </style>
 </head>
@@ -41,11 +51,51 @@
         </div>
         
 		<div class="col-lg-10 nopadding " >
-			<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
-
+			<div class="image-container set-full-height " style="background-image: url(<c:url value="/images/menu/menu.jpg"/>)">
+				<form id='deleteform' method='POST' name='form1'>
+					<input type='hidden' name='_method' value='DELETE'>
+				</form>
+				
+				<c:choose>
+					<c:when test="${empty menus}">
+	    				沒有任何菜單<br> 
+					</c:when>
+					<c:otherwise>
+						<table style="text-align:center">
+							<tr><th height="100px"><h1>我的菜單</h1></th></tr>
+							<c:forEach var='menus' items='${menus}'>
+								<tr>
+<%-- 									<td>${menus.menuDetailId}</td> --%>
+									<td>
+										<a href="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>">
+											<img width='20%' src="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>" />
+										</a>
+										<br>
+									</td>
+								</tr>
+								<tr>
+									<td height="80px">
+										<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:otherwise>
+				</c:choose>
+				
+				
+				
+				
+				
 			</div>
-		<!--  big container -->
 		</div>
+		
+		
+		
+		
+		
+		
+		<!--  big container -->
 	</div>
 </div>
 <%@include file="../includePage/includeFooter.jsp" %>
@@ -54,28 +104,32 @@
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
 
-	<script>
- 		$(window).on('load', function() {
+<script>
+	$(window).on('load', function() {
 			
-// 			//讓bar固定在上面以及設定高度
-			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
+		//讓bar固定在上面以及設定高度
+		$(".header-sticky").addClass("sticky-bar");
+ 		$(".header-sticky").css("height", "90px");
+		$(".header-sticky").css("position","static")
 
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
+ 		//讓loading圖動起來
+ 		$('#preloader-active').delay(450).fadeOut('slow');
+ 		$('body').delay(450).css({'overflow' : 'visible'});
+ 		
+ 		//刪除時出現確認訊息
+        $('.delete').click(function() {
+        	if (confirm('確定刪除此筆紀錄? ')) {
+        		var href = $(this).attr('href');
+//         		alert(href);
+                $('#deleteform').attr('action', href).submit();           
+        	} 
+        	return false;
+            
+        });
 			
- 		});
+ 	});
  	</script>
+
 	<!-- JS here -->
 </body>
-<!--   Core JS Files   -->
-<script src="<c:url value='/scripts/jquery.bootstrap.wizard.js'/>" type="text/javascript"></script>
-<script type="text/javascript" src="<c:url value="/scripts/bootstrap2.min.js"/>"></script>
-<!--  Plugin for the Wizard -->
-<script src="<c:url value='/scripts/gsdk-bootstrap-wizard.js'/>"></script>
-
 </html>

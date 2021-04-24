@@ -16,13 +16,10 @@
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <link rel='stylesheet'
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-	
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
 <script type="text/javascript"
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js'/>"></script>
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 	
@@ -52,11 +49,6 @@ tr a:hover{
 	color:#FFFFFF;
 	background-color:#FFBB77;
 }
-.nice-select{
- 	position:relative;
- 	z-index:1020;
-}
-
 
 </style>
 </head>
@@ -76,70 +68,23 @@ tr a:hover{
 		</div>
 	</div>
 	
-	<nav class="navbar navbar-light bg-light justify-content-center">
-	<span>區域:</span>
-	<select id="directSelect">
-	<option value="NULL">不分區</option> 
-    <option>大安區</option>
-    <option>信義區</option>
-    <option>大同區</option>
-    <option>中正區</option>
-    <option>松山區</option>
-    <option>萬華區</option>
-    <option>士林區</option>
-    <option>北投區</option>
-    <option>內湖區</option>
-    <option>南港區</option>
-    <option>文山區</option>
-	</select>
-	
-	<span>種類:</span>
-	<div id="tagSelect">
-	</div>	
-	
-	
-    <input id="keyWord" class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button id="keyWordSearch">Search</button>
+	<nav class="navbar navbar-light bg-light justify-content-between">
+	<div>搜尋結果</div> 	
+    <input class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button>Search</button>
 	</nav>
 	
 	
-<div class="modal" id="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">貼心提示</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>很抱歉,沒有符合的結果😅</p>
-      </div>
-    </div>
-  </div>
-</div>
-	
-		<div id="memoBoard"
+	<div id="memoBoard"
 		style="float: left; height: 100vh;width:28%;  overflow: scroll;"></div>
 
 
-		<div id="map" style="float: left;">
-	
-		</div>
-		<br>
-		<div id="pageButton" style="float: left;">
-		</div>
-		<p style="clear: left;"></p>
-	
-	
-		<p style="clear: left;"></p>
-
+	<div id="map" style="float: left;"></div>
+	<p style="clear: left;"></p>
 	<br>
 
 
 	<h1>測試用</h1>
-	
-	
 	
 	
 	<script>
@@ -166,7 +111,7 @@ tr a:hover{
 			});
 		
 		
-		$('#toast').toast('show')
+		
 		let markerArray = []; //create new markers array
 		const popup = L.popup();
 		
@@ -174,8 +119,8 @@ tr a:hover{
 		addMarker(loca);
 		
 		map.on('click', onMapClick);
-		$("#keyWordSearch").on('click',keyWordSearch);
-		tagCreater();
+		
+		
 	//function 區
 	
 		//點圖片function
@@ -194,9 +139,7 @@ tr a:hover{
 						let rest = response;
 						//console.log(location[0].restaurantName);
 						let lng=parseFloat(rest.longitude);
-							lng+=0.000356;	
 						let lat=parseFloat(rest.latitude);
-							lat-=0.0001360;	
 						let name = rest.restaurantName;
 						var marker = L.marker([lat,lng],{icon:restIcon});
 						 
@@ -216,147 +159,32 @@ tr a:hover{
 						console.log(thrownError);
 					}
 				});
-		
-		}
-		//產生按鈕
-		function buttonGenerater(page){
-			$("#pageButton").html("");
-			for(let i = 0;i<page;i++){
-				let button = document.createElement("button");
-				button.id="pageButton"+i;
-				button.value=(i+1);
-				button.innerHTML="<span>"+(i+1)+"</span>";
-				button.addEventListener('click',showSideBar);
-				$("#pageButton").append(button);
-			}
-		}	
+			
+			
+			
+			
+		 	 //map.setZoom(16);
+		 	 //map.remove(marker);
+		}  
+
 	
-		function showSideBar(){
-			let page = this.value;
-			console.log(page);
-			 createSideMemo(loca,page);
-		}
-		
-		//////////////////////////目前最新的function
-		//關鍵字查詢
-		function keyWordSearch(){
-			console.log("keyWordSearch function");
-						
-			let keyWord = $("#keyWord").val();
-			let tag =$("#tagSelecter").val();
-			let dist = $("#directSelect").val();
-			
-			console.log("dist: "+dist);				
-			console.log("tag: "+tag);
-			if(keyWord){
-				console.log("keyWord: "+keyWord);
-			}
-			
-			
-			
-			let urls="Http://localhost:9090";
-	        urls+="<c:url value='/restSearch' />";
-	        if(keyWord){
-	        	if(keyWord&&dist!="NULL"&&tag!="NULL"){
-	        		
-	        		console.log("keydistagAllllll");
-	        		 urls+="/restSearchandDistandTag";
-	        		 urls+="?restName="+keyWord;
-	        		 urls+="&searchDist="+dist;
-	        		 urls+="&searchTag="+tag;
-	        		 
-	        	}else if(keyWord&&dist!="NULL"){
-	        		 console.log("keydisttttt");
-	        		 urls+="/restSearchandDist";
-	        		 urls+="?restName="+keyWord;
-	        		 urls+="&searchDist="+dist;	        		
-	        		
-	        	}else if(keyWord&&tag!="NULL"){
-	        		console.log("keytaggggg");
-	        		 urls+="/restSearchandTag";
-	        		 urls+="?restName="+keyWord;	        		
-	        		 urls+="&searchTag="+tag;
-	        		
-	        		
-	        	}else{
-	        		urls+="/restName";
-	        		urls+="?restName="+keyWord;
-	        	}   		
-	        		
-	        		
-	        }else if(tag!="NULL"){
-	        	
-	        	if(tag!="NULL"&&dist!="NULL"){
-	        		
-	        	    console.log("tagdistttttt");
-	        	    urls+="/restSearchandDistandTag";	        		
-	        		urls+="?searchDist="+dist;
-	        		urls+="&searchTag="+tag;
-	        		urls+="&restName=";
-	        	    
-	        	}else{
-	        		
-	        		console.log("taggggggggg");
-	        		 urls+="/restSearchandTag";	        		        		
-	        		 urls+="?searchTag="+tag;
-	        		 urls+="&restName=";
-	        	}
-	        	
-	        }else if(dist!="NULL"){
-	        	
-	        	console.log("distttt");
-	        	 urls+="/restSearchandDist";        		 
-        		 urls+="?searchDist="+dist;	  
-        		 urls+="&restName=";
-	        	
-	        }else{
-	        	
-	        	console.log("000000");
-	        	urls+="/restName";        		
-	        }
-	        
-	       
-	        console.log(urls);
-		 $.ajax({
-				type: "GET",
-				url: urls,				
-				dataType: "json",
-				success: function (response) {
-					console.log(response);
-					if (response.length>0){
-						loca = response;	
-						//addMapMarker(loca);
-						addMarker(loca);
-						createSideMemo(loca,1);
-						let page =Math.ceil(loca.length/6);
-						buttonGenerater(page);
-					}else{
-						console.log("okkkkkkk")
-						$('#modal').modal('show')
-					}					
-					
-				},
-				error: function (thrownError) {
-					console.log(thrownError);
-				}
-			});
-		}	
-	
-	
-		
 	
 		//點地圖function 點完後會去撈附近餐廳
 		function onMapClick(e) {
 		  let lat = e.latlng.lat; // 緯度
 		  let lng = e.latlng.lng; // 經度
 		
-
-		  let bound = map.getBounds()
 // 		  popup
-//  		    .setLatLng(e.latlng)		    
-//  		    .setContent("緯度："+lat+"<br/>經度："+lng)
+// 		    .setLatLng(e.latlng)
+// 		    .setContent("緯度："+lat+"<br/>經度："+lng)
 // 		    .openOn(map);	  
-		  
+		  let bound = map.getBounds()
+		  //console.log(bound);	
+		  //console.log(bound._northEast.lat);
+		  //console.log(bound._northEast.lng);
+		  //console.log(bound._southWest.lat);
+		  //console.log(bound._southWest.lng);
+		  //L.circle([lat,lng], 200).addTo(map);	  
 		  map.panTo(e.latlng); 		  
 		  //ajax取地圖		  
 		  let urls="Http://localhost:9090";
@@ -371,13 +199,9 @@ tr a:hover{
 					//console.log(response);
 					loca=[];
 					loca = JSON.parse(response);
-					console.log(loca[0].restaurantName);
-					console.log(loca.length);
-					
-					createSideMemo(loca,1);
+					//console.log(location[0].restaurantName);
+					createSideMemo(loca);
 					addMapMarker(loca);
-					let page =Math.ceil(loca.length/6);
-					buttonGenerater(page);
 				},
 				error: function (thrownError) {
 					console.log(thrownError);
@@ -389,9 +213,7 @@ tr a:hover{
 			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
-				lat-=0.0001360;	
 			    let long=parseFloat(loca[i].longitude);	
-			 	long+=0.000356;
 			    
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
 			    
@@ -415,9 +237,7 @@ tr a:hover{
 			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
-			    	lat-=0.0001360;
 			    let long=parseFloat(loca[i].longitude);	
-			    	long+=0.000356;
 			    
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
 			    
@@ -446,22 +266,19 @@ tr a:hover{
 
 			let center=[alat/count,along/count];
 			
-			map.panTo(center)
+			map.panTo(center);
+			console.log(center);
+			map.setZoom(16);
 		}
 	
-		//建立隔壁memo的function
-		function createSideMemo(loca,page){
+		//見隔壁memo的function
+		function createSideMemo(loca){
 			//memo
 			let memo=document.getElementById("memoBoard");
 			memo.innerHTML="";
 			let memosheet = document.createElement("table");
 			let HTMLtable="";
-			let start = 6*(page-1)
-			
-			let end = Math.ceil(loca.length/6)==(page) ? loca.length : 6*page;
-			console.log(start+":"+end);
-			
-			for(let i=start;i<end;i++){
+			for(let i=0;i<loca.length;i++){
 			
 				//建立td1和roleSpan
 			    let tr1 = document.createElement("tr");
@@ -490,85 +307,21 @@ tr a:hover{
 			        
 			    let tr3 = document.createElement("tr");
 			    let td3=document.createElement("td");
-			    td3.innerHTML=loca[i].restaurantAddress;
+			    td3.innerHTML=loca[i].latitude;
 			        tr3.appendChild(td3);
-			        
-			    //標籤列表
 			    let tr4 = document.createElement("tr");
 			    let td4=document.createElement("td");
-			    td4.innerHTML="Tags:&nbsp"
 			    td4.className="tdbot";
-			    
-			    for(let j = 0; j<loca[i].foodTag.length;j++){
-			    	let tagAnchor = document.createElement("a");
-					tagAnchor.href="#";
-					
-					tagAnchor.innerHTML+=loca[i].foodTag[j].foodTagName+"&nbsp&nbsp";
-					tagAnchor.style.color="#A23400";
-					td4.appendChild(tagAnchor);
-			    }
-			    
-			    
-			    //td4.innerHTML=loca[i].restaurantAddress;
+			    td4.innerHTML=loca[i].restaurantAddress;
 			    tr4.appendChild(td4);
 				
-			    let tr5= document.createElement("tr");
-			    tr5.style.height="5px";
-			    tr5.style.backgroundColor="#9D9D9D";
-			    tr5.appendChild(document.createElement("td"));
-			    tr5.appendChild(document.createElement("td"));
-			    tr5.appendChild(document.createElement("td"));
-			    
 			    memosheet.appendChild(tr1);
 			    memosheet.appendChild(tr2);
 			    memosheet.appendChild(tr3);
 			    memosheet.appendChild(tr4);    
-			    memosheet.appendChild(tr5); 
 			    }
 			memo.appendChild(memosheet);
 		}	
-		
-		//創立tag選擇器
-		function tagCreater(){
-			let urls="Http://localhost:9090";
-				urls+="<c:url value='/restSearch/tagAll' />";
-			$.ajax({
-					type: "GET",
-					url: urls,				
-					dataType: "json",
-					success: function (response) {
-						console.log(response);
-						let tags = response;
-						let select = document.createElement("select");
-						select.classList.add("form-control")
-						select.id = ("tagSelecter");
-						for (let i = 0;i<tags.length+1;i++){
-							
-							let option = document.createElement("option");
-							
-							if (i == 0){								
-								option.innerHTML="All";
-								option.value = "NULL";
-							}else{
-								option.innerHTML=tags[i-1];
-							}	
-							select.appendChild(option);						
-							
-							console.log(tags[i-1]);
-						}
-						
-						let divSelect = document.getElementById("tagSelect");
-						divSelect.appendChild(select);
-						
-					},
-					error: function (thrownError) {
-						console.log(thrownError);
-					}
-				})
-		}
-		 
-		
-		
 	});
 	
 	</script>

@@ -27,6 +27,7 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.Product;
 
@@ -56,6 +57,7 @@ public class Restaurant {
 	private String restaurantWebsite;
 
 	//對應存入資料庫表格的屬性
+	@JsonIgnore
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
 	
@@ -76,6 +78,7 @@ public class Restaurant {
 	/** 1個User可以有多個餐廳 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
+	@JsonIgnore
 	private UserAccount userAccount;
 
 	/** 1個餐廳可以有多個菜單 **/
@@ -98,7 +101,7 @@ public class Restaurant {
 			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
-
+	
 
 	
 	/*對應產品*/
@@ -180,7 +183,6 @@ public class Restaurant {
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
-
 
 
 	public BigDecimal getLongitude() {

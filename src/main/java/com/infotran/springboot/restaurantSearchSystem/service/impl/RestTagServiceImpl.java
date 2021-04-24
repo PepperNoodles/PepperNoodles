@@ -1,5 +1,6 @@
 package com.infotran.springboot.restaurantSearchSystem.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class RestTagServiceImpl implements RestTagService {
 			return foodtag;
 		}
 		return null;
+	}
+	
+	public List<FoodTag> findAll() {
+		List<FoodTag> allTag = foodTagRepository.findAll();
+		return allTag;
 	}
 
 	@Override
