@@ -8,6 +8,8 @@ public class SpringPepperNoodleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringPepperNoodleApplication.class, args);
+		
+		
 	}
 
 //	@Bean 

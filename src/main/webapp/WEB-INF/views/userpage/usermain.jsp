@@ -2,43 +2,25 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@include file="../includePage/includeNav.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Template For inClude</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-<!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
-<!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<!-- <link rel='stylesheet' -->
-<%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
-<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
-<!-- All JS Custom Plugins Link Here here -->
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-<!-- Jquery, Popper, Bootstrap -->
-<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
- <!-- DataTables v1.10.16 -->
-<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
 .header {
 	background-color: #000000;
 }
-
 a {
 	color: black;
 }
-
 .nav a {
 	color: black;
 }
@@ -60,6 +42,10 @@ table {
 	border: solid black 1px;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
+}
+.display{
+ 	font-family: 'Noto Serif TC', serif;
+ 	font-size: 15px; 
 }
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
@@ -86,7 +72,7 @@ table {
 </script>
 </head>
 <body>
-	<%@include file="../includePage/includeNav.jsp"%>
+	
 	<!-- 讀取圖案 -->
 	<div id="preloader-active" >
 		<div
@@ -102,7 +88,7 @@ table {
 	</div>
 
 	<div class="container-fluid">
-		<div class="container mt-10" style="width: 80%; height: 100vh">
+		<div class="container mt-10" style="width: 100%; height: 100vh">
 			<!--有照片的那個bar  -->
 			<div class="d-flex">
 				<div class="p-2">
@@ -260,32 +246,24 @@ table {
 					</div>
 					
 					<!-- 訂單表 -->
-					<div class="tab-pane fade" id="v-pills-userOrderList"
-						role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
-						<h2>User OrderList</h2>
-						
-						<table class="example">
+					<div class="tab-pane fade" id="v-pills-userOrderList" role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+						<h2>訂單明細</h2>
+						<table  id="orderlist" class="display">
 							<thead>
 								<tr>
 									<th>編號</th>
-									<th>產品名</th>
+									<th>訂單時間</th>
+									<th>收件人</th>
+									<th>電話</th>
+									<th>收件地址</th>
 									<th>價格</th>
-									<th>數量</th>
-									<th>刪除</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td>1</td>
-									<td>1</td>
-									<td>1</td>
-									<td>1</td>
-									<td>1</td>
 								</tr>
 							</tbody>
 						</table>
-						
-						
 					</div>
 				</div>
 			</div>
@@ -298,30 +276,77 @@ table {
 
 
 	<script>
-// 					$(document).ready(function(){ 
-					$(window).on('load', function () {
-						url ="<c:url value='getOrderList'/>";	
-						$( ".example" ).DataTable({
-					  		// 參數設定[註1]
-					  		"paging": true, // 顯示換頁
-					  		"searching": true, // 顯示搜尋
-					  		"info":	true, // 顯示資訊
-					  		"fixedHeader": true, // 標題置頂
-					  		"ordering": false, //排序功能, 預設是開啟
-					  		"lengthMenu": [10, 20]
-					  		"ajax": {
-					  	        "url": "", //要抓哪個地方的資料
-					  	        "type": "GET", //使用什麼方式抓
-					  	        "dataType": 'json', //回傳資料的類型
-					  	        "success": function(){
-					  	            console.log("你是右邊!!");
-					  	        }, //成功取得回傳時的事件
-					  	        "error": function(){
-					  	            console.log("資料取得失敗 回去檢討檢討")
-					  	        } //失敗事件
-					  	    }
-					  	});
+			$(document).ready(function () {
+				
+					var Table = $("#orderlist").DataTable({
+						 language: {
+						        "processing": "處理中...",
+						        "loadingRecords": "載入中...",
+						        "lengthMenu": "顯示 _MENU_ 項結果",
+						        "zeroRecords": "沒有符合的結果",
+						        "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+						        "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+						        "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+						        "infoPostFix": "",
+						        "search": "搜尋:",
+						        "paginate": {
+						            "first": "第一頁",
+						            "previous": "上一頁",
+						            "next": "下一頁",
+						            "last": "最後一頁"
+						        },
+						        "aria": {
+						            "sortAscending": ": 升冪排列",
+						            "sortDescending": ": 降冪排列"
+						        }
+						    },
+						    data:[],
+						    columns: [
+				                { "data": "uuid"  },
+				                { "data": "orderCreatedDate" ,
+			                	  "render": function (data, type, row, meta) {
+			                       return data.substr(0,4)+'/'+data.substr(5,2)+'/'+data.substr(8,2)}},
+				                { "data": "receiveName" },
+				                { "data": "receivePhone" },
+				                { "data": "receiveAddress" },
+				                { "data": "totalCost" }
+						    ],
+						    filter: true,
+						    bPaginate: true,
+						    info: true,
+						    ordering: true,
+						    processing: true,
+						    retrieve: true,
+						    searching: true, //關閉filter功能
+			                columnDefs: [{
+			                    targets: [3],
+			                    orderable: true,
+			                }]
+						});
+					
 						
+						$.ajax({
+							method:"GET",	
+							url:"/PepperNoodles/user/getOrderList",
+							contentType: 'application/json; charset=utf-8',
+							dataType:'json',
+					        async : true,
+					        cache: false,
+					        success:function(result){
+					        	console.log("yes123");
+					        	console.log(JSON.stringify(result));
+					        	console.log(result.AccountMemberOrderList);
+					        	Table.clear().draw();
+					            Table.rows.add(result.AccountMemberOrderList).draw();
+					        },
+					        error: function (result) {
+					        	console.log("有問題");
+					        }
+						});
+						
+						
+						
+						///////////////////////////////////////////////
 						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
@@ -559,12 +584,12 @@ table {
 			        		commentsLength =result.length;
 //				        		alert(result[0].replyMessageBoxes);
 			        		console.log(JSON.stringify(result));
-			        		console.log(JSON.stringify(result[0].time));
+// 			        		console.log(JSON.stringify(result[0].time));
 			        		 var aDay = new Date();
 			        		 aDay.setHours(9);
 			        		 aDay.setMinutes(0);
 			        		 aDay.setSeconds(0);
-			        		 var sun = result[0].time;
+// 			        		 var sun = result[0].time;
 			        		
 				        	for( i =0; i<result.length; i++){
 				        		

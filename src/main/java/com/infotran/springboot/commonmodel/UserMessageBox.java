@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMessageBox {
 	
-	
+		
 	private ArrayList<String> text ;
 
 	public ArrayList<String> getText() {

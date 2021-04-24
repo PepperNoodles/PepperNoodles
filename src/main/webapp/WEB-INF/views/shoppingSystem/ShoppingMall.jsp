@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />"/>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
@@ -1684,8 +1684,8 @@ $(document).ready(function() {
                         <div class="col-xl-9 col-lg-8">
                             <div class="footer-copy-right">
                                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+ 								 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-4">
@@ -1704,10 +1704,6 @@ $(document).ready(function() {
         
 	    
     </footer>
-    <!-- Scroll Up -->
-<!--     <div id="back-top" > -->
-<!--         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a> -->
-<!--     </div> -->
     
 	
 		<!-- JS here -->
@@ -1718,11 +1714,9 @@ $(document).ready(function() {
         <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	    <!-- Jquery Mobile Menu -->
         <script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
-		
 		<!-- Jquery Slick , Owl-Carousel Plugins -->
         <script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
         <script src="<c:url value='/scripts/slick.min.js' />"></script>
-        
 		<!-- One Page, Animated-HeadLin -->
         <script src="<c:url value='/scripts/wow.min.js' />"></script>
          <script src="<c:url value='/scripts/price-range.js' />"></script>

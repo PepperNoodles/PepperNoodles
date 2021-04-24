@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.infotran.springboot.shoppingmall.dao.OrderListRepository;
 import com.infotran.springboot.shoppingmall.model.OrderList;
-import com.infotran.springboot.shoppingmall.model.OrderListView;
 import com.infotran.springboot.shoppingmall.service.OrderListService;
+
+import antlr.collections.List;
 
 @Service
 public class OrderListServiceImpl implements OrderListService {
@@ -21,10 +22,11 @@ public class OrderListServiceImpl implements OrderListService {
 	
 	
 	@Override
-	public ArrayList<OrderListView> findOrderListView(String username) {
-		return ordao.findOrderList(username);
+	public ArrayList<OrderList> findOrderList(Integer userid) {
+//		ArrayList<OrderList> orlist= new ArrayList<OrderList>();
+		ArrayList<OrderList> order = ordao.findOrderList(userid);
+		return order;
 	}
-	
 	
 
 }
