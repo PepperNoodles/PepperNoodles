@@ -77,7 +77,7 @@ public class CompanyFindViewController {
 		   return null;
 		 }
 		
-	/**登入後的企業畫面-備用**/
+	/**登入後的企業畫面**/
 	@GetMapping("/company")
 	public String companyloginByIndex(Model model) {
 		return "company/companyMain";
@@ -106,7 +106,7 @@ public class CompanyFindViewController {
 	
 	@GetMapping("/test")
 	public String normaluser() {
-		return "test";
+		return "company/FoodTagTest";
 	}
 
 }

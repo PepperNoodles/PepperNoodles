@@ -6,16 +6,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.MenuDetail;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.companysystem.dao.RestaurantRepository;
 import com.infotran.springboot.companysystem.service.RestaurantService;
+import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
 	@Autowired
 	RestaurantRepository restaurantDao;
+	
+	@Autowired
+	FoodTagRepository foodTagRepository;
 
 	@Override
 	public Restaurant save(Restaurant restaurant) {
@@ -67,6 +72,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 			throw new RuntimeException("rest(id=" + id + ")不存在");
 		}
 		return restDetail;
+	}
+
+	@Override
+	public List<FoodTag> getAllFoodTag() {
+		List<FoodTag> taglist = foodTagRepository.findAll();
+		return taglist;
 	}
 
 
