@@ -27,6 +27,7 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.Product;
 
@@ -74,7 +75,7 @@ public class Restaurant {
 	private Integer userAccountId;
 
 	/** 1個User可以有多個餐廳 **/
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "fk_userAccount_id")
 	private UserAccount userAccount;
 
@@ -93,7 +94,7 @@ public class Restaurant {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
 	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "foodtag_restaurant", joinColumns = {
 			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })

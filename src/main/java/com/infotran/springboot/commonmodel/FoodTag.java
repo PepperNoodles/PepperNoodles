@@ -30,7 +30,7 @@ public class FoodTag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="foodTag_id")
-	private int foodTagIid;
+	private Integer foodTagIid;
 	
 	@Column(name="FoodTagName")
 	private String foodTagName;
@@ -69,53 +69,67 @@ public class FoodTag {
 	public FoodTag() {
 	}
 
-	public int getFoodTagIid() {
+
+	public Integer getFoodTagIid() {
 		return foodTagIid;
 	}
 
-	public void setFoodTagIid(int foodTagIid) {
+
+	public void setFoodTagIid(Integer foodTagIid) {
 		this.foodTagIid = foodTagIid;
 	}
+
 
 	public String getFoodTagName() {
 		return foodTagName;
 	}
 
+
 	public void setFoodTagName(String foodTagName) {
 		this.foodTagName = foodTagName;
 	}
 
-	public Set<Forum> getForums() {
-		return forums;
-	}
-
-	public void setForums(Set<Forum> forums) {
-		this.forums = forums;
-	}
-
-	public Set<FoodTagProduct> getProduct() {
-		return Product;
-	}
-
-	public void setProduct(Set<FoodTagProduct> product) {
-		Product = product;
-	}
 
 	public Set<FoodTagUser> getFoodTagUsers() {
 		return FoodTagUsers;
 	}
 
+
 	public void setFoodTagUsers(Set<FoodTagUser> foodTagUsers) {
 		FoodTagUsers = foodTagUsers;
 	}
+
+
+	public Set<Forum> getForums() {
+		return forums;
+	}
+
+
+	public void setForums(Set<Forum> forums) {
+		this.forums = forums;
+	}
+
+
+	public Set<FoodTagProduct> getProduct() {
+		return Product;
+	}
+
+
+	public void setProduct(Set<FoodTagProduct> product) {
+		Product = product;
+	}
+
 
 	public Set<Restaurant> getRestaurant() {
 		return restaurant;
 	}
 
+
 	public void setRestaurant(Set<Restaurant> restaurant) {
 		this.restaurant = restaurant;
 	}
+
+
 	
 	
 }
