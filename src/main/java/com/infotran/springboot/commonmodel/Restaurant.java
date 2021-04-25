@@ -33,7 +33,7 @@ import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
 @Component
-@Table(name = "restaurant",uniqueConstraints={@UniqueConstraint(columnNames = {"restaurantAddress"})})
+@Table(name = "restaurant", uniqueConstraints = { @UniqueConstraint(columnNames = { "restaurantAddress" }) })
 public class Restaurant {
 
 	@Id
@@ -56,14 +56,14 @@ public class Restaurant {
 	@Column(name = "restaurantWebsite")
 	private String restaurantWebsite;
 
-	//對應存入資料庫表格的屬性
+	// 對應存入資料庫表格的屬性
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
-	
-	//新增修改時取圖的屬性
+
+	// 新增修改時取圖的屬性
 	@Transient
 	MultipartFile productImage;
-	
+
 	@Column(name = "longitude")
 	private BigDecimal longitude;
 
@@ -75,7 +75,7 @@ public class Restaurant {
 	private Integer userAccountId;
 
 	/** 1個User可以有多個餐廳 **/
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
 	private UserAccount userAccount;
 
@@ -100,14 +100,10 @@ public class Restaurant {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
-
-	
-	/*對應產品*/
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
-	@JsonManagedReference 
-	private List<Product> products =new ArrayList<Product>();
-
-
+	/* 對應產品 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<Product> products = new ArrayList<Product>();
 
 	public Integer getRestaurantId() {
 		return restaurantId;
@@ -173,7 +169,6 @@ public class Restaurant {
 		this.restaurantPhoto = restaurantPhoto;
 	}
 
-	
 	public MultipartFile getProductImage() {
 		return productImage;
 	}
@@ -181,7 +176,6 @@ public class Restaurant {
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
-
 
 	public BigDecimal getLongitude() {
 		return longitude;
