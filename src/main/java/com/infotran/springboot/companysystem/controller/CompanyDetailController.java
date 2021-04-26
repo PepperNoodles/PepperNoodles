@@ -34,7 +34,6 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.loginsystem.service.RolesService;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
-import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
 @SessionAttributes(names = {"comDetail","comDetailId"})
@@ -105,13 +104,14 @@ public class CompanyDetailController {
 				System.out.println("新增會員成功，新增ComDetail");
 				CompanyDetail companyDetail = comDetailService.insert(addComDetail);
 				model.addAttribute("comDetailId", companyDetail.getCompanyDetailId());
+				return "redirect:/loginSystem/companyuser"; 
 			}else if(flag==-1) {
 				System.out.println("會員帳號重複，新增失敗");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "company/loginCompany";
+		return "redirect:/loginSystem/loginPage";
 	}
 	/**修改會員密碼-讀取要修改的會員資料傳到修改會員頁面**/
 	@GetMapping(value = {"/updateComPwd/{comId}"} )
@@ -176,7 +176,7 @@ public class CompanyDetailController {
 		
 		CompanyDetail  companyDetail = comDetailService.update(comDetail); //comDetail 要是SESSION不然會變新增
 		System.out.println("新圖:"+companyDetail.getUserphoto());
-			return "company/showCompany";
+			return "company/companyMain";
 		}
 	
 	/**秀圖片**/

@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +20,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -57,6 +57,7 @@ public class Restaurant {
 	private String restaurantWebsite;
 
 	//對應存入資料庫表格的屬性
+	@JsonIgnore
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
 	
@@ -65,10 +66,10 @@ public class Restaurant {
 	MultipartFile productImage;
 	
 	@Column(name = "longitude")
-	private String longitude;
+	private BigDecimal longitude;
 
 	@Column(name = "latitude")
-	private String latitude;
+	private BigDecimal latitude;
 
 	@Transient
 	@Column(name = "fk_userAccount_id")
@@ -77,6 +78,7 @@ public class Restaurant {
 	/** 1個User可以有多個餐廳 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
+	@JsonIgnore
 	private UserAccount userAccount;
 
 	/** 1個餐廳可以有多個菜單 **/
@@ -99,7 +101,7 @@ public class Restaurant {
 			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
-
+	
 
 	
 	/*對應產品*/
@@ -182,20 +184,29 @@ public class Restaurant {
 		this.productImage = productImage;
 	}
 
-	public String getLongitude() {
+
+	public BigDecimal getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public Integer getUserAccountId() {

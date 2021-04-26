@@ -2,54 +2,79 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@include file="../includePage/includeNav.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Template For inClude</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
-<!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-
+<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+<script src="<c:url value='/scripts/popper.min.js' />"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <style>
-	.header {
-			background-color: #000000;
-			}
-	a{
-			color:#000000;	
-			}
-	a:hover{
-			color:blue;
-			}
-	tr:hover{
-			background-color:#BEBEBE;
-			}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
-	td>img{
-			height: 100px;
-			}
-	.nav-link{
-		color:#000000;	
-	}
-						
+.header {
+	background-color: #000000;
+}
+a {
+	color: black;
+}
+.nav a {
+	color: black;
+}
+
+a:hover {
+	color: blue;
+}
+
+tr:hover {
+	background-color: #BEBEBE;
+}
+
+td>img {
+	height: 100px;
+}
+
+table {
+	border-collapse: separate;
+	border: solid black 1px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+}
+.display{
+ 	font-family: 'Noto Serif TC', serif;
+ 	font-size: 15px; 
+}
+/*  td, th {  */
+/*      border-left:solid black 1px;  */
+/*      border-top:solid black 1px;  */
+/*  }  */
+
+/*  th {  */
+/*      background-color: blue;  */
+/*     border-top: none;  */
+/* }  */
+
+/*  td:first-child, th:first-child {  */
+/*       border-left: none;  */
+/*  }  */
 </style>
+<script>
+	window.onload = fackbooklike;
+		function fackbooklike() {
+			var fbLike = document.getElementById("fbLike");
+		if (fbLike){
+			document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.php?href=" + location.href + "&layout=standard&show_faces=true&width=350&action=like&colorscheme=light&height=25";
+			}
+		}
+</script>
 </head>
 <body>
- 	<%@include file="../includePage/includeNav.jsp" %>
+	
 	<!-- 讀取圖案 -->
-	<div id="preloader-active">
+	<div id="preloader-active" >
 		<div
 			class="preloader d-flex align-items-center justify-content-center">
 			<div class="preloader-inner position-relative">
@@ -62,105 +87,267 @@
 		</div>
 	</div>
 
-	<div>
-	<div class="container mt-10" style="width:80%;height:100vh">
-					<!--有照片的那個bar  -->
-					<div class="d-flex">
-						<div class="p-2">
-							<img style="height: 100px"
-								src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
-						</div>
+	<div class="container-fluid">
+		<div class="container mt-10" style="width: 100%; height: 100vh">
+			<!--有照片的那個bar  -->
+			<div class="d-flex">
+				<div class="p-2">
+					<img style="height: 100px"
+						src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
+				</div>
 
-						<div class="p-2 flex-fill align-self-end justify-content-center">
-							<h1>${userAccount.userAccountDetail.nickName}</h1>
-						</div>
-						
-
-					</div>
-					<div class="flex-fill bg-secondary p-1 mb-5">						
-					</div>
-					
-					<!--左邊的分隔用-->
-					<div class="d-flex">
-					<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-						<a class="nav-link active" id="v-pills-home-tab"    data-toggle="pill" href="#v-pills-home"		      role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a>
-						<a class="nav-link" id="v-pills-friend-tab" 	    data-toggle="pill" href="#v-pills-friend" 		  role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a>
-						<a class="nav-link" id="v-pills-aboutUser-tab" 	    data-toggle="pill" href="#v-pills-aboutUser"	  role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
-						<a class="nav-link" id="v-pills-userMessage-tab"    data-toggle="pill" href="#v-pills-userMessage" 	  role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
-						<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
-
-						</div>
-							<div class="tab-content" id="v-pills-tabContent col-9">
-								<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-									<h2>基本資料</h2>
-									<p id="accountIndex">email: ${userAccount.accountIndex} </p>
-									<p>性別：${userAccount.userAccountDetail.gender}</p>
-									<p>地區：${userAccount.userAccountDetail.location}</p>
-								</div>
-								<div class="tab-pane fade" id="v-pills-friend" role="tabpanel" aria-labelledby="v-pills-friend-tab">
-									
-									
-									<!--好友分區用-->
-									<nav>
-										<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										  <a class="nav-item nav-link active" id="nav-myFriend-tab" data-toggle="tab" href="#nav-myFriend" role="tab" aria-controls="nav-myFriend" aria-selected="true">
-											<button id="checkFriendList" style="color:black">我的好友</button></a>
-										  <a class="nav-item nav-link" id="nav-searchFriend-tab" data-toggle="tab" href="#nav-searchFriend" role="tab" aria-controls="nav-searchFriend" aria-selected="false">
-											<button id="checkFriendList" style="color:black">搜尋使用者</button></a>
-										  <a class="nav-item nav-link" id="nav-friendQequest-tab" data-toggle="tab" href="#nav-friendQequest" role="tab" aria-controls="nav-friendQequest" aria-selected="false">
-											<button class="btn-link" id="checkRequestList" style="color:black">查看邀請</button></a>
-										</div>
-									  </nav>
-									  <div class="tab-content" id="nav-tabContent">
-										<div class="tab-pane fade show active" id="nav-myFriend" role="tabpanel" aria-labelledby="nav-myFriend-tab">
-											<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
-											<div id="userFriendList">
-											</div>
-											
-											</div>
-										<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel" aria-labelledby="nav-searchFriend-tab">
-											<div class="d-flex mt-3">
-												<input class="m-2" id="nameSearch" type="search" placeholder="Search By nickName" aria-label="Search">
-												<button class="btn btn-primary my-2 my-sm-0 " id="btn-search" >Search</button>
-											</div>					
-											<div id="searchResult">
-											</div>
-										</div>
-										
-										
-										<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel" aria-labelledby="nav-friendQequest-tab">
-											<h6>好友邀請</h6>
-											<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
-											<div id="friendRequest">	
-										</div>
-									  </div>
-								</div>
-								</div>	
-								<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
-									<h2>關於我</h2>
-								</div>
-								<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel" aria-labelledby="v-pills-userMessage-tab">
-									<h2>userMessage</h2>
-
-								</div>
-								<div class="tab-pane fade" id="v-pills-userCollection" role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
-									<h2>userCollection</h2>
-
-								</div>
-					</div>		
-					</div>		
-			 </div>
-			</div>		
-
-				<!-- Scroll Up -->
-				<div id="back-top">
-					<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+				<div class="p-2 flex-fill align-self-end justify-content-center">
+					<h1>${userAccount.userAccountDetail.nickName}</h1>
 				</div>
 
 
+			</div>
+			<div class="flex-fill bg-secondary p-1 mb-5"></div>
 
-				<script>
-					$(window).on('load', function () {
+			<!--左邊的分隔用-->
+			<div class="d-flex" >
+				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+						<i class="fas fa-home"></i>Home</a> 
+					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
+						<i class="fas fa-users"></i>好友</a> 
+					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false">
+						<i class="fas fa-file-alt"></i>關於我</a>
+					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
+						<i class="fas fa-comments"></i>留言區</a>
+					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
+						<i class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link" id="v-pills-userOrderList-tab" data-toggle="pill" href="#v-pills-userOrderList" role="tab" aria-controls="v-pills-userOrderList" aria-selected="false">
+						<i class="fas fa-file-alt"></i>查詢訂單</a>
+
+				</div>
+				<div class="tab-content" id="v-pills-tabContent col-9">
+					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<h2>基本資料</h2>
+						<p id="accountIndex">email: ${userAccount.accountIndex}</p>
+						<p>性別：${userAccount.userAccountDetail.gender}</p>
+						<p>地區：${userAccount.userAccountDetail.location}</p>
+					</div>
+					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
+						aria-labelledby="v-pills-friend-tab">
+
+
+						<!--好友分區用-->
+						<nav>
+							<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								<a class="nav-item nav-link active" id="nav-myFriend-tab"
+									data-toggle="tab" href="#nav-myFriend" role="tab"
+									aria-controls="nav-myFriend" aria-selected="true">
+									<button id="checkFriendList" style="color: black">我的好友</button>
+								</a> <a class="nav-item nav-link" id="nav-searchFriend-tab"
+									data-toggle="tab" href="#nav-searchFriend" role="tab"
+									aria-controls="nav-searchFriend" aria-selected="false">
+									<button id="checkFriendList" style="color: black">搜尋使用者</button>
+								</a> <a class="nav-item nav-link" id="nav-friendQequest-tab"
+									data-toggle="tab" href="#nav-friendQequest" role="tab"
+									aria-controls="nav-friendQequest" aria-selected="false">
+									<button class="btn-link" id="checkRequestList"
+										style="color: black">查看邀請</button>
+								</a>
+							</div>
+						</nav>
+						<div class="tab-content" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="nav-myFriend"
+								role="tabpanel" aria-labelledby="nav-myFriend-tab">
+								<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
+								<div id="userFriendList"></div>
+
+							</div>
+							<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel"
+								aria-labelledby="nav-searchFriend-tab">
+								<div class="d-flex mt-3">
+									<input class="m-2" id="nameSearch" type="search"
+										placeholder="Search By nickName" aria-label="Search">
+									<button class="btn btn-primary my-2 my-sm-0 " id="btn-search">Search</button>
+								</div>
+								<div id="searchResult"></div>
+							</div>
+
+
+							<div class="tab-pane fade" id="nav-friendQequest" role="tabpanel"
+								aria-labelledby="nav-friendQequest-tab">
+								<h6>好友邀請</h6>
+								<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
+								<div id="friendRequest"></div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel"
+						aria-labelledby="v-pills-aboutUser-tab">
+						<h2>關於我</h2>
+					</div>
+					<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel"
+						aria-labelledby="v-pills-userMessage-tab">
+
+						<h2>${userAccount.userAccountDetail.nickName}的留言區</h2>
+
+
+						<iframe allowtransparency="" frameborder="0" id="fbLike"
+							scrolling="no" src=""
+							style="border-bottom: medium none; border-left: medium none; width: 250px; height: 30px; overflow: hidden; border-top: medium none; border-right: medium none"></iframe>
+
+
+						<!-- 						新增主要留言input & 按鈕 -->
+						<input placeholder='Hello....' id="commentInput"></input>
+						<button type="button" class="genric-btn default circle arrow"
+							id="addNewComment">新增留言</button>
+
+						<!-- 						使用Ajax的方法 -->
+						<div class="container-fluid"
+							style="overflow: scroll; height: 400px;" id="commentsForUser"
+							class="table"></div>
+
+
+						<!--      使用jstl的方法 -->
+						<%--      <c:choose> --%>
+						<%--       <c:when test="${not empty userAccount.msnBox}"> --%>
+						<!--        <br> -->
+						<%--        <c:forEach var='msn' items='${userAccount.msnBox}' varStatus='ms'> --%>
+						<%--         <c:if test="${msn.messageBox == null }"> --%>
+
+						<!--          <div class="row " style="border: 1px solid red"> -->
+						<!--           <img> -->
+						<%--           <h4>留言${ms.count }</h4> --%>
+						<%--           &nbsp; <span>${msn.netizenAccount.userAccountDetail.nickName }</span>&nbsp;<span>於 --%>
+						<%--            ${msn.time }</span> --%>
+						<!--           <div class="col-12 "> -->
+						<%--            <blockquote class="generic-blockquote">${msn.text}</blockquote> --%>
+						<!--            <button class="pull-right" value="" style="color: black">回覆留言</button> -->
+						<%--            <c:forEach var='msnReply' items='${msn.replyMessageBoxes}' --%>
+						<%--             varStatus='rms'> --%>
+						<!--             <img> -->
+						<%--             <h5>回覆${rms.count}</h5>&nbsp; --%>
+						<%--           <span>${msnReply.netizenAccount.userAccountDetail.nickName}</span>&nbsp;<span>於 --%>
+						<%--              ${msnReply.time }</span> --%>
+						<!--             <div class="col-10"> -->
+						<%--              <blockquote class="generic-blockquote">${msnReply.text}</blockquote> --%>
+						<!--             </div> -->
+						<%--            </c:forEach> --%>
+						<!--           </div> -->
+						<!--          </div> -->
+						<%--         </c:if> --%>
+
+						<%--        </c:forEach> --%>
+
+						<%--       </c:when> --%>
+						<%--       <c:otherwise> --%>
+						<!--           沒有留言給您 -->
+						<%--       </c:otherwise> --%>
+						<%--      </c:choose> --%>
+					</div>
+					<div class="tab-pane fade" id="v-pills-userCollection"
+						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
+						<h2>userCollection</h2>
+					</div>
+					
+					<!-- 訂單表 -->
+					<div class="tab-pane fade" id="v-pills-userOrderList" role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+						<h2>訂單明細</h2>
+						<table  id="orderlist" class="display">
+							<thead>
+								<tr>
+									<th>編號</th>
+									<th>訂單時間</th>
+									<th>收件人</th>
+									<th>電話</th>
+									<th>收件地址</th>
+									<th>價格</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Scroll Up -->
+	<div id="back-top">
+		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+	</div>
+
+
+	<script>
+			$(document).ready(function () {
+				
+					var Table = $("#orderlist").DataTable({
+						 language: {
+						        "processing": "處理中...",
+						        "loadingRecords": "載入中...",
+						        "lengthMenu": "顯示 _MENU_ 項結果",
+						        "zeroRecords": "沒有符合的結果",
+						        "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+						        "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+						        "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+						        "infoPostFix": "",
+						        "search": "搜尋:",
+						        "paginate": {
+						            "first": "第一頁",
+						            "previous": "上一頁",
+						            "next": "下一頁",
+						            "last": "最後一頁"
+						        },
+						        "aria": {
+						            "sortAscending": ": 升冪排列",
+						            "sortDescending": ": 降冪排列"
+						        }
+						    },
+						    data:[],
+						    columns: [
+				                { "data": "uuid"  },
+				                { "data": "orderCreatedDate" ,
+			                	  "render": function (data, type, row, meta) {
+			                       return data.substr(0,4)+'/'+data.substr(5,2)+'/'+data.substr(8,2)}},
+				                { "data": "receiveName" },
+				                { "data": "receivePhone" },
+				                { "data": "receiveAddress" },
+				                { "data": "totalCost" }
+						    ],
+						    filter: true,
+						    bPaginate: true,
+						    info: true,
+						    ordering: true,
+						    processing: true,
+						    retrieve: true,
+						    searching: true, //關閉filter功能
+			                columnDefs: [{
+			                    targets: [3],
+			                    orderable: true,
+			                }]
+						});
+					
+						
+						$.ajax({
+							method:"GET",	
+							url:"/PepperNoodles/user/getOrderList",
+							contentType: 'application/json; charset=utf-8',
+							dataType:'json',
+					        async : true,
+					        cache: false,
+					        success:function(result){
+					        	console.log("yes123");
+					        	console.log(JSON.stringify(result));
+					        	console.log(result.AccountMemberOrderList);
+					        	Table.clear().draw();
+					            Table.rows.add(result.AccountMemberOrderList).draw();
+					        },
+					        error: function (result) {
+					        	console.log("有問題");
+					        }
+						});
+						
+						
+						
+						///////////////////////////////////////////////
+						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
 							urls+="<c:url value='findMainfriend'/>";
@@ -349,15 +536,18 @@
 						}
 						//addFriend按鈕的function
 						function addFriend(){
-							alert(this.value);
+// 							alert(this.value);
 							let urls="${pageContext.request.contextPath}/";
 							urls+="<c:url value='MainUserAddFriendwithIndex'/>";
 							urls+="/${userAccount.accountIndex}"
 							urls+="/"+this.value;
 							console.log(urls);
+							
+							
 						$.ajax({
 								type: "GET",
-								url: urls,				
+								url: urls,	
+								data:	Object,
 								dataType: "text",
 								success: function (response) {
 									console.log(response);
@@ -368,14 +558,303 @@
 								}
 							});
 						 }
+						
+
+
+							
+						});//onload end
+					
+					
+// 					顯示留言
+						function showAllComments(){
+					var commentsForUser = document.getElementById("commentsForUser")
+					var segment="";
+					commentsLength = 0;
+					$.ajax({
+						method:"GET",
+						url:"/PepperNoodles/user/showAllCommentAjax",
+//							cache: false,  //不做快取
+//					        async : true,
+//							processData: false,
+//							contentType: "application/json",
+//							dataType:"text",
+//							data: JSON.stringify(RequestContent),
+				        success: function (result) {
+// 			        		alert(result.length);
+			        		commentsLength =result.length;
+//				        		alert(result[0].replyMessageBoxes);
+			        		console.log(JSON.stringify(result));
+// 			        		console.log(JSON.stringify(result[0].time));
+			        		 var aDay = new Date();
+			        		 aDay.setHours(9);
+			        		 aDay.setMinutes(0);
+			        		 aDay.setSeconds(0);
+// 			        		 var sun = result[0].time;
+			        		
+				        	for( i =0; i<result.length; i++){
+				        		
+				        		var formatDate   =(new Date(result[i].time)).toString().substring( 4 , 21 );
+				        		var formatString = formatDate.split(' ');
+				        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+				        		
+				        		segment +="<table border='1' class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid blue 1px;border-radius:6px;-moz-border-radius:6px;'>";//<th>留言數</th><th>留言者</th><th>時間</th><th>讚數</th><th>留言內容</th><th>讚</th><th>編輯</th>";
+				        		segment += "<tr class='table-primary'><td>留言" + (i+1) + "</td><td>" ;
+				        		segment += result[i].netizenAccount.userAccountDetail.nickName + "</td><td>" ;
+				        		segment += formatPrint + "</td><td>" ;
+				        		segment += result[i].likeAmount + "</td><td><input  class='selectedinput ' disabled='disabled'size='20' value='" + result[i].text +"'>" ;
+			        			segment +=  "</input><button  name='updateComment' "+ i +" class='genric-btn default circle arrow' style='display:none;color:black' >confirm</button>";
+			        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].text + "</span>";
+			        			segment += "<span  style='display:none'>" + result[i].time + "</span><span  style='display:none'>" + result[i].likeAmount + "</span>";
+			        			segment += "<span  style='display:none'>" + result[i].userMessageId + "</span></td><td>";
+			        			segment += "<button type='button' class='genric-btn default circle arrow' style='color: black' name  ='likeButton" + i +"' >like</button><button type='button' class='genric-btn default circle arrow' style='color: black ;display:none' name  ='dislikeButton" + i +"' >withdraw</button></td>";
+			        			segment += "<td><button class='genric-btn default circle arrow' style='color: black' name='edit" + i + "'>edit</button></td><td>	";
+			        			segment +="<button class='genric-btn default circle arrow' type='button'  style='color: black' name  ='deleteComment"  + i +"' >delete</button><span  style='display:none'>" + result[i].userMessageId + "</span></tr>"
+
+									for( j =0; j<result[i].replyMessageBoxes.length; j++){
+									
+										var formatDate   =(new Date(result[i].replyMessageBoxes[j].time)).toString().substring( 4 , 21 );
+						        		var formatString = formatDate.split(' ');
+						        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+									
+										segment += "<tr class='table-info'><td>回覆" + (j+1) + "</td><td>" ;
+						        		segment += result[i].replyMessageBoxes[j].netizenAccount.userAccountDetail.nickName  + "</td><td>" ;
+						        		segment += formatPrint  + "</td><td>" ;
+						        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
+						        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
+										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' >確定修改</button>";
+					        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].replyMessageBoxes[j].text + "</span>";
+					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].time + "</span><span  style='display:none'>" + result[i].replyMessageBoxes[j].likeAmount + "</span>";
+					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></td><td>";
+					        			segment += "<button type='button' class='genric-btn default-border circle' style='color: black' name  ='likeButton" + i + j +"' >like</button><button type='button' class='genric-btn default circle arrow' style='color: black ;display:none' name  ='dislikeButton"  + i + j +"' >withdraw</button></td>";
+					        			segment += "<td><button class='genric-btn default circle arrow' style='color: black' name='edit"  + i + j + "'>edit</button></td><td>";
+					        			segment +="<button class='genric-btn default circle arrow' type='button' style='color: black' name  ='deleteComment" + i + j +	"' >delete</button><span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></tr>";
+									}
+				        		segment += "</table><span class='mt-0 pt-0'><input placeholder='我想吃....'></input><button type='button' class='genric-btn default circle arrow' style='color: black' name='addreply"  + i +"' >reply</button><span  style='display:none'>" + result[i].userMessageId + "</span></span><br><br><br>";
+				        		;
+// 				        		segment +="<button data-toggle='modal' data-target='#exampleModal' type='button' style='color: black' name  ='updateComment" + i +"' >更新主要留言</button><span  style='display:none'>" + result[i].text + "</span><span  style='display:none'>" + result[i].time + "</span><span  style='display:none'>" + result[i].likeAmount + "</span><br><br><hr>";
+				        	
+				        	}
+			        		commentsForUser.innerHTML = segment;
+				        	
+				        },
+				        error: function (result) {
+// 				        	alert(result);
+				            $("#commentsForUser").text("fail"); //填入提示訊息到result標籤內
+				        }
 					});
+						}
+						
+						
+						//新增留言(usermain頁面的 useraccount 之後會抓預設的值)
+						$("#addNewComment").on('click',function(){
+							
+							var commentValue = document.getElementById("commentInput").value;
+							var urls="/PepperNoodles/user/addNewCommentAjax/?comment="+commentValue  ;
+//	 						+ "&useraccount=chrislo5311@gmail.com"
+							$.ajax({
+								type:"GET",
+								url:  urls,
+								dataType: "text",
+								success: function (result) {
+// 									alert(result);
+									showAllComments();
+								},
+								error: function (thrownError) {
+									console.log(thrownError);
+								}
+							});
+						});
+						
+						//新增回覆留言
+						$('body').on('click','button[name^="addreply"]',function(e){
+							
+							var messageIdValue = $(this).next().text();
+							var urls           ="/PepperNoodles/user/addNewReplyCommentAjax/" + messageIdValue;
+							var text           =$(this).prev().val();
+// 							alert(messageIdValue);
+// 							alert(text);
+							
+							var data =
+							{
+									"userMessageId": null,
+											 "text": text,
+										     "time": null,
+									   "likeAmount": null,
+								   "netizenAccount": null,
+									  "userAccount": null,
+							           "messageBox": null,
+							    "replyMessageBoxes": null
+							};
+							$.ajax({
+								type:"POST",
+								url:  urls,
+								contentType:'application/json;charset=UTF-8',
+								dataType: "text",
+								data:JSON.stringify(data),
+								
+								success: function (result) {
+// 									alert(result);
+									showAllComments();
+								},
+								error: function (thrownError) {
+									console.log(thrownError);
+								}
+							});
+						});
+						
+						//delete 留言
+						$('body').on('click','button[name^="deleteCo"]',function(e){
+		        			e.preventDefault;
+		        			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
+							var id =$(this).next().text();
+// 							alert(id);
+							urls += id;
+							$.ajax({
+								type:"GET",
+								url: urls ,
+								dataType: "text",
+								success: function (result) {
+// 									alert(result);
+									showAllComments();
+								},
+								error: function (thrownError) {
+									console.log(thrownError);
+								}
+							});
+		        		});
+						
+						
+						
+						
+						
+						//開啟編輯的按鍵
+						$('body').on('click','button[name^="edit"]',function(e){
+		        			e.preventDefault;
+		        			var openEdit = $(this).parent().prevAll().children(":input");
+		        			var confirmEdit =openEdit.next();
+		        			var hide =openEdit.next();
+		        			openEdit.attr('disabled', false);
+		        			confirmEdit.show();
+
+						});
+					
+					//update 修改一則留言(主要、回覆)
+					$('body').on('click','button[name^="updateCo"]',function(e){
+		        			e.preventDefault;
+		        			var urls = "/PepperNoodles/user/updateCommentAjax/";
+							var id         =$(this).next().next().next().next().text();
+// 							urls += id;
+// 							var id2        =parseInt(id);
+							var text       =$(this).prev().val();
+							var time       =$(this).next().next().text();
+							var likeAmount =$(this).next().next().next().text();
+							var toHide         =$(this).next();
+							alert(id);
+							alert(text);
+							alert(time);
+							alert(likeAmount);
+							var data =
+							{
+									"userMessageId": id,
+											 "text": text,
+										     "time": time,
+									   "likeAmount": likeAmount,
+								   "netizenAccount": null,
+									  "userAccount": null,
+							           "messageBox": null,
+							    "replyMessageBoxes": null
+							};
+							
+							$.ajax({
+								type:"POST",
+								data:JSON.stringify(data),
+								contentType:'application/json;charset=UTF-8',
+								url: urls ,
+								dataType: "text",
+								success: function (result) {
+									alert(result);
+									showAllComments();
+
+								},
+							error: function (thrownError) {
+									console.log(thrownError);
+									alert(thrownError);
+								}
+							});
+		        		});
+					
+					
+					//留言按讚
+					$('body').on('click','button[name^="likeBut"]',function(e){
+		        			e.preventDefault;
+		        			var urls = "/PepperNoodles/user/updateLikeCommentAjax/?id=";
+		        			var button = $(this);
+							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
+							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
+							urls += id;
+							alert(id);
+
+							
+							$.ajax({
+								type:"GET",
+								url: urls ,
+								dataType: "text",
+								success: function (result) {
+									alert(result);
+
+
+								},
+								complete: function(result){
+									button.toggle();
+									button.next().toggle();
+									
+									changeLikeAmount.text(result.responseText);
+								},
+							error: function (thrownError) {
+									console.log(thrownError);
+									alert(thrownError);
+								}
+							});
+		        		});
+					
+					//收回讚
+					$('body').on('click','button[name^="dislikeBut"]',function(e){
+		        			e.preventDefault;
+		        			var urls = "/PepperNoodles/user/updateDisLikeCommentAjax/?id=";
+		        			var button = $(this);
+							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
+							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
+							urls += id;
+							alert(id);
+
+							
+							$.ajax({
+								type:"GET",
+								url: urls ,
+								dataType: "text",
+								success: function (result) {
+									alert(result);
+
+
+								},
+								complete: function(result){
+									button.toggle();
+									button.prev().toggle();
+									
+									changeLikeAmount.text(result.responseText);
+								},
+							error: function (thrownError) {
+									console.log(thrownError);
+									alert(thrownError);
+								}
+							});
+		        		});	
 				</script>
 
 
 
 
-
-	<%@include file="../includePage/includeFooter.jsp" %>
+	<%@include file="../includePage/includeFooter.jsp"%>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
@@ -397,13 +876,12 @@
 			
  		});
  	</script>
-	<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+
 
 
 </body>
 </html>
+
+
+
+

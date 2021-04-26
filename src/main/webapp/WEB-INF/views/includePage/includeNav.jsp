@@ -9,21 +9,10 @@
 <meta charset="UTF-8">
 <title>includeNav</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
-<!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
+<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.css' />" />
+<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
 <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
 <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">
@@ -32,6 +21,7 @@
 <link rel="stylesheet" href="<c:url value='/css/slick.css' />">
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+
 
 <style>
 .header {
@@ -116,7 +106,8 @@
 
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
-											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>
+<%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
+											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
                                             <li><a href="rearStage/rearStage">後台</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
@@ -157,46 +148,34 @@
 	</header>
 	
 	
-		</script>
-
-	<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-
-	<!-- Jquery, Popper, Bootstrap -->
-		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-
+		<!-- JS here -->
+		<!-- All JS Custom Plugins Link Here here -->
+		<script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
+		<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
-
-		<script type="text/javascript"
-			src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-	<!-- Jquery Mobile Menu -->
+		<!-- Jquery Mobile Menu -->
 		<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
-
-	<!-- Jquery Slick , Owl-Carousel Plugins -->
+		<!-- Jquery Slick , Owl-Carousel Plugins -->
 		<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
-
-
 		<script src="<c:url value='/scripts/slick.min.js' />"></script>
-
-	<!-- One Page, Animated-HeadLin -->
+		<!-- One Page, Animated-HeadLin -->
 		<script src="<c:url value='/scripts/wow.min.js' />"></script>
 		<script src="<c:url value='/scripts/animated.headline.js' />"></script>
 		<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script>
-	<!--  Nice-select, sticky-->
 		<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script>
 		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
-	<!-- contact js -->
 		<script src="<c:url value='/scripts/contact.js' />"></script>
-
 		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
-		<script src="<c:url value='/scripts/mail-script.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
 		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
-
-	<!-- Jquery Plugins, main Jquery -->
-	<script src="<c:url value='/scripts/plugins.js' />"></script>
- 	<script src="<c:url value='/scripts/main.js' />"></script> 
+		<!-- Jquery Plugins, main Jquery -->
+		<script src="<c:url value='/scripts/plugins.js' />"></script>
+ 		<script src="<c:url value='/scripts/main.js' />"></script> 
+ 		 <!-- DataTables v1.10.16 -->
+		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
 	
 </body>
 </html>

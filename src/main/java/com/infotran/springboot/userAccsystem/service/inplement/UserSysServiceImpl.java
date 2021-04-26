@@ -1,5 +1,7 @@
 package com.infotran.springboot.userAccsystem.service.inplement;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import com.infotran.springboot.userAccsystem.repository.UserSysRepository;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Service
+@Transactional
 public class UserSysServiceImpl implements UserSysService {
 	@Autowired
 	UserSysRepository userSysRepository;
@@ -22,6 +25,11 @@ public class UserSysServiceImpl implements UserSysService {
 	public UserAccount get(Integer id) {
 		UserAccount userAcc = userSysRepository.getOne(id);
 		return userAcc;
+	}
+	
+	
+	public void update(UserAccount userAccount) {
+		userSysRepository.save(userAccount);
 	}
 
 }

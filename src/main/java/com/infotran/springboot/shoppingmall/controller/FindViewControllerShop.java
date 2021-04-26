@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/shoppingSystem")
+@RequestMapping(value={"/shoppingSystem","/user/shoppingSystem"})
 public class FindViewControllerShop {
 
 	
@@ -26,6 +26,12 @@ public class FindViewControllerShop {
 	public String checkOutPage() {
 		return "shoppingSystem/checkOutPage";
 	}
+	@GetMapping("/confirmOrderAndInvoice")
+	public String checkOutconfirmOrderAndInvoice() {
+		return "shoppingSystem/confirmOrderAndInvoice";
+	}
+	
+	
 	
 	
 }

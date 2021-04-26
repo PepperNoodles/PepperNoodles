@@ -3,13 +3,16 @@ package com.infotran.springboot.userAccsystem.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.ServletContext;
-
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +22,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.infotran.springboot.commonmodel.FriendList;
+import com.infotran.springboot.commonmodel.MessageBox;
+import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
+import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.shoppingmall.model.OrderList;
+import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
+import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserDetailServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
 
@@ -51,6 +66,395 @@ public class UserSysController {
 	@Autowired
 	ServletContext servletContext;	
 	
+	@Autowired
+	MessageBoxServiceImpl msnServiceImpl;
+	
+	@Autowired
+	OrderListServiceImpl olistservice;
+	
+	//MessageBox 新增訊息的方法
+	@PostMapping(value = "/saveMessageBox")
+	public String saveMessageBox(){
+		
+		return "personalPage";
+	}
+	
+
+	//從Authentication取得登入者的名字字串的方法
+	public String returnNamePath() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String currentUserName = authentication.getName();
+		    System.out.println(currentUserName);
+		    return currentUserName;
+			}
+		System.out.println("no logging user currently!!");
+			return null;
+	}
+	
+	
+	//從Authentication取得登入者腳色的方法(但應該用不到ㄌ因為前端可以直接ONLOAD用
+	public String returnRole() {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		Set<Roles> roles = user.getRoles();
+		String roleName="";
+		
+		for(Roles role:roles) {
+			
+			if(role.getRoleName()=="normal"){
+				
+				roleName= "normal";
+				
+			}else if(role.getRoleName()=="company"){
+			
+				roleName= "company";
+				
+			}else if(role.getRoleName()=="admin"){
+				
+				roleName= "admin";
+				
+			}else {
+				
+				System.out.println("no logging user currently!!");
+				return null;
+			}
+		}
+		return roleName;
+	}
+	
+	//新增留言的方法test
+	@GetMapping(value="user/addNewComment" )
+	public String addNewComment(Model model) {
+		//test
+		System.out.println(returnNamePath());
+
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		model.addAttribute("userAccount", user);
+		UserAccount commentUser = uSysServiceImpl.findByAccountIndex("chrislodouchebag@gmail.com");
+		MessageBox msn = new MessageBox();
+		msn.setText("Hello 你好嗎? 衷心再見~");
+		msn.setTime(new Date());
+		msn.setLikeAmount(0);
+		msn.setNetizenAccount(commentUser);
+		msn.setUserAccount(user);
+		msn.setMessageBox(null);
+		
+		msnServiceImpl.save(msn);
+		//加入被留言user的msn
+//		List<MessageBox> msns = user.getMsnBox();
+//		msns.add(msn);
+//		user.setMsnBox(msns);
+//		uSysServiceImpl.update(user);
+		return "userpage/usermain";
+	}
+	
+	//新增回覆留言的方法test
+	@GetMapping(value="user/addNewReplyComment" )
+	public String addNewReplyComment(Model model) {
+		//test
+		System.out.println(returnNamePath());
+
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+
+		model.addAttribute("userAccount", user);
+		UserAccount commentedUser = uSysServiceImpl.findByAccountIndex("stevenzchao439@gmail.com");
+		System.out.println(returnNamePath());
+		MessageBox msn = new MessageBox();
+		msn.setText("珍重再見，期待再相逢~~");
+		msn.setTime(new Date());
+		msn.setLikeAmount(0);
+		msn.setNetizenAccount(commentedUser);
+		msn.setUserAccount(user);
+		msn.setMessageBox(msnServiceImpl.findById(2));
+		msnServiceImpl.save(msn);
+		return "userpage/usermain";
+	}
+	
+	//刪除留言&回覆留言的方法test
+	@GetMapping(value="user/deleteReplyComment" )
+	public String deleteReplyComment(Model model) {
+		//test
+		MessageBox msn = msnServiceImpl.findById(2);
+		msn.setNetizenAccount(null);
+		msn.setUserAccount(null);
+		msn.setReplyMessageBoxes(null);
+		msnServiceImpl.delete(msn);
+		return "userpage/usermain";
+	}
+	
+//======================================================================================================================
+
+	//normaluser buffer頁面MVC登入法
+	@PostMapping(value="user/loginMVC" )
+	public String gopage(Model model) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		System.out.println(returnNamePath());
+//		System.out.println(user.getMsnBox().get(0));		
+
+		model.addAttribute("userAccount", user);
+
+		return "userpage/usermain";
+	}
+	
+	//顯示自己頁面留言的ajax方法
+	@GetMapping(value="/user/showAllCommentAjax" ,produces= "application/json")
+	@ResponseBody
+	public List<MessageBox> showAllComments(Model model,@ModelAttribute("userAccount")UserAccount useraccount) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+//		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
+		List<MessageBox> userMsn = user.getMsnBox();
+		Hibernate.initialize(userMsn);
+		List<MessageBox> userMsnNull = new ArrayList<MessageBox>();
+		for(int i =0; i<userMsn.size(); i++) {
+			if(userMsn.get(i).getMessageBox()==null) {
+				userMsnNull.add(userMsn.get(i));
+				
+			}	
+		}
+		System.out.println("放進去了");
+		return userMsnNull;
+	}
+	
+	//顯示他人頁面留言的ajax方法
+	@GetMapping(value="/user/showOtherPageAllCommentAjax" ,produces= "application/json")
+	@ResponseBody
+	public List<MessageBox> showOtherPageAllComments(@RequestParam(value = "viewUserAccount") String accountIndex) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(accountIndex);
+//		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
+		List<MessageBox> userMsn = user.getMsnBox();
+		Hibernate.initialize(userMsn);
+
+		List<MessageBox> userMsnNull = new ArrayList<MessageBox>();
+		for(int i =0; i<userMsn.size(); i++) {
+			if(userMsn.get(i).getMessageBox()==null) {
+				userMsnNull.add(userMsn.get(i));
+				
+			}	
+		}
+		System.out.println("放進去了");
+		return userMsnNull;
+	}
+	
+	//自己頁面新增留言的方法ajax
+	@GetMapping(value="user/addNewCommentAjax" )
+	@ResponseBody 
+	public String addNewCommentAjax(@RequestParam(value = "comment") String comment
+			/*,@RequestParam(value = "useraccount")String useraccount*/)
+	{
+		System.out.println("Hi I'm Here");
+		String status ="";
+		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		MessageBox newMSN = new MessageBox();
+		newMSN.setText(comment);
+		newMSN.setTime(new Date());
+		newMSN.setLikeAmount(0);
+		newMSN.setNetizenAccount(commenter);
+		newMSN.setUserAccount(commenter);
+		Integer save =msnServiceImpl.save(newMSN);
+		if(save==1) {
+			status="訊息已傳送";
+		}else {
+			status="訊息傳送失敗";
+		}
+		return status;
+	}
+	
+	//他人頁面新增留言的方法ajax
+	@GetMapping(value="user/addNewOtherCommentAjax" )
+	@ResponseBody 
+	public String addOtherPageNewCommentAjax(@RequestParam(value = "comment") String comment
+			,@RequestParam(value = "viewUserAccount")String useraccount)
+	{
+		System.out.println("Hi I'm Here for adding new other page's comment");
+		String status ="";
+		UserAccount viewUserAccount = uSysServiceImpl.findByAccountIndex(useraccount);
+		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
+
+		MessageBox newMSN = new MessageBox();
+		newMSN.setText(comment);
+		newMSN.setTime(new Date());
+		newMSN.setLikeAmount(0);
+		newMSN.setNetizenAccount(commenter);
+		newMSN.setUserAccount(viewUserAccount);
+		Integer save =msnServiceImpl.save(newMSN);
+		if(save==1) {
+			status="訊息已傳送";
+		}else {
+			status="訊息傳送失敗";
+		}
+		return status;
+	}
+	
+	//新增回覆留言的Ajax方法
+	@PostMapping(value="/user/addNewReplyCommentAjax/{id}", consumes= {"application/json"})
+	@ResponseBody
+	public String addNewReplyComment(@PathVariable(value="id") Integer id, @RequestBody MessageBox replyMSN) {
+		
+		System.out.println("");
+		String message = "";
+		MessageBox msn = new MessageBox();
+		System.out.println("======================================="+replyMSN.getText());
+		msn.setText(replyMSN.getText());
+		msn.setTime(new Date());
+		msn.setLikeAmount(0);
+		
+		//找出要回覆留言的源頭
+		MessageBox userMsn = msnServiceImpl.findById(id);
+		
+		//設定回覆留言的主人
+		UserAccount userAccount = uSysServiceImpl.findByAccountIndex(userMsn.getUserAccount().getAccountIndex());
+		msn.setUserAccount(userAccount);
+
+		//設定留言者
+		msn.setNetizenAccount(uSysServiceImpl.findByAccountIndex(returnNamePath()));
+		
+		msn.setMessageBox(userMsn);
+//		userMsn.getReplyMessageBoxes().add(msn);
+		Integer success =msnServiceImpl.save(msn);
+		
+		if(success==1) {
+			message="訊息新增成功";
+		}else {
+			message="訊息新增失敗";
+
+		}
+
+		return message;
+	}
+	
+	
+	//刪除留言的Ajax方法
+	@GetMapping(value="user/deleteCommentAjax" )
+	@ResponseBody
+	public String deleteMainComment(@RequestParam(value = "id") Integer id) {
+		String message = "";
+		
+		
+		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
+		MessageBox msn = msnServiceImpl.findById(id);
+		if(commenter.getAccountId()!=msn.getNetizenAccount().getAccountId()){
+			message = "別人的留言不能刪啦~";
+			return  message;
+		}else{
+			msn.setNetizenAccount(null);
+			msn.setUserAccount(null);
+			
+			List<MessageBox> listMsn = msn.getReplyMessageBoxes();
+			List<Integer> messageIdToDelete = new ArrayList<>();
+			
+			if(listMsn!=null) {
+				for(MessageBox otherMSN :listMsn ) {
+					
+					otherMSN.setMessageBox(null);
+					otherMSN.setNetizenAccount(null);
+					otherMSN.setUserAccount(null);
+					messageIdToDelete.add(otherMSN.getUserMessageId());
+					msnServiceImpl.delete(otherMSN);
+
+//					msnServiceImpl.save(otherMSN);
+				}
+			}
+			Integer success =msnServiceImpl.delete(msn);
+			if(success==1) {
+				message="訊息刪除成功";
+			}else {
+				message="訊息尚未刪除";
+			}
+
+		}
+
+
+		return message;
+	}
+	
+	//Update 更新留言的Ajax方法
+	@PostMapping(value="/user/updateCommentAjax/", consumes= {"application/json"})
+	@ResponseBody
+	public String updateMainComment( @RequestBody MessageBox updateMSN) {
+		String message = "";
+		UserAccount talker = uSysServiceImpl.
+				findByAccountIndex( msnServiceImpl.findById(updateMSN.getUserMessageId()).
+				getNetizenAccount().getAccountIndex());
+		UserAccount loginner = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
+		if(loginner.getAccountId()!=talker.getAccountId()){
+			message = "別人的留言不能改啦~麥笑想";
+			return message;
+		}else {
+			
+			MessageBox msn = msnServiceImpl.findById(updateMSN.getUserMessageId());
+			System.out.println("======================================="+updateMSN.getText());
+			msn.setText(updateMSN.getText());
+			msn.setTime(new Date());
+	        
+
+			msn.setLikeAmount(updateMSN.getLikeAmount());
+
+			Integer success =msnServiceImpl.save(msn);
+			if(success==1) {
+				message="訊息修改成功";
+			}else {
+				message="訊息尚未修改";
+
+			}
+		}
+		
+
+		return message;
+	}
+	
+	//留言按讚的方法
+	@GetMapping(value="/user/updateLikeCommentAjax" )
+	@ResponseBody
+	public String updateLikeComment( @RequestParam(value = "id") Integer msnID) {
+		String message = null;
+		
+		MessageBox msn = msnServiceImpl.findById(msnID);
+		System.out.println("=======================================要被讚的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
+		msn.setLikeAmount(msn.getLikeAmount()+1);
+		Integer success =msnServiceImpl.save(msn);
+		if(success==1) {
+			message=  String.valueOf(msn.getLikeAmount());
+		}else {
+			message=String.valueOf(msn.getLikeAmount());
+
+		}
+
+		return message;
+	}
+	
+	//留言收回按讚的方法
+	@GetMapping(value="/user/updateDisLikeCommentAjax" )
+	@ResponseBody
+	public String updateDisLikeComment( @RequestParam(value = "id") Integer msnID) {
+		String message = null;
+		
+		MessageBox msn = msnServiceImpl.findById(msnID);
+		System.out.println("=======================================要被讚的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
+		msn.setLikeAmount(msn.getLikeAmount()-1);
+		Integer success =msnServiceImpl.save(msn);
+		if(success==1) {
+			message=  String.valueOf(msn.getLikeAmount());
+		}else {
+			message=String.valueOf(msn.getLikeAmount());
+
+		}
+
+		return message;
+	}
+	
+//======================================================================================================================
+	
+	
+	@GetMapping(path="finduser")
+	@ResponseBody
+	public UserAccount finduser(@RequestParam("userAccountIndex") String mainAccountIndex,Model model) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);	
+		//Hibernate.initialize(user);
+		return user;
+	}
 	//從Authentication取得登入者的名字字串的方法
 	@GetMapping("/userLoggin/getName")
 	@ResponseBody
@@ -60,7 +464,8 @@ public class UserSysController {
 	  if (!(authentication instanceof AnonymousAuthenticationToken)) {
 	      currentUserName = authentication.getName();
 	      System.out.println(currentUserName);
-			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);		
+			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
+			System.out.println(user.getAccountIndex());
 			model.addAttribute("userAccount", user);
 	      return currentUserName;
 	   }
@@ -197,12 +602,15 @@ public class UserSysController {
 		
 	}
 	
+
+	
 	
 	//假裝用session登入(簡單利用pathVariable模擬登入)
 	@GetMapping(path="user/login/{userAccountIndex}")
 	public String goViewWithSession(@PathVariable("userAccountIndex") String uAccIndx,Model model) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(uAccIndx);		
 		model.addAttribute("userAccount", user);
+		System.out.println(returnNamePath());
 		return "userpage/usermain";
 	}
 	
@@ -217,6 +625,8 @@ public class UserSysController {
 	public String goUserView(@PathVariable("userAccountIndex") String uAccIndx,Model model ) {
 		UserAccount userAcc = uSysServiceImpl.findByAccountIndex(uAccIndx);
 		if(userAcc!=null) {
+			System.out.println(returnNamePath());
+
 			UserDetail userAccDetail = userAcc.getUserAccountDetail();
 			model.addAttribute("viewUserAccount",userAcc);
 			model.addAttribute("viewUserAccountDetail", userAccDetail);
@@ -230,7 +640,8 @@ public class UserSysController {
 	@ResponseBody
 	public List<UserAccount> searchUserNickName(@RequestParam(name="name") String name,Model model){
 
-		UserAccount currentUser = (UserAccount)model.getAttribute("userAccount");
+//		UserAccount currentUser = (UserAccount)model.getAttribute("userAccount");
+		UserAccount currentUser = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		System.out.println("currentUser======="+currentUser.getAccountIndex());
 		//試試看用index判斷
 		String currentIndx = currentUser.getAccountIndex();
@@ -293,5 +704,14 @@ public class UserSysController {
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(uPhoto,headers,HttpStatus.OK);		
 	}
+	
+	@GetMapping(value="/user/getOrderList")
+	public @ResponseBody Map<String,ArrayList<OrderList>> findUserOrderListByUserName(@ModelAttribute("userAccount")UserAccount user){
+		Map<String,ArrayList<OrderList>> mapview = new HashMap<String,ArrayList<OrderList>>();
+		ArrayList<OrderList>  orderViewList = olistservice.findOrderList(user.getAccountId());
+		mapview.put("AccountMemberOrderList", orderViewList);
+		return mapview;
+	}
+	
 	
 }

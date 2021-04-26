@@ -1,17 +1,21 @@
-package com.infotran.springboot.personalpagesystem.service.Impl;
+package com.infotran.springboot.userAccsystem.service.inplement;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infotran.springboot.commonmodel.MessageBox;
 import com.infotran.springboot.commonmodel.Roles;
-import com.infotran.springboot.personalpagesystem.dao.MessageBoxRepository;
+import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.userAccsystem.repository.MessageBoxRepository;
 
 @Service
-public class MessageBoxImpl {
+@Transactional
+public class MessageBoxServiceImpl {
 	
 	@Autowired
 	private MessageBoxRepository messageBoxRepository;
@@ -30,15 +34,27 @@ public class MessageBoxImpl {
 		
 	}
 	
+	public List<MessageBox> findByUserAccount(UserAccount UserAccount){
+		return messageBoxRepository.findByUserAccount(UserAccount);
+	}
+	
 
-	public Integer save(Roles role) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer save(MessageBox MessageBox) {
+		
+		if(MessageBox!=null) {
+			messageBoxRepository.save(MessageBox);
+			return 1;
+		}
+		return 0;
+
 	}
 
-	public void delete(Roles role) {
-		// TODO Auto-generated method stub
-
+	public Integer delete(MessageBox MessageBox) {
+		if(MessageBox!=null) {
+			messageBoxRepository.delete(MessageBox);
+			return 1;
+		}
+		return 0;
 	}
 
 	public Roles findbyRoleName(String roleName) {

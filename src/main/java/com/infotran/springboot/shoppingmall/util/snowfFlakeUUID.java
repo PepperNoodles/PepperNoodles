@@ -62,9 +62,6 @@ public class snowfFlakeUUID {
 	    private long lastTimestamp = -1L;
 
 	    //==============================Constructors=====================================
-	    
-	    
-	    
 	    /**
 	     * 构造函数
 	     * @param workerId 工作ID (0~31)
@@ -81,7 +78,8 @@ public class snowfFlakeUUID {
 	        this.datacenterId = datacenterId;
 	    }
 
-	    public snowfFlakeUUID() {
+
+		public snowfFlakeUUID() {
 		}
 
 		// ==============================Methods==========================================

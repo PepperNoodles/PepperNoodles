@@ -77,20 +77,20 @@ public class CompanyFindViewController {
 		   return null;
 		 }
 		
-	/**登入後的企業畫面**/
+	/**登入後的企業畫面-備用**/
 	@GetMapping("/company")
 	public String companyloginByIndex(Model model) {
-		return "company/company";
+		return "company/companyMain";
 	}
 	
 
-	/**登入後的企業畫面**/
+	/**登入後的企業畫面(備用)**/
 	@GetMapping("/company/{comId}")
 	public String companylogin(@PathVariable("comId") Integer comId , CompanyDetail comDetail , Model model) {
 
 		comDetail = comDetailService.findById(comId);
 		model.addAttribute("comDetail", comDetail);
-		return "company/company";
+		return "company/companyMain";
 	}
 	
 	@GetMapping("/blog")
@@ -104,5 +104,9 @@ public class CompanyFindViewController {
 		return "company/left";
 	}
 	
+	@GetMapping("/test")
+	public String normaluser() {
+		return "test";
+	}
 
 }
