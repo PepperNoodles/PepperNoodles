@@ -147,7 +147,7 @@
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantAddress}</td>
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantContact}</td>
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantWebsite}</td>
-								<td style="text-align: center;font-weight: bold"><div id="Tag">標籤</div></td>
+								<td style="text-align: center;font-weight: bold"><div id="${restaurant.restaurantId}" name="restid"></div></td>
 								<td><img width='120' height='120'
 									src='restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
 								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
@@ -176,8 +176,42 @@
             
         });
 		
+		//抓餐廳tag
+        let n = $("div[name='restid']");
+//         console.log($("div[name='restid']"));
+//         console.log(n.length);
+//         console.log(n[0].id);
+        
+        for(let i=0;i<n.length;i++){
+    	var urls="${pageContext.request.contextPath}/";
+		urls+="<c:url value='restTag/'/>"+n[i].id;										
+// 		console.log(urls);
+		
+		$.ajax({
+			type: "GET",
+			url: urls,				
+			dataType: "text",
+			success: function (response) {
+				var divFoodTag = document.getElementById(n[i].id);
+			
+				txt =response;
+				$(divFoodTag).html(txt);
+
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+		
+		
+		});
+        }
+		
+        
         
     })
+    
+    
+    
 </script>
 
 

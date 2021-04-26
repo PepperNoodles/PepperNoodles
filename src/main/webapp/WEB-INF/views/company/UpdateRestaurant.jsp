@@ -217,6 +217,13 @@ footer {
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
+							<h5 style="color: #FF1493">標籤：</h5>
+							<form:select path="foodTag">
+								<form:option label="請挑選" value="-1" />
+								<form:options items="${foodTagList}" itemLabel='foodTagName'
+									itemValue='foodTagIid' />
+							</form:select>
+							<form:errors path="foodTag"  cssClass="error" />
 							<br> <input type='button' value="提交" id="checkBeforeSubmit">
 							<span id="submitError"></span>
 						</div>
