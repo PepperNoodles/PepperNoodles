@@ -1,5 +1,7 @@
 package com.infotran.springboot.commonmodel;
 
+import java.sql.Blob;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Component
@@ -24,13 +28,16 @@ public class MenuDetail {
 	@Column(name = "MenuDetail_id")
 	private Integer menuDetailId;
 	
+	@JsonIgnore
 	@Column(name = "MenuDetail")
-	private String dishImageName;
+	private Blob dishImage;
+	
 	
 	@Transient
 	@Column(name = "fk_restaurant_id")
 	private Integer restaurantId;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_restaurant_id")
 	private Restaurant restaurant;
@@ -43,12 +50,13 @@ public class MenuDetail {
 		this.menuDetailId = menuDetailId;
 	}
 
-	public String getDishImageName() {
-		return dishImageName;
+
+	public Blob getDishImage() {
+		return dishImage;
 	}
 
-	public void setDishImageName(String dishImageName) {
-		this.dishImageName = dishImageName;
+	public void setDishImage(Blob dishImage) {
+		this.dishImage = dishImage;
 	}
 
 	public Integer getRestaurantId() {

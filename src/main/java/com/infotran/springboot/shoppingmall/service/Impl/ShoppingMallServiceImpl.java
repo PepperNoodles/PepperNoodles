@@ -1,9 +1,11 @@
 package com.infotran.springboot.shoppingmall.service.Impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import com.infotran.springboot.shoppingmall.dao.ProductRepository;
 import com.infotran.springboot.shoppingmall.model.Product;
 import com.infotran.springboot.shoppingmall.service.ShoppingMallService;
@@ -20,6 +23,7 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 
 	@Autowired
 	public ProductRepository productrepository;
+
 
 	@Override
 	public Product save(Product product) {
@@ -96,12 +100,8 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 	@Override
 	public List<Product> getProductsBySearchAndPriceRange(String input, Integer startPrice, Integer endPrice,int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "productPrice");
-		System.out.println(input+":"+startPrice+":"+endPrice);
 		Page<Product> pageResult = productrepository.findBySearchAndPriceBetween(input,startPrice, endPrice,pageable);
 		List<Product> productListByTagAndPriceRange = pageResult.getContent();
-		for (Product p : productListByTagAndPriceRange) {
-			System.out.println("pname= "+ p.getProductName());
-		}
 		return productListByTagAndPriceRange;
 	}
 	
@@ -182,9 +182,6 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		Page<Product> pageResult = productrepository.findByTag(aacountindex, startPrice, endPrice, pageable);
 		List<Product> productListByTagAndPriceRange = pageResult.getContent();
 		// test
-		for (Product p : productListByTagAndPriceRange) {
-			System.out.println(p.getProductName());
-		}
 		return productListByTagAndPriceRange;
 	}
 	
@@ -206,9 +203,6 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		Page<Product> pageResult = productrepository.findByProductMainClass(MainClassname, pageable);
 		List<Product> productListByMainClass = pageResult.getContent();
 		// test
-		for (Product p : productListByMainClass) {
-			System.out.println(p.getProductName());
-		}
 		return productListByMainClass;
 	}
 	
@@ -230,9 +224,6 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 				pageable);
 		List<Product> productListByMainClassAndPriceRange = pageResult.getContent();
 		// test
-		for (Product p : productListByMainClassAndPriceRange) {
-			System.out.println(p.getProductName());
-		}
 		return productListByMainClassAndPriceRange;
 	}
 	
@@ -253,9 +244,6 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		Page<Product> pageResult = productrepository.findByProductDetailClass(DetailClassName, pageable);
 		List<Product> productListByDetailClass = pageResult.getContent();
 		// test
-		for (Product p : productListByDetailClass) {
-			System.out.println(p.getProductName());
-		}
 		return productListByDetailClass;
 	}
 	
@@ -277,9 +265,6 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 				pageable);
 		List<Product> productListByDetailClassAndPriceRange = pageResult.getContent();
 		// test
-		for (Product p : productListByDetailClassAndPriceRange) {
-			System.out.println(p.getProductName());
-		}
 		return productListByDetailClassAndPriceRange;
 	}
 	
@@ -312,6 +297,8 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		Product product = null;
 		if (op.isPresent()) {
 			product = op.get();
+		} else {
+			throw new RuntimeException("Member(id=" + productId + ")不存在");
 		}
 		return product;
 	}

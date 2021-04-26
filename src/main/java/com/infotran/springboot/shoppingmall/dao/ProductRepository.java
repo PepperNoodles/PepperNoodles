@@ -53,6 +53,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	List<Product> findByProductPriceBetween(Integer startPrice, Integer endPrice);
 	
+	
+	@Query(value = "select p from Product p where p.productPrice BETWEEN ?1 AND ?2")
 	Page<Product> findPageByProductPriceBetween(Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	

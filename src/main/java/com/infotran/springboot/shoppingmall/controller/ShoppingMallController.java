@@ -3,36 +3,25 @@ package com.infotran.springboot.shoppingmall.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infotran.springboot.shoppingmall.model.OrderDetail;
-import com.infotran.springboot.shoppingmall.model.OrderList;
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.shoppingmall.model.Product;
 import com.infotran.springboot.shoppingmall.service.OrderListService;
 import com.infotran.springboot.shoppingmall.service.ShoppingMallService;
@@ -53,15 +42,21 @@ public class ShoppingMallController {
 	ServletContext ctx;
 	
 	@GetMapping(value="/tagproducts", produces = { "application/json; charset=UTF-8" })
-	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn() {
-		List<Product> productList = shopservice.getPagedProductsByTag("chris@gmail.com", 0, 4);
+	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn(
+			HttpServletRequest request) {
+		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
+		System.out.println(user.getAccountIndex());
+		List<Product> productList = shopservice.getPagedProductsByTag(user.getAccountIndex(), 0, 4);
 		return productList;
 	}
 	
 	@GetMapping(value="/seemoretagproducts", produces = { "application/json; charset=UTF-8" })
-	public Map<String,Object> seemoreProductsWithFoodtagsByClickOnSeeMoreBtn(){
-		List<Product> productList = shopservice.getPagedProductsByTag("chris@gmail.com", 0, 6);
-		Integer totalpage = shopservice.getBtnFromTag("chris@gmail.com", 0, 6).get("TotalPages");
+	public Map<String,Object> seemoreProductsWithFoodtagsByClickOnSeeMoreBtn(
+			@ModelAttribute("userAccount")UserAccount useraccount,
+			HttpServletRequest request){
+		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
+		List<Product> productList = shopservice.getPagedProductsByTag(user.getAccountIndex(), 0, 6);
+		Integer totalpage = shopservice.getBtnFromTag(user.getAccountIndex(), 0, 6).get("TotalPages");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("productlist", productList);
 		map.put("totalpage", totalpage);
@@ -163,7 +158,10 @@ public class ShoppingMallController {
 	
 	//pricerange的click事件
 	@GetMapping("getpricerange/{price}/{flag}")
-	public Map<String,Object> getProductsByClickOnPriceRange(@PathVariable(value="price")Integer price,@PathVariable(value="flag")Integer flag,@RequestParam(value="input",required = false)String input){
+	public Map<String,Object> getProductsByClickOnPriceRange(
+			@PathVariable(value="price")Integer price,
+			@PathVariable(value="flag")Integer flag,
+			@RequestParam(value="input",required = false)String input){
 		List<Product> productList = null ;
 		Map<String,Object> map = new HashMap<String,Object>();
 		Integer startPrice = price;
@@ -261,21 +259,23 @@ public class ShoppingMallController {
 	
 	//分頁click事件(ifprice==1是價格區間)
 	@GetMapping("/getpage/{ifprice}/{flag}/{page}")
-	public List<Product> getAllProductsByClickOnPage(@PathVariable(value="ifprice")Integer ifprice,@PathVariable(value="flag")Integer flag,@PathVariable("page") Integer page,@RequestParam(value="input",required = false)String input){
+	public List<Product> getAllProductsByClickOnPage(
+			@PathVariable(value="ifprice")Integer ifprice,
+			@PathVariable(value="flag")Integer flag,
+			@PathVariable("page") Integer page,
+			@RequestParam(value="input",required = false)String input){
 		List<Product> productList = null ; 
 		Integer startPrice =0;
 		Integer endPrice = 0;
-		if (ifprice>0) {
+		if (ifprice!=5) {
 			startPrice = ifprice;
 			endPrice = ifprice + 500;
 		}
-		if (0==ifprice) {//非 價格區間
+		if (5==ifprice) {//非 價格區間
 			if (1==flag) {//see more tag products
 				productList = shopservice.getPagedProductsByTag("chris@gmail.com", page, 6);
-				System.out.println("1");
 			} else if (2==flag) {//see more all products
 				productList = shopservice.getAllProducts(page, 6);
-				System.out.println("2");
 			} else if (3==flag) {//main class coupon
 				productList = shopservice.findByProductByMainClass("票券",page, 6);
 			} else if (4==flag) {//main class coupon
@@ -313,9 +313,9 @@ public class ShoppingMallController {
 			} else if (2==flag) {
 				productList = shopservice.findProductByPriceBetween(startPrice, endPrice, page, 6);
 			} else if (3==flag) {
-				productList = shopservice.findByProductByMainClassAndPriceRange("票券", startPrice, endPrice, page, 0);
+				productList = shopservice.findByProductByMainClassAndPriceRange("票券", startPrice, endPrice, page, 6);
 			} else if (4==flag) {
-				productList = shopservice.findByProductByMainClassAndPriceRange("食材", startPrice, endPrice, page, 0);
+				productList = shopservice.findByProductByMainClassAndPriceRange("食材", startPrice, endPrice, page, 6);
 			} else if (5==flag) {
 				productList = shopservice.findProductByDetailClassAndPriceRange("炸雞", startPrice, endPrice, page, 6);
 			} else if (6==flag) {

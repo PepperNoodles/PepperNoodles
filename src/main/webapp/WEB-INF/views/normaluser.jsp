@@ -15,7 +15,8 @@ Welcome normaluser  <br/>
 <sec:authorize access="isAuthenticated()">
     authenticated as <sec:authentication property="principal.username" /> 
 </sec:authorize>
-<div id="time">2</div>
+
+<div id="time">1</div>
 
 <script>
 $(window).on('load', function () {
@@ -30,14 +31,13 @@ $(window).on('load', function () {
 		success: function (response) {
 			console.log(response);	
 			$(function () {
-				setInterval(ChangeTime, 500);
+				setInterval(ChangeTime, 100);
 				});		
 		},
 		error: function (thrownError) {
 			console.log(thrownError);
 		}
 	});
-
 	
 	
 	function ChangeTime() {

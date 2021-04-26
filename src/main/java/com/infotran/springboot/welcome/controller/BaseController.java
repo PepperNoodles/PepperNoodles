@@ -31,7 +31,11 @@ public class BaseController {
 	public String goInclude() {
 		return "includePage/includeNav";
 	}
-	
-	
+
+	@GetMapping("/restPage")
+	public String template123() {
+		return "restaurantPage/restaurantPage";
+	}
+
 
 }

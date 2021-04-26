@@ -135,9 +135,8 @@ public class UserAccountController {
 		System.out.println("fuck======================================================0");
 //		UserAccount useraccount1 = new UserAccount();
 		useraccount1.setAccountIndex(dispatch.get("accountIndex"));
-		useraccount1.setPassword(dispatch.get("password"));
 		//幫密碼加密
-		String bcEncode1 = new BCryptPasswordEncoder().encode(useraccount1.getPassword());
+		String bcEncode1 = new BCryptPasswordEncoder().encode(dispatch.get("password"));
 		useraccount1.setPassword(bcEncode1);
 		userDetail.setRealName(dispatch.get("realName"));
 		userDetail.setNickName(dispatch.get("nickname"));
@@ -310,7 +309,7 @@ public class UserAccountController {
 		return "ok";
 	}
 	
-	
+	//權限異動
 	@GetMapping(value = "/enabled/{accountIndex}")
 	public String enabled(@PathVariable("accountIndex") String accountIndex , Model model) {
 		UserAccount account = uSysServiceImpl.findByAccountIndex(accountIndex);

@@ -3,7 +3,6 @@ package com.infotran.springboot.companysystem.service;
 import java.util.List;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
-import com.infotran.springboot.commonmodel.UserAccount;
 
 public interface CompanyDetailService {
 	CompanyDetail insert(CompanyDetail comBean);

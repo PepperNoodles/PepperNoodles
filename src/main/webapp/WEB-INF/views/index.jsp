@@ -153,8 +153,7 @@
 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
 													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
 												</ul>	
-												</li></c:otherwise>
-												
+												</li></c:otherwise>					
 											</c:choose>
 										</ul>
 									</nav>
