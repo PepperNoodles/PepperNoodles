@@ -45,7 +45,7 @@ $j(document).ready(function(){
 	//選擇開始時間
 	$j("#eventStartDate").datepicker({
 		showOn : "button",
-		buttonImage : "images/company/1.png",
+		buttonImage : "images/company/date.png",
 		buttonImageOnly : true,
 // 		minDate: 0,
 		onClose: function(selectedDate) {
@@ -56,7 +56,7 @@ $j(document).ready(function(){
 	//選擇結束時間-不能比開始時間小
 	$j("#eventEndDate").datepicker({
 		showOn : "button",
-		buttonImage : "images/company/1.png",
+		buttonImage : "images/company/date.png",
 		buttonImageOnly : true,
 		changeMonth: true,
 		changeYear: true,
@@ -100,6 +100,7 @@ $j(document).ready(function(){
 			async : true,
 			success: function (result) {
 				alert("新增成功");
+			location.href="http://localhost:9090/PepperNoodles/event";
 			},
 	        error: function (result) {
 // 				alert("新增失敗");
@@ -108,8 +109,12 @@ $j(document).ready(function(){
 		
 	});
 	
+	
 		
 });
+
+
+
 	
 </script>
 <style>
@@ -127,6 +132,22 @@ table {
 buttonImage{
 	height: 20px
 }
+.page{
+	background-color:#FFFAF4;
+	border:5px	#842B00 double;
+	margin:0px 20px 20px 0px; 
+	border-radius: 10px;
+}
+.time{
+	color: red;
+}
+.img{
+	 opacity: 0.5;
+}
+body {
+　background-image: url(<c:url value="/images/company/event.jpeg"/>);
+}
+
 </style>
 </head>
 <body>
@@ -142,8 +163,8 @@ buttonImage{
         	</div>
         </div>
         
-		<div class="col-lg-10 nopadding " >
-			<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/event.jpeg"/>)">
+		<div class="col-lg-10 nopadding" >
+<%-- 			<div class="image-container set-full-height img" style="background-image: url(<c:url value="/images/company/event.jpeg"/>)" > --%>
 				<br><br><br>
 				<table class="container" border='1' cellpadding="3" cellspacing="1">
 					<tr>
@@ -156,6 +177,7 @@ buttonImage{
 								<input hidden type="file" id="eventPicture" accept="image/*" name="photo">
 								<br>
 								上傳活動圖片
+								<br><br>
 							</div>
 						</th>
 					</tr>
@@ -192,7 +214,56 @@ buttonImage{
 						<td colspan="4" style="text-align:right;" id="butAdd"><br>一鍵新增</td>
 					</tr>
 				</table>
+				<br>
+				<hr>
+				<div id="menuList">
+      				<form id='deleteform' method='POST' name='form1'>
+						<input type='hidden' name='_method' value='DELETE'>
+					</form>
 				
+				<c:choose>
+					<c:when test="${empty events}">
+	    				<h4 style="text-align:center">沒有任何活動</h4><br> 
+					</c:when>
+					<c:otherwise>
+					<div class="container">
+						<div class="row ml-2">
+							<c:forEach var='events' items='${events}'>
+								<div class="page col-3 pl-3 ml-3">
+									<div class="item">
+										<P></P>
+										<a href="<c:url value='/getEventPicture/${events.eventId}'/>" >
+											<img width="100%"  src="<c:url value="/getEventPicture/${events.eventId}"/>" />
+										</a>
+										<p />
+										<h4>${events.eventName}</h4>
+										<p class="time">${events.eventStartDate} - ${events.eventEndDate}</p>
+										<P>${events.content}</P>
+									</div>
+								</div>
+								<br><br><br><br><br>
+						
+						
+						
+						
+						
+						
+						
+						</c:forEach>
+      					</div>
+      					<!-- row 結束 -->
+      				</div>
+      				<!-- container 結束 -->
+					</c:otherwise>
+				</c:choose>
+				</div>
+			
+			
+			
+			
+			
+			
+			
 				
 			</div>
 		<!--  big container -->
