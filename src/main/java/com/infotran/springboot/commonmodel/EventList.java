@@ -1,5 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
+import java.sql.Blob;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class EventList {
 	private String content;
 	
 	@Column(name = "EventPicture")
-	private byte[] eventPicture;
+	private Blob eventPicture;
 	
 	@Column(name = "EventStartDate")
 	private Date eventStartDate;
@@ -72,11 +73,11 @@ public class EventList {
 		this.content = content;
 	}
 
-	public byte[] getEventPicture() {
+	public Blob getEventPicture() {
 		return eventPicture;
 	}
 
-	public void setEventPicture(byte[] eventPicture) {
+	public void setEventPicture(Blob eventPicture) {
 		this.eventPicture = eventPicture;
 	}
 

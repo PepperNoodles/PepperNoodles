@@ -51,7 +51,7 @@
    
   </li>
   <li class="nav-item">
-    <a class="nav-link leftBar" href="#">活動資訊</a>
+    <a class="nav-link leftBar" href="<c:url value='/event' />">活動資訊</a>
   </li>
   <li class="nav-item">
     <a class="nav-link leftBar" href="#">評論專區</a>
