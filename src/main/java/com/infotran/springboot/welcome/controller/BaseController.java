@@ -32,10 +32,9 @@ public class BaseController {
 		return "includePage/includeNav";
 	}
 
-	@GetMapping("/temp123")
-	@ResponseBody
+	@GetMapping("/restPage")
 	public String template123() {
-		return "ok";
+		return "restaurantPage/restaurantPage";
 	}
 
 
