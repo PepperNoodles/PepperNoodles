@@ -233,14 +233,23 @@ public class RestaurantCRUDController {
 	public @ResponseBody Map<String,String> restTag(@PathVariable("id") Integer id) {
 		
 		Restaurant rest = restaurantService.get(id);
-		System.out.println(rest);
+		System.out.println(rest.getRestaurantName());
+		Map<String,String> map = new HashMap<String, String>();
 		
 		Set<FoodTag> set = rest.getFoodTag();
+		for(FoodTag tag:set) {
+			
+			map.putIfAbsent(tag.getFoodTagIid().toString(),tag.getFoodTagName());
+
+		}
 		
-		Map<String,String> map = new HashMap<String, String>();
+		
 		Iterator<FoodTag> it = set.iterator();
 		 
 		while (it.hasNext()) {   
+			
+			
+			
              System.out.println("餐廳標籤:"+it.next().getFoodTagName());}
 
 		return map;
