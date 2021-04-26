@@ -3,8 +3,10 @@ package com.infotran.springboot.companysystem.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +72,32 @@ public class RestaurantCRUDController {
 		return "company/AllRestaurants";
 	}
 	
+	//建立餐廳list基本資料 for 新增餐廳使用
+
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/foodTagJson")
+	public @ResponseBody ArrayList<Map> foodTagJsonData(Model model) {
+		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
+		ArrayList<Map> foodTagJsonList=new ArrayList<Map>();
+		for(FoodTag tag:foodTagList) {
+			System.out.println(tag.getFoodTagIid()+":"+tag.getFoodTagName());
+			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+			map.put("value",tag.getFoodTagIid());
+			map.put("text",tag.getFoodTagName());
+			map.put("continent","Asia");
+			foodTagJsonList.add(map);
+		}
+		model.addAttribute("foodTagJsonList", foodTagJsonList);
+		return foodTagJsonList;
+	}
+
+	
+	@GetMapping("/test")
+	public String test(Model model) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println("showall"+model.getAttribute("restaurants"));
+		return "company/Tagtest";
+	}
 	
 	
 	// 連進新增餐廳時 給預設值 回傳新增頁
