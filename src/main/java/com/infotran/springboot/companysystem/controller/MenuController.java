@@ -34,7 +34,7 @@ import com.infotran.springboot.companysystem.service.impl.MenuDetailServiceImpl;
 
 @Controller
 @RequestMapping("/rest")
-public class menuController {
+public class MenuController {
 	
 	@Autowired
 	private MenuDetailServiceImpl MenuDetailService;	
