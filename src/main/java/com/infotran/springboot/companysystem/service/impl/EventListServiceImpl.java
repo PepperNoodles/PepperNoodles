@@ -50,7 +50,7 @@ public class EventListServiceImpl implements EventListService {
 
 	@Override
 	public List<EventList> getByRest(Restaurant rest) {
-		Pageable pageable = PageRequest.of(0, 200, Sort.Direction.ASC, "eventListId");
+		Pageable pageable = PageRequest.of(0, 200, Sort.Direction.ASC, "eventId");
 		List<EventList> eventList = eventListlDao.getByRest(rest, pageable);
 		return eventList;
 	}

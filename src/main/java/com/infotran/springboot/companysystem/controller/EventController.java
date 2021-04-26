@@ -1,18 +1,25 @@
 package com.infotran.springboot.companysystem.controller;
 
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,7 +44,11 @@ public class EventController {
 	private RestaurantService restaurantService;
 	
 	@GetMapping("/event")
-	public String event() {
+	public String event(Model model , Integer restId) {
+		restId = 1;
+		Restaurant restaurant = restaurantService.findById(restId);
+		List<EventList> events =  eventListService.getByRest(restaurant);
+		model.addAttribute("events", events);	
 		return "event/addEvent";
 	}
 	
@@ -78,4 +89,28 @@ public class EventController {
 		eventListService.insert(event);
 		return toString;
 	}
+	
+	//秀照片
+	@GetMapping(path="/getEventPicture/{eventId}",produces = "image/jpeg")
+	public ResponseEntity<byte[]> getEventId(@PathVariable("eventId") Integer eventId) {
+		EventList event = eventListService.findById(eventId);
+		Blob photo=null;
+		byte[] eventPhoto=null;
+		photo = event.getEventPicture();
+		try {
+			int blobLength = (int) photo.length();  
+			eventPhoto = photo.getBytes(1, blobLength);
+			photo.free();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_JPEG);
+		return new ResponseEntity<byte[]>(eventPhoto,headers,HttpStatus.OK);		
+	}
+	
+	
+	
+	
+	
 }
