@@ -27,29 +27,28 @@
 	</div>
 
 <script>
-var cities = new Bloodhound({
+var foodTags = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   prefetch: 'http://localhost:9090/PepperNoodles/data/test.json'
-// prefetch: 'http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/assets/cities.json'
+
 });
-cities.initialize();
+foodTags.initialize();
 
 var elt = $('input');
 elt.tagsinput({
   itemValue: 'value',
   itemText: 'text',
   typeaheadjs: {
-    name: 'cities',
+    name: 'foodTags',
     displayKey: 'text',
-    source: cities.ttAdapter()
+    source: foodTags.ttAdapter()
   }
 });
-elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
+elt.tagsinput('add', { "value": 1 , "text": "cruuy"   , "continent": "Asia"    });
+elt.tagsinput('add', { "value": 2 , "text": "BBQ"  , "continent": "Asia"   });
+elt.tagsinput('add', { "value": 3 , "text": "pizza"      , "continent": "Asia" });
+
 </script>
 
 

@@ -66,8 +66,15 @@ public class RestaurantCRUDController {
 	
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
-	public String list(Model model) {
+	public String allRest(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println("showall"+model.getAttribute("restaurants"));
+		return "company/AllRestaurants";
+	}
+	// 顯示所有餐廳資料ByComId
+	@GetMapping("/showAllrestByComId/{comId}")
+	public String allRestById(Model model,@PathVariable("comId")Iterable<Integer> comId) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurantById(comId));
 		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/AllRestaurants";
 	}
