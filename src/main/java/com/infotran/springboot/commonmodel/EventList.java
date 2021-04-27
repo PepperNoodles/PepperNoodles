@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+
 @Entity
 @Component
 @Table(name = "eventList")

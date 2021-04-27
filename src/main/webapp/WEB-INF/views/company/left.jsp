@@ -47,14 +47,14 @@
     
   </li>
   <li class="nav-item">
-    <a class="nav-link leftBar"  href="<c:url value='/showAllrest' />">我的餐廳</a>
+    <a class="nav-link leftBar"  href="<c:url value='/showAllrestByComId/${comDetail.companyDetailId}' />">我的餐廳</a>
    
   </li>
   <li class="nav-item">
     <a class="nav-link leftBar" href="<c:url value='/event' />">活動資訊</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link leftBar" href="#">評論專區</a>
+    <a class="nav-link leftBar" href="<c:url value='/restPage' />">評論專區</a>
   </li>
   <li class="nav-item">
     <a class="nav-link leftBar" href="#">效益分析</a>

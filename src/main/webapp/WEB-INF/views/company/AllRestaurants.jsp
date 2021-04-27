@@ -38,19 +38,6 @@
 
 </head>
 <body>
-<!-- 	<!-- 讀取圖案 --> -->
-<!-- 	<div id="preloader-active"> -->
-<!-- 		<div -->
-<!-- 			class="preloader d-flex align-items-center justify-content-center"> -->
-<!-- 			<div class="preloader-inner position-relative"> -->
-<!-- 				<div class="preloader-circle" -->
-<!-- 					style="background-color: rgb(102, 102, 102);"></div> -->
-<!-- 				<div class="preloader-img pere-text"> -->
-<%-- 					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""> --%>
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
 
 	<!-- 最上層bar -->
 	<header>
@@ -135,7 +122,8 @@
 		<div align='center'>
 			<h3 style="color: red">所有餐廳</h3>
 			<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
-			<a href="<c:url value='/addrest'/> ">回新增頁</a>
+			<a href="<c:url value='/Company/company'/> ">回企業首頁</a>
+			<a href="<c:url value='/addrest'/> ">新增餐廳</a>
 			<hr>
 			<c:choose>
 				<c:when test="${empty restaurants}">
@@ -149,8 +137,9 @@
 			   <th width='120'>餐廳地址</th>
 			   <th width='80'>聯絡方式</th>
 			   <th width='80'>餐廳網站</th>
+			   <th width='80'>標籤</th>
 			   <th width='80'>環境照片</th>
-			   <th colspan='2' width='72'>資料維護</th>
+			   <th colspan='3' width='36'>資料維護</th>
 			</tr>
 						<c:forEach var='restaurant' items='${restaurants}'>
 							<tr>
@@ -158,10 +147,12 @@
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantAddress}</td>
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantContact}</td>
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantWebsite}</td>
+								<td style="text-align: center;font-weight: bold"><div id="${restaurant.restaurantId}" name="restid"></div></td>
 								<td><img width='120' height='120'
-									src='restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
-								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
-								<td style="font-weight: bold"><a class='deletelink' href="<c:url value='/deleteRest/${restaurant.restaurantId}' />">刪除</a></td>
+									src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
+									<td style="font-weight: bold"><a class='manulink' href="${pageContext.request.contextPath}/rest/menu/${restaurant.restaurantId}">新增菜單</a></td>
+								<td style="font-weight: bold"><a class='updatelink' href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯</a></td>
+								<td style="font-weight: bold"><a class='deletelink' href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除</a></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -185,8 +176,43 @@
         	return false;
             
         });
+		
+		//抓餐廳tag
+        let n = $("div[name='restid']");
+//         console.log($("div[name='restid']"));
+//         console.log(n.length);
+//         console.log(n[0].id);
+        
+        for(let i=0;i<n.length;i++){
+    	var urls="${pageContext.request.contextPath}/";
+		urls+="<c:url value='restTag/'/>"+n[i].id;										
+// 		console.log(urls);
+		
+		$.ajax({
+			type: "GET",
+			url: urls,				
+			dataType: "text",
+			success: function (response) {
+				var divFoodTag = document.getElementById(n[i].id);
+			
+				txt =response;
+				$(divFoodTag).html(txt);
 
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+		
+		
+		});
+        }
+		
+        
+        
     })
+    
+    
+    
 </script>
 
 

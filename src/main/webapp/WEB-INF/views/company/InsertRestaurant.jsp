@@ -230,9 +230,10 @@ footer {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-sm-offset-2">
-					<form:form id="insertform" method="POST" modelAttribute="restaurant" enctype='multipart/form-data'>
+					<form:form id="insertform" method="POST"
+						modelAttribute="restaurant" enctype='multipart/form-data'>
 						<!--綁定model中的restaurant-->
-							
+
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest</h1>
 							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
@@ -262,8 +263,16 @@ footer {
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
-							<br> <input type='button' value="提交" id="checkBeforeSubmit">
-							<span id="submitError"></span>
+							<br>
+							<h5 style="color: #FF1493">標籤：</h5>
+							<form:select path="foodTag">
+								<form:option label="請挑選" value="-1" />
+								<form:options items="${foodTagList}" itemLabel='foodTagName'
+									itemValue='foodTagIid' />
+							</form:select>
+							<form:errors path="foodTag"  cssClass="error" />
+							<br>&nbsp; <br> <input type='button' value="提交"
+								id="checkBeforeSubmit"> <span id="submitError"></span>
 						</div>
 						<div class="rest-picbox">
 							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
