@@ -123,10 +123,11 @@ public class menuController {
 	public String deleteMenuId(@PathVariable("menuDetailId") Integer menuDetailId) {
 		System.out.println("刪圖片");
 		MenuDetail menuDetail = MenuDetailService.findById(menuDetailId);
+		Integer restaurantId = menuDetail.getRestaurant().getRestaurantId();
+		System.out.println("restaurantId:"+restaurantId);
 		menuDetail.setRestaurant(null);
-		
 		MenuDetailService.deleteById(menuDetailId);
-		return "redirect:/rest/menu";
+		return "redirect:/rest/menu/"+restaurantId;
 	}
 		
 }
