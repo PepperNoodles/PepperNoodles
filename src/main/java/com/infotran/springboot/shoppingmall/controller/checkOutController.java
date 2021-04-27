@@ -150,7 +150,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://303b50d253e1.ngrok.io/PepperNoodles/NewFile");
+		aiocheckoutall.setReturnURL("https://f09741b1dd9d.ngrok.io/PepperNoodles/NewFile");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
@@ -171,8 +171,10 @@ public class checkOutController {
 		AioCheckOutALL aiocheckoutall = (AioCheckOutALL)context.getAttribute("aiocheckoutall");
 		String orderidstr = aiocheckoutall.getMerchantTradeNo().substring(8);
 		System.out.println("訂單編號"+orderidstr);
-		OrderList orlist = orlistservice.findById(Integer.valueOf(orderidstr));
+		OrderList orlist = orlistservice.findById(Integer.parseInt(orderidstr));
+		System.out.println("抓id出來的====>>>>>"+orlist.getStatus());
 		orlist.setStatus("已付款");
+		orlistservice.save(orlist);
 		return "ok";
 	}
 
