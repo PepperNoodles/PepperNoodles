@@ -99,6 +99,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 			useraccount = userlist.get(0);
 			username = useraccount.getAccountIndex();
 		}
+
 		return username;
 	}
 
