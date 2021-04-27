@@ -93,6 +93,12 @@ public class UserSysController {
 			return null;
 	}
 	
+	//前往websocket
+	@GetMapping("/user/websocket")
+	public String userMain() {
+		return "websocket/index";
+	}
+	
 	
 	//從Authentication取得登入者腳色的方法(但應該用不到ㄌ因為前端可以直接ONLOAD用
 	public String returnRole() {
@@ -672,6 +678,8 @@ public class UserSysController {
 	public UserAccount getUserByIndex(@PathVariable("userAccountIndex") String accIndex) {
 		return uSysServiceImpl.findByAccountIndex(accIndex);
 	}
+	
+	
 	
 	
 	//用id找回database user照片
