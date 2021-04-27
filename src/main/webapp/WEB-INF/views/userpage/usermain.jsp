@@ -149,6 +149,12 @@ table {
 									<button class="btn-link" id="checkRequestList"
 										style="color: black">查看邀請</button>
 								</a>
+								<a class="nav-item nav-link" id="nav-message-tab"
+									data-toggle="tab" href="#nav-message" role="tab"
+									aria-controls="nav-message" aria-selected="false">
+									<button class="btn-link" id="checkmessage"
+										style="color: black"><a href="<c:url value='/user/websocket'/>">聊天室</a> </button>
+								</a>
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
