@@ -40,12 +40,14 @@ public class UserAccount implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
+	@JsonIgnore
 	private Integer accountId;
 
 	@Column(name = "acoount_index")
 	private String accountIndex;
 
 	@Column(name = "password")
+	@JsonIgnore
 	private String password;
 	
 	@Column(name = "enabled")

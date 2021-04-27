@@ -1138,7 +1138,7 @@ $(document).ready(function() {
 	        cache: false,
 	        success: function (url) {
 // 	        	location.href = "";
-	        	window.open("http://localhost:9090/PepperNoodles"+url, '_blank');
+	        	window.open("http://localhost:433/PepperNoodles"+url, '_blank');
 	        },
 	        error: function (url) {
 	        	console.log("Problems everywhere");
