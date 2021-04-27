@@ -42,11 +42,10 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.companysystem.service.impl.CompanyDetailServiceImpl;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
-import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
-@SessionAttributes(names = {"updateRestaurant"} )
+@SessionAttributes(names = {"updateRestaurant","foodTagListLength"} )
 public class RestaurantCRUDController {
 	
 //	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
@@ -97,15 +96,18 @@ public class RestaurantCRUDController {
 	public @ResponseBody ArrayList<Map> foodTagJsonData(Model model) {
 		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
 		ArrayList<Map> foodTagJsonList=new ArrayList<Map>();
+		Integer foodTagListLength=0;
 		for(FoodTag tag:foodTagList) {
 			System.out.println(tag.getFoodTagIid()+":"+tag.getFoodTagName());
 			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 			map.put("value",tag.getFoodTagIid());
 			map.put("text",tag.getFoodTagName());
-			map.put("continent","Asia");
+//			map.put("continent","Asia");
 			foodTagJsonList.add(map);
+			foodTagListLength++;
 		}
 		model.addAttribute("foodTagJsonList", foodTagJsonList);
+		model.addAttribute("foodTagListLength", foodTagListLength);
 		return foodTagJsonList;
 	}
 
@@ -115,6 +117,13 @@ public class RestaurantCRUDController {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
 		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/Tagtest";
+	}
+	
+	@GetMapping("/test2")
+	public String test2(Model model) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println("showall"+model.getAttribute("restaurants"));
+		return "company/Tagtest2";
 	}
 	
 	

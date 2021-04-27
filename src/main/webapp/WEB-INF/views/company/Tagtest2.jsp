@@ -28,25 +28,27 @@
 	</div>
 	<button id="click1">click1</button>
 	<div>
-	<select multiple data-role="tagsinput">
-		<option value="Amsterdam">Amsterdam</option>
-		<option value="Washington">Washington</option>
-		<option value="Sydney">Sydney</option>
-		<option value="Beijing">Beijing</option>
-		<option value="Cairo">Cairo</option>
-	</select>
-	
-	<button id="select1">select1</button>
+		<select multiple data-role="tagsinput">
+			<option value="Amsterdam">Amsterdam</option>
+			<option value="Washington">Washington</option>
+			<option value="Sydney">Sydney</option>
+			<option value="Beijing">Beijing</option>
+			<option value="Cairo">Cairo</option>
+		</select>
+
+		<button id="select1">select1</button>
 	</div>
 
 
 	<script>
 		var foodTags = new Bloodhound({
-
 			datumTokenizer : Bloodhound.tokenizers.obj.whitespace('text'),
 			queryTokenizer : Bloodhound.tokenizers.whitespace,
 			//   prefetch: `${pageContext.request.contextPath}/data/test.json`
-			remote : `${pageContext.request.contextPath}/foodTagJson`
+			remote : {
+				url : `${pageContext.request.contextPath}/foodTagJson`,
+				cache : false
+			}
 
 		});
 
@@ -54,46 +56,44 @@
 
 		var elt = $('input');
 		elt.tagsinput({
-			maxTags: 5,
 			itemValue : 'value',
 			itemText : 'text',
 
 			typeaheadjs : {
-				limit:100,
+				limit : 100,
 				name : 'foodTags',
 				displayKey : 'text',
 				source : foodTags.ttAdapter()
 			}
-	
-		});
-		elt.tagsinput('add', {
-			"value" : 1,
-			"text" : "curry",
-		});
-		elt.tagsinput('add', {
-			"value" : 2,
-			"text" : "BBQ",
-		});
-		elt.tagsinput('add', {
-			"value" : 3,
-			"text" : "pizza",
-		});
-		elt.tagsinput('add', {
-			"value" : 13,
-			"text" : "約會餐廳",
-		});
 
+		});
+		// 		elt.tagsinput('add', {
+		// 			"value" : 1,
+		// 			"text" : "curry",
+		// 		});
+		// 		elt.tagsinput('add', {
+		// 			"value" : 2,
+		// 			"text" : "BBQ",
+		// 		});
+		// 		elt.tagsinput('add', {
+		// 			"value" : 3,
+		// 			"text" : "pizza",
+		// 		});
+		// 		elt.tagsinput('add', {
+		// 			"value" : 13,
+		// 			"text" : "約會餐廳",
+		// 		});
 	</script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#click1').click(function() {
-				console.log('tag1='+$("#input1").val());
+				console.log('tag1=' + $("#input1").val());
 
 			});
-			
+
 			$('#select1').click(function() {
-				console.log('select1='+$("select").val());
+				console.log('select1=' + $("select").val());
 
 			});
 		});
