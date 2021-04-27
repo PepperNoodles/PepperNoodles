@@ -56,7 +56,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 	public List<Restaurant> getAllRestaurant() {
 		return restaurantDao.findAll();
 	}
+	
+	@Override
+	public List<Restaurant> getAllRestaurantById(Iterable<Integer> ids){
+		return restaurantDao.findAllById(ids);
 
+	}
 	@Override
 	public Restaurant findByRestaurantAddress(String RAddress) {
 		return restaurantDao.findByRestaurantAddress(RAddress);
@@ -79,6 +84,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 		List<FoodTag> taglist = foodTagRepository.findAll();
 		return taglist;
 	}
+
+
 
 
 
