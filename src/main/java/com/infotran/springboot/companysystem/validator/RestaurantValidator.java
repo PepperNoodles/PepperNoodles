@@ -1,10 +1,13 @@
 package com.infotran.springboot.companysystem.validator;
 
+import java.util.Set;
+
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 
 @Component
@@ -35,6 +38,11 @@ public class RestaurantValidator implements Validator {
 		}
 		if (restaurant.getRestaurantContact().length() < 5) {
 			errors.rejectValue("restaurantContact", "", "聯絡方式不能小於5個字元");
+		}
+		Set<FoodTag> foodtag = restaurant.getFoodTag();
+		
+		if (foodtag.isEmpty()) {
+			errors.rejectValue("foodTag","", "必須挑選分類欄的選項");
 		}
 
 	}

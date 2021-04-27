@@ -3,9 +3,13 @@ package com.infotran.springboot.companysystem.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,10 +36,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
+import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
+import com.infotran.springboot.companysystem.service.impl.CompanyDetailServiceImpl;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
+import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
@@ -56,23 +64,66 @@ public class RestaurantCRUDController {
 	@Autowired
 	UserSysService userSysService;
 	
+	@Autowired
+	CompanyDetailServiceImpl companyDetailServiceImpl;
+	
 	
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
-	public String list(Model model) {
+	public String allRest(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
 		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/AllRestaurants";
 	}
+	// 顯示所有餐廳資料ByComId
+	@GetMapping("/showAllrestByComId/{comId}")
+	public String allRestById(Model model,@PathVariable("comId")Integer comId) {
+		
+		System.out.println("comId="+comId);
+		CompanyDetail companyDetail = companyDetailServiceImpl.findById(comId);
+		
+		UserAccount userAccount = companyDetail.getUserAccount();
+		
+		Set<Restaurant> restaurants = userAccount.getRestaurant();
+		model.addAttribute("restaurants", restaurants);
+		
+		return "company/AllRestaurants";
+	}
 	
+	//建立餐廳list基本資料 for 新增餐廳使用
+
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/foodTagJson")
+	public @ResponseBody ArrayList<Map> foodTagJsonData(Model model) {
+		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
+		ArrayList<Map> foodTagJsonList=new ArrayList<Map>();
+		for(FoodTag tag:foodTagList) {
+			System.out.println(tag.getFoodTagIid()+":"+tag.getFoodTagName());
+			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+			map.put("value",tag.getFoodTagIid());
+			map.put("text",tag.getFoodTagName());
+			map.put("continent","Asia");
+			foodTagJsonList.add(map);
+		}
+		model.addAttribute("foodTagJsonList", foodTagJsonList);
+		return foodTagJsonList;
+	}
+
+	//標籤測試
+	@GetMapping("/test")
+	public String test(Model model) {
+		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
+		System.out.println("showall"+model.getAttribute("restaurants"));
+		return "company/Tagtest";
+	}
 	
 	
 	// 連進新增餐廳時 給預設值 回傳新增頁
 	@GetMapping(value = "/addrest")
 	public String initRestaurant(Model model) {
 		Restaurant rest= new Restaurant();
-		rest.setRestaurantName("幽靈炒飯");
-		rest.setRestaurantAddress("台北興安街");
+		rest.setRestaurantName("幽靈炒飯好吃");
+		rest.setRestaurantAddress("台北市信義路四段2號");
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
 		model.addAttribute("restaurant", rest);
@@ -85,8 +136,8 @@ public class RestaurantCRUDController {
 	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
 			HttpSession session) {
 		
-		
-		// 餐廳validator進行資料檢查
+		// 先關掉 tag有問題
+		// 餐廳validator進行資料檢查  
 		restvalidator.validate(rest, result);
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -108,22 +159,31 @@ public class RestaurantCRUDController {
 				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
 			}
 		}
-//		綁定account_id
+		//綁定account_id
 		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
 		UserAccount useracc=comDetail.getUserAccount();
-//		useracc是detached狀態 必須用userSysService在抓一次
+		//useracc是detached狀態 必須用userSysService在抓一次新的物件
 		String index=useracc.getAccountIndex();
 		UserAccount user = userSysService.findByAccountIndex(index);
-		//String index=useracc.getAccountIndex();
-		rest.setUserAccount(user);  //會報錯detached entity passed to persist:com.infotran.springboot.commonmodel.UserAccount
+	
+		rest.setUserAccount(user);  
 		
+		//嘗試印印看我輸入的TAG
+		Set<FoodTag> foodTagset=rest.getFoodTag();
+		Iterator<FoodTag> it = foodTagset.iterator();
+		 while (it.hasNext()) {   
+              System.out.println("欲新增餐廳添加標籤:"+it.next().getFoodTagName());}
 
 		restaurantService.save(rest);
-		System.out.println("新增成功");
+		System.out.println("餐廳新增成功");
+		
+
+
+		
 		return "redirect:/showAllrest";
 
 	}
-/*更新餐廳↓*/
+	/*更新餐廳↓*/
 	// 當使用者需要修改時，本方法送回含有餐廳資料的表單，讓使用者進行修改
 	@GetMapping("/updateRest/{restaurantId}")
 	public String showRestDataForm(@PathVariable("restaurantId") Integer id, Model model) {
@@ -137,7 +197,6 @@ public class RestaurantCRUDController {
 	@PostMapping("/updateRest/{restaurantId}")
 	public String modify(@ModelAttribute("updateRestaurant") Restaurant restaurant, BindingResult result, Model model,
 			@PathVariable("restaurantId") Integer id,@RequestPart("productImage")MultipartFile productImage ) {
-		System.out.println("餐廳名稱"+restaurant.getRestaurantName());
 		// validator檢查錯誤
 		restvalidator.validate(restaurant, result);
 		if (result.hasErrors()) {
@@ -169,14 +228,21 @@ public class RestaurantCRUDController {
 		
 		return "redirect:/showAllrest";
 	}
-/*更新餐廳↑*/
+	/*更新餐廳↑*/
 	
 	
 	// 刪除餐廳
-	@PostMapping("/deleteRest/{Id}")
+	@DeleteMapping("/deleteRest/{Id}")
 	public String deleterest(@PathVariable("Id") Integer id) {
-		restaurantService.delete(id);
+		
+		//先去除掉關聯性再刪掉 不然會連同AccountUser+Role的comapny一同刪除== 幹!
+		Restaurant restToDelete = restaurantService.get(id);
+		restToDelete.setUserAccount(null);
+		restToDelete.setFoodTag(null);
+		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
+		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
+		restaurantService.delete(id);	
 		return "redirect:/showAllrest";
 	}
 	
@@ -200,6 +266,43 @@ public class RestaurantCRUDController {
 		System.out.println(map.get("result"));
 		return map;
 	}
+	
+	//建立餐廳list基本資料 for 新增餐廳使用
+	@ModelAttribute
+	public void foodTagListData(Model model) {
+		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
+		model.addAttribute("foodTagList", foodTagList);
+	}
+	
+	//請求餐廳標籤
+	@GetMapping("/restTag/{id}")
+	public @ResponseBody Map<String,String> restTag(@PathVariable("id") Integer id) {
+		
+		Restaurant rest = restaurantService.get(id);
+		System.out.println(rest.getRestaurantName());
+		Map<String,String> map = new HashMap<String, String>();
+		
+		Set<FoodTag> set = rest.getFoodTag();
+		for(FoodTag tag:set) {
+			
+			map.putIfAbsent(tag.getFoodTagIid().toString(),tag.getFoodTagName());
+
+		}
+		
+		
+		Iterator<FoodTag> it = set.iterator();
+		 
+		while (it.hasNext()) {   
+			
+			
+			
+             System.out.println("餐廳標籤:"+it.next().getFoodTagName());}
+
+		return map;
+		
+	}
+	
+	
 	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
 		byte[] result = null;
