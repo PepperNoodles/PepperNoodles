@@ -11,10 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "foodtag_user")
@@ -25,22 +24,24 @@ public class FoodTagUser implements Serializable {
  @Id
  @Column(name="food_UserAccount_id")
  @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Integer FooTagUserId;
+ private Integer fooTagUserId;
  
- @Column(name="fk_foodTag_id",insertable = false,updatable = false)
+ @Column(name="fk_foodTag_id")
+ @Transient
  private Integer fkfoodTagid;
  
- @Column(name="fk_userAccount_id",insertable = false,updatable = false)
+ @Column(name="fk_userAccount_id")
+ @Transient
  private Integer fkuserAccountid;
  
  
- @ManyToOne(fetch = FetchType.LAZY, optional = false)
+ @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_userAccount_id")
  @JsonBackReference
  private UserAccount fkuserid;
  
  
- @ManyToOne(fetch = FetchType.LAZY, optional = false)
+ @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_foodTag_id")
  @JsonBackReference
  private FoodTag fkfoodtagid;
@@ -51,12 +52,12 @@ public class FoodTagUser implements Serializable {
 
 
  public Integer getFooTagUserId() {
-  return FooTagUserId;
+  return fooTagUserId;
  }
 
 
  public void setFooTagUserId(Integer fooTagUserId) {
-  FooTagUserId = fooTagUserId;
+	 this.fooTagUserId = fooTagUserId;
  }
 
 

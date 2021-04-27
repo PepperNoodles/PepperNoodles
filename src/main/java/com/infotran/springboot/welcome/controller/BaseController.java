@@ -22,9 +22,9 @@ public class BaseController {
 		return "mappage/showmap";
 	}
 	
-	@GetMapping("/user/websocket")
-	public String userMain() {
-		return "websocket/index";
+	@GetMapping("/backstage")
+	public String backtest() {
+		return "template/backstageTemp";
 	}
 	
 	@GetMapping("/include")
@@ -32,10 +32,9 @@ public class BaseController {
 		return "includePage/includeNav";
 	}
 
-	@GetMapping("/temp123")
-	@ResponseBody
+	@GetMapping("/restPage")
 	public String template123() {
-		return "ok";
+		return "restaurantPage/restaurantPage";
 	}
 
 

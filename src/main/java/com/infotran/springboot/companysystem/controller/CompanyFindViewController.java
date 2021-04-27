@@ -104,9 +104,5 @@ public class CompanyFindViewController {
 		return "company/left";
 	}
 	
-	@GetMapping("/test")
-	public String normaluser() {
-		return "test";
-	}
 
 }
