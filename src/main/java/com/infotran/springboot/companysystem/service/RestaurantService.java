@@ -14,5 +14,5 @@ public interface RestaurantService {
 	Restaurant findByRestaurantAddress(String RAddress);
 	Restaurant findById(Integer id);
 	List<FoodTag> getAllFoodTag();
-	List<Restaurant> getAllRestaurantById(Iterable<Integer> ids);
+	List<Restaurant> getAllRestaurantByComId(Integer comid);
 }

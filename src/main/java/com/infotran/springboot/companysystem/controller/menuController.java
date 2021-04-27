@@ -43,12 +43,12 @@ public class menuController {
 	private RestaurantService restaurantService;
 	
 	//新增菜單
-	@GetMapping("/menu")
-	public String menu(Model model , Integer restId) {
-		restId = 1;
+	@GetMapping("/menu/{restId}")
+	public String menu(Model model , @PathVariable("restId")Integer restId) {
 		Restaurant restaurant = restaurantService.findById(restId);
 		List <MenuDetail> menus =  MenuDetailService.getByRest(restaurant);
 		model.addAttribute("menus", menus);
+		model.addAttribute("restId", restId);
 		return "company/addMenu";
 	}
 	
@@ -81,7 +81,7 @@ public class menuController {
 			e.printStackTrace();
 		}
 
-		return "/rest/menu" ;
+		return "/rest/menu/" ;
 	}
 	
 	//秀某餐廳的全部菜單
