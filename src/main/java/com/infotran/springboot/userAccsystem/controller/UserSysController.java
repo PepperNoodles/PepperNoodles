@@ -43,6 +43,8 @@ import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.shoppingmall.model.OrderList;
+import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserDetailServiceImpl;
@@ -67,6 +69,8 @@ public class UserSysController {
 	@Autowired
 	MessageBoxServiceImpl msnServiceImpl;
 	
+	@Autowired
+	OrderListServiceImpl olistservice;
 	
 	//MessageBox 新增訊息的方法
 	@PostMapping(value = "/saveMessageBox")
@@ -87,6 +91,12 @@ public class UserSysController {
 			}
 		System.out.println("no logging user currently!!");
 			return null;
+	}
+	
+	//前往websocket
+	@GetMapping("/user/websocket")
+	public String userMain() {
+		return "websocket/index";
 	}
 	
 	
@@ -201,7 +211,6 @@ public class UserSysController {
 //		List<MessageBox> userMsn = msnServiceImpl.findByUserAccount(user);
 		List<MessageBox> userMsn = user.getMsnBox();
 		Hibernate.initialize(userMsn);
-		System.out.println("=============================>>>>>>>>>>這裡"+useraccount.getAccountIndex());
 		List<MessageBox> userMsnNull = new ArrayList<MessageBox>();
 		for(int i =0; i<userMsn.size(); i++) {
 			if(userMsn.get(i).getMessageBox()==null) {
@@ -671,6 +680,8 @@ public class UserSysController {
 	}
 	
 	
+	
+	
 	//用id找回database user照片
 	@GetMapping(path="/userProtrait/{userDetailID}",produces = "image/jpeg")
 	public ResponseEntity<byte[]> getUserDetailProtrait(@PathVariable("userDetailID") Integer detailId) {
@@ -701,5 +712,14 @@ public class UserSysController {
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(uPhoto,headers,HttpStatus.OK);		
 	}
+	
+	@GetMapping(value="/user/getOrderList")
+	public @ResponseBody Map<String,ArrayList<OrderList>> findUserOrderListByUserName(@ModelAttribute("userAccount")UserAccount user){
+		Map<String,ArrayList<OrderList>> mapview = new HashMap<String,ArrayList<OrderList>>();
+		ArrayList<OrderList>  orderViewList = olistservice.findOrderList(user.getAccountId());
+		mapview.put("AccountMemberOrderList", orderViewList);
+		return mapview;
+	}
+	
 	
 }

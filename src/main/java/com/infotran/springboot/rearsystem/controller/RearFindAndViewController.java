@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RearFindAndViewController {
 
 	
-	@GetMapping("/rearStage")
+	@GetMapping("/indexRearStage")
 	public String shoppingMall() {
-		return "rearStage/rearStage";
+		return "rearStage/indexRearStage";
 	}
 	
-	
+	@GetMapping("/userAccountRearStage")
+	public String rearsystem() {
+		return "rearStage/userAccountRearStage";
+	}
+
 }

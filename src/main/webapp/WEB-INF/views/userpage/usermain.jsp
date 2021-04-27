@@ -2,44 +2,25 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@include file="../includePage/includeNav.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Template For inClude</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
-<!-- favicon的圖-每頁都要加 -->
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<!-- <link rel='stylesheet' -->
-<%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
-<link rel="stylesheet"
-	href="<c:url value='/css/fontawesome-all.min.css' />" />
-		<!-- JS here -->
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js' />"></script>
-
-
+<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
+<script src="<c:url value='/scripts/popper.min.js' />"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
 .header {
 	background-color: #000000;
 }
-
 a {
 	color: black;
 }
-
 .nav a {
 	color: black;
 }
@@ -61,6 +42,10 @@ table {
 	border: solid black 1px;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
+}
+.display{
+ 	font-family: 'Noto Serif TC', serif;
+ 	font-size: 15px; 
 }
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
@@ -87,7 +72,7 @@ table {
 </script>
 </head>
 <body>
-	<%@include file="../includePage/includeNav.jsp"%>
+	
 	<!-- 讀取圖案 -->
 	<div id="preloader-active" >
 		<div
@@ -103,7 +88,7 @@ table {
 	</div>
 
 	<div class="container-fluid">
-		<div class="container mt-10" style="width: 80%; height: 100vh">
+		<div class="container mt-10" style="width: 100%; height: 100vh">
 			<!--有照片的那個bar  -->
 			<div class="d-flex">
 				<div class="p-2">
@@ -122,11 +107,18 @@ table {
 			<!--左邊的分隔用-->
 			<div class="d-flex" >
 				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Home</a> 
-					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false"><i class="fas fa-users"></i>好友</a> 
-					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>
-					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>
-					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+						<i class="fas fa-home"></i>Home</a> 
+					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
+						<i class="fas fa-users"></i>好友</a> 
+					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false">
+						<i class="fas fa-file-alt"></i>關於我</a>
+					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
+						<i class="fas fa-comments"></i>留言區</a>
+					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
+						<i class="fas fa-heart"></i>收藏區</a>
+					<a class="nav-link" id="v-pills-userOrderList-tab" data-toggle="pill" href="#v-pills-userOrderList" role="tab" aria-controls="v-pills-userOrderList" aria-selected="false">
+						<i class="fas fa-file-alt"></i>查詢訂單</a>
 
 				</div>
 				<div class="tab-content" id="v-pills-tabContent col-9">
@@ -175,6 +167,12 @@ table {
 									aria-controls="nav-friendQequest" aria-selected="false">
 									<button class="btn-link" id="checkRequestList"
 										style="color: black">查看邀請</button>
+								</a>
+								<a class="nav-item nav-link" id="nav-message-tab"
+									data-toggle="tab" href="#nav-message" role="tab"
+									aria-controls="nav-message" aria-selected="false">
+									<button class="btn-link" id="checkmessage"
+										style="color: black"><a href="<c:url value='/user/websocket'/>">聊天室</a> </button>
 								</a>
 							</div>
 						</nav>
@@ -270,7 +268,27 @@ table {
 					<div class="tab-pane fade" id="v-pills-userCollection"
 						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
 						<h2>userCollection</h2>
-
+					</div>
+					
+					<!-- 訂單表 -->
+					<div class="tab-pane fade" id="v-pills-userOrderList" role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+						<h2>訂單明細</h2>
+						<table  id="orderlist" class="display">
+							<thead>
+								<tr>
+									<th>編號</th>
+									<th>訂單時間</th>
+									<th>收件人</th>
+									<th>電話</th>
+									<th>收件地址</th>
+									<th>價格</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -283,8 +301,77 @@ table {
 
 
 	<script>
-// 					$(document).ready(function(){ 
-					$(window).on('load', function () {
+			$(document).ready(function () {
+				
+					var Table = $("#orderlist").DataTable({
+						 language: {
+						        "processing": "處理中...",
+						        "loadingRecords": "載入中...",
+						        "lengthMenu": "顯示 _MENU_ 項結果",
+						        "zeroRecords": "沒有符合的結果",
+						        "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+						        "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+						        "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+						        "infoPostFix": "",
+						        "search": "搜尋:",
+						        "paginate": {
+						            "first": "第一頁",
+						            "previous": "上一頁",
+						            "next": "下一頁",
+						            "last": "最後一頁"
+						        },
+						        "aria": {
+						            "sortAscending": ": 升冪排列",
+						            "sortDescending": ": 降冪排列"
+						        }
+						    },
+						    data:[],
+						    columns: [
+				                { "data": "uuid"  },
+				                { "data": "orderCreatedDate" ,
+			                	  "render": function (data, type, row, meta) {
+			                       return data.substr(0,4)+'/'+data.substr(5,2)+'/'+data.substr(8,2)}},
+				                { "data": "receiveName" },
+				                { "data": "receivePhone" },
+				                { "data": "receiveAddress" },
+				                { "data": "totalCost" }
+						    ],
+						    filter: true,
+						    bPaginate: true,
+						    info: true,
+						    ordering: true,
+						    processing: true,
+						    retrieve: true,
+						    searching: true, //關閉filter功能
+			                columnDefs: [{
+			                    targets: [3],
+			                    orderable: true,
+			                }]
+						});
+					
+						
+						$.ajax({
+							method:"GET",	
+							url:"/PepperNoodles/user/getOrderList",
+							contentType: 'application/json; charset=utf-8',
+							dataType:'json',
+					        async : true,
+					        cache: false,
+					        success:function(result){
+					        	console.log("yes123");
+					        	console.log(JSON.stringify(result));
+					        	console.log(result.AccountMemberOrderList);
+					        	Table.clear().draw();
+					            Table.rows.add(result.AccountMemberOrderList).draw();
+					        },
+					        error: function (result) {
+					        	console.log("有問題");
+					        }
+						});
+						
+						
+						
+						///////////////////////////////////////////////
 						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
@@ -474,7 +561,7 @@ table {
 						}
 						//addFriend按鈕的function
 						function addFriend(){
-							alert(this.value);
+// 							alert(this.value);
 							let urls="${pageContext.request.contextPath}/";
 							urls+="<c:url value='MainUserAddFriendwithIndex'/>";
 							urls+="/${userAccount.accountIndex}"
@@ -518,16 +605,16 @@ table {
 //							dataType:"text",
 //							data: JSON.stringify(RequestContent),
 				        success: function (result) {
-			        		alert(result.length);
+// 			        		alert(result.length);
 			        		commentsLength =result.length;
 //				        		alert(result[0].replyMessageBoxes);
 			        		console.log(JSON.stringify(result));
-			        		console.log(JSON.stringify(result[0].time));
+// 			        		console.log(JSON.stringify(result[0].time));
 			        		 var aDay = new Date();
 			        		 aDay.setHours(9);
 			        		 aDay.setMinutes(0);
 			        		 aDay.setSeconds(0);
-			        		 var sun = result[0].time;
+// 			        		 var sun = result[0].time;
 			        		
 				        	for( i =0; i<result.length; i++){
 				        		
@@ -576,7 +663,7 @@ table {
 				        	
 				        },
 				        error: function (result) {
-				        	alert(result);
+// 				        	alert(result);
 				            $("#commentsForUser").text("fail"); //填入提示訊息到result標籤內
 				        }
 					});
@@ -594,7 +681,7 @@ table {
 								url:  urls,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -609,8 +696,8 @@ table {
 							var messageIdValue = $(this).next().text();
 							var urls           ="/PepperNoodles/user/addNewReplyCommentAjax/" + messageIdValue;
 							var text           =$(this).prev().val();
-							alert(messageIdValue);
-							alert(text);
+// 							alert(messageIdValue);
+// 							alert(text);
 							
 							var data =
 							{
@@ -631,7 +718,7 @@ table {
 								data:JSON.stringify(data),
 								
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -644,14 +731,14 @@ table {
 		        			e.preventDefault;
 		        			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
 							var id =$(this).next().text();
-							alert(id);
+// 							alert(id);
 							urls += id;
 							$.ajax({
 								type:"GET",
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {

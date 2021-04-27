@@ -133,7 +133,7 @@
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
 	<!-- Jquery, Popper, Bootstrap -->
-		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script> --%>
 
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 

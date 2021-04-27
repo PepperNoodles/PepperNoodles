@@ -9,7 +9,7 @@ import com.infotran.springboot.commonmodel.UserAccount;
 
 
 
-public interface UserAccountRepository  extends JpaRepository<UserAccount, String>{
+public interface UserAccountRepository  extends JpaRepository<UserAccount, Integer>{
 
 	public Optional<UserAccount> findByAccountIndex(String name);
 	

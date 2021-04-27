@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.infotran.springboot.websocket.model.SocketMessage;
 
 
 @Entity
@@ -138,7 +139,18 @@ public class UserAccount implements Serializable{
 	@OneToMany(mappedBy = "friends",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<FriendList> beFriends = new HashSet<FriendList>();
 
-
+//新增使用者websocket對話
+	//從左邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "mainUser",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private List<SocketMessage> mainMessage = new ArrayList<SocketMessage>();
+	
+	//被右邊找
+	@JsonIgnore
+	@OneToMany(mappedBy = "toUserAccounts",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
+	private List<SocketMessage> beMessage =new ArrayList<SocketMessage>();
+/////////////////////////////	
+	
 	// UserFollowerForm=============================================================
 	@JsonIgnore
 	@ManyToMany(mappedBy = "followers")
@@ -387,6 +399,31 @@ public class UserAccount implements Serializable{
 		this.msnBox = msnBox;
 	}
 
+
+
+	public List<SocketMessage> getMainMessage() {
+		return mainMessage;
+	}
+
+
+
+	public void setMainMessage(List<SocketMessage> mainMessage) {
+		this.mainMessage = mainMessage;
+	}
+
+
+
+	public List<SocketMessage> getBeMessage() {
+		return beMessage;
+	}
+
+
+
+	public void setBeMessage(List<SocketMessage> beMessage) {
+		this.beMessage = beMessage;
+	}
+	
+	
 	
 	
 }

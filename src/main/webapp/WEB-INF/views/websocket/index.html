@@ -121,7 +121,8 @@ $(window).load(function(){
 	        stompClient.send("/app/chat/"+selectedUser,{},JSON.stringify(
 	            {
 	                fromLogin:from,
-	                message:text
+	                message:text,
+	                to:selectedUser,
 	            }
 	        ));
 	    }
