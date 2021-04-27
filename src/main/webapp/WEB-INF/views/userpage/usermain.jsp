@@ -378,7 +378,7 @@ color: black;
 						///////////////////////////////////////////////
 	
 // 					$(document).ready(function(){ 
-					$(window).on('load', function () {
+// 					$(window).on('load', function () {
 						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
@@ -428,7 +428,7 @@ color: black;
 								}
 							});
 					
-						})
+						});
 						
 						
 						
@@ -1114,8 +1114,6 @@ color: black;
 						document.getElementById('wizard-picture').disabled=true;
 
 					});
-
-
 	
 				</script>
 
