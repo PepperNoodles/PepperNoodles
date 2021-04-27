@@ -51,7 +51,7 @@ public class RestaurantCRUDController {
 	
 //	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
 	String noImage = "/images/NoImage/restaurantdefault.png";
-
+	
 	@Autowired
 	ServletContext context;
 
@@ -133,8 +133,7 @@ public class RestaurantCRUDController {
 
 	// 新增餐廳
 	@PostMapping(value = "/addrest")
-	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,
-			HttpSession session) {
+	public String addrest(@ModelAttribute("restaurant") Restaurant rest, BindingResult result, Model model,	HttpSession session) {
 		
 		// 先關掉 tag有問題
 		// 餐廳validator進行資料檢查  
@@ -161,6 +160,7 @@ public class RestaurantCRUDController {
 		}
 		//綁定account_id
 		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
+		Integer companyDetailId = comDetail.getCompanyDetailId();
 		UserAccount useracc=comDetail.getUserAccount();
 		//useracc是detached狀態 必須用userSysService在抓一次新的物件
 		String index=useracc.getAccountIndex();
@@ -180,7 +180,7 @@ public class RestaurantCRUDController {
 
 
 		
-		return "redirect:/showAllrest";
+		return "redirect:/showAllrestByComId/"+companyDetailId;
 
 	}
 	/*更新餐廳↓*/
@@ -196,7 +196,7 @@ public class RestaurantCRUDController {
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
 	@PostMapping("/updateRest/{restaurantId}")
 	public String modify(@ModelAttribute("updateRestaurant") Restaurant restaurant, BindingResult result, Model model,
-			@PathVariable("restaurantId") Integer id,@RequestPart("productImage")MultipartFile productImage ) {
+			@PathVariable("restaurantId") Integer id,@RequestPart("productImage")MultipartFile productImage,HttpSession session ) {
 		// validator檢查錯誤
 		restvalidator.validate(restaurant, result);
 		if (result.hasErrors()) {
@@ -225,15 +225,17 @@ public class RestaurantCRUDController {
 			restaurant.setRestaurantPhoto(oldRestPhoto);
 			restaurantService.update(restaurant);
 		}
-		
-		return "redirect:/showAllrest";
+		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
+		Integer companyDetailId = comDetail.getCompanyDetailId();
+		return "redirect:/showAllrestByComId/"+companyDetailId;
 	}
 	/*更新餐廳↑*/
 	
 	
 	// 刪除餐廳
 	@DeleteMapping("/deleteRest/{Id}")
-	public String deleterest(@PathVariable("Id") Integer id) {
+	public String deleterest(@PathVariable("Id") Integer id,HttpSession session) {
+		
 		
 		//先去除掉關聯性再刪掉 不然會連同AccountUser+Role的comapny一同刪除== 幹!
 		Restaurant restToDelete = restaurantService.get(id);
@@ -243,7 +245,9 @@ public class RestaurantCRUDController {
 		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
 		restaurantService.delete(id);	
-		return "redirect:/showAllrest";
+		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
+		Integer companyDetailId = comDetail.getCompanyDetailId();
+		return "redirect:/showAllrestByComId/"+companyDetailId;
 	}
 	
 	// check地址有無餐廳註冊
