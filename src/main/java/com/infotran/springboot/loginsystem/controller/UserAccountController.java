@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.Roles;
@@ -203,9 +203,10 @@ public class UserAccountController {
 	
 	
 	@PostMapping(value="/CheckMemberAccount",consumes="application/json",produces="application/json")
-	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody String user){
+	public @ResponseBody Map<String,String> checkUserAccount(@RequestBody UserAccount user){
 		Map<String, String> map = new HashMap<>();
-		String userAccountName = service.checkUserAccount(user);
+		System.out.println(user);
+		String userAccountName = service.checkUserAccount(user.getAccountIndex());
 		map.put("username",userAccountName );
 		return map;
 	}
