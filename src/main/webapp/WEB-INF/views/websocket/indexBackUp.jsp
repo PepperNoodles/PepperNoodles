@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -11,7 +15,7 @@
     <!--    end libs for stomp and sockjs-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"
           type="text/css">
-    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="<c:url value='/css/chatstyle.css'/>" >
 </head>
 <body>
 <div class="container clearfix">
@@ -89,7 +93,7 @@
 <script>
 $(window).load(function(){
     console.log("this is ok");
-	const url = 'http://localhost:8080/websocket/';
+	const url = 'http://localhost:9090/PepperNoodles';
 	let stompClient;
 	let selectedUser;
 	
@@ -121,8 +125,7 @@ $(window).load(function(){
 	        stompClient.send("/app/chat/"+selectedUser,{},JSON.stringify(
 	            {
 	                fromLogin:from,
-	                message:text,
-	                to:selectedUser,
+	                message:text
 	            }
 	        ));
 	    }

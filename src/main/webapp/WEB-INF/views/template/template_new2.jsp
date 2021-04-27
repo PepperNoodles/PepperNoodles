@@ -16,19 +16,15 @@
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <link rel='stylesheet'
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> 
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
 <script type="text/javascript"
+	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-	
-
 
 <style>
-#aaa a{
-color:#000000;
-}
+
 </style>
 </head>
 <body>
@@ -47,23 +43,35 @@ color:#000000;
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-4" id="aaa">
-			<%@include file="../template/backstageTemp.jsp" %>
-		
-		
-		</div>
-		<div class="col-8">
-			<h1>test</h1>
-			<h1>test</h1>
-			<h1>test</h1>
-			<h1>test</h1>
-		
-		
-		</div>
+	<div>
+		<h1>test1111</h1>
+		<h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1><h1>test</h1>
+		<h1>test</h1>
+		<h1>test</h1>
+
+
+
+
+
 	</div>
 
-<%-- 	<%@include file="../includePage/includeFooter.jsp" %> --%>
+	<%@include file="../includePage/includeFooter.jsp" %>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
@@ -83,8 +91,6 @@ color:#000000;
  				'overflow' : 'visible'
  		});			
 			
- 			
- 			
  		});
  	</script>
 	<!-- JS here -->
