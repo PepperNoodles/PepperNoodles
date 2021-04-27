@@ -8,8 +8,6 @@
 <meta charset="UTF-8">
 <title>Rear Stahe</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<!-- <link rel="manifest" href="site.webmanifest"> -->
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
@@ -239,66 +237,7 @@ $(document).ready(function() {
                     <div class="col-xl-4 col-lg-4 col-md-6" style="border:1px solid red;color:black;">
                         <div class="row" style="border:1px solid red;padding:5px;">
                         	<div class="left-column-div" >
-                        		<input type="search" style="width:85%;" placeholder="炸雞、咖哩、冰淇淋...">
-                        		<span ><button style="color: black"><i class="fas fa-search"></i></button></span>
-                        	</div>
-                        	<div class="left-column-div" style="margin-top: 10px;">
-                        		<h4><a>商品類別</a></h4>
-                        	</div>
-                        	<div class="left-column-div" >
-                        		<div class="mainclass" style="">
-                        			<h4><a>票券</a></h4>
-                        		</div>
-                        		<div class="detailclass">
-                        			<ol class="ordered-list">
-                        				<li><a>炸雞</a></li>
-                        				<li><a>冰淇淋</a></li>
-                        				<li><a>咖哩</a></li>
-                        				<li><a>壽司</a></li>
-                        			</ol>
-                        		</div>
-                        	</div>
-                        	<div class="left-column-div" >
-                        		<div class="mainclass" style="">
-                        			<h4><a>食材</a></h4>
-                        		</div>
-                        		<div class="detailclass">
-                        			<ol class="ordered-list">
-                        				<li><a>火鍋</a></li>
-                        				<li><a>羊肉爐</a></li>
-                        				<li><a>佛跳牆</a></li>
-                        				<li><a>人蔘雞湯</a></li>
-                        			</ol>
-                        		</div>
-                        	</div>
-                        	<div class="left-column-div" >
-                        		<div class="mainclass" style="">
-                        			<h4><a>價格區間</a></h4>
-                        		</div>
-                        		<div class="detailclass">
-                        			<ol class="ordered-list">
-                        				<li><a>$0 - $500</a></li>
-                        				<li><a>$501 - $1000</a></li>
-                        				<li><a>$1001 - $1500</a></li>
-                        				<li><a>$1501 - $2000</a></li>
-                        				<li><a>$2001</a> <i class="fas fa-arrow-up"></i></li>
-                        			</ol>
-                        		</div>
-                        	</div>
-                        	<div class="left-column-div" >
-                        		<div class="mainclass" style="">
-                        			<h4><a>TAGS</a></h4>
-                        		</div>
-                        		<div class="detailclass button-group-area mt-10">
-                        			<a href="#" class="genric-btn primary-border small">炸雞</a>
-                        			<a href="#" class="genric-btn primary-border small">咖哩</a>
-                        			<a href="#" class="genric-btn primary-border small">冰淇淋</a>
-                        			<a href="#" class="genric-btn primary-border small">韓式燒烤</a>
-                        			<a href="#" class="genric-btn primary-border small">鮭魚壽司</a>
-                        			<a href="#" class="genric-btn primary-border small">火鍋</a>
-                        			<a href="#" class="genric-btn primary-border small">義大利麵</a>
-                        			<a href="#" class="genric-btn primary-border small">排骨飯</a>
-                        		</div>
+                        	<!-- left bar write here -->
                         	</div>
                         </div>
                     </div>

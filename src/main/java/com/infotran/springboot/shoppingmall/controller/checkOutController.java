@@ -169,9 +169,8 @@ public class checkOutController {
 	public @ResponseBody String getResultFromCreditCardPage() {
 		System.out.println("=================<<<<打回來了>>>>===================");
 		AioCheckOutALL aiocheckoutall = (AioCheckOutALL)context.getAttribute("aiocheckoutall");
-//		System.out.println(aiocheckoutall);
 		String orderidstr = aiocheckoutall.getMerchantTradeNo().substring(8);
-		System.out.println(orderidstr);
+		System.out.println("訂單編號"+orderidstr);
 		OrderList orlist = orlistservice.findById(Integer.valueOf(orderidstr));
 		orlist.setStatus("已付款");
 		return "ok";

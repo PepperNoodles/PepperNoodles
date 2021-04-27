@@ -263,6 +263,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			ifprice = 5;
 			flag = $(this).index("a")-50;
+			console.log("mainclass===>>"+flag);
 			var mainname=$(this).attr("id");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -323,6 +324,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			ifprice = 5;
 			flag = $(this).index("a")-55;//59
+			console.log("ingredientmainclass===>>"+flag);
 			var mainname=$(this).attr("id");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -385,7 +387,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			ifprice = 5;
 			flag = $(this).index("a")-49;//54
-			console.log(flag);
+			console.log("detailname====>>"+flag);
 			var detailname=$(this).attr("id");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -447,7 +449,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			ifprice = 5;
 			flag = $(this).index("a")-50;//60
-			console.log(flag);
+			console.log("ingredientname====>>"+flag);
 			var detailname=$(this).attr("id");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
@@ -658,6 +660,7 @@ $(document).ready(function() {
 			input = $("#searchall").val();
 			console.log(input);
 			$("#pframeall > div").remove();
+			console.log("flag"+flag);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpricerange/"+price+"/"+flag+"?input="+input+"",
@@ -720,6 +723,7 @@ $(document).ready(function() {
 			}
 			var page = $(this).attr("id");//第一頁
 			$("#pframeall > div").remove();
+			console.log("pagframe flag===>>"+flag);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpage/"+ifprice+"/"+flag+"/"+(page-1)+"?input="+input+"",
@@ -805,7 +809,6 @@ $(document).ready(function() {
 			modalbody.append(container);
 		});
 		//
-		//新增產品
 		var count = 0;
 		var result = {};
 		var temp = new Array();
@@ -815,6 +818,7 @@ $(document).ready(function() {
 		var id,name,amount,price;
 		var totalprice;
 		localStorage.clear();
+		//新增商品
 		$("body").on('click',('#addcart,#removecart,#purchase'),function(e){
 			e.preventDefault();
 			var dot   = $('.dot');

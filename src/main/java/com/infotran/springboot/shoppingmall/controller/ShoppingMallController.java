@@ -115,6 +115,7 @@ public class ShoppingMallController {
 		} else if ("ingredient".equals(mainname)) {
 			mainClassName = "食材";
 		}
+		System.out.println(mainname);
 		List<Product> productList= shopservice.findByProductByMainClass(mainClassName, 0, 6);
 		Integer totalpage =shopservice.getBtnFromMainClass(mainClassName, 0, 6).get("TotalPages");
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -177,72 +178,72 @@ public class ShoppingMallController {
 				totalpages = shopservice.getBtnFromAllAndPriceBetween(startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (3==flag) {//mainclass:3:coupon
+			} else if (8==flag) {//mainclass:3:coupon
 				productList = shopservice.findByProductByMainClassAndPriceRange("票券", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromMainClassAndPriceRange("票券", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (4==flag) {//mainclass:3:coupon
+			} else if (9==flag) {//mainclass:3:coupon
 				productList = shopservice.findByProductByMainClassAndPriceRange("食材", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromMainClassAndPriceRange("食材", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (5==flag) {
+			} else if (10==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("炸雞", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("炸雞", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (6==flag) {
+			} else if (11==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("冰淇淋", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("冰淇淋", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (7==flag) {
+			} else if (12==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("蔬菜水果", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("蔬菜水果", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (8==flag) {
+			} else if (13==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("甜點", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("甜點", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (9==flag) {
+			} else if (14==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("牛排", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("牛排", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (10==flag) {
+			} else if (15==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("火鍋", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("火鍋", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (11==flag) {
+			} else if (16==flag) {
 				productList =shopservice.findProductByDetailClassAndPriceRange("羊肉爐", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange("羊肉爐", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (12==flag) {//puretag
+			} else if (17==flag) {//puretag
 				productList =shopservice.getProductsByExactTagAndPriceRange("炸雞", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange("炸雞", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (13==flag) {//puretag
+			} else if (18==flag) {//puretag
 				productList =shopservice.getProductsByExactTagAndPriceRange("冰淇淋", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange("冰淇淋", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (14==flag) {//puretag
+			} else if (19==flag) {//puretag
 				productList =shopservice.getProductsByExactTagAndPriceRange("沙拉", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange("沙拉", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (15==flag) {//puretag
+			} else if (20==flag) {//puretag
 				productList =shopservice.getProductsByExactTagAndPriceRange("甜點", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange("甜點", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
 				map.put("totalpage",totalpages);
-			} else if (16==flag) {//puretag
+			} else if (21==flag) {//puretag
 				productList =shopservice.getProductsByExactTagAndPriceRange("火鍋", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange("火鍋", startPrice, endPrice, 0, 6).get("TotalPages");
 				map.put("productlist", productList);
@@ -276,33 +277,33 @@ public class ShoppingMallController {
 				productList = shopservice.getPagedProductsByTag("chris@gmail.com", page, 6);
 			} else if (2==flag) {//see more all products
 				productList = shopservice.getAllProducts(page, 6);
-			} else if (3==flag) {//main class coupon
+			} else if (8==flag) {//main class coupon
 				productList = shopservice.findByProductByMainClass("票券",page, 6);
-			} else if (4==flag) {//main class coupon
+			} else if (9==flag) {//main class coupon
 				productList = shopservice.findByProductByMainClass("食材",page, 6);
-			} else if (5==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("炸雞", page, 6);
-			} else if (6==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("冰淇淋", page, 6);
-			} else if (7==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("蔬菜水果", page, 6);
-			} else if (8==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("甜點", page, 6);
-			} else if (9==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("牛排", page, 6);
 			} else if (10==flag) {//detail class fried chick
-				productList = shopservice.findProductByDetailClass("火鍋", page, 6);
+				productList = shopservice.findProductByDetailClass("炸雞", page, 6);
 			} else if (11==flag) {//detail class fried chick
+				productList = shopservice.findProductByDetailClass("冰淇淋", page, 6);
+			} else if (12==flag) {//detail class fried chick
+				productList = shopservice.findProductByDetailClass("蔬菜水果", page, 6);
+			} else if (13==flag) {//detail class fried chick
+				productList = shopservice.findProductByDetailClass("甜點", page, 6);
+			} else if (14==flag) {//detail class fried chick
+				productList = shopservice.findProductByDetailClass("牛排", page, 6);
+			} else if (15==flag) {//detail class fried chick
+				productList = shopservice.findProductByDetailClass("火鍋", page, 6);
+			} else if (16==flag) {//detail class fried chick
 				productList = shopservice.findProductByDetailClass("羊肉爐", page, 6);
-			} else if (12==flag) {//pure tag
+			} else if (17==flag) {//pure tag
 				productList = shopservice.getProductsByExactTag("炸雞", page, 6);
-			} else if (13==flag) {//pure tag
+			} else if (18==flag) {//pure tag
 				productList = shopservice.getProductsByExactTag("冰淇淋", page, 6);
-			} else if (14==flag) {//pure tag
+			} else if (19==flag) {//pure tag
 				productList = shopservice.getProductsByExactTag("沙拉", page, 6);
-			} else if (15==flag) {//pure tag
+			} else if (20==flag) {//pure tag
 				productList = shopservice.getProductsByExactTag("甜點", page, 6);
-			} else if (16==flag) {//pure tag
+			} else if (21==flag) {//pure tag
 				productList = shopservice.getProductsByExactTag("火鍋", page, 6);
 			} else if (1001==flag) {
 				productList = shopservice.getProductsBySearch(input,page,6);

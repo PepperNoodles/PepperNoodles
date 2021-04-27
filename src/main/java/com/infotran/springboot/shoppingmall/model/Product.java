@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -87,6 +89,17 @@ public class Product {
 	@Transient
 	private Integer totalpage;
 	//
+	
+	@PrePersist
+	protected void createProductReleasedDate() {
+		realeasedDate = new Date();
+	}
+	@PreUpdate
+	protected void updateProductReleasedDate() {
+		realeasedDate = new Date();
+	}
+	
+	
 	public Product() {
 	}
 	
