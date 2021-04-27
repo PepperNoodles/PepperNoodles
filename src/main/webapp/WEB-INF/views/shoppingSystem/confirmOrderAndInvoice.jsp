@@ -25,11 +25,19 @@
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 </head>
 <script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('body').on('click','#toquery',function(e){
+			e.preventDefault();
+			window.location.href = "http://localhost:433/PepperNoodles/user/getOrderList";
+			
+			
+		});
 	
 	
 
 
-
+	});
 </script>
 <style>
 
@@ -153,6 +161,7 @@
 			</div>
 		</div>
 		<!--Hero End -->
+		<div class="listing-area pt-120 pb-120"></div>
 	
 		<div class="listing-area pt-120 pb-120">
 			<div class="container">
@@ -166,13 +175,15 @@
 				<div class="row">
 					<div class="col-12">
 						<div style="text-align: left;">
-							<a href="#" class="genric-btn primary medium" id="tocheq">查詢訂單</a>
+							<a href="#" class="genric-btn primary medium" id="toquery">查詢訂單</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	
+		
+		<div class="listing-area pt-120 pb-120"></div>
 	
 	</main>
 	<footer>

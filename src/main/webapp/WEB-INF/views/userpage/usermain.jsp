@@ -309,7 +309,8 @@ table {
 				                { "data": "receiveName" },
 				                { "data": "receivePhone" },
 				                { "data": "receiveAddress" },
-				                { "data": "totalCost" }
+				                { "data": "totalCost" },
+				                { "data": "status" }
 						    ],
 						    filter: true,
 						    bPaginate: true,
