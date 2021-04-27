@@ -57,7 +57,7 @@ public class FoodTag {
 	private Set<Forum> forums = new HashSet<Forum>();
 	
 	/* 所屬的tag */
-	@OneToMany(mappedBy = "fkFoodtagid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fkFoodtagid",fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<FoodTagProduct> Product = new HashSet<FoodTagProduct>();
 	

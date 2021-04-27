@@ -18,5 +18,11 @@ public class RearFindAndViewController {
 	public String rearsystem() {
 		return "rearStage/userAccountRearStage";
 	}
+	
+
+	@GetMapping("/rearStage2")
+	public String test() {
+		return "rearStage/rearStage2";
+	}
 
 }

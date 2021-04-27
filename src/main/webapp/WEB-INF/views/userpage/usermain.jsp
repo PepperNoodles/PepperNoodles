@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="org.hibernate.Hibernate,java.util.Set,java.util.HashSet,com.infotran.springboot.commonmodel.FoodTagUser,com.infotran.springboot.commonmodel.UserAccount"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="../includePage/includeNav.jsp"%>
@@ -46,6 +46,9 @@ table {
 .display{
  	font-family: 'Noto Serif TC', serif;
  	font-size: 15px; 
+
+button{
+color: black;
 }
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
@@ -72,7 +75,6 @@ table {
 </script>
 </head>
 <body>
-	
 	<!-- 讀取圖案 -->
 	<div id="preloader-active" >
 		<div
@@ -88,11 +90,12 @@ table {
 	</div>
 
 	<div class="container-fluid">
-		<div class="container mt-10" style="width: 100%; height: 100vh">
+
+		<div class="container mt-10" style="width: 80%; height: 100%">
 			<!--有照片的那個bar  -->
 			<div class="d-flex">
 				<div class="p-2">
-					<img style="height: 100px"
+					<img id="replacepic" style="height: 100px"
 						src="<c:url value='/userProtrait/${userAccount.userAccountDetail.useretailId}'/>">
 				</div>
 
@@ -124,9 +127,29 @@ table {
 				<div class="tab-content" id="v-pills-tabContent col-9">
 					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 						<h2>基本資料</h2>
-						<p id="accountIndex">email: ${userAccount.accountIndex}</p>
-						<p>性別：${userAccount.userAccountDetail.gender}</p>
-						<p>地區：${userAccount.userAccountDetail.location}</p>
+						<table border='1'  class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid #F0F0F0 1px;border-radius:6px;-moz-border-radius:6px;'>
+						<tr>
+						<td><span id="accountIndex">email:</span></td><td><span > ${userAccount.accountIndex}</span><button   style="color: black;display:none ">確認</button></td ></tr>
+						<tr>
+						<td  ><span >照片修改：</span></td><td ><input class='genric-btn default circle arrow' style='color:black' type="file" 	disabled="disabled" id="wizard-picture" accept="image/*" name="photo"></td><td id="showtable9" style="display:none"><button id="confirmPhoto" class='genric-btn default circle arrow'  style="color: black;">確認</button></td></tr>
+						<tr>
+						<td><span >綽號：</span></td><td><span id="nickNameSpan" >${userAccount.userAccountDetail.nickName}</span><input value="${userAccount.userAccountDetail.nickName}" style="display:none" id="updateinputBasic2NickName"></input><button id="updateBaisc2NickName" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable2" style="display:none"><button class='genric-btn default circle arrow' id="change2NickName"  style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >生日：</span></td><td><span id="birthDaySpan" >${userAccount.userAccountDetail.birthDay}</span><input  value="${userAccount.userAccountDetail.birthDay}" style="display:none" id="updateinputBasic2birthDay" ></input><button  id="updateBaisc2birthDay" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable3" style="display:none"><button class='genric-btn default circle arrow' id="change2birthDay"  style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >性別：</span></td><td><span id="sexValueSpan" >${userAccount.userAccountDetail.gender}</span><input   value="${userAccount.userAccountDetail.gender}" style="display:none" id="updateinputBasic2gender" ></input><button  id="updateBaisc2gender" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable4" style="display:none"><button id="change2gender" class='genric-btn default circle arrow'  style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >地區：</span></td><td><span id="locationSpan" >${userAccount.userAccountDetail.location}</span><input   value="${userAccount.userAccountDetail.location}" style="display:none" id="updateinputBasic2location" ></input><button id="updateBaisc2location" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable5" style="display:none"><button id="change2location" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >電話：</span></td><td><span id="phoneNumberSpan" >${userAccount.userAccountDetail.phoneNumber}</span><input   value="${userAccount.userAccountDetail.phoneNumber}" style="display:none" id="updateinputBasic2phoneNumber" ></input><button id="updateBaisc2phoneNumber" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable6" style="display:none"><button id="change2phoneNumber" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >真實姓名：</span></td><td><span id="realNameSpan" >${userAccount.userAccountDetail.realName}</span><input   value="${userAccount.userAccountDetail.realName}" style="display:none"  id="updateinputBasic2RealName"></input><button  id="updateBaisc2realName" class='genric-btn default circle arrow'  style="color: black;display:none">確認</button></td><td id="showtable7" style="display:none"><button id="change2realName" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
+						<tr>
+						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
+						
+						</table>
+												<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
+						
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
 						aria-labelledby="v-pills-friend-tab">
@@ -148,6 +171,12 @@ table {
 									aria-controls="nav-friendQequest" aria-selected="false">
 									<button class="btn-link" id="checkRequestList"
 										style="color: black">查看邀請</button>
+								</a>
+								<a class="nav-item nav-link" id="nav-message-tab"
+									data-toggle="tab" href="#nav-message" role="tab"
+									aria-controls="nav-message" aria-selected="false">
+									<button class="btn-link" id="checkmessage"
+										style="color: black"><a href="<c:url value='/user/websocket'/>">聊天室</a> </button>
 								</a>
 							</div>
 						</nav>
@@ -347,6 +376,9 @@ table {
 						
 						
 						///////////////////////////////////////////////
+	
+// 					$(document).ready(function(){ 
+// 					$(window).on('load', function () {
 						showAllComments();
 
 						let urls="${pageContext.request.contextPath}/";
@@ -354,7 +386,7 @@ table {
 							names="${userAccount.accountIndex}";
 							urls+="/"+names;
 							console.log(urls);
-						$.ajax({
+							$.ajax({
 								type: "GET",
 								url: urls,				
 								dataType: "json",
@@ -396,7 +428,7 @@ table {
 								}
 							});
 					
-						})
+						});
 						
 						
 						
@@ -702,7 +734,6 @@ table {
 							});
 						});
 						
-						//delete 留言
 						$('body').on('click','button[name^="deleteCo"]',function(e){
 		        			e.preventDefault;
 		        			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
@@ -849,6 +880,241 @@ table {
 								}
 							});
 		        		});	
+					
+					
+					//開啟修改使用者基本資料的按鍵
+					$('body').on('click','button[id^="change2"]',function(e){
+	        			e.preventDefault;
+	        			var openEdit = $(this).parent().prevAll().children("input:eq(0)");
+	        			var confirmEdit =openEdit.next();
+	        			var hide =openEdit.prev();
+
+
+	        			openEdit.toggle();
+	        			confirmEdit.toggle();
+	        			hide.toggle();
+
+					});
+					
+					//修改使用者基本資料
+					$('body').on('click','button[id^="updateBaisc2"]',function(e){
+						e.preventDefault;
+						var realName = document.getElementById("updateinputBasic2RealName").value;
+						var nickname = document.getElementById("updateinputBasic2NickName").value;
+						var phoneNumber = document.getElementById("updateinputBasic2phoneNumber").value;
+						var birthDay = document.getElementById("updateinputBasic2birthDay").value;
+						var sexValue = document.getElementById("updateinputBasic2gender").value;
+						var location = document.getElementById("updateinputBasic2location").value;
+	        			var confirmEdit = $(this);
+	        			var input =$(this).prev();
+	        			var hide =confirmEdit.prev().prev();
+	        			
+	        			confirmEdit.toggle();
+	        			input.toggle();
+	        			hide.toggle();
+	        			changevalue();
+	        			
+	        			
+						function changevalue(){
+						  	  document.getElementById("realNameSpan").innerHTML = document.getElementById("updateinputBasic2RealName").value;
+							  document.getElementById("nickNameSpan").innerHTML = document.getElementById("updateinputBasic2NickName").value;
+							  document.getElementById("phoneNumberSpan").innerHTML = document.getElementById("updateinputBasic2phoneNumber").value;
+							  document.getElementById("birthDaySpan").innerHTML = document.getElementById("updateinputBasic2birthDay").value;
+							  document.getElementById("sexValueSpan").innerHTML = document.getElementById("updateinputBasic2gender").value;
+							  document.getElementById("locationSpan").innerHTML = document.getElementById("updateinputBasic2location").value;
+						   };
+						
+	        			var urls = "/PepperNoodles/user/changeBasicDetails";
+	        			var data =
+						{
+	        			
+	        					"useretailId":null,
+								"realName" : realName,
+								"nickName" : nickname,
+								"phoneNumber" :phoneNumber,
+								"birthDay" : birthDay,
+								"userPhotoName":null,
+								"userPhoto":null,
+								"gender" :sexValue,
+								"location": location,
+								"purseID":null
+						};
+	        			
+						$.ajax({
+							type:"POST",
+							url: urls ,
+							data:JSON.stringify(data),
+							contentType:'application/json;charset=UTF-8',
+							dataType: "text",
+							success: function (result) {
+								alert(result);
+
+							},
+
+						error: function (thrownError) {
+								console.log(thrownError);
+								alert(thrownError);
+							}
+						});
+	        		});	
+					
+					
+					//開啟修改使用者興趣的按鍵
+					$('body').on('click','button[id^="change3"]',function(e){
+	        			e.preventDefault;
+	        			var hide = $("#userTagsSpan");
+	        			var checkboxs =hide.next();
+	        			var confirmEdit =checkboxs.next();
+
+	        			checkboxs.toggle();
+	        			confirmEdit.toggle();
+	        			hide.toggle();
+	        			
+							$.ajax({
+								method:"GET",
+								url:"/PepperNoodles/user/getFoodTagsAjax",
+
+						        success: function (result) {
+					        		alert(result[0].foodTagName);
+					        		console.log(JSON.stringify(result));
+					        		checkboxs.empty();
+
+						        	for( i =0; i<result.length; i++){	
+						        		checkboxs.append("<input type='checkbox' name='hobby' value='" + result[i].foodTagName + "'>"+ result[i].foodTagName+ " &nbsp; &nbsp;");
+
+						        	}
+						        		
+
+						        },
+						        error: function (result) {
+						        	alert("fail");
+						        }
+							});
+					});
+					
+					
+
+					//確認修改使用者興趣的按鍵
+					$('body').on('click','button[id^="FoodTagNames"]',function(e){
+	        			e.preventDefault;
+						var hobby = document.getElementsByName("hobby");
+						console.log(hobby.length);
+						var hobbyVal = [];
+						for (var i = 0; i< hobby.length; i++) {
+					  		if (hobby[i].checked) {
+					  			hobbyVal.push(hobby[i].value);
+					  		}
+						}
+				  		console.log(hobbyVal);
+	        			
+	        			var toshow = $(this).prev().prev();
+	        			var checkboxs =$(this).prev();
+	        			var confirmEdit =$(this);
+
+	        			checkboxs.toggle();
+	        			confirmEdit.toggle();
+	        			toshow.toggle();
+	        			alert(confirmEdit.value)
+	        			
+							$.ajax({
+								type:"POST",
+								url:"/PepperNoodles/user/confirmFoodTagsChangeAjax",
+								data:JSON.stringify(hobbyVal),
+								contentType:'application/json;charset=UTF-8',
+								dataType: "text",
+								success: function (result) {
+									console.log(result);
+
+
+								        	},
+						        error: function (result) {
+						        	alert("fail");
+						        }
+							});
+							
+		        		});	
+				
+					$('body').on('click','button[id^="confirmPhoto"]',function(e){
+						data = new FormData();
+				    	data.append('file', $('#wizard-picture')[0].files[0]);
+						
+						$.ajax({
+							method:"POST",
+							url:"/PepperNoodles/user/confirmPhotoChangeAjax",
+							data:data,
+							processData: false,
+							contentType: false, 
+							cache: false,  //不做快取
+					        async : true,
+					        success: function (result) {
+								alert("photo changed");
+								
+								location.reload();
+								
+// 								var replacepic = document.getElementById("replacepic");
+// 								$.ajax({
+									
+// 									method:"GET",
+// 									url:"/PepperNoodles/user/replacePhotoAjax",
+
+// 									cache: false,  //不做快取
+// 							        async : true,
+// 									success:function(result){}
+								
+								
+					        },
+					        error: function (result) {
+					        	alert(result);					        
+					        }
+						});
+
+					});	
+						
+					
+					$('body').on('click','button[id^="openchange"]',function(e){
+						var openchangebutton2 = document.getElementById("showtable2");
+						var openchangebutton3 = document.getElementById("showtable3");
+						var openchangebutton4 = document.getElementById("showtable4");
+						var openchangebutton5 = document.getElementById("showtable5");
+						var openchangebutton6 = document.getElementById("showtable6");
+						var openchangebutton7 = document.getElementById("showtable7");
+						var openchangebutton8 = document.getElementById("showtable8");
+						var openchangebutton9 = document.getElementById("showtable9");
+
+
+						openchangebutton2.style.display="inline-block";
+						openchangebutton3.style.display="inline-block";
+						openchangebutton4.style.display="inline-block";
+						openchangebutton5.style.display="inline-block";
+						openchangebutton6.style.display="inline-block";
+						openchangebutton7.style.display="inline-block";
+						openchangebutton8.style.display="inline-block";
+						openchangebutton9.style.display="inline-block";
+						document.getElementById('wizard-picture').disabled=false;
+					});
+					
+					$('body').on('click','button[id^="closechange"]',function(e){
+						var openchangebutton2 = document.getElementById("showtable2");
+						var openchangebutton3 = document.getElementById("showtable3");
+						var openchangebutton4 = document.getElementById("showtable4");
+						var openchangebutton5 = document.getElementById("showtable5");
+						var openchangebutton6 = document.getElementById("showtable6");
+						var openchangebutton7 = document.getElementById("showtable7");
+						var openchangebutton8 = document.getElementById("showtable8");
+						var openchangebutton9 = document.getElementById("showtable9");
+
+						openchangebutton2.style.display="none";
+						openchangebutton3.style.display="none";
+						openchangebutton4.style.display="none";
+						openchangebutton5.style.display="none";
+						openchangebutton6.style.display="none";
+						openchangebutton7.style.display="none";
+						openchangebutton8.style.display="none";
+						openchangebutton9.style.display="none";
+						document.getElementById('wizard-picture').disabled=true;
+
+					});
+	
 				</script>
 
 
@@ -875,6 +1141,10 @@ table {
  		});			
 			
  		});
+ 		
+ 		
+ 		
+ 		
  	</script>
 
 
