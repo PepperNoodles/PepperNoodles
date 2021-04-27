@@ -161,7 +161,6 @@
 			</div>
 		</div>
 		<!--Hero End -->
-		<div class="listing-area pt-120 pb-120"></div>
 	
 		<div class="listing-area pt-120 pb-120">
 			<div class="container">
