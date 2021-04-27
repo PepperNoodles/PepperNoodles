@@ -14,10 +14,6 @@
 <!--     Fonts and icons     -->
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
 <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-<!-- CSS Files -->
-<%-- <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script> --%>
-<!-- 有她左邊的BAR會變小 -->
-<%-- <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" /> --%>
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
 <!-- 套用datepicker需加下面3個套件 -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -148,8 +144,8 @@ $j(document).ready(function(){
 	//一鍵新增
 	$("#butAdd").click(function(){
 		$j("#eventName").val('開幕慶!!!');
-		$j("#eventStartDate").val('2021-05-18');
-		$j("#eventEndDate").val('2021-06-18');
+		$j("#eventStartDate").val('2021/05/18');
+		$j("#eventEndDate").val('2021/06/18');
 		$j("#content").val('提前預訂，兩人同行即可享第二人半價優惠!');
 		eventNameError = true;
 		eventStartDateError = true;
@@ -159,44 +155,39 @@ $j(document).ready(function(){
 
 	
 	//傳值
-	$("#addEvent").click(function(){
+	$("#updateEvent").click(function(){
 		restaurantId = 1;
+		eventId = ${event.eventId};
 		eventName = $("#eventName").val();
 		eventStartDate = $("#eventStartDate").val();
 		eventEndDate = $("#eventEndDate").val();
 		content = $("#content").val();
 		
-		if(!eventNameError || !eventStartDateError || !eventEndDateError || !contentError){
-			alert("請輸入完整訊息");		
-		}
-// 		else if(!eventPictureError){
-// 			alert("請上傳圖片");	
-// 		}
-		else{
 		data = new FormData();
     	data.append('file', $('#eventPicture')[0].files[0]);
-		data.append('eventInfo',new Blob([JSON.stringify( {"restaurantId": restaurantId,
+		data.append('eventInfo',new Blob([JSON.stringify( {"eventId": eventId,
+														   "restaurantId": restaurantId,
 														   "eventName": eventName,
 														   "eventStartDate": eventStartDate,
 														   "eventEndDate" : eventEndDate,
 														   "content" : content} )],{type: "application/json"}));
 		$.ajax({
 			method:"POST",
-			url:"/PepperNoodles/addEvent",
+			url:"/PepperNoodles/updateEvent",
 			data:data,
 			processData: false,
 			contentType: false, 
 			cache: false,  //不做快取
 			async : true,
 			success: function (result) {
-				alert("新增成功");
+				alert("修改成功");
 			location.href="http://localhost:9090/PepperNoodles/event";
 			},
 	        error: function (result) {
 // 				alert("新增失敗");
 			}
 		})
-		}
+		
 	});
 	
 	//刪除
@@ -208,12 +199,8 @@ $j(document).ready(function(){
     	return false;
 	});
 	
-		
-});
-
-
-
 	
+});
 </script>
 <style>
 .nopadding{
@@ -252,6 +239,8 @@ body {
 　background-image: url(<c:url value="/images/company/event.jpeg"/>);
 }
 
+
+
 </style>
 </head>
 <body>
@@ -276,7 +265,7 @@ body {
 							<br>
 							<div class="infobox">
 								<label for="eventPicture">
-									<img src="<c:url value="/images/company/++.png"/>" height="200px" id="picture"/>
+									<img src="<c:url value='/getEventPicture/${event.eventId}'/>" height="200px" id="picture"/>
 								</label>
 								<input hidden type="file" id="eventPicture" accept="image/*" name="photo">
 								<br>
@@ -293,30 +282,30 @@ body {
 					</tr>
 					<tr>
 						<td >
-							<input id="eventName" type="text">
+							<input id="eventName" type="text" value="${event.eventName}">
 							<br>
 							<span id="eventNameResult">&nbsp;</span>
 						</td>
 						<td>
-							<input type="text" id="eventStartDate" name="eventStartDate"/>
+							<input type="text" id="eventStartDate" name="eventStartDate" value="${event.eventStartDate}"/>
 							<br>
 							<span id="eventStartDateResult">&nbsp;</span>
 						</td>
 						<td>
-							<input type="text" id="eventEndDate" name="eventEndDate" />
+							<input type="text" id="eventEndDate" name="eventEndDate" value="${event.eventEndDate}" />
 							<br>
 							<span id="eventEndDateResult">&nbsp;</span>
 						</td>
 	 	 				<td>
-	 	 					<textarea id="content" name="content" rows="5" cols="40" placeholder="活動內容..." required></textarea>
+	 	 					<textarea id="content" name="content" rows="5" cols="40" placeholder="活動內容..." required>${event.content}</textarea>
 	 	 					<br>
 							<span id="contentResult">&nbsp;</span>
 	 	 				</td>
 					</tr>
 					<tr>
-						<td colspan="4" id="addEvent">
-							<input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
-							       name='next' value='新增活動' id="nextSlide" style="margin-bottom: 20px;margin-top: 10px"/>
+						<td colspan="4" >
+							<input id="updateEvent" type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
+							       name='next' value='確認修改' style="margin-bottom: 20px;margin-top: 10px"/>
 							<p style="text-align:right;" id="butAdd">一鍵新增</p>
 						</td>
 					</tr>
@@ -349,7 +338,8 @@ body {
 									</div>
 									<div class="pull-right">
 										<a id="updateEvent" href="<c:url value='/findUpdateEvent/${events.eventId}' />">修改</a>
-										<a class="deleteEvent" id="deleteEvent" href="<c:url value='/deleteEvent/${events.eventId}' />">刪除</a>
+										<a class="deleteEvent" id="deleteEvent" href="<c:url value='/' />deleteEvent/${events.eventId}">刪除</a>
+								
 									</div>
 								</div>
 								<br><br><br><br><br>
