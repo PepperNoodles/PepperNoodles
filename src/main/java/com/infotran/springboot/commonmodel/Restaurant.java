@@ -33,7 +33,7 @@ import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
 @Component
-@Table(name = "restaurant",uniqueConstraints={@UniqueConstraint(columnNames = {"restaurantAddress"})})
+@Table(name = "restaurant", uniqueConstraints = { @UniqueConstraint(columnNames = { "restaurantAddress" }) })
 public class Restaurant {
 
 	@Id
@@ -56,15 +56,15 @@ public class Restaurant {
 	@Column(name = "restaurantWebsite")
 	private String restaurantWebsite;
 
-	//對應存入資料庫表格的屬性
+
 	@JsonIgnore
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
-	
-	//新增修改時取圖的屬性
+
+	// 新增修改時取圖的屬性
 	@Transient
 	MultipartFile productImage;
-	
+
 	@Column(name = "longitude")
 	private BigDecimal longitude;
 
@@ -96,11 +96,12 @@ public class Restaurant {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
 	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "foodtag_restaurant", joinColumns = {
 			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
+
 	
 
 	
@@ -108,6 +109,7 @@ public class Restaurant {
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
 	@JsonManagedReference 
 	private List<Product> products =new ArrayList<Product>();
+
 
 
 
@@ -175,7 +177,6 @@ public class Restaurant {
 		this.restaurantPhoto = restaurantPhoto;
 	}
 
-	
 	public MultipartFile getProductImage() {
 		return productImage;
 	}
@@ -183,7 +184,6 @@ public class Restaurant {
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
-
 
 	public BigDecimal getLongitude() {
 		return longitude;
