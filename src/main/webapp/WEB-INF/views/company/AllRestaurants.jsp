@@ -139,7 +139,7 @@
 			   <th width='80'>餐廳網站</th>
 			   <th width='80'>標籤</th>
 			   <th width='80'>環境照片</th>
-			   <th colspan='2' width='72'>資料維護</th>
+			   <th colspan='3' width='36'>資料維護</th>
 			</tr>
 						<c:forEach var='restaurant' items='${restaurants}'>
 							<tr>
@@ -149,9 +149,10 @@
 								<td style="text-align: center;font-weight: bold">${restaurant.restaurantWebsite}</td>
 								<td style="text-align: center;font-weight: bold"><div id="${restaurant.restaurantId}" name="restid"></div></td>
 								<td><img width='120' height='120'
-									src='restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
-								<td style="font-weight: bold"><a class='updatelink' href="updateRest/${restaurant.restaurantId}">編輯</a></td>
-								<td style="font-weight: bold"><a class='deletelink' href="<c:url value='/deleteRest/${restaurant.restaurantId}' />">刪除</a></td>
+									src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
+									<td style="font-weight: bold"><a class='manulink' href="${pageContext.request.contextPath}/rest/menu/${restaurant.restaurantId}">新增菜單</a></td>
+								<td style="font-weight: bold"><a class='updatelink' href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯</a></td>
+								<td style="font-weight: bold"><a class='deletelink' href="<c:url value='deleteRest/${restaurant.restaurantId}' />">刪除</a></td>
 							</tr>
 						</c:forEach>
 					</table>

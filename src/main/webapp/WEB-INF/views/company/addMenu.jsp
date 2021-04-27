@@ -34,7 +34,7 @@ $(document).ready(function(){
 	});
 	
 	$("#addMenu").click(function(){
-		var restaurantId = 1;
+		var restaurantId = ${restId};
 		data = new FormData();
     	data.append('file', $('#menuPicture')[0].files[0]);
 		data.append('restInfo',new Blob([JSON.stringify( {"restaurantId": restaurantId} )],{type: "application/json"}));
@@ -52,7 +52,7 @@ $(document).ready(function(){
 				alert("新增成功");
 	            $("#menuList").text(result);//填入提示訊息到result標籤內
 	            console.log(result);
-	            location.href="http://localhost:9090/PepperNoodles"+result;
+	            location.href="http://localhost:9090/PepperNoodles"+result+restaurantId;
 	        },
 	        error: function (result) {
 	            $("#menuList").text(result.fail); //填入提示訊息到result標籤內

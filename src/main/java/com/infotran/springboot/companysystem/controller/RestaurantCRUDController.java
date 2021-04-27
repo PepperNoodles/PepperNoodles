@@ -40,6 +40,7 @@ import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
+import com.infotran.springboot.companysystem.service.impl.CompanyDetailServiceImpl;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
@@ -63,6 +64,9 @@ public class RestaurantCRUDController {
 	@Autowired
 	UserSysService userSysService;
 	
+	@Autowired
+	CompanyDetailServiceImpl companyDetailServiceImpl;
+	
 	
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
@@ -73,9 +77,16 @@ public class RestaurantCRUDController {
 	}
 	// 顯示所有餐廳資料ByComId
 	@GetMapping("/showAllrestByComId/{comId}")
-	public String allRestById(Model model,@PathVariable("comId")Iterable<Integer> comId) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurantById(comId));
-		System.out.println("showall"+model.getAttribute("restaurants"));
+	public String allRestById(Model model,@PathVariable("comId")Integer comId) {
+		
+		System.out.println("comId="+comId);
+		CompanyDetail companyDetail = companyDetailServiceImpl.findById(comId);
+		
+		UserAccount userAccount = companyDetail.getUserAccount();
+		
+		Set<Restaurant> restaurants = userAccount.getRestaurant();
+		model.addAttribute("restaurants", restaurants);
+		
 		return "company/AllRestaurants";
 	}
 	
@@ -98,7 +109,7 @@ public class RestaurantCRUDController {
 		return foodTagJsonList;
 	}
 
-	
+	//標籤測試
 	@GetMapping("/test")
 	public String test(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());

@@ -58,8 +58,11 @@ public class RestaurantServiceImpl implements RestaurantService {
 	}
 	
 	@Override
-	public List<Restaurant> getAllRestaurantById(Iterable<Integer> ids){
-		return restaurantDao.findAllById(ids);
+	
+	public List<Restaurant> getAllRestaurantByComId(Integer comid){
+		
+		
+		return null;
 
 	}
 	@Override
