@@ -56,12 +56,8 @@ public class Restaurant {
 	@Column(name = "restaurantWebsite")
 	private String restaurantWebsite;
 
-<<<<<<< HEAD
-	//對應存入資料庫表格的屬性
+
 	@JsonIgnore
-=======
-	// 對應存入資料庫表格的屬性
->>>>>>> refs/heads/ray20210423_FOODTAG
 	@Column(name = "restaurantPhoto")
 	private Blob restaurantPhoto;
 
@@ -105,7 +101,7 @@ public class Restaurant {
 			@JoinColumn(name = "fk_restaurant_id", referencedColumnName = "Restaurant_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "fk_tag_id", referencedColumnName = "foodTag_id") })
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
-<<<<<<< HEAD
+
 	
 
 	
@@ -115,13 +111,7 @@ public class Restaurant {
 	private List<Product> products =new ArrayList<Product>();
 
 
-=======
 
-	/* 對應產品 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	private List<Product> products = new ArrayList<Product>();
->>>>>>> refs/heads/ray20210423_FOODTAG
 
 	public Integer getRestaurantId() {
 		return restaurantId;
