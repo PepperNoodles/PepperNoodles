@@ -19,9 +19,11 @@
 </head>
 <body>
 <div class="container clearfix">
+	<div>hello <span id="userName">${userAccount.accountIndex}</span></div>
+
     <div class="people-list" id="people-list">
         <div class="search">
-            <input id="userName" placeholder="search" type="text"/>
+            <input id="userNameOld" placeholder="search" type="text"/>
             <button id="registration">Enter the chat</button>
             <button id="fetchAll">Refresh</button>
         </div>
@@ -94,12 +96,29 @@
 $(window).load(function(){
     console.log("this is ok");
 	const url = 'http://localhost:9090/PepperNoodles';
+ 	let currentUser =document.getElementById("userName").innerHTML;
 	let stompClient;
 	let selectedUser;
+	
 	
 	$("#registration").on("click",registration);
 	$("#fetchAll").on("click",fetchAll);
 
+	$.ajax({
+		type: "GET",
+		url: url+"/userMessageLoggin/getName",				
+		dataType: "text",
+		success: function (response) {
+			console.log(response);
+			registrationByUserName(response);
+			//$('#userName').html(response);
+		},
+		error: function (thrownError) {
+			console.log(thrownError);
+		}
+	});
+	
+	
 	function connectToChat(userName) {
 	    console.log("connecting to chat...")
 	    let socket = new SockJS(url + '/chat');
@@ -108,10 +127,13 @@ $(window).load(function(){
 	        console.log("connected to: " + frame);
 	        stompClient.subscribe("/topic/messages/" + userName, function (response) {
 	            let data = JSON.parse(response.body);
-	            console.log(data);
+	            console.log("data:"+data);
 	            if (selectedUser === data.fromLogin) {
+	            	console.log("收到訊息嗎?1")
 	                render(data.message, data.fromLogin);
 	            } else {
+	            	console.log("收到訊息嗎?2");
+	            	
 	                newMessages.set(data.fromLogin, data.message);
 	                $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
 	            }
@@ -122,17 +144,26 @@ $(window).load(function(){
 
 	    function sendMsg(from,text){
 	        //對應到message Model的屬性
+	        console.log("from:"+from);
+	        console.log("selectedUser: "+selectedUser);
+	        //增加時間
+	        var today =  new Date().getTime();
+			console.log(today);
+
+	    
+			//新增時間	        
 	        stompClient.send("/app/chat/"+selectedUser,{},JSON.stringify(
 	            {
 	                fromLogin:from,
-	                message:text
+	                message:text,
+	                to:selectedUser,
+	                date:today
 	            }
 	        ));
 	    }
 
 	    function registration(){
-	        let userName=document.getElementById("userName").value;
-	        console.log(userName);
+	        let userName=currentUser;
 	        //對應到Message Controller的方法
 	        $.get(url+"/registration/"+userName,function(response){
 	            connectToChat(userName);
@@ -143,14 +174,30 @@ $(window).load(function(){
 	        });
 	    }
        
+	    
+	    function registrationByUserName(userName){
+	        //let userName=document.getElementById("userName").value;
+	        console.log(userName);
+	        //對應到Message Controller的方法
+	        $.get(url+"/registration/"+userName,function(response){
+	            connectToChat(userName);
+	        }).fail(function(error){
+	            if(error.status===400){
+	                alert("Login is already busy");
+	            }
+	        });
+	    }
 
         function selectUser(){
         	let userName = this.name;
             console.log("selecting user"+userName);
             selectedUser=userName;
-   
+            $chatHistoryList.html('');
+            
             $('#selectedUserId').html('');
             $('#selectedUserId').append('Chat with ' + userName);
+            createChatHistory(currentUser,selectedUser);
+            
         }
 
 	    function fetchAll(){
@@ -178,7 +225,7 @@ $(window).load(function(){
                 }
 	        });
 	    }
-        /////////////////////
+	    
         let $chatHistory;
         let $button;
         let $textarea;
@@ -218,8 +265,12 @@ $(window).load(function(){
         }
 
         function sendMessage(message) {
-            let username = $('#userName').val();
-            console.log(username)
+            let username =document.getElementById("userName").innerHTML;
+            	
+            	//$('#userName').val();
+           // let username = ${userAccount.accountIndex};
+            console.log("username:"+username);
+            console.log("message:"+message);
             sendMsg(username, message);
             scrollToBottom();
             if (message.trim() !== '') {
@@ -255,8 +306,70 @@ $(window).load(function(){
             }
         }
 
+        
+		///////////////////show聊天紀錄
+		//let messa ='[{"message":"aaaaa","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:46:52"},{"message":"?????\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:46:57"},{"message":"試試看囉\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:47:05"},{"message":"來吧","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:10"},{"message":"換行?\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:25"},{"message":"我試試看換行\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:37"},{"message":"......\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:47"},{"message":"阿怎麼換不了行了= =\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:48:07"},{"message":"哪尼?\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:48:30"},{"message":"阿剛剛是怎麼用的?","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:48:47"},{"message":"誰知道...\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:49:09"},{"message":"我自己看看\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:49:13"}]';
+	    
+		
+		
+		//messagg = JSON.parse(messa);
+	    //console.log(messa);
+	    //console.log(messagg[1].message);
+	    function createChatHistory(currentUser,toUser){
+	    	cacheDOM();
+	    	
+	    	$.ajax({
+	    		type: "GET",
+	    		url: url+"/getUserMessage/"+currentUser+"/"+toUser,				
+	    		dataType: "text",
+	    		success: function (response) {
+	    			console.log(response);
+	    			messagg=JSON.parse(response);
+	    		  	for (let i = 0;i<messagg.length;i++){
+	    	    		if(currentUser ==messagg[i].fromLogin){
+	    	    			console.log(messagg[i].fromLogin+":"+messagg[i].message);
+	    	    			//送出
+	    	    			  var template = Handlebars.compile($("#message-template").html());
+	    	                  var context = {
+	    	                      messageOutput: messagg[i].message,
+	    	                      time: messagg[i].date,
+	    	                      toUserName: messagg[i].to
+	    	                  };
+	    	                  $chatHistoryList.append(template(context));	    	    			
+	    	    		}else{
+	    	    			console.log(messagg[i].fromLogin+":"+messagg[i].message);
+	    	    			//收到
+	    	    			var templateResponse = Handlebars.compile($("#message-response-template").html());
+	    	                var contextResponse = {
+	    	                    response: messagg[i].message,
+	    	                    time: messagg[i].date,
+	    	                    userName: messagg[i].fromLogin
+	    	                };
+	    	                $chatHistoryList.append(templateResponse(contextResponse));
+	    	                scrollToBottom();	    	    			
+	    	    		}	    	    		
+	    	    	}
+	    			
+	    			
+	    			
+	    		},
+	    		error: function (thrownError) {
+	    			console.log(thrownError);
+	    		}
+	    	});
+	    	
+	    }
+	    
+	    //createChatHistory('bbb@gmail.com','aaa@gmail.com');
+	    
+	    
+        /////////////////////
+        
+        
+        
         init();
 
+        
 
 	}
        
