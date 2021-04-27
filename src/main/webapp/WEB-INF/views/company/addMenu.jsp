@@ -50,12 +50,13 @@ $(document).ready(function(){
 	        async : true,
 	        success: function (result) {
 				alert("新增成功");
-	            $("#menuList").text(result);
-	            console.log(result);
-	            location.href="http://localhost:9090/PepperNoodles"+result+restaurantId;
+// 	            $("#menuList").text(result);
+// 	            console.log(result);
+	            location.href="http://localhost:433/PepperNoodles"+result+restaurantId;
 	        },
 	        error: function (result) {
-	            $("#menuList").text(result.fail); 
+// 	            $("#menuList").text(result.fail); 
+	            location.href="http://localhost:433/PepperNoodles"+result+restaurantId;
 	        }
 		})
 	});

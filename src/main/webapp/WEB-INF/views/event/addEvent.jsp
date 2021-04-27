@@ -160,7 +160,7 @@ $j(document).ready(function(){
 	
 	//傳值
 	$("#addEvent").click(function(){
-		restaurantId = 1;
+		restaurantId = ${restId};
 		eventName = $("#eventName").val();
 		eventStartDate = $("#eventStartDate").val();
 		eventEndDate = $("#eventEndDate").val();
@@ -190,7 +190,7 @@ $j(document).ready(function(){
 			async : true,
 			success: function (result) {
 				alert("新增成功");
-			location.href="http://localhost:9090/PepperNoodles/event";
+			location.href="http://localhost:433/PepperNoodles/event/"+restaurantId;
 			},
 	        error: function (result) {
 // 				alert("新增失敗");
@@ -263,7 +263,7 @@ body {
     	<div class="col-lg-2 nopadding">
       		<br>
         	<div class="list-group">
-        		<%@include file="../company/left.jsp" %>
+        		<%@include file="../company/left2.jsp" %>
         	</div>
         </div>
         
@@ -276,7 +276,7 @@ body {
 							<br>
 							<div class="infobox">
 								<label for="eventPicture">
-									<img src="<c:url value="/images/company/++.png"/>" height="200px" id="picture"/>
+									<img class="rounded" src="<c:url value="/images/company/++.png"/>" height="200px" id="picture"/>
 								</label>
 								<input hidden type="file" id="eventPicture" accept="image/*" name="photo">
 								<br>
@@ -340,7 +340,7 @@ body {
 									<div class="item">
 										<P></P>
 										<a href="<c:url value='/getEventPicture/${events.eventId}'/>" >
-											<img width="100%"  src="<c:url value="/getEventPicture/${events.eventId}"/>" />
+											<img width="100%" src="<c:url value="/getEventPicture/${events.eventId}"/>" />
 										</a>
 										<p />
 										<h4>${events.eventName}</h4>
