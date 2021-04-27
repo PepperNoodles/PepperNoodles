@@ -108,7 +108,7 @@ public class UserAccount implements Serializable{
 //	@ManyToMany(mappedBy = "users")
 //	private Set<FoodTag> userTags = new HashSet<FoodTag>();
 	
-	@OneToMany(mappedBy = "fkuserid",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "fkuserid", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<FoodTagUser> userTags = new HashSet<FoodTagUser>();
 	
