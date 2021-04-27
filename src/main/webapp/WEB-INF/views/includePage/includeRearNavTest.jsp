@@ -40,74 +40,6 @@
   <!-- DataTables 資料庫-->
   <link rel="stylesheet" href="<c:url value='/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' />">
   <link rel="stylesheet" href="<c:url value='/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' />">
-
-<script> 
-	  $(document).ready(function () {
-			
-			var Table = $("#userlist").DataTable({
-				 language: {
-				        "processing": "處理中...",
-				        "loadingRecords": "載入中...",
-				        "lengthMenu": "顯示 _MENU_ 項結果",
-				        "zeroRecords": "沒有符合的結果",
-				        "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
-				        "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
-				        "infoFiltered": "(從 _MAX_ 項結果中過濾)",
-				        "infoPostFix": "",
-				        "search": "搜尋:",
-				        "paginate": {
-				            "first": "第一頁",
-				            "previous": "上一頁",
-				            "next": "下一頁",
-				            "last": "最後一頁"
-				        },
-				        "aria": {
-				            "sortAscending": ": 升冪排列",
-				            "sortDescending": ": 降冪排列"
-				        }
-				    },
-				    data:[],
-				    columns: [				    	
-		                { "data": "accountIndex"  },		               
-		                { "data": "enabled" }
-		                
-				    ],
-				    filter: true,
-				    bPaginate: true,
-				    info: true,
-				    ordering: true,
-				    processing: true,
-				    retrieve: true,
-				    searching: true, //關閉filter功能
-	              columnDefs: [{
-	                  targets: [3],
-	                  orderable: true,
-	              }]
-				});
-			
-				
-				$.ajax({
-					method:"GET",	
-					url:"/PepperNoodles/user/getAccountList",
-					contentType: 'application/json; charset=utf-8',
-					dataType:'json',
-			        async : true,
-			        cache: false,
-			        success:function(result){
-			        	console.log("yes123");
-			        	console.log(JSON.stringify(result));
-			        	console.log(result.AccountList);
-			        	Table.clear().draw();
-			            Table.rows.add(result.AccountList).draw();
-			        },
-			        error: function (result) {
-			        	console.log("有問題");
-			        }
-				});
-	  });
-  </script>
-
-
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -331,7 +263,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<c:url value='/rearStage/rearStage2' />" class="nav-link">
+                <a href="./index3.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>後台管理員</p>
                 </a>
@@ -555,135 +487,14 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-
-  <!-- Content Wrapper. Contains page content 內容-->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>DataTables</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            
-            <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">一般會員資料</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-              
-                     <table  id="userlist" class="display">
-							<thead>
-								<tr>									
-									<th>帳號</th>
-									<th>enabled</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-								</tr>
-							</tbody>
-						</table>
-              
-<!--                 <table id="example1" class="table table-bordered table-striped"> -->
-<!--                   <thead> -->
-<!--                   <tr> -->
-<!--                     <th>account_id</th> -->
-<!--                     <th>account_index</th> -->
-<!--                     <th>enabled</th> -->
-<!--                     <th>password</th> -->
-<!--                     <th>fk_companyDetail_id</th> -->
-<!--                     <th>fk_levelDetail_id</th> -->
-<!--                     <th>fk_accountDetail_id</th> -->
-<!--                     <th>update</th> -->
-<!--                     <th>delete</th> -->
-<!--                   </tr> -->
-<!--                   </thead> -->
-                 
-<!--                   <tbody> -->
-<%--                   <c:forEach var='accountMember' items='${allMember}'> --%>
-<!-- 	                  <tr> -->
-<%-- 	                    <td style="text-align:center">${allMember.account_id}></td> --%>
-<%-- 	                    <td>${allMember.account_index}</td>                     --%>
-<%-- 	                    <td>${allMember.enabled}</td> --%>
-<%-- 	                    <td style="text-align:center">${allMember.password}</td> --%>
-<%-- 	                    <td>${allMember.fk_companyDetail_id}</td> --%>
-<%-- 	                    <td>${allMember.fk_levelDetail_id}</td> --%>
-<%-- 	                    <td>${allMember.fk_levelDetail_id}</td> --%>
-<!-- 	                    <td><form action="accMemUpdateGet" method="get"> -->
-<!-- 								<input id="update" type="hidden" name="accMemId" -->
-<%-- 									value="${accMember.accountID}"> --%>
-<!-- 								<button type="submit">修改</button> -->
-<!-- 							</form> -->
-<!-- 						</td> -->
-<!-- 	                    <td><a -->
-<%-- 								href="<c:url value=''/>?accountId=${accMember.accountID}" --%>
-<!-- 								onclick="javascript:return del()">刪除 -->
-<!-- 							</a> -->
-<!-- 						</td> -->
-<!-- 	                  </tr> -->
-<%--                   </c:forEach> --%>
-<!--                   </tbody> -->
-<!--                   <tfoot> -->
-<!--                   <tr> -->
-<!--                     <th>account_id</th> -->
-<!--                     <th>account_index</th> -->
-<!--                     <th>enabled</th> -->
-<!--                     <th>password</th> -->
-<!--                     <th>fk_companyDetail_id</th> -->
-<!--                     <th>fk_levelDetail_id</th> -->
-<!--                     <th>fk_accountDetail_id</th> -->
-<!--                     <th>update</th> -->
-<!--                     <th>delete</th> -->
-<!--                   </tr> -->
-<!--                   </tfoot> -->
-<!--                 </table> -->
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
   
+  <!-- Content Wrapper. Contains page content 網頁內容的地方-->
   
+  <!-- /.content-wrapper 內容結束-->
+
+  <!-- 插入footer的地方 --> 
   
-  <!-- /.content-wrapper -->  
-
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.5
-    </div>
-  </footer>
-
-  <!-- Control Sidebar -->
+   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
@@ -732,22 +543,22 @@
 <script src="<c:url value='/plugins/datatables-responsive/js/dataTables.responsive.min.js' />"></script>
 <script src="<c:url value='/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' />"></script>
 <!-- page script 資料庫-->
-<!-- <script> -->
-//   $(function () {
-//     $("#example1").DataTable({
-//       "responsive": true,
-//       "autoWidth": false,
-//     });
-//     $('#example2').DataTable({
-//       "paging": true,
-//       "lengthChange": false,
-//       "searching": false,
-//       "ordering": true,
-//       "info": true,
-//       "autoWidth": false,
-//       "responsive": true,
-//     });
-//   });
-<!-- </script> -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>
