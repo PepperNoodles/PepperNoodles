@@ -68,7 +68,7 @@ public class UserAccount implements Serializable{
 	@Transient
 	private Integer levelDetailId;
 	
-
+	
 
 	// =============================================================
 	
@@ -233,6 +233,18 @@ public class UserAccount implements Serializable{
 	}
 
 	
+
+	public Set<Restaurant> getRestaurant() {
+		return Restaurant;
+	}
+
+
+
+	public void setRestaurant(Set<Restaurant> restaurant) {
+		Restaurant = restaurant;
+	}
+
+
 
 	public UserAccount(String accountIndex, String password) {
 		super();
