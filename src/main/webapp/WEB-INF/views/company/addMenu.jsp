@@ -50,12 +50,12 @@ $(document).ready(function(){
 	        async : true,
 	        success: function (result) {
 				alert("新增成功");
-	            $("#menuList").text(result);//填入提示訊息到result標籤內
+	            $("#menuList").text(result);
 	            console.log(result);
 	            location.href="http://localhost:9090/PepperNoodles"+result;
 	        },
 	        error: function (result) {
-	            $("#menuList").text(result.fail); //填入提示訊息到result標籤內
+	            $("#menuList").text(result.fail); 
 	        }
 		})
 	});
@@ -173,7 +173,7 @@ td a:hover{
 				
 				<c:choose>
 					<c:when test="${empty menus}">
-	    				沒有任何菜單<br> 
+	    				<h4 style="text-align:center">沒有任何菜單</h4><br> 
 					</c:when>
 					<c:otherwise>
 						<table style="text-align:center">

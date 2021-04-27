@@ -45,6 +45,7 @@ public class ShoppingMallController {
 	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn(
 			HttpServletRequest request) {
 		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
+		System.out.println(user.getAccountIndex());
 		List<Product> productList = shopservice.getPagedProductsByTag(user.getAccountIndex(), 0, 4);
 		return productList;
 	}
