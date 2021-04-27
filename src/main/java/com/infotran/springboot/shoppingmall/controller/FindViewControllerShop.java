@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -30,6 +31,22 @@ public class FindViewControllerShop {
 	public String checkOutconfirmOrderAndInvoice() {
 		return "shoppingSystem/confirmOrderAndInvoice";
 	}
+	@PostMapping("/confirmOrderAndInvoice")
+	public String checkOutconfirmOrderAndInvoice2() {
+		return "shoppingSystem/confirmOrderAndInvoice";
+	}
+	@GetMapping("/OrderFormECpay")
+	public String checkOutOrderFormECpay() {
+		return "shoppingSystem/OrderFormECpay";
+	}
+	@GetMapping("/NewFile")
+	public String checkOutNEWECpay() {
+		return "shoppingSystem/NewFile";
+	}
+//	@PostMapping("/NewFile")
+//	public String checkOutNEWECpay2() {
+//		return "shoppingSystem/NewFile";
+//	}
 	
 	
 	

@@ -256,7 +256,7 @@ table {
 									<th>收件人</th>
 									<th>電話</th>
 									<th>收件地址</th>
-									<th>價格</th>
+									<th>金額</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -324,7 +324,7 @@ table {
 			                }]
 						});
 					
-						
+						///////////////////////////////////////////////////////
 						$.ajax({
 							method:"GET",	
 							url:"/PepperNoodles/user/getOrderList",

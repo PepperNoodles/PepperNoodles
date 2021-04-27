@@ -210,6 +210,7 @@
 			//結帳
 			$('body').on('click','#checkout',function(e){
 				e.preventDefault();
+				localStorage.clear();
 				var idlist = new Array();
 				var amountlist = new Array();
 				for (var i=0 ; i < len ; i++){
@@ -231,14 +232,16 @@
 					method:"POST",
 					url:"/PepperNoodles/cheqInvoicecheckOutController",
 					data:data,
-					processData: false,
 					contentType: false, 
-					dataType: 'html',
+					processData: false,
 					cache: false,  //不做快取
 			        async : true,
-			        success: function (url) {
+			        success: function (response) {
 			        	myStorage.clear();
-			        	location.href = "http://localhost:9090/PepperNoodles"+url;
+// 			        	localStorage.setItem("uuid",response.uuid);
+						localStorage.setItem("ecpayform",response.ecpayform);
+						console.log(response.ecpayform);
+			        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/OrderFormECpay", '_blank');
 			        },
 			        error: function (url) {
 			        	console.log("Problems everywhere");
@@ -246,6 +249,7 @@
 				});    
 				
 			});
+			
 		
 			//一件新增
 			$('body').on('click','#oneclick',function(e){
@@ -446,8 +450,6 @@
 										<!-- product here -->
 									</tbody>
 								</table>
-<!-- 								<div style="text-align: right;" id="pricetag"></div> -->
-								
 							</div>
 						</div>
 					</div>
@@ -505,6 +507,8 @@
 						</div>
 					</div>
 				</div>
+				
+				
 				<div class="row justify-content-xl-center"> 
 					<div class="col-xl-12 ">
 						<div class="listing-details-area">
@@ -622,16 +626,6 @@
 		</div>
 		<!-- Footer End-->
 	</footer>
-
-
-
-
-
-
-
-
-
-
 	<!-- JS here -->
 	<!-- All JS Custom Plugins Link Here here -->
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
@@ -641,11 +635,9 @@
 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	<!-- Jquery Mobile Menu -->
 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
-
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script>
 	<script src="<c:url value='/scripts/slick.min.js' />"></script>
-
 	<!-- One Page, Animated-HeadLin -->
 	<script src="<c:url value='/scripts/wow.min.js' />"></script>
 	<script src="<c:url value='/scripts/price-range.js' />"></script>

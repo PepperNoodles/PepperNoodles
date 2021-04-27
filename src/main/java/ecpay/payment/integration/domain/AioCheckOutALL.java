@@ -11,7 +11,7 @@ public class AioCheckOutALL {
 	 * MerchantID
 	 * 合作特店編號(由綠界提供)
 	 */
-	private String MerchantID = "";
+	private String MerchantID = "2000132";
 	
 	/**
 	 * MerchantTradeNo
@@ -41,7 +41,7 @@ public class AioCheckOutALL {
 	 * TotalAmount
 	 * 交易金額
 	 */
-	private String TotalAmount = "";
+	private String TotalAmount ;
 	
 	/**
 	 * TradeDesc

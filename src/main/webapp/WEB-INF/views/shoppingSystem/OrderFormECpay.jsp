@@ -9,10 +9,10 @@
 <meta charset="UTF-8">
 <title>confirm Order And Invoice</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- favicon的圖-每頁都要加 -->
+<script type="text/javascript"	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="Shortcut icon"	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <link rel='stylesheet'	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet"	href="<c:url value='/css/fontawesome-all.css' />" />
+<link rel="stylesheet"	href="<c:url value='/css/fontawesome-all.min.css' />" />
 <link rel="stylesheet"	href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
 <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
@@ -25,9 +25,35 @@
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 </head>
 <script type="text/javascript">
-	
-	
 
+$(document).ready(function() {
+	var ecpayform = localStorage.getItem("ecpayform");
+	
+	console.log(ecpayform);
+	console.log(typeof ecpayform);
+	$('#ecpay').append($(ecpayform));
+// 	$('#ecpay').append('<h2>hi</h2>');
+	
+	
+	
+});
+	
+	
+	
+	
+// 	$.ajax({
+// 		method:"POST",
+// 		url:"/PepperNoodles/genECpayOrderForm?uuid="+uuid+"",
+// 		contentType: 'application/x-www-form-urlencoded', 
+// 		cache: false,  //不做快取
+// 	    async : true,
+// 	    success: function (response) {
+// 	    	console.log(response);
+// 	    	$('#ecpay').append(response);
+// 	    },error: function (url) {
+// 	    	console.log("Problems everywhere");
+// 	    }
+// 	});
 
 
 </script>
@@ -157,17 +183,8 @@
 		<div class="listing-area pt-120 pb-120">
 			<div class="container">
 				<div class="row">
-					<div class="col-12">
-						<h2><strong>付款成功</strong></h2>					
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div style="text-align: left;">
-							<a href="#" class="genric-btn primary medium" id="tocheq">查詢訂單</a>
-						</div>
+					<div class="col-12" id="ecpay">
+						
 					</div>
 				</div>
 			</div>
@@ -267,7 +284,7 @@
 	
 	<!-- JS here -->
 	<!-- All JS Custom Plugins Link Here here -->
-	<script type="text/javascript"	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+	
 	<script type="text/javascript"	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 	<!-- Jquery, Popper, Bootstrap -->
