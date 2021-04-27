@@ -1,18 +1,22 @@
 package com.infotran.springboot.userAccsystem.controller;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
-import java.util.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +26,34 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.FoodTag;
+import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.FriendList;
 import com.infotran.springboot.commonmodel.MessageBox;
 import com.infotran.springboot.commonmodel.Roles;
+import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
+import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
+import com.infotran.springboot.loginsystem.dao.FoodTagUserRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
@@ -53,9 +65,22 @@ import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImp
 @SessionAttributes(names = "userAccount")
 @Controller
 public class UserSysController {
+
+
+	String imageRootDirectory = "C:\\myfolder\\PPNpics";
+
+
+	
+	File imageFolder = null; 
+	
+	@Autowired
+	SendEmail sendemail;
 	
 	@Autowired
 	UserDetailServiceImpl uDetailService;
+	
+	@Autowired
+	 UserAccountService service;
 	
 	@Autowired
 	UserSysServiceImpl uSysServiceImpl;
@@ -72,15 +97,22 @@ public class UserSysController {
 	@Autowired
 	OrderListServiceImpl olistservice;
 	
-	//MessageBox 新增訊息的方法
-	@PostMapping(value = "/saveMessageBox")
-	public String saveMessageBox(){
-		
-		return "personalPage";
-	}
-	
+	@Autowired
+	FoodTagRepository ftr;
 
-	//從Authentication取得登入者的名字字串的方法
+	
+	@Autowired
+	 FoodTagRepository foodTagRepository;
+	
+	@Autowired
+	FoodTagUserRepository foodTagUserRepository;
+	
+	public UserSysController() {
+		imageFolder = new File(imageRootDirectory, "images");
+		if ( !imageFolder.exists() )
+			imageFolder.mkdirs();
+	}
+
 	public String returnNamePath() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -128,6 +160,8 @@ public class UserSysController {
 		}
 		return roleName;
 	}
+	
+
 	
 	//新增留言的方法test
 	@GetMapping(value="user/addNewComment" )
@@ -187,6 +221,218 @@ public class UserSysController {
 		msn.setReplyMessageBoxes(null);
 		msnServiceImpl.delete(msn);
 		return "userpage/usermain";
+	}
+	
+	//忘記密碼=============================================================================================================================
+
+	//跳轉忘記密碼頁面
+	@GetMapping(value="/forgotPassword")
+	public String forgotPassword() {
+
+			return "ForgotPassword";
+	}
+	
+	//以新密碼重新登入的方法
+	@PostMapping(value="/sendVerificationPassword")
+	public  @ResponseBody Map<String,String> sendVerifiacationEmail(@RequestBody() String accountIndex ){
+		Map<String,String> map = new HashMap<String, String>();
+
+		UserAccount user2 = uSysServiceImpl.findByAccountIndex(accountIndex);
+		String verificationpasswordcode = sendemail.getRandomPwd();
+		System.out.println(verificationpasswordcode);
+		System.out.println("user2========="+user2.getAccountIndex());
+		
+		String bcEncode1 = new BCryptPasswordEncoder().encode(verificationpasswordcode);
+		user2.setPassword(bcEncode1);
+		user2.setCode(verificationpasswordcode);
+		uSysServiceImpl.update(user2);
+		
+		boolean emailResult = sendemail.sendEmail(user2);
+		if (emailResult) {
+			map.put("verificationpassword", "新的密碼已寄至Email，請輸入並進行登入");
+		}
+		return map;
+
+	}	
+	
+//使用者個人資料修改======================================================================================================================
+
+	@PostMapping(value="/user/changeBasicDetails")
+	public @ResponseBody String changeBasicDetails( @RequestBody UserDetail userDetail,HttpSession ses,Model model) throws Exception{
+		System.out.println("here i go againhere i go againhere i go againhere i go againhere i go againhere i go againhere i go againhere i go againhere i go again");
+		String message ="";
+		UserAccount useraccount1 =(UserAccount) ses.getAttribute("userAccount");
+		UserDetail userDetailOG = useraccount1.getUserAccountDetail();
+		userDetailOG.setBirthDay(userDetail.getBirthDay());
+		userDetailOG.setNickName(userDetail.getNickName());
+		userDetailOG.setRealName(userDetail.getRealName());
+		userDetailOG.setPhoneNumber(userDetail.getPhoneNumber());
+		userDetailOG.setLocation(userDetail.getLocation());
+		userDetailOG.setGender(userDetail.getGender());
+		useraccount1.setUserAccountDetail(userDetailOG);
+		
+		service.update(useraccount1);
+		model.addAttribute("userAccount", useraccount1);
+		message = "success";
+
+		return message;
+	}
+	
+	
+	@GetMapping(value="/user/getFoodTagsAjax")
+	public @ResponseBody List<FoodTag>  /* FoodTag Set<FoodTag> */showFoodTag( ) throws Exception{
+		System.out.println("here i go for FOO FOO FOO TAG TAG TAG FOO FOO FOO TAG TAG TAGFOO FOO FOO TAG TAG TAGFOO FOO FOO TAG TAG TAGFOO FOO FOO TAG TAG TAGFOO FOO FOO TAG TAG TAG");
+		List<FoodTag> foodtags = new ArrayList<>();		
+//		FoodTag x =ftr.findByFoodTagIid(7);
+//		System.out.println(x.getFoodTagName());
+		int i=1;
+		while(ftr.findById(i).isEmpty()==false) {
+				System.out.println(ftr.findByFoodTagIid(i).getFoodTagName());
+				foodtags.add(ftr.findByFoodTagIid(i));
+				i++;
+			}
+
+		return foodtags;
+
+	}
+	
+	
+	@PostMapping(value="/user/confirmFoodTagsChangeAjax")
+	public @ResponseBody Set<FoodTagUser> saveAccountInterest(
+			@RequestBody String[] interest,
+			Model model){
+		String message ="";
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
+//		 Set<FoodTag> userinTags = ftr.getUserInFoodtags(user.getAccountId());
+		 
+//		 for(FoodTag t:userinTags) {
+//			 Set<FoodTagUser> x = t.getFoodTagUsers();
+//			 for(FoodTagUser ftu:x) {
+//				 if(ftu.getFkuserAccountid()==user.getAccountId()) {
+//					 x.remove(ftu);
+//				 }
+//			 }
+//		 }
+		
+		Set<FoodTagUser> usersetss =foodTagUserRepository.getByFkuserid(user);
+		System.out.println(usersetss.size());
+		for(FoodTagUser foodTagUser:usersetss) {
+			foodTagUser.setFkuserid(null);
+			foodTagUser.setFkfoodtagid(null);
+
+			System.out.println("brfore delete=====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			foodTagUserRepository.deleteById(foodTagUser.getFooTagUserId());
+			System.out.println("after delete=====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+			message+= "刪除成功";
+		}
+
+		Set<FoodTagUser> userSet = user.getUserTags();
+		userSet.clear();
+		user.setUserTags(userSet);
+		uSysServiceImpl.update(user);
+
+		System.out.println("userSet is empty: " + userSet.isEmpty());
+		
+
+			for(int i = 0; i<interest.length; i++) {
+				System.out.println("json傳到server的值" + interest[i]);
+				String tagName = interest[i];
+				//用json轉的字串值取得DB的 FoodTag
+				FoodTag tag = foodTagRepository.findByFoodTagName(tagName);
+				
+
+				//設定一筆關聯表資料
+				FoodTagUser ftu = new FoodTagUser();
+				//分別將雙邊資料存入
+				ftu.setFkfoodtagid(tag);
+				ftu.setFkuserid(user);
+				
+//				userSet.add(ftu);
+				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
+				tagSet.add(ftu);
+				System.out.println("save foodtag");
+				foodTagRepository.save(tag);
+//				userSet.add(ftu);
+//				user.setUserTags(userSet);
+				uSysServiceImpl.update(user);
+				message+= "修改成功";
+			}
+			UserSysServiceImpl secondD = new UserSysServiceImpl();
+			Hibernate.initialize(secondD);
+
+			UserAccount user1 = secondD.findByAccountIndex(returnNamePath());
+			Hibernate.initialize(user1);
+
+//			 Set<FoodTag> z = new HashSet<>();
+//			List<FoodTag> x = foodTagRepository.findAll();
+//			for(FoodTag y: x) {
+//				if(y.getFoodTagUsers().contains(user)) {
+//					z.add(y);
+//				}
+//			}
+
+
+			System.out.println("add user1 in=============********************========================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//			for(FoodTagUser ft:user1.getUserTags()) {
+//				System.out.println(ft.getFkfoodtagid().getFoodTagName());
+//			}
+//				
+		return user1.getUserTags();
+	}
+	
+	
+	
+	@PostMapping(value="/user/confirmPhotoChangeAjax",consumes={"multipart/mixed","multipart/form-data","application/json"})
+	public @ResponseBody String changePhoto( 
+			@RequestPart("file")MultipartFile file) throws Exception{
+		String message = "";
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		UserDetail userDetail = user.getUserAccountDetail();
+		
+				
+		String originalFilename = file.getOriginalFilename();
+		String extFilename = ""; 
+		if (originalFilename.length() > 0 && originalFilename.lastIndexOf(".") > -1) {
+			extFilename = originalFilename.substring(originalFilename.lastIndexOf("."));
+			System.out.println(extFilename);
+		}
+		if (file != null && !file.isEmpty()) {
+			try {
+				byte[] b = file.getBytes();
+				Blob blob = new SerialBlob(b);
+				userDetail.setUserPhoto(blob);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
+			}
+		}
+
+		user.setUserAccountDetail(userDetail);
+		
+			service.update(user); 
+				message = "success";
+
+		try {
+			File fileplace = new File(imageFolder, "UserImage_" + user.getAccountIndex() + extFilename);
+			file.transferTo(fileplace);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("檔案上傳發生異常: " + e.getMessage());
+		}
+		return message;
+	}
+	
+	
+	@GetMapping(value="/user/replacePhotoAjax")
+	public @ResponseBody Integer replacephoto( ) throws Exception{
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		
+
+
+		return user.getUserAccountDetail().getUseretailId();
+
 	}
 	
 //======================================================================================================================
