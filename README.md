@@ -5,3 +5,12 @@
   insert into roles values ('normal'),('company'),('admin')
 2.到資料庫companyDetail的設計->把[userphoto]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)]
 3.註冊完後要記得到userAccount手動把enable欄位變成1才能登入,之後要改
+---------------------------------------------------------------
+4. 請將埠號都改成433
+5. 請打開ngrok，然後登入ngrok的網站(https://dashboard.ngrok.com/login)
+6. 在ngrok上先打taskkill /f /im ngrok.exe
+7. 再把你網站上的authtoken複製貼到ngrok上面(在第2點Connect your account從斜線後複製，不要複製到斜線)
+8. 貼完後再打 ngrok http 433  
+9. 出現online就代表連線成功
+10. 然後複製第二個Forwarding的==>(例如:https://ce90e75b1f39.ngrok.io 每次連線都會變不要複製這個)替換到checkOutController的第153行
+11. 如果不行那我也不行

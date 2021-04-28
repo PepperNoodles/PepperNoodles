@@ -1,5 +1,6 @@
 package com.infotran.springboot.websocket.controller;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.infotran.springboot.commonmodel.FriendList;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
+import com.infotran.springboot.websocket.model.MessageUser;
 import com.infotran.springboot.websocket.storage.UserStorage;
 
 
@@ -35,7 +38,7 @@ public class UserController {
 	      currentUserName = authentication.getName();
 	      System.out.println(currentUserName);
 			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
-			System.out.println(user.getAccountIndex());
+			//System.out.println(user.getAccountIndex());
 			model.addAttribute("userAccount", user);
 	      return currentUserName;
 	   }
@@ -43,7 +46,7 @@ public class UserController {
 	   return null;
 	 }
 	
-	
+	//沒有再用了
 	@GetMapping("/registration/{userName}")
 	public ResponseEntity<Void> register(@PathVariable String userName,Model model){
 		System.out.println("handling register User request:"+userName);
@@ -66,8 +69,24 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 	
-	@GetMapping("/fetchAllUser")
-	public Set<String> fetchAll(){
-		return UserStorage.getInstance().getUsers();
+	@GetMapping("/fetchAllUser/{currentUserName}")
+	public Set<MessageUser> fetchAll(@PathVariable String currentUserName){
+		Set<MessageUser> friendIndex = new LinkedHashSet<>();
+		
+		UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
+		Set<FriendList> friends = user.getFriends();
+		for(FriendList flist:friends) {
+			MessageUser mUser = new MessageUser();
+			mUser.setmUserAccountIndex(flist.getFriends().getAccountIndex());
+			mUser.setmUserDetailId(flist.getFriends().getUserAccountDetail().getUseretailId());
+			mUser.setmUserAccountNickName(flist.getFriends().getUserAccountDetail().getNickName());
+			
+			friendIndex.add(mUser);			
+		}
+		
+		return friendIndex;
 	}
+	
+	
+	
 }

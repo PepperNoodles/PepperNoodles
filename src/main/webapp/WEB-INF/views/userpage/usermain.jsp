@@ -52,6 +52,18 @@ color: black;
 }
 
 
+
+
+.collumntogreen{
+	color:green;
+}
+.collumntored{
+	red;
+}
+table a{
+	color:#0000C6;
+}
+
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
 /*      border-top:solid black 1px;  */
@@ -179,8 +191,9 @@ color: black;
 								<a class="nav-item nav-link" id="nav-message-tab"
 									data-toggle="tab" href="#nav-message" role="tab"
 									aria-controls="nav-message" aria-selected="false">
-									<button class="btn-link" id="checkmessage"
-										style="color: black"><a href="<c:url value='/user/websocket'/>">聊天室</a> </button>
+									<button onclick="location.href='<c:url value='/user/websocket'/>'" class="btn-link" id="checkmessage"
+										style="color: black">聊天室 </button>
+<%-- 										<a href="<c:url value='/user/websocket'/>">聊天室</a> --%>
 								</a>
 							</div>
 						</nav>
@@ -196,7 +209,7 @@ color: black;
 								<div class="d-flex mt-3">
 									<input class="m-2" id="nameSearch" type="search"
 										placeholder="Search By nickName" aria-label="Search">
-									<button class="btn btn-primary my-2 my-sm-0 " id="btn-search">Search</button>
+									<button class="btn-link" id="btn-search">Search</button>
 								</div>
 								<div id="searchResult"></div>
 							</div>
@@ -497,7 +510,7 @@ color: black;
 						function showSearchList(response,id){
 							$(id).html("");
 							//let result = JSON.stringify(response);
-							console.log(response[0]);
+							//console.log(response[0]);
 							let table =  document.createElement("table");
 							table.border="1";
 

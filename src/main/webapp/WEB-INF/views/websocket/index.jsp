@@ -13,31 +13,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <!--    end libs for stomp and sockjs-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"
-          type="text/css">
+    
+    
+    <link rel='stylesheet'
+	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+	<script type="text/javascript"
+		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> 
     <link rel="stylesheet" href="<c:url value='/css/chatstyle.css'/>" >
 </head>
-<body>
-<div class="container clearfix">
-	<div>hello <span id="userName">${userAccount.accountIndex}</span></div>
+<style>
+body{
+	height: 100%;
+    background-image: url("https://images.unsplash.com/photo-1532210317995-cc56d90177d9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjh8fGJhY2tncm91bmR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60");
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;	
+	
+	}
+.userInfo a{
+	text-decoration: none;
+	color:#C4E1FF;
+	font-size:1.3em
+}
+</style>
 
-    <div class="people-list" id="people-list">
-        <div class="search">
-            <input id="userNameOld" placeholder="search" type="text"/>
-            <button id="registration">Enter the chat</button>
-            <button id="fetchAll">Refresh</button>
-        </div>
-        <ul class="list" id="usersList">
+
+<body>
+<div class="container clearfix row" >
+<div class="col-3 pl-0" style="height:700px">
+
+									
+						
+	<div class="m-3">
+	<a href="/PepperNoodles"><img style="height:50px" src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""></a>
+	Home   <span id="userName" style="display:none;">${userAccount.accountIndex}</span></div>
+
+	 <div class="userInfo">
+     
+     	<img alt="avatar" height="55px" id="avatar" 
+         src="http://localhost:433/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
+         width="70px"/>
+        
+         <a href="<c:url value='/user/login'/>" class="m-2">${userAccount.userAccountDetail.nickName}</a> 
+          
+     </div>
+		
+	
+    <div class="people-list bg-secondary mt-2" style="width:150px" id="people-list">
+    	<div class="d-flex justify-content-center">
+    	<h6 class="text-light mt-2">好友區</h6>	
+    	</div>
+<!--         <div class="search"> -->
+<!--             <input id="userNameOld" placeholder="search" type="text"/> -->
+<!--             <button id="registration">Enter the chat</button> -->
+<!--             <button id="fetchAll">Refresh</button> -->
+<!--       </div>  -->
+        
+    
+  
+     <div class="friends ">
+        <ul class="list" style="height:80vh" id="usersList">
 
 
         </ul>
+     </div>
     </div>
-
-    <div class="chat">
-        <div class="chat-header clearfix">
-            <img alt="avatar" height="55px"
-                 src="https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg"
-                 width="55px"/>
+</div>
+    <div class="chat my-3" style="height:700px">
+        <div class="chat-header clearfix" >
+            <img alt="avatar" height="55px" id="avatar" 
+                 src="http://localhost:433/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
+                 width="70px"/>
 
             <div class="chat-about">
                 <div class="chat-with" id="selectedUserId"></div>
@@ -46,7 +92,7 @@
             <i class="fa fa-star"></i>
         </div> <!-- end chat-header -->
 
-        <div class="chat-history">
+        <div class="chat-history " style="height:400px">
             <ul>
 
             </ul>
@@ -95,7 +141,7 @@
 <script>
 $(window).load(function(){
     console.log("this is ok");
-	const url = 'http://localhost:9090/PepperNoodles';
+	const url = 'http://localhost:433/PepperNoodles';
  	let currentUser =document.getElementById("userName").innerHTML;
 	let stompClient;
 	let selectedUser;
@@ -103,7 +149,7 @@ $(window).load(function(){
 	
 	$("#registration").on("click",registration);
 	$("#fetchAll").on("click",fetchAll);
-
+	fetchAll();
 	$.ajax({
 		type: "GET",
 		url: url+"/userMessageLoggin/getName",				
@@ -190,28 +236,32 @@ $(window).load(function(){
 
         function selectUser(){
         	let userName = this.name;
+        	let userNick=$(this).find('.name').html()
             console.log("selecting user"+userName);
             selectedUser=userName;
             $chatHistoryList.html('');
             
             $('#selectedUserId').html('');
-            $('#selectedUserId').append('Chat with ' + userName);
+            $('#selectedUserId').append('Chat with ' + userNick);
             createChatHistory(currentUser,selectedUser);
             
         }
 
-	    function fetchAll(){
-	        $.get(url+"/fetchAllUser",function(response){	        	
-	            let users = response;
+	    function fetchAll(){	    	
+	        $.get(url+"/fetchAllUser/"+currentUser,function(response){	    
+	        	console.log(response);
+	            //let users = JSON.parse(response);
+	            let users=response;
 	            console.log(users);
 	            let userTemplateHTML="";
 	            for(let i = 0;i<users.length;i++){
-	                userTemplateHTML=userTemplateHTML+'<a href="#" id=\'user'+i+'\' name=\''+users[i]+'\'><li class="clearfix">'+
+	            	let imgUrl=url+"/userProtrait/"+users[i].mUserDetailId;
+	                userTemplateHTML=userTemplateHTML+'<a class="text-dark" href="#" id=\'user'+i+'\' name=\''+users[i].mUserAccountIndex+'\'><li class="clearfix">'+
 	                '<img alt="avatar" height="55px"'+
-	                     'src="https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg"'+
-	                     'width="55px"/>'+
+	                     'src='+imgUrl+' '+
+	                     'width="70px"/>'+
 	                '<div class="about">'+
-	                    '<div class="name">'+users[i]+'</div>'+
+	                    '<div class="name">'+users[i].mUserAccountNickName+'</div>'+
 	                    '<div class="status">'+
 	                        '<i class="fa fa-circle online"></i></div></div></li></a>';
 	            
@@ -308,13 +358,7 @@ $(window).load(function(){
 
         
 		///////////////////show聊天紀錄
-		//let messa ='[{"message":"aaaaa","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:46:52"},{"message":"?????\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:46:57"},{"message":"試試看囉\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:47:05"},{"message":"來吧","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:10"},{"message":"換行?\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:25"},{"message":"我試試看換行\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:37"},{"message":"......\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:47:47"},{"message":"阿怎麼換不了行了= =\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:48:07"},{"message":"哪尼?\\n","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:48:30"},{"message":"阿剛剛是怎麼用的?","fromLogin":"bbb@gmail.com","to":"aab@gmail.com","date":"2021-04-27@02:48:47"},{"message":"誰知道...\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:49:09"},{"message":"我自己看看\\n","fromLogin":"aab@gmail.com","to":"bbb@gmail.com","date":"2021-04-27@02:49:13"}]';
-	    
-		
-		
-		//messagg = JSON.parse(messa);
-	    //console.log(messa);
-	    //console.log(messagg[1].message);
+
 	    function createChatHistory(currentUser,toUser){
 	    	cacheDOM();
 	    	
@@ -323,7 +367,7 @@ $(window).load(function(){
 	    		url: url+"/getUserMessage/"+currentUser+"/"+toUser,				
 	    		dataType: "text",
 	    		success: function (response) {
-	    			console.log(response);
+	    			//console.log(response);
 	    			messagg=JSON.parse(response);
 	    		  	for (let i = 0;i<messagg.length;i++){
 	    	    		if(currentUser ==messagg[i].fromLogin){
@@ -349,32 +393,14 @@ $(window).load(function(){
 	    	                scrollToBottom();	    	    			
 	    	    		}	    	    		
 	    	    	}
-	    			
-	    			
-	    			
 	    		},
 	    		error: function (thrownError) {
 	    			console.log(thrownError);
 	    		}
 	    	});
-	    	
-	    }
-	    
-	    //createChatHistory('bbb@gmail.com','aaa@gmail.com');
-	    
-	    
-        /////////////////////
-        
-        
-        
+	    }       
         init();
-
-        
-
 	}
-       
-
-
 )
 
 
