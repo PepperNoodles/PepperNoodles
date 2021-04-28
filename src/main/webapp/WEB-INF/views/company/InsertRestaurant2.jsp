@@ -25,9 +25,22 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-
-
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+
+<!-- bloodHound ↓-->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+<!-- bloodHound ↑-->
+
 <style>
 .header {
 	background-color: #000000;
@@ -235,7 +248,7 @@ footer {
 						<!--綁定model中的restaurant-->
 
 						<div class="rest-infobox">
-							<h1 style="color: red">add rest</h1>
+							<h1 style="color: red">add rest2222</h1>
 							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' id='RName' />
@@ -265,11 +278,17 @@ footer {
 							<form:errors path="productImage" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">標籤：</h5>
-							<form:select path="foodTag">
-								<form:option label="請挑選" value="-1" />
-								<form:options items="${foodTagList}" itemLabel='foodTagName'
-									itemValue='foodTagIid' />
-							</form:select>
+								<div id="bloodhound">
+							<form:input class="typeahead" type="text" placeholder="States of USA" items="${foodTagListTest}" path="foodTag"/>
+								</div>
+
+
+							<%-- 							<form:select path="foodTag" id="selectgood" placeholder="add some Tags"> --%>
+
+							<%-- 								<form:options items="${foodTagListTest}" itemLabel='foodTagName' --%>
+							<%-- 									itemValue='foodTagIid' /> --%>
+
+							<%-- 							</form:select> --%>
 							<form:errors path="foodTag" cssClass="error" />
 							<br>&nbsp; <br> <input type='button' value="提交"
 								id="checkBeforeSubmit"> <span id="submitError"></span>
@@ -278,10 +297,7 @@ footer {
 							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
-
-
 					</form:form>
-	
 				</div>
 			</div>
 		</div>
@@ -399,7 +415,7 @@ footer {
 	</script>
 
 	<!-- JS here -->
-	<!--預覽照片 -->
+	<!--預覽照片+Bloodhound -->
 	<script>
 		$(function() {
 			$("#restaurant-picture").change(
@@ -417,17 +433,39 @@ footer {
 
 					});
 
-		});
-	</script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#click1').click(function() {
-				console.log('good');
+			var foodTags = new Bloodhound({
+				datumTokenizer : Bloodhound.tokenizers.obj
+						.whitespace('foodTagName'),
+				queryTokenizer : Bloodhound.tokenizers.whitespace,
+				//   prefetch: `${pageContext.request.contextPath}/data/test.json`
+				remote : {
+					url : `${pageContext.request.contextPath}/foodTagJson`,
+					cache : false
+				}
 
 			});
+
+			foodTags.initialize();
+
+			var elt = $('.typeahead');
+			elt.tagsinput({
+				itemValue : 'foodTagIid',
+				itemText : 'foodTagName',
+
+				typeaheadjs : {
+					limit : 30,
+					hint : true,
+					highlight : true,
+					name : 'foodTags',
+					displayKey : 'foodTagName',
+					source : foodTags.ttAdapter()
+				}
+
+			});
+
 		});
 	</script>
+
 	<!--地址轉座標 -->
 	<script>
 		var map;
@@ -488,29 +526,7 @@ footer {
 		async defer>
 		
 	</script>
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-
-
-
-	<!-- 	<script type="text/javascript" -->
-
-	<!-- Jquery Mobile Menu -->
-
-
-	<!-- Jquery Slick , Owl-Carousel Plugins -->
-
-
-	<!-- One Page, Animated-HeadLin -->
-
-	<!-- Nice-select, sticky -->
-
-	<!-- contact js -->
-
-	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 
 </body>

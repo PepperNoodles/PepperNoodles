@@ -71,7 +71,6 @@ public class RestaurantCRUDController {
 	@GetMapping("/showAllrest")
 	public String allRest(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/AllRestaurants";
 	}
 	// 顯示所有餐廳資料ByComId
@@ -102,7 +101,6 @@ public class RestaurantCRUDController {
 			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 			map.put("value",tag.getFoodTagIid());
 			map.put("text",tag.getFoodTagName());
-//			map.put("continent","Asia");
 			foodTagJsonList.add(map);
 			foodTagListLength++;
 		}
@@ -114,29 +112,36 @@ public class RestaurantCRUDController {
 	//標籤測試
 	@GetMapping("/test")
 	public String test(Model model) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/Tagtest";
 	}
 	
 	@GetMapping("/test2")
 	public String test2(Model model) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
-		return "company/Tagtest2";
-	}
-	
-	
-	// 連進新增餐廳時 給預設值 回傳新增頁
-	@GetMapping(value = "/addrest")
-	public String initRestaurant(Model model) {
 		Restaurant rest= new Restaurant();
 		rest.setRestaurantName("幽靈炒飯好吃");
 		rest.setRestaurantAddress("台北市信義路四段2號");
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
 		model.addAttribute("restaurant", rest);
-		return "company/InsertRestaurant";
+		
+		return "company/Tagtest2";
+	}
+	
+	@ModelAttribute
+	public void foodTagListDataTest(Model model) {
+		List<FoodTag> foodTagListTest = restaurantService.getAllFoodTag();
+		model.addAttribute("foodTagListTest", foodTagListTest);
+	}
+	// 連進新增餐廳時 給預設值 回傳新增頁
+	@GetMapping(value = "/addrest")
+	public String initRestaurant(Model model) {
+		Restaurant rest= new Restaurant();
+		rest.setRestaurantName("幽靈炒飯好吃");
+		rest.setRestaurantAddress("台北市 信義路 100號");
+		rest.setRestaurantContact("0909053909");
+		rest.setRestaurantWebsite("facebook.com");
+		model.addAttribute("restaurant", rest);
+		return "company/InsertRestaurant3";
 	}
 
 
@@ -152,7 +157,7 @@ public class RestaurantCRUDController {
 			for (ObjectError error : list) {
 				System.out.println(".validate()後有錯誤：" + error);
 			}
-			return "company/InsertRestaurant";
+			return "company/InsertRestaurant3";
 		}
 		// 從model取照片
 		MultipartFile picture = rest.getProductImage();
