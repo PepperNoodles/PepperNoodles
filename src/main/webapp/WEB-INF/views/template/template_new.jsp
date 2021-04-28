@@ -14,14 +14,14 @@
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> 
+<!-- <link rel='stylesheet' -->
+<%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
+<!-- <script type="text/javascript" -->
+<%-- 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>  --%>
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<!-- <script type="text/javascript" -->
+<%-- 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script> --%>
 	
 
 
@@ -48,13 +48,13 @@ color:#000000;
 	</div>
 
 	<div class="row">
-		<div class="col-4" id="aaa">
+		<div class="col-3" id="aaa">
 			<%@include file="../template/backstageTemp.jsp" %>
 		
 		
 		</div>
 		<div class="col-8">
-			<h1>test</h1>
+			<h1>testqqqssss</h1>
 			<h1>test</h1>
 			<h1>test</h1>
 			<h1>test</h1>

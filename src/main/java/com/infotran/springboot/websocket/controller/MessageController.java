@@ -39,10 +39,10 @@ public class MessageController {
 	  @MessageMapping("/chat/{to}")
 	   public void sendMessage(@DestinationVariable String to, MessageModel message) {
 	        System.out.println("handling send message: " + message + " to: " + to);
-	        boolean isExists = UserStorage.getInstance().getUsers().contains(to);
+	        //boolean isExists = UserStorage.getInstance().getUsers().contains(to);
 			//destination 對應到registerStompEndpoint的configureMessageBroker的enableSimpleBroker
 			//為何要加message?
-	        if (isExists) {
+	        //if (isExists) {
 	        	System.out.println("convertAndSend"+to+":"+message);
 	        	//要新增到資料表裡面
 	        	SocketMessage messageDB = new SocketMessage();
@@ -59,7 +59,7 @@ public class MessageController {
 	        	
 	        	////
 	            simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
-	        }
+	       // }
 		
 	  }
 	  
