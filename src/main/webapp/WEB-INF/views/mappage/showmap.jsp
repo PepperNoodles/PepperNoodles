@@ -136,8 +136,7 @@ tr a:hover{
 
 	<br>
 
-
-	<h1>測試用</h1>
+	<h5 style="display:none" id="indexSearch">${rests}</h5>
 	
 	
 	
@@ -172,8 +171,27 @@ tr a:hover{
 		let markerArray = []; //create new markers array
 		const popup = L.popup();
 		
-		createSideMemo(loca);
-		addMarker(loca);
+		//從首頁傳值
+		if ($("#indexSearch").html().length>2){
+			console.log($("#indexSearch").html().length);
+			let indexResult = $("#indexSearch").html();
+			indexResult=JSON.parse(indexResult);
+			if(indexResult){
+				//console.log("首頁功能:"+indexResult);
+				//console.log("首頁功能:"+indexResult[0].restaurantName);
+				
+				loca=[];
+				loca=indexResult;
+				createSideMemo(loca,1);
+				addMarker(loca);
+			}
+		}else{
+			loca=[];
+		}
+		
+		
+		//createSideMemo(loca,1);
+		//addMarker(loca);
 		
 		map.on('click', onMapClick);
 		$("#keyWordSearch").on('click',keyWordSearch);
@@ -239,7 +257,7 @@ tr a:hover{
 		function showSideBar(){
 			let page = this.value;
 			console.log(page);
-			 createSideMemo(loca,page);
+			createSideMemo(loca,page);
 		}
 		
 		//////////////////////////目前最新的function
@@ -336,7 +354,7 @@ tr a:hover{
 						let page =Math.ceil(loca.length/6);
 						buttonGenerater(page);
 					}else{
-						console.log("okkkkkkk")
+					//	console.log("okkkkkkk")
 						$('#modal').modal('show')
 					}					
 					
@@ -350,7 +368,7 @@ tr a:hover{
 	
 		
 	
-		//點地圖function 點完後會去撈附近餐廳
+	//點地圖function 點完後會去撈附近餐廳,////////////////很吃效能的功能
 		function onMapClick(e) {
 			if(selectedMarker){
 				map.removeLayer(selectedMarker)
@@ -370,7 +388,7 @@ tr a:hover{
 		  let urls="Http://localhost:433";
 		      urls+="<c:url value='/restSearch/restNear' />";
 			  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
-			  console.log(urls);
+			 // console.log(urls);
 		  $.ajax({
 				type: "GET",
 				url: urls,				
@@ -380,13 +398,17 @@ tr a:hover{
 					loca=[];
 					loca = JSON.parse(response);
 					if(loca.length>0){
-						console.log(loca[0].restaurantName);
-						console.log(loca.length);
+				//		console.log(loca[0].restaurantName);
+				//		console.log(loca.length);
 						
 						createSideMemo(loca,1);
 						addMapMarker(loca);
 						let page =Math.ceil(loca.length/6);
 						buttonGenerater(page);
+					}else{
+						let memo=document.getElementById("memoBoard");
+						memo.innerHTML="";
+						$("#pageButton").html("");
 					}
 					
 				},
@@ -548,7 +570,7 @@ tr a:hover{
 					url: urls,				
 					dataType: "json",
 					success: function (response) {
-						console.log(response);
+						//console.log(response);
 						let tags = response;
 						let select = document.createElement("select");
 						select.classList.add("form-control")

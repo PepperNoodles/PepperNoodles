@@ -34,6 +34,72 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 
+<script>
+$(document).ready(function(){
+	let divSelect = document.getElementById("tagSelect");
+	divSelect.innerHTML='';
+	tagCreater();
+	
+	$("#indexSearch").on('click',indexSearch);
+	
+	function indexSearch(){
+		let keyWord = $("#indexInput").val();
+		let tag =$("#tagSelecter").val();
+		console.log(keyWord+":"+tag);
+		if(keyWord.length!=0 || tag!="NULL"){		
+			let urls="<c:url value='/restSearch/map'/>";
+	   		 urls+="?restName="+keyWord;	        		
+			 urls+="&searchTag="+tag;
+			window.location.href = urls;
+		}
+		
+	}
+	
+	function tagCreater(){
+		let urls="Http://localhost:433";
+			urls+="<c:url value='/restSearch/tagAll' />";
+		$.ajax({
+				type: "GET",
+				url: urls,				
+				dataType: "json",
+				success: function (response) {
+					console.log(response);
+					let tags = response;
+					let select = document.createElement("select");
+					select.classList.add("form-control")
+					select.id = ("tagSelecter");
+					for (let i = 0;i<tags.length+1;i++){
+						
+						let option = document.createElement("option");
+						
+						if (i == 0){								
+							option.innerHTML="All";
+							option.value = "NULL";
+						}else{
+							option.innerHTML=tags[i-1];
+						}
+						select.name="select";
+						select.appendChild(option);						
+						divSelect.appendChild(select);
+						//console.log(tags[i-1]);
+					}
+					
+					
+				},
+				error: function (thrownError) {
+					console.log(thrownError);
+				}
+			})
+	}
+	
+});
+
+</script>
+<style>
+.form-control{
+	height:60px
+}
+</style>
 </head>
 <body>
 	<!-- Preloader Start -->
@@ -147,13 +213,26 @@
 													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
 												</ul>	
 												</li></c:when>
-												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()">
+												<c:when test="${userAccount != null}">
+												<li class="login"><sec:authorize access="isAuthenticated()">
 												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
 												<ul class="submenu">
 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
 													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
 												</ul>	
-												</li></c:otherwise>					
+												</li>
+												</c:when>
+												<c:when test="${comDetail != null}">
+												<li class="login"><sec:authorize access="isAuthenticated()">
+												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
+												<ul class="submenu">
+													<li><a href="<c:url value='/Company/company'/>">餐廳頁面</a></li>
+													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
+												</ul>	
+												</li>
+												</c:when>
+												<c:otherwise>
+												</c:otherwise>					
 											</c:choose>
 										</ul>
 									</nav>
@@ -187,22 +266,22 @@
 							</div>
 							<!--Hero form -->
 							<form action="#" class="search-box">
-								<div class="input-form">
-									<input type="text" placeholder="今晚我想來點...">
+								<div class="input-form" >
+									<input id="indexInput" type="text" placeholder="今晚我想來點...">
 								</div>
 								<div class="select-form">
-									<div class="select-itms">
-										<select name="select" id="select1">
-											<option value="">全部</option>
-											<option value="">胡椒麵</option>
-											<option value="">日式炸雞</option>
-											<option value="">泰式料理</option>
-											<option value="">燒仙草</option>
-										</select>
+									<div class="select-itms" id="tagSelect">
+<!-- 										<select name="select" id="select1"> -->
+<!-- 											<option value="">全部</option> -->
+<!-- 											<option value="">胡椒麵</option> -->
+<!-- 											<option value="">日式炸雞</option> -->
+<!-- 											<option value="">泰式料理</option> -->
+<!-- 											<option value="">燒仙草</option> -->
+<!-- 										</select> -->
 									</div>
 								</div>
 								<div class="search-form">
-									<a href="#">Search</a>
+									<a href="#" id="indexSearch">Search</a>
 								</div>
 							</form>
 						</div>
