@@ -108,7 +108,7 @@
 											<li><a href="about.html">發表食記</a></li>
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
-                                            <li><a href="rearStage/rearStage">後台</a></li>
+                                            <li><a href="rearStage/indexRearStage">後台</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
@@ -150,9 +150,10 @@
 	
 		<!-- JS here -->
 		<!-- All JS Custom Plugins Link Here here -->
-		<script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
-		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
+		<script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
+<!-- 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script> -->
+
 		<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 		<!-- Jquery Mobile Menu -->
@@ -168,8 +169,8 @@
 		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
 		<script src="<c:url value='/scripts/contact.js' />"></script>
 		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-<%-- 		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
-<%-- 		<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
+		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
+		<script src="<c:url value='/scripts/mail-script.js' />"></script>
 		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
 		<!-- Jquery Plugins, main Jquery -->
 		<script src="<c:url value='/scripts/plugins.js' />"></script>
