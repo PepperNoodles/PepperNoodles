@@ -25,9 +25,22 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-
-
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
+
+<!-- bloodHound ↓-->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+<!-- bloodHound ↑-->
+
 <style>
 .header {
 	background-color: #000000;
@@ -59,6 +72,149 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
+
+/* ↓tag */
+@font-face {
+	font-family: "Prociono";
+	src: url("../font/Prociono-Regular-webfont.ttf");
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 750px;
+	text-align: center;
+}
+
+.tt-dropdown-menu, .gist {
+	text-align: left;
+}
+
+html {
+	color: #333333;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	line-height: 1.2;
+}
+
+#scrollable-dropdown-menu .tt-dropdown-menu {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+.title, .example-name {
+	font-family: Prociono;
+}
+
+p {
+	margin: 0 0 10px;
+}
+
+.title {
+	font-size: 64px;
+	margin: 20px 0 0;
+}
+
+.example {
+	padding: 30px 0;
+}
+
+.example-name {
+	font-size: 32px;
+	margin: 20px 0;
+}
+
+.demo {
+	margin: 50px 0;
+	position: relative;
+}
+
+.typeahead, .tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px 8px 8px 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+
+.typeahead {
+	background-color: #FFFFFF;
+}
+
+.typeahead:focus {
+	border: 2px solid #0097CF;
+}
+
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.tt-hint {
+	color: #999999;
+}
+
+.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px 8px 8px 8px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	padding: 8px 0;
+	width: 422px;
+}
+
+.tt-suggestion {
+	font-size: 18px;
+	line-height: 24px;
+	padding: 3px 20px;
+}
+
+.tt-suggestion.tt-cursor {
+	background-color: #0097CF;
+	color: #FFFFFF;
+}
+
+.tt-suggestion p {
+	margin: 0;
+}
+
+.gist {
+	font-size: 14px;
+}
+
+.example-twitter-oss .tt-suggestion {
+	padding: 8px 20px;
+}
+
+.example-twitter-oss .tt-suggestion+.tt-suggestion {
+	border-top: 1px solid #CCCCCC;
+}
+
+.example-twitter-oss .repo-language {
+	float: right;
+	font-style: italic;
+}
+
+.example-twitter-oss .repo-name {
+	font-weight: bold;
+}
+
+.example-twitter-oss .repo-description {
+	font-size: 14px;
+}
+
+.example-sports .league-name {
+	border-bottom: 1px solid #CCCCCC;
+	margin: 0 20px 5px;
+	padding: 3px 0;
+}
+
+.example-arabic .tt-dropdown-menu {
+	text-align: right;
+}
+/* ↑tag */
 </style>
 
 <script>
@@ -235,7 +391,7 @@ footer {
 						<!--綁定model中的restaurant-->
 
 						<div class="rest-infobox">
-							<h1 style="color: red">add rest</h1>
+							<h1 style="color: red">add rest2222</h1>
 							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' id='RName' />
@@ -265,11 +421,10 @@ footer {
 							<form:errors path="productImage" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">標籤：</h5>
-							<form:select path="foodTag">
-								<form:option label="請挑選" value="-1" />
-								<form:options items="${foodTagList}" itemLabel='foodTagName'
-									itemValue='foodTagIid' />
-							</form:select>
+							<div>
+								<form:input class="typeahead" type="text" placeholder="add Tag"
+									path="foodTag" />
+							</div>
 							<form:errors path="foodTag" cssClass="error" />
 							<br>&nbsp; <br> <input type='button' value="提交"
 								id="checkBeforeSubmit"> <span id="submitError"></span>
@@ -278,10 +433,7 @@ footer {
 							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
-
-
 					</form:form>
-	
 				</div>
 			</div>
 		</div>
@@ -399,7 +551,7 @@ footer {
 	</script>
 
 	<!-- JS here -->
-	<!--預覽照片 -->
+	<!--預覽照片+Bloodhound -->
 	<script>
 		$(function() {
 			$("#restaurant-picture").change(
@@ -417,17 +569,31 @@ footer {
 
 					});
 
-		});
-	</script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#click1').click(function() {
-				console.log('good');
-
+			var foodTags = new Bloodhound({
+				datumTokenizer : Bloodhound.tokenizers.obj.whitespace('text'),
+				queryTokenizer : Bloodhound.tokenizers.whitespace,
+				prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
+				cache : false
 			});
+
+			foodTags.initialize();
+			
+			var elt = $('.typeahead');
+			elt.tagsinput({
+				itemValue : 'value',
+				itemText : 'text',
+				
+				typeaheadjs : {
+					limit: 20,
+					name : 'foodTags',
+					displayKey : 'text',
+					source : foodTags.ttAdapter()
+				}
+			});
+
 		});
 	</script>
+
 	<!--地址轉座標 -->
 	<script>
 		var map;
@@ -488,29 +654,7 @@ footer {
 		async defer>
 		
 	</script>
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-
-
-
-	<!-- 	<script type="text/javascript" -->
-
-	<!-- Jquery Mobile Menu -->
-
-
-	<!-- Jquery Slick , Owl-Carousel Plugins -->
-
-
-	<!-- One Page, Animated-HeadLin -->
-
-	<!-- Nice-select, sticky -->
-
-	<!-- contact js -->
-
-	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 
 </body>

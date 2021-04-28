@@ -109,23 +109,8 @@ public class RestaurantCRUDController {
 		return foodTagJsonList;
 	}
 
-	//標籤測試
-	@GetMapping("/test")
-	public String test(Model model) {
-		return "company/Tagtest";
-	}
-	
-	@GetMapping("/test2")
-	public String test2(Model model) {
-		Restaurant rest= new Restaurant();
-		rest.setRestaurantName("幽靈炒飯好吃");
-		rest.setRestaurantAddress("台北市信義路四段2號");
-		rest.setRestaurantContact("0909053909");
-		rest.setRestaurantWebsite("facebook.com");
-		model.addAttribute("restaurant", rest);
-		
-		return "company/Tagtest2";
-	}
+
+
 	
 	@ModelAttribute
 	public void foodTagListDataTest(Model model) {
@@ -141,7 +126,7 @@ public class RestaurantCRUDController {
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
 		model.addAttribute("restaurant", rest);
-		return "company/InsertRestaurant3";
+		return "company/InsertRestaurant";
 	}
 
 
@@ -157,7 +142,7 @@ public class RestaurantCRUDController {
 			for (ObjectError error : list) {
 				System.out.println(".validate()後有錯誤：" + error);
 			}
-			return "company/InsertRestaurant3";
+			return "company/InsertRestaurant";
 		}
 		// 從model取照片
 		MultipartFile picture = rest.getProductImage();
@@ -204,7 +189,7 @@ public class RestaurantCRUDController {
 		Restaurant rest = restaurantService.get(id);
 		model.addAttribute("updateRestaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/UpdateRestaurant";
+		return "company/UpdateRestaurant2";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
@@ -219,7 +204,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			//若有錯 回到修改頁面
-			return "company/UpdateRestaurant";
+			return "company/UpdateRestauran2";
 		}
 		//檢查提交表單的上傳圖片檔
 	
@@ -319,7 +304,14 @@ public class RestaurantCRUDController {
 		return map;
 		
 	}
-	
+	//請求餐廳標籤2
+	@GetMapping("/restTag2/{id}")
+	public @ResponseBody Set<FoodTag> restTag2(@PathVariable("id") Integer id) {
+		Restaurant rest = restaurantService.get(id);
+		Set<FoodTag> set = rest.getFoodTag();
+		return set;
+		
+	}
 	
 	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {
