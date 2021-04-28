@@ -8,18 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
-
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,14 +42,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.AuthUserDetails;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.FriendList;
+import com.infotran.springboot.commonmodel.Like;
 import com.infotran.springboot.commonmodel.MessageBox;
 import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
@@ -60,6 +60,7 @@ import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
 import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
+import com.infotran.springboot.userAccsystem.service.inplement.LikeServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserDetailServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
@@ -71,10 +72,21 @@ public class UserSysController {
 
 	String imageRootDirectory = "C:\\myfolder\\PPNpics";
 
+
 	@Resource
 	CancelOrderServiceImpl cancelorderservice;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
 	
 	File imageFolder = null; 
+	
+	@PersistenceContext
+	EntityManager em;
+	
+	@Autowired
+	LikeServiceImpl likeServiceImpl;
 	
 	@Autowired
 	SendEmail sendemail;
@@ -109,6 +121,20 @@ public class UserSysController {
 	
 	@Autowired
 	FoodTagUserRepository foodTagUserRepository;
+	
+	//使用Spring Security列出目前上線人數帳號的方法
+    public void listLoggedInUsers() {
+        final List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+
+        for(final Object principal : allPrincipals) {
+            if(principal instanceof AuthUserDetails) {
+                final AuthUserDetails user = (AuthUserDetails) principal;
+
+                // Do something with user
+                System.out.println("users online:====================================================" + 	user.getUsername());
+            }
+        }
+    }
 	
 	public UserSysController() {
 		imageFolder = new File(imageRootDirectory, "images");
@@ -301,23 +327,14 @@ public class UserSysController {
 	
 	
 	@PostMapping(value="/user/confirmFoodTagsChangeAjax")
-	public @ResponseBody Set<FoodTagUser> saveAccountInterest(
+	public @ResponseBody Set<FoodTag> saveAccountInterest(
 			@RequestBody String[] interest,
-			Model model){
+			Model model ){
 		String message ="";
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		
-//		 Set<FoodTag> userinTags = ftr.getUserInFoodtags(user.getAccountId());
-		 
-//		 for(FoodTag t:userinTags) {
-//			 Set<FoodTagUser> x = t.getFoodTagUsers();
-//			 for(FoodTagUser ftu:x) {
-//				 if(ftu.getFkuserAccountid()==user.getAccountId()) {
-//					 x.remove(ftu);
-//				 }
-//			 }
-//		 }
-		
+
+		//刪除原本標籤
 		Set<FoodTagUser> usersetss =foodTagUserRepository.getByFkuserid(user);
 		System.out.println(usersetss.size());
 		for(FoodTagUser foodTagUser:usersetss) {
@@ -325,6 +342,7 @@ public class UserSysController {
 			foodTagUser.setFkfoodtagid(null);
 
 			System.out.println("brfore delete=====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			//確認資料庫刪除
 			foodTagUserRepository.deleteById(foodTagUser.getFooTagUserId());
 			System.out.println("after delete=====================================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -338,37 +356,41 @@ public class UserSysController {
 
 		System.out.println("userSet is empty: " + userSet.isEmpty());
 		
-
+		Session session = (Session) em.getDelegate();
+		session.clear();
 			for(int i = 0; i<interest.length; i++) {
 				System.out.println("json傳到server的值" + interest[i]);
 				String tagName = interest[i];
 				//用json轉的字串值取得DB的 FoodTag
 				FoodTag tag = foodTagRepository.findByFoodTagName(tagName);
-				
-
+					
 				//設定一筆關聯表資料
 				FoodTagUser ftu = new FoodTagUser();
 				//分別將雙邊資料存入
 				ftu.setFkfoodtagid(tag);
 				ftu.setFkuserid(user);
-				
+				foodTagUserRepository.saveAndFlush(ftu);
+
+
 //				userSet.add(ftu);
-				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
-				tagSet.add(ftu);
+//				Set<FoodTagUser> tagSet =  tag.getFoodTagUsers();
+//				tagSet.add(ftu);
+//				tag.setFoodTagUsers(tagSet);
+//				foodTagRepository.saveAndFlush(tag);
 				System.out.println("save foodtag");
-				foodTagRepository.save(tag);
+//				tag.setFoodTagUsers(tagSet);
 //				userSet.add(ftu);
 //				user.setUserTags(userSet);
-				uSysServiceImpl.update(user);
+//				uSysServiceImpl.update(user);
 				message+= "修改成功";
 			}
-			UserSysServiceImpl secondD = new UserSysServiceImpl();
-			Hibernate.initialize(secondD);
 
-			UserAccount user1 = secondD.findByAccountIndex(returnNamePath());
-			Hibernate.initialize(user1);
-
-//			 Set<FoodTag> z = new HashSet<>();
+			Set<FoodTag> userSetFake = new HashSet<>();
+			for(String x:interest) {
+				FoodTag y = foodTagRepository.findByFoodTagName(x);
+				userSetFake.add(y);
+			}
+			//			 Set<FoodTag> z = new HashSet<>();
 //			List<FoodTag> x = foodTagRepository.findAll();
 //			for(FoodTag y: x) {
 //				if(y.getFoodTagUsers().contains(user)) {
@@ -377,12 +399,23 @@ public class UserSysController {
 //			}
 
 
-			System.out.println("add user1 in=============********************========================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//			System.out.println("add user1 in=============********************========================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //			for(FoodTagUser ft:user1.getUserTags()) {
 //				System.out.println(ft.getFkfoodtagid().getFoodTagName());
 //			}
-//				
-		return user1.getUserTags();
+			
+System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
+
+			for(FoodTag x:userSetFake) {
+				String y = x.getFoodTagName();
+				System.out.println(y);
+			}
+
+			UserAccount user1 = uSysServiceImpl.findByAccountIndex(returnNamePath());
+			model.addAttribute("userAccount", user1);
+
+			
+		return userSetFake;
 	}
 	
 	
@@ -464,7 +497,14 @@ public class UserSysController {
 		for(int i =0; i<userMsn.size(); i++) {
 			if(userMsn.get(i).getMessageBox()==null) {
 				userMsnNull.add(userMsn.get(i));
-				
+//				Hibernate.initialize(userMsn.get(i));
+//				System.out.println(userMsn.get(i).getMessageBox().getUserMessageId());
+//				for(int j =0;j<userMsn.get(i).getLikes().size();j++) {
+//					System.out.println("logic DOn DONDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//					Hibernate.initialize(userMsn.get(i).getLikes().get(j).getFkUserAccountId());
+//
+//					System.out.println(userMsn.get(i).getLikes().get(j).getFkUserAccountId());
+//				}
 			}	
 		}
 		System.out.println("放進去了");
@@ -668,14 +708,25 @@ public class UserSysController {
 		
 		MessageBox msn = msnServiceImpl.findById(msnID);
 		System.out.println("=======================================要被讚的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
-		msn.setLikeAmount(msn.getLikeAmount()+1);
-		Integer success =msnServiceImpl.save(msn);
-		if(success==1) {
-			message=  String.valueOf(msn.getLikeAmount());
+		
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		Integer flag =likeServiceImpl.save(user, msn);
+		
+		if(flag==1) {
+			msn.setLikeAmount(msn.getLikeAmount()+1);
+			Integer success =msnServiceImpl.save(msn);
+			if(success==1) {
+				message=  String.valueOf(msn.getLikeAmount());
+			}else {
+				message=String.valueOf(msn.getLikeAmount());
+
+			}
 		}else {
 			message=String.valueOf(msn.getLikeAmount());
-
+			System.out.println("因為已經讚過了所以不會在加讚了~~~!!!!!");
 		}
+
+		
 
 		return message;
 	}
@@ -687,17 +738,36 @@ public class UserSysController {
 		String message = null;
 		
 		MessageBox msn = msnServiceImpl.findById(msnID);
-		System.out.println("=======================================要被讚的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
-		msn.setLikeAmount(msn.getLikeAmount()-1);
-		Integer success =msnServiceImpl.save(msn);
-		if(success==1) {
-			message=  String.valueOf(msn.getLikeAmount());
-		}else {
-			message=String.valueOf(msn.getLikeAmount());
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 
+		System.out.println("=======================================要被刪刪刪刪刪刪刪的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
+		
+		Integer delete =likeServiceImpl.delete(user, msn);
+		if(delete==1) {
+			msn.setLikeAmount(msn.getLikeAmount()-1);
+			Integer success =msnServiceImpl.save(msn);
+			System.out.println("成功保存刪除讚的MSNBOX: " + success );
 		}
-
+	
+			message=  String.valueOf(msn.getLikeAmount());
+			
 		return message;
+	}
+	
+	//顯示這則留言中誰按了讚
+	@GetMapping(value="/user/showWhoLikeAjax" )
+	@ResponseBody
+	public List<UserAccount> showWhoLikeCommentAjax( @RequestParam(name = "msnID") Integer msnID) {
+		String message = null;
+		
+		MessageBox msn = msnServiceImpl.findById(msnID);
+		List<Like> msnLikes = msn.getLikes();
+		List<UserAccount> preToSend = new ArrayList<UserAccount>();
+		for(int i=0;i<msnLikes.size();i++) {
+			preToSend.add(msnLikes.get(i).getFkUAId());
+		}
+				
+		return preToSend;
 	}
 	
 //======================================================================================================================
@@ -722,6 +792,7 @@ public class UserSysController {
 			UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
 			System.out.println(user.getAccountIndex());
 			model.addAttribute("userAccount", user);
+			listLoggedInUsers() ;
 	      return currentUserName;
 	   }
 	  System.out.println("no logging user currently!!");
