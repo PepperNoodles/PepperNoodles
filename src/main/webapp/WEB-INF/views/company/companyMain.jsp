@@ -89,8 +89,7 @@
 									<div class="" id="accoutPage1">
 										<div>
 											<c:if test='${comDetail.companyDetailId == null}'>
-												<br>帳號：<br>&nbsp;
-												<input path='realname' />
+												<p style="text-align: center;">請登入會員</p>
 											</c:if>
 										</div>
 										<div class="row ml-5">
