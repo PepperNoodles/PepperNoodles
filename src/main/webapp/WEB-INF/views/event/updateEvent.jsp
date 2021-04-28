@@ -156,7 +156,7 @@ $j(document).ready(function(){
 	
 	//傳值
 	$("#updateEvent").click(function(){
-		restaurantId = 1;
+		restaurantId = ${restId};
 		eventId = ${event.eventId};
 		eventName = $("#eventName").val();
 		eventStartDate = $("#eventStartDate").val();
@@ -181,7 +181,7 @@ $j(document).ready(function(){
 			async : true,
 			success: function (result) {
 				alert("修改成功");
-			location.href="http://localhost:9090/PepperNoodles/event";
+			location.href="http://localhost:433/PepperNoodles/event/"+restaurantId;
 			},
 	        error: function (result) {
 // 				alert("新增失敗");
@@ -265,7 +265,7 @@ body {
 							<br>
 							<div class="infobox">
 								<label for="eventPicture">
-									<img src="<c:url value='/getEventPicture/${event.eventId}'/>" height="200px" id="picture"/>
+									<img class="rounded" src="<c:url value='/getEventPicture/${event.eventId}'/>" height="200px" id="picture"/>
 								</label>
 								<input hidden type="file" id="eventPicture" accept="image/*" name="photo">
 								<br>
