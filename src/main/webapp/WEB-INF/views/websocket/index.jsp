@@ -51,7 +51,7 @@ body{
 	 <div class="userInfo">
      
      	<img alt="avatar" height="55px" id="avatar" 
-         src="http://localhost:9090/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
+         src="http://localhost:433/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
          width="70px"/>
         
          <a href="<c:url value='/user/login'/>" class="m-2">${userAccount.userAccountDetail.nickName}</a> 
@@ -82,7 +82,7 @@ body{
     <div class="chat my-3" style="height:700px">
         <div class="chat-header clearfix" >
             <img alt="avatar" height="55px" id="avatar" 
-                 src="http://localhost:9090/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
+                 src="http://localhost:433/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
                  width="70px"/>
 
             <div class="chat-about">
@@ -141,7 +141,7 @@ body{
 <script>
 $(window).load(function(){
     console.log("this is ok");
-	const url = 'http://localhost:9090/PepperNoodles';
+	const url = 'http://localhost:433/PepperNoodles';
  	let currentUser =document.getElementById("userName").innerHTML;
 	let stompClient;
 	let selectedUser;
