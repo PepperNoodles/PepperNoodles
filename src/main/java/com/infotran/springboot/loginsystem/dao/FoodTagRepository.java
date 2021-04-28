@@ -23,6 +23,8 @@ public interface FoodTagRepository extends JpaRepository<FoodTag, Integer> {
 //			"WHERE  (ftu.fkuserid.accountId = ?1) ")
 //	 Set<FoodTag> getUserInFoodtags(Integer id);
 //
+	
+	
 
 
 }

@@ -29,7 +29,7 @@ public class UserSysServiceImpl implements UserSysService {
 	
 	
 	public void update(UserAccount userAccount) {
-		userSysRepository.save(userAccount);
+		userSysRepository.saveAndFlush(userAccount);
 	}
 
 }
