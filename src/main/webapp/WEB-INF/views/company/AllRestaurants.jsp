@@ -150,7 +150,10 @@
 								<td style="text-align: center;font-weight: bold"><div id="${restaurant.restaurantId}" name="restid"></div></td>
 								<td><img width='120' height='120'
 									src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}' id='restpicture' /></td>
-									<td style="font-weight: bold"><a class='manulink' href="${pageContext.request.contextPath}/rest/menu/${restaurant.restaurantId}">新增菜單</a></td>
+									<td style="font-weight: bold">
+									<a class='manulink' href="${pageContext.request.contextPath}/rest/menu/${restaurant.restaurantId}">新增菜單</a><br>
+									<a class='manulink' href="${pageContext.request.contextPath}/event/${restaurant.restaurantId}">新增活動</a>
+									</td>
 								<td style="font-weight: bold"><a class='updatelink' href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯</a></td>
 								<td style="font-weight: bold"><a class='deletelink' href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除</a></td>
 							</tr>
