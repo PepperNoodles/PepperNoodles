@@ -26,10 +26,9 @@
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
-
 <!-- bloodHound ↓-->
 <script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script type="text/javascript"
@@ -40,7 +39,6 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
 <!-- bloodHound ↑-->
-
 <style>
 .header {
 	background-color: #000000;
@@ -72,7 +70,6 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
-
 /* ↓tag */
 @font-face {
 	font-family: "Prociono";
@@ -216,70 +213,20 @@ p {
 }
 /* ↑tag */
 </style>
-
 <script>
 <!--餐廳地址Ajax驗證不可重複 -->
 	$(function() {
 
-		var checkboolean = "false";
-		// 		blur驗證地址是否重複
-		$("#RAdd").blur(
-				function() {
-
-					let value = $(this).val();
-					let text = "";
-					if (value == "") {
-						$("#RAdd").css({
-							"border" : "2px solid orange"
-						});
-						txt = "<span>地址不可為空白</span>";
-						$("#RAddError").html(txt);
-						checkboolean = false;
-					} else {
-
-						var xhr = new XMLHttpRequest();
-						xhr.open("POST", "<c:url value='/checkRAddress' />",
-								true);
-						xhr.setRequestHeader("Content-type",
-								"application/x-www-form-urlencoded");
-						xhr.send("value=" + value);
-
-						xhr.onreadystatechange = function() {
-							// 伺服器請求完成
-							if (xhr.readyState == 4 && xhr.status == 200) {
-								var resultmap = JSON.parse(xhr.responseText);
-								var resultmsg = resultmap.result;
-								checkboolean = resultmap.checkboolean;
-
-								if (checkboolean == "false") {
-
-									$("#RAdd").css({
-										"border" : "2px solid red"
-									});
-									txt = "此地址已經被註冊!";
-									$("#RAddError").html(txt);
-								} else {
-									$("#RAdd").css({
-										"border" : "2px solid green"
-									});
-									txt = "OK!";
-									$("#RAddError").html(txt);
-
-								}
-
-							}
-						}
-					}
-				});
+		var checkboolean = "true";
 
 		$("#checkBeforeSubmit").click(function() {
 			var type = $(this).attr('type');
 			if (checkboolean == "true") {
-				$("#submitError").html("地址驗證成功!");
-				$("#insertform").submit();
+				$("#submitError").html("OK!");
+				$("#updatefrom").submit();
 			} else {
 
-				$("#submitError").html("地址驗證失敗!");
+				$("#submitError").html("失敗!");
 				return false;
 			}
 
@@ -289,7 +236,7 @@ p {
 </script>
 </head>
 <body>
-	<!-- 	讀取圖案 -->
+	<!-- 讀取圖案 -->
 	<div id="preloader-active">
 		<div
 			class="preloader d-flex align-items-center justify-content-center">
@@ -386,27 +333,25 @@ p {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-sm-offset-2">
-					<form:form id="insertform" method="POST"
-						modelAttribute="restaurant" enctype='multipart/form-data'>
+
+					<form:form method="POST" modelAttribute="updateRestaurant" enctype='multipart/form-data' id="updatefrom">
 						<!--綁定model中的restaurant-->
+
 
 						<div class="rest-infobox">
 							<h1 style="color: red">add rest2222</h1>
-							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
-							<form:input path='restaurantName' id='RName' />
+							<form:input path='restaurantName' />
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' id="RAdd" />
+							<form:input path='restaurantAddress' id="RAdd" disabled="true"/>
 							<span id="RAddError"></span>
 							<form:errors path="restaurantAddress" cssClass="error" />
 							<br> <span style="color: #FF1493">經度<form:input
-									path='longitude' id="RLong" size="10" />
+									path='longitude' id="RLong" size="10" disabled="true"/>
 							</span><br> <span style="color: #FF1493">緯度<form:input
-									path='latitude' id="RLati" size="10" /></span>
-
-
+									path='latitude' id="RLati" size="10" disabled="true"/></span>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
@@ -419,26 +364,28 @@ p {
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
-							<br>
 							<h5 style="color: #FF1493">標籤：</h5>
 							<div>
 								<form:input class="typeahead" type="text" placeholder="add Tag"
 									path="foodTag" />
 							</div>
-							<form:errors path="foodTag" cssClass="error" />
-							<br>&nbsp; <br> <input type='button' value="提交"
-								id="checkBeforeSubmit"> <span id="submitError"></span>
+							<form:errors path="foodTag"  cssClass="error" />
+							<br> <input type='button' value="提交" id="checkBeforeSubmit">
+							<span id="submitError"></span>
 						</div>
 						<div class="rest-picbox">
-							<img src="<c:url value="/images/NoImage/restaurantdefault.png"/>"
+							<img src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
+
+
 					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
-
+<div id="${updateRestaurant.restaurantId}" name="restid"></div>
+	
 
 
 
@@ -551,7 +498,102 @@ p {
 	</script>
 
 	<!-- JS here -->
-	<!--預覽照片+Bloodhound -->
+<!-- 抓餐廳tag -->
+	<script>
+	
+
+	
+    $(document).ready(function() {
+        let n = $("div[name='restid']");
+        console.log($("div[name='restid']"));
+        console.log(n.length);
+        var jsontxt;
+        for(let i=0;i<n.length;i++){
+    	var urls="${pageContext.request.contextPath}/";
+		urls+="<c:url value='restTag2/'/>"+n[i].id;										
+		console.log(urls);
+		$.ajax({
+			type: "GET",
+			url: urls,				
+			dataType: "text",
+			success: function (response) {
+				var divFoodTag = document.getElementById(n[i].id);
+
+				jsontxt=JSON.parse(response);
+// 				console.log(response);
+// 				console.log("====="+jsontxt[0].foodTagName);
+// 				console.log(jsontxt.length);
+				
+				for(i=0;i<jsontxt.length;i++){
+				$(divFoodTag).append(jsontxt[i].foodTagName+'&nbsp;');
+				giveValue(jsontxt[i].foodTagIid,jsontxt[i].foodTagName);
+				}
+				
+				
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+		
+		
+		});
+        }
+
+        
+        
+        
+		// bloodhound
+		var foodTags = new Bloodhound({
+			datumTokenizer : Bloodhound.tokenizers.obj.whitespace('text'),
+			queryTokenizer : Bloodhound.tokenizers.whitespace,
+			prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
+			cache : false
+		});
+
+		foodTags.initialize();
+		
+		var elt = $('.typeahead');
+		elt.tagsinput({
+			itemValue : 'value',
+			itemText : 'text',
+			
+			typeaheadjs : {
+				limit: 20,
+				name : 'foodTags',
+				displayKey : 'text',
+				source : foodTags.ttAdapter()
+			}
+		});
+		function textvalue(foodTags){
+			console.log('good');
+			return foodTags.itemText;
+		}
+
+
+
+// 		elt.tagsinput('add', {
+// 			"value" : $(".typeahead").val(),
+// 			"text": $("#9").html()
+
+// 		});
+		
+		function giveValue(id,name){
+			elt.tagsinput('add', {
+				"value" : id,
+				"text":name
+			});
+        }
+		
+
+
+
+    })
+    
+    	
+
+    
+    </script>
+	<!--預覽照片-->
 	<script>
 		$(function() {
 			$("#restaurant-picture").change(
@@ -568,94 +610,11 @@ p {
 						}
 
 					});
-
-			var foodTags = new Bloodhound({
-				datumTokenizer : Bloodhound.tokenizers.obj.whitespace('text'),
-				queryTokenizer : Bloodhound.tokenizers.whitespace,
-				prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
-				cache : false
-			});
-
-			foodTags.initialize();
-			
-			var elt = $('.typeahead');
-			elt.tagsinput({
-				itemValue : 'value',
-				itemText : 'text',
-				
-				typeaheadjs : {
-					limit: 20,
-					name : 'foodTags',
-					displayKey : 'text',
-					source : foodTags.ttAdapter()
-				}
-			});
-
 		});
 	</script>
 
-	<!--地址轉座標 -->
-	<script>
-		var map;
 
-		function initMap() {
-			map = new google.maps.Map(document.getElementById('map'), {
-				center : {
-					lat : 25.033710,
-					lng : 121.564718
-				},
-				zoom : 15
-			});
-			var marker = new google.maps.Marker({
-				position : {
-					lat : 25.033710,
-					lng : 121.564718
-				},
-				map : map
-			});
-		}
-
-		function startTrans() {
-			let addr = document.getElementById("RAdd").value;
-			// 			console.log(addr);
-			addressToLocation(addr);
-			// 			console.log(document.getElementById("lat").value);      
-
-		}
-
-		function addressToLocation(addr) {
-			let longitude;
-			let latitude;
-			let loca;
-			var geocoder = new google.maps.Geocoder();
-			geocoder.geocode({
-				'address' : addr
-			}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					longitude = results[0].geometry.location.lng();
-
-					latitude = results[0].geometry.location.lat();
-
-					let lat = document.getElementById("RLati");
-					lat.value = latitude;
-					let lng = document.getElementById("RLong");
-					lng.value = longitude;
-				} else {
-				}
-			})
-
-		}
-
-		document.getElementById("RAdd").addEventListener("change", startTrans);
-	</script>
-
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"
-		async defer>
-		
-	</script>
-
-	<script src="<c:url value='/scripts/plugins.js' />"></script>
+<%-- 	<script src="<c:url value='/scripts/plugins.js' />"></script> --%>
 
 </body>
 </html>
