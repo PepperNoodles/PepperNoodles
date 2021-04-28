@@ -1,6 +1,7 @@
 package com.infotran.springboot.commonmodel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="messageBox")
@@ -73,8 +73,9 @@ public class MessageBox implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "messageBox",cascade = CascadeType.ALL)
 	private List<MessageBox> replyMessageBoxes;
-
 	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkMSNId",cascade = CascadeType.ALL)
+	private List<Like> Likes = new ArrayList<Like>();
 	
 	public MessageBox() {
 		super();
@@ -174,6 +175,18 @@ public class MessageBox implements Serializable{
 
 	public void setUserMessageId(Integer userMessageId) {
 		this.userMessageId = userMessageId;
+	}
+
+
+
+	public List<Like> getLikes() {
+		return Likes;
+	}
+
+
+
+	public void setLikes(List<Like> likes) {
+		Likes = likes;
 	}
 
 

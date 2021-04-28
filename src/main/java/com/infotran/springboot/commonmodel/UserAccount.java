@@ -222,6 +222,14 @@ public class UserAccount implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
 	Set<RestaurantReplyMessage> RestaurantReplyMessage = new LinkedHashSet<RestaurantReplyMessage>();
 	
+	// LikeFeeds=============================================================
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkUAId",cascade = CascadeType.ALL)
+	private List<Like> Likes = new ArrayList<Like>();
+
+	
+	// =============================================================
+	
 	@Transient
 	private String code;
 	
