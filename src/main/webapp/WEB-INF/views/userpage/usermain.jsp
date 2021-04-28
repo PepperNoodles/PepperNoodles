@@ -51,12 +51,7 @@ button{
 color: black;
 }
 
-.collumntogreen{
-	color:green;
-}
-.collumntored{
-	red;
-}
+
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
 /*      border-top:solid black 1px;  */
@@ -95,6 +90,8 @@ color: black;
 			</div>
 		</div>
 	</div>
+
+	<div class="listing-area pt-30 pb-30"></div>
 
 	<div class="container-fluid">
 
@@ -288,12 +285,13 @@ color: black;
 							<thead>
 								<tr>
 									<th>編號</th>
+									<th>流水號</th>
 									<th>訂單時間</th>
 									<th>收件人</th>
 									<th>電話</th>
-									<th>收件地址</th>
 									<th>金額</th>
 									<th>狀態</th>
+									<th>前往結帳</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -306,6 +304,9 @@ color: black;
 			</div>
 		</div>
 	</div>
+	
+	<div class="listing-area pt-120 pb-120"></div>
+	
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
@@ -339,13 +340,13 @@ color: black;
 						    },
 						    data:[],
 						    columns: [
+						    	{ "data": "orderId" },
 				                { "data": "uuid"  },
 				                { "data": "orderCreatedDate" ,
 			                	  "render": function (data, type, row, meta) {
 			                       return data.substr(0,4)+'/'+data.substr(5,2)+'/'+data.substr(8,2)}},
 				                { "data": "receiveName" },
 				                { "data": "receivePhone" },
-				                { "data": "receiveAddress" },
 				                { "data": "totalCost" },
 				                { "data": "status"}
 						    ],
@@ -356,10 +357,6 @@ color: black;
 						    processing: true,
 						    retrieve: true,
 						    searching: true, //關閉filter功能
-			                columnDefs: [{
-			                    targets: [3],
-			                    orderable: true,
-			                }]
 						});
 					
 						///////////////////////////////////////////////////////
@@ -371,17 +368,48 @@ color: black;
 					        async : true,
 					        cache: false,
 					        success:function(result){
-					        	console.log("yes123");
-					        	console.log(JSON.stringify(result));
-					        	console.log(result.AccountMemberOrderList);
+					        	var orderlist = result.AccountMemberOrderList;
 					        	Table.clear().draw();
 					            Table.rows.add(result.AccountMemberOrderList).draw();
+					            $('#orderlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>")
 					        },
 					        error: function (result) {
 					        	console.log("有問題");
 					        }
 						});
 						
+						
+						$('body').on('click','#cheqGreenMonster',function(e){
+							e.preventDefault();
+							var status = $(this).parent().prev().text();
+							if (status == '尚未付款'){
+								var orderid = $(this).parent().prevAll("td:eq(6)").text();
+								data = new FormData();
+								data.append("orderid",orderid);
+								$.ajax({
+									method:"POST",
+									url:"/PepperNoodles/user/reCheqoutToGreenMonster",
+									data:data,
+									contentType: false, 
+									processData: false,
+									cache: false,  //不做快取
+							        async : true,
+							        success: function (response) {
+							        	localStorage.setItem("RecheckECpayform",response.ecpayform);
+							        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/RecheckFormECpay2", '_blank');
+							        },
+							        error: function (url) {
+							        	console.log("綠界沒出去");
+							        }	
+								});    
+								
+							} else if (status == "超時取消訂單"){
+								alert('訂單已超時，請重新購買');
+							} else {
+								alert('該筆訂單已完成付款');
+							}
+							
+						});
 						
 						
 						///////////////////////////////////////////////

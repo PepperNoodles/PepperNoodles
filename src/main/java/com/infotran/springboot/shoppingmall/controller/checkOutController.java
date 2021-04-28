@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.shoppingmall.model.OrderDetail;
@@ -32,6 +36,7 @@ import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.model.Product;
 import com.infotran.springboot.shoppingmall.service.OrderListService;
 import com.infotran.springboot.shoppingmall.service.ShoppingMallService;
+import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
 import com.infotran.springboot.shoppingmall.util.snowfFlakeUUID;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
@@ -51,6 +56,8 @@ public class checkOutController {
 	@Autowired
 	UserSysService userService;
 	
+	@Resource
+	CancelOrderServiceImpl cancelorderservice;
 	
 	@Autowired
 	ServletContext context;
@@ -61,9 +68,7 @@ public class checkOutController {
 	
 	private String confurl = "/shoppingSystem/confirmOrderAndInvoice";
 	
-	
 	private String formfurl = "/shoppingSystem/OrderFormECpay";
-	
 	
 	public checkOutController() {
 		jsonfolder = new File(jsonFileDirectory);
@@ -150,7 +155,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://f09741b1dd9d.ngrok.io/PepperNoodles/NewFile");
+		aiocheckoutall.setReturnURL("https://6b44b12780cd.ngrok.io/PepperNoodles/NewFile");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
@@ -167,19 +172,141 @@ public class checkOutController {
 	
 	@PostMapping(value="/NewFile")
 	public @ResponseBody String getResultFromCreditCardPage() {
-		System.out.println("=================<<<<打回來了>>>>===================");
 		AioCheckOutALL aiocheckoutall = (AioCheckOutALL)context.getAttribute("aiocheckoutall");
 		String orderidstr = aiocheckoutall.getMerchantTradeNo().substring(8);
-		System.out.println("訂單編號"+orderidstr);
 		OrderList orlist = orlistservice.findById(Integer.parseInt(orderidstr));
-		System.out.println("抓id出來的====>>>>>"+orlist.getStatus());
 		orlist.setStatus("已付款");
+		orlist.setPaidDate(new Date());
 		orlistservice.save(orlist);
 		return "ok";
 	}
 
+	//結帳完查詢訂單
+	@GetMapping(value="/OrderJustBuy",produces="application/json")
+	public @ResponseBody Map<String,Object> cheqOutForOrderJustBuySuccess(){
+		Map<String,Object> map = new HashMap<String,Object>();
+		AioCheckOutALL aiocheckoutall = (AioCheckOutALL)context.getAttribute("aiocheckoutall");
+		String orderidstr = aiocheckoutall.getMerchantTradeNo().substring(8);
+		ArrayList<OrderDetail> orderDetailList = orlistservice.findOrderDetailByFkOrderId(Integer.parseInt(orderidstr));
+		ArrayList<String> productName = new ArrayList<String>();
+		ArrayList<Integer> purchaseAmount = new ArrayList<Integer>();
+		ArrayList<Integer> productSubTotalPrice = new ArrayList<Integer>();
+		for (int i=0 ;i<orderDetailList.size();i++) {
+			productName.add(orderDetailList.get(i).getProduct().getProductName());
+			purchaseAmount.add(orderDetailList.get(i).getAmount());
+			productSubTotalPrice.add(orderDetailList.get(i).getProduct().getProductPrice()*orderDetailList.get(i).getAmount());
+		}
+		map.put("productName", productName);
+		map.put("purchaseAmount", purchaseAmount);
+		map.put("productSubTotalPrice", productSubTotalPrice);
+		context.removeAttribute("aiocheckoutall");
+		return map;
+	}
 	
 	
+	@PostMapping(value="/user/reCheqoutToGreenMonster", produces = { "application/json; charset=UTF-8","application/x-www-form-urlencoded" })
+	public @ResponseBody Map<String,Object> reCheqoutToGreenMonster(@RequestPart("orderid")String orderid) throws Exception{
+		Map<String,Object> map = new HashMap<String,Object>();
+		System.out.println("uuid====>>>>>>"+orderid);
+		Integer orderid2 =  new ObjectMapper().readValue(orderid, new TypeReference<Integer>() {});
+		OrderList olist   = orlistservice.findById(orderid2);
+		String orderidstr = String.valueOf(olist.getOrderId()); 
+		System.out.println("有嬤"+orderidstr);
+		Integer Totalcost = olist.getTotalCost();
+		Set<OrderDetail> odset = olist.getOdetails();
+		Iterator<OrderDetail> oditerate =odset.iterator();
+		String prostr = "";
+		while(oditerate.hasNext()) {
+			OrderDetail orderdetail = oditerate.next();
+			prostr += orderdetail.getProduct().getProductName() + "x" + orderdetail.getAmount() + "#" ;
+		}
+		AllInOne allinone = new AllInOne("");
+		AioCheckOutALL aiocheckoutall = new AioCheckOutALL();//物件class
+		String tradeNo = "PPNOrder" + orderidstr ;
+		aiocheckoutall.setMerchantTradeNo(tradeNo);
+		System.out.println("tradeNo"+tradeNo);
+		String format = createNewDate();
+		aiocheckoutall.setMerchantTradeDate(format);
+		System.out.println("format"+format);
+		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
+		System.out.println("Totalcost"+Totalcost);
+		aiocheckoutall.setTradeDesc("PPN商城購物");
+		aiocheckoutall.setItemName(prostr);
+		System.out.println("prostr"+prostr);
+		aiocheckoutall.setReturnURL("https://6b44b12780cd.ngrok.io/PepperNoodles/recheqMonster");
+		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
+//		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
+		String out = allinone.aioCheckOut(aiocheckoutall, null);
+		map.put("ecpayform", out);
+		context.setAttribute("aiocheckoutall", aiocheckoutall);
+		return map;
+	}
+	
+	@PostMapping(value="/recheqMonster")
+	public @ResponseBody String getResultFromRecheqMonster() {
+		AioCheckOutALL aiocheckoutall = (AioCheckOutALL)context.getAttribute("aiocheckoutall");
+		String orderidstr = aiocheckoutall.getMerchantTradeNo().substring(8);
+		OrderList orlist = orlistservice.findById(Integer.parseInt(orderidstr));
+		orlist.setStatus("已付款");
+		orlistservice.save(orlist);
+		return "ok";
+	}
+	
+	@PostMapping(value="/buyNextTime", produces = {"application/json; charset=UTF-8"})
+	public @ResponseBody String buyNextTime(
+			@RequestPart("idlist")String toId,
+			@RequestPart("amountlist")String toAmount,
+			@RequestPart("robject")String robject,
+			HttpServletRequest request) throws Exception {
+		ArrayList<Integer> idlist =  new ObjectMapper().readValue
+				(toId, new TypeReference<ArrayList<Integer>>() {});
+		ArrayList<Integer> amountlist =  new ObjectMapper().readValue
+				(toAmount, new TypeReference<ArrayList<Integer>>() {});
+		Map<String,String> rmap =  new ObjectMapper().readValue
+				(robject, new TypeReference<HashMap<String,String>>() {});
+		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
+		UserAccount accessuser = userService.findByAccountIndex(user.getAccountIndex());
+		Integer len = idlist.size();
+		OrderDetail odetail = null;
+		OrderList olist = new OrderList();
+		olist.setUser(accessuser);
+		Set <OrderDetail> odset = new LinkedHashSet<OrderDetail>();
+		//商品遍歷
+		for (int i=0;i<len;i++) {
+			int amount = amountlist.get(i);
+			int id = idlist.get(i);
+			odetail = new OrderDetail();
+			Product product = shopservice.findById(id);
+			//要更新Product 數量
+			product.setQuantity(product.getQuantity()-amount);
+			shopservice.save(product);
+			//
+			odetail.setProduct(product);
+			odetail.setAmount(amount);
+			odset.add(odetail);
+			odetail.setOrderlist(olist);
+		}
+		snowfFlakeUUID uuidgen = new snowfFlakeUUID();
+		long uuid = uuidgen.nextId();
+		olist.setReceiveAddress(rmap.get("address"));
+		olist.setReceiveName(rmap.get("reciever"));
+		olist.setReceivePhone(rmap.get("rphone"));
+		olist.setUuid(uuid);
+		olist.setStatus("尚未付款");
+		olist.setOdetails(odset);
+		//
+		Integer Totalcost = 0 ;
+		Set <Product> pset = new HashSet<Product>();
+		for (int j = 0 ; j < len ;j++ ) {
+			Product product = shopservice.findById(idlist.get(j));
+			Totalcost += product.getProductPrice()*amountlist.get(j);
+			pset.add(shopservice.findById(idlist.get(j)));
+		}
+		olist.setTotalCost(Totalcost);
+		cancelorderservice.getOrder(olist);
+		orlistservice.save(olist);
+		return "shoppingSystem/ShoppingMall";
+	}
 	
 	
 	

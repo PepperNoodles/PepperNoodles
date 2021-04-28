@@ -18,4 +18,6 @@ public interface OrderListService {
 
 	OrderList findById(Integer orderlistid);
 
+	void delete(Integer orderlistid);
+
 }

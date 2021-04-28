@@ -1,14 +1,22 @@
 package com.infotran.springboot.welcome.controller;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
+
 @Controller
 public class BaseController {
+	
+	@Resource
+	CancelOrderServiceImpl cancelorderservice;
 
 	@GetMapping("/")
 	public String home() {
+		cancelorderservice.cancelOrder();
 		return "index";
 	}
 

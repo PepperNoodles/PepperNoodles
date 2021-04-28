@@ -210,7 +210,6 @@
 			//結帳
 			$('body').on('click','#checkout',function(e){
 				e.preventDefault();
-				localStorage.clear();
 				var idlist = new Array();
 				var amountlist = new Array();
 				for (var i=0 ; i < len ; i++){
@@ -240,7 +239,6 @@
 			        	myStorage.clear();
 // 			        	localStorage.setItem("uuid",response.uuid);
 						localStorage.setItem("ecpayform",response.ecpayform);
-						console.log(response.ecpayform);
 			        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/OrderFormECpay", '_blank');
 			        },
 			        error: function (url) {
@@ -249,6 +247,50 @@
 				});    
 				
 			});
+			
+			
+			$('body').on('click','#justsavetoDB',function(e){
+				e.preventDefault();
+				localStorage.clear();
+				var idlist = new Array();
+				var amountlist = new Array();
+				for (var i=0 ; i < len ; i++){
+					var pid    = parseInt($('#pr'+(i+1)+'').prevAll("tr td:first-child").attr('id').substring(4),10);
+					var amount = $('#pr'+(i+1)+'').prev().children("input").val();
+					idlist.push(pid);
+					amountlist.push(amount);
+				}
+				var address  = $('#inputAddress2').val();
+				var reciever = $('#inputReciever4').val();
+				var rphone   = $('#inputPhone4').val();
+				var robject = new Object();
+				robject = {"address":address,"reciever":reciever,"rphone":rphone}
+				data = new FormData();
+				data.append('idlist',JSON.stringify(idlist));
+				data.append('amountlist',JSON.stringify(amountlist));
+				data.append('robject',JSON.stringify(robject));
+				$.ajax({
+					method:"POST",
+					url:"/PepperNoodles/buyNextTime",
+					data:data,
+					contentType: false, 
+					processData: false,
+					cache: false,  //不做快取
+			        async : true,
+			        dataType: "text",
+			        success: function (response) {
+			        	myStorage.clear();
+			        	console.log(response);
+			        	window.location.href = ("http://localhost:433/PepperNoodles/shoppingSystem/ShoppingMall");
+			        },
+			        error: function (response) {
+			        	console.log("沒開新分頁");
+			        }	
+				});    
+				
+				
+			});			
+			
 			
 		
 			//一件新增
@@ -504,6 +546,10 @@
 					<div class="col-12">
 						<div style="text-align: right;">
 							<a href="#" class="genric-btn primary medium" id="checkout">結帳</a>
+						</div>
+						<br>
+						<div style="text-align: right;">
+							<a href="#" class="genric-btn primary medium" id="justsavetoDB">下次再結</a>
 						</div>
 					</div>
 				</div>
