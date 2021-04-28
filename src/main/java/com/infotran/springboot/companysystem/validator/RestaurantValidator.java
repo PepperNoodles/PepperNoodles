@@ -42,7 +42,7 @@ public class RestaurantValidator implements Validator {
 		Set<FoodTag> foodtag = restaurant.getFoodTag();
 		
 		if (foodtag.isEmpty()) {
-			errors.rejectValue("foodTag","", "必須挑選分類欄的選項");
+			errors.rejectValue("foodTag","", "必須挑選合格的Tag");
 		}
 
 	}
