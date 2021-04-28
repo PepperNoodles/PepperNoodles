@@ -1,0 +1,13 @@
+[ { "value": 1 , "text": "curry"},
+  { "value": 2 , "text": "BBQ"},
+  { "value": 3 , "text": "pizza"},
+  { "value": 4 , "text": "fried"},
+  { "value": 5 , "text": "hamburger"},
+  { "value": 6 , "text": "springRoll"},
+  { "value": 7 , "text": "dinner"},
+  { "value": 8 , "text": "family"},
+  { "value": 9 , "text": "Landscape"},
+  { "value": 10, "text": "Pet friendly"},
+  { "value": 11, "text": "Izakaya"},
+  { "value": 12, "text": "我"}
+]
