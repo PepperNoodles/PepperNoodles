@@ -155,10 +155,12 @@ tr a:hover{
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 		
+		var selectedMarker;
+		
 		//新增icon圖案 有用到可以呼叫
 		var restIcon= new L.Icon({
 	        iconUrl:"<c:url value='/images/restaurantCRUD/restmarker.png' />",
-		   	iconSize:[34,34],iconAnchor:[12,41],popupAncher:[1,-34],shadowSize:[41,41]});
+		   	iconSize:[40,40],iconAnchor:[14,44],popupAncher:[1,-34],shadowSize:[41,41]});
 
 		var restSelectIcon= new L.Icon({
 		        iconUrl:"<c:url value='/images/restaurantCRUD/restmarker_blue.png' />",
@@ -181,7 +183,7 @@ tr a:hover{
 		//點圖片function
 		function showMemo(){
 			//console.log(this.id-1);
-			let urls="Http://localhost:9090";
+			let urls="Http://localhost:433";
 		        urls+="<c:url value='/restSearch/restId' />";
 		        urls+="/"+this.id;
 		    //    console.log(urls);
@@ -190,6 +192,9 @@ tr a:hover{
 					url: urls,				
 					dataType: "json",
 					success: function (response) {
+						if(selectedMarker){
+							map.removeLayer(selectedMarker)
+						}
 						//console.log(response);
 						let rest = response;
 						//console.log(location[0].restaurantName);
@@ -198,9 +203,9 @@ tr a:hover{
 						let lat=parseFloat(rest.latitude);
 							lat-=0.0001360;	
 						let name = rest.restaurantName;
-						var marker = L.marker([lat,lng],{icon:restIcon});
+						selectedMarker = L.marker([lat,lng],{icon:restIcon});
 						 
-						 marker.bindTooltip(name, {
+						selectedMarker.bindTooltip(name, {
 						     direction: 'bottom', // right、left、top、bottom、center。default: auto
 						     sticky: true, // true 跟著滑鼠移動。default: false
 						     permanent: false, // 是滑鼠移過才出現，還是一直出現
@@ -208,7 +213,7 @@ tr a:hover{
 						    	}).openTooltip();
 						 
 						
-						 marker.addTo(map).openPopup();
+						selectedMarker.addTo(map).openPopup();
 					 	 map.panTo([lat,lng]);
 						
 					},
@@ -254,7 +259,7 @@ tr a:hover{
 			
 			
 			
-			let urls="Http://localhost:9090";
+			let urls="Http://localhost:433";
 	        urls+="<c:url value='/restSearch' />";
 	        if(keyWord){
 	        	if(keyWord&&dist!="NULL"&&tag!="NULL"){
@@ -347,6 +352,9 @@ tr a:hover{
 	
 		//點地圖function 點完後會去撈附近餐廳
 		function onMapClick(e) {
+			if(selectedMarker){
+				map.removeLayer(selectedMarker)
+			}
 		  let lat = e.latlng.lat; // 緯度
 		  let lng = e.latlng.lng; // 經度
 		
@@ -359,7 +367,7 @@ tr a:hover{
 		  
 		  map.panTo(e.latlng); 		  
 		  //ajax取地圖		  
-		  let urls="Http://localhost:9090";
+		  let urls="Http://localhost:433";
 		      urls+="<c:url value='/restSearch/restNear' />";
 			  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
 			  console.log(urls);
@@ -371,13 +379,16 @@ tr a:hover{
 					//console.log(response);
 					loca=[];
 					loca = JSON.parse(response);
-					console.log(loca[0].restaurantName);
-					console.log(loca.length);
+					if(loca.length>0){
+						console.log(loca[0].restaurantName);
+						console.log(loca.length);
+						
+						createSideMemo(loca,1);
+						addMapMarker(loca);
+						let page =Math.ceil(loca.length/6);
+						buttonGenerater(page);
+					}
 					
-					createSideMemo(loca,1);
-					addMapMarker(loca);
-					let page =Math.ceil(loca.length/6);
-					buttonGenerater(page);
 				},
 				error: function (thrownError) {
 					console.log(thrownError);
@@ -530,7 +541,7 @@ tr a:hover{
 		
 		//創立tag選擇器
 		function tagCreater(){
-			let urls="Http://localhost:9090";
+			let urls="Http://localhost:433";
 				urls+="<c:url value='/restSearch/tagAll' />";
 			$.ajax({
 					type: "GET",

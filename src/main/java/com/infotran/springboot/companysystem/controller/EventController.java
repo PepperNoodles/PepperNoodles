@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.sql.rowset.serial.SerialBlob;
@@ -37,6 +38,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.EventList;
 import com.infotran.springboot.commonmodel.Restaurant;
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.EventListService;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 
@@ -55,11 +57,16 @@ public class EventController {
 	@Autowired
 	private RestaurantService restaurantService;
 	
-	@GetMapping("/event")
-	public String event(Model model , Integer restId) {
-		restId = 1;
+	@GetMapping("/event/{restId}")
+	public String event(Model model ,@PathVariable("restId") Integer restId) {
+//		restId = 1;
 		Restaurant restaurant = restaurantService.findById(restId);
+		UserAccount account = restaurant.getUserAccount();
+		Set<Restaurant> rests = account.getRestaurant();
 		List<EventList> events =  eventListService.getByRest(restaurant);
+		
+		model.addAttribute("rests", rests);	
+		model.addAttribute("restId", restId);	
 		model.addAttribute("events", events);	
 		return "event/addEvent";
 	}
@@ -105,6 +112,7 @@ public class EventController {
 		Integer restId = event.getRestaurant().getRestaurantId();
 		Restaurant restaurant = restaurantService.findById(restId);
 		List<EventList> events =  eventListService.getByRest(restaurant);
+		model.addAttribute("restId",restId);
 		model.addAttribute("event",	event);
 		model.addAttribute("events", events);	
 //		return "event/addEvent";
@@ -147,9 +155,10 @@ public class EventController {
 	@DeleteMapping("/deleteEvent/{eventId}")
 	public String deleteMenuId(@PathVariable("eventId") Integer eventId) {
 		EventList event = eventListService.findById(eventId);
+		Integer restId = event.getRestaurant().getRestaurantId();
 		event.setRestaurant(null);
 		eventListService.deleteById(eventId);
-		return "redirect:/event";
+		return "redirect:/event/"+restId;
 	}
 	
 	//秀照片
