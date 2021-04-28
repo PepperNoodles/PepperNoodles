@@ -3,6 +3,9 @@ package com.infotran.springboot.shoppingmall.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,12 +32,11 @@ import com.infotran.springboot.commonmodel.UserAccount;
 @Entity
 @Table(name="OrderList")
 @Component
-public class OrderList {
+public class OrderList implements Delayed{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="Order_id")
-	@JsonIgnore
 	private Integer orderId;
 	
 	@Column(name="UUID")
@@ -77,15 +79,48 @@ public class OrderList {
 	@JsonIgnore
 	private Set<OrderDetail> odetails = new HashSet<OrderDetail>();
 	
+	@Transient
+	private Date cancelTime;
+	
+	
 	//
 	@PrePersist
 	protected void createOrderDate() {
 		orderCreatedDate = new Date();
 	}
 	
-	@PreUpdate
-	protected void updateOrderDate() {
-		orderCreatedDate = new Date();
+	public OrderList() {
+		
+	}
+
+	public OrderList(Integer orderId, Long uuid, Date orderCreatedDate, Integer fkUserAccountId, UserAccount user,
+			String receiveName, String receivePhone, String receiveAddress, Date paidDate, String status,
+			Integer totalCost, Set<OrderDetail> odetails, Date cancelTime) {
+		this.orderId = orderId;
+		this.uuid = uuid;
+		this.orderCreatedDate = orderCreatedDate;
+		this.fkUserAccountId = fkUserAccountId;
+		this.user = user;
+		this.receiveName = receiveName;
+		this.receivePhone = receivePhone;
+		this.receiveAddress = receiveAddress;
+		this.paidDate = paidDate;
+		this.status = status;
+		this.totalCost = totalCost;
+		this.odetails = odetails;
+		this.cancelTime = cancelTime;
+	}
+
+
+
+
+
+	public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
 	}
 
 	public String getReceiveName() {
@@ -182,6 +217,16 @@ public class OrderList {
 
 	public void setUuid(Long uuid) {
 		this.uuid = uuid;
+	}
+
+	@Override
+	public int compareTo(Delayed o) {
+		return this.getCancelTime().compareTo(((OrderList) o).getCancelTime());
+	}
+
+	@Override
+	public long getDelay(TimeUnit unit) {
+		return unit.convert(cancelTime.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 	}
 
 	

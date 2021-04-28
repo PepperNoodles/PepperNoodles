@@ -28,9 +28,6 @@
 
 $(document).ready(function() {
 	var ecpayform = localStorage.getItem("ecpayform");
-	
-	console.log(ecpayform);
-	console.log(typeof ecpayform);
 	$('#ecpay').append($(ecpayform));
 // 	$('#ecpay').append('<h2>hi</h2>');
 	

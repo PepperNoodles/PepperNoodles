@@ -39,6 +39,10 @@ public class FindViewControllerShop {
 	public String checkOutOrderFormECpay() {
 		return "shoppingSystem/OrderFormECpay";
 	}
+	@GetMapping("/RecheckFormECpay2")
+	public String RecheckFormECpay2() {
+		return "shoppingSystem/RecheckFormECpay2";
+	}
 	@GetMapping("/NewFile")
 	public String checkOutNEWECpay() {
 		return "shoppingSystem/NewFile";

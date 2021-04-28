@@ -9,7 +9,6 @@
 <meta charset="UTF-8">
 <title>confirm Order And Invoice</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- favicon的圖-每頁都要加 -->
 <script type="text/javascript"	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="Shortcut icon"	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <link rel='stylesheet'	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
@@ -26,53 +25,37 @@
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 </head>
 <script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('body').on('click','#toquery',function(e){
-			e.preventDefault();
-			window.location.href = ("http://localhost:433/PepperNoodles/shoppingSystem/ShoppingMall");
-		});
-	
-	
-		$.ajax({
-			method:"GET",
-			url:"/PepperNoodles/OrderJustBuy",
-			contentType: 'application/json; charset=utf-8', 
-	        async : true,
-	        cache: false,
-	        success: function (result) {
-	        	console.log(result.productName);
-	        	console.log(result.purchaseAmount);
-	        	console.log(result.productSubTotalPrice);
-	        	var productName = result.productName;
-	        	var purchaseAmount = result.purchaseAmount;
-	        	var productSubTotalPrice = result.productSubTotalPrice;
-	        	for (var i=0;i<productName.length;i++){
-	        		var tr   = $('<tr></tr>');
-	        		var col1 = $('<td>#'+(i+1)+'</td>');
-	        		var col2 = $('<td>'+productName[i]+'</td>');
-	        		var col3 = $('<td>'+purchaseAmount[i]+'</td>');
-	        		var col4 = $('<td>'+productSubTotalPrice[i]+'</td>');
-	        		tr.append(col1).append(col2).append(col3).append(col4);
-	        		$('tbody').append(tr);
-	        	}
-	        	
-	        },error: function (result) {
-	        	console.log("有問題");
-	        }
-			
-			
-		});
 
-	});
+$(document).ready(function() {
+	var ecpayform = localStorage.getItem("RecheckECpayform");
+	$('#ecpay').append($(ecpayform));
+// 	$('#ecpay').append('<h2>hi</h2>');
+	
+	
+	
+});
+	
+	
+	
+	
+// 	$.ajax({
+// 		method:"POST",
+// 		url:"/PepperNoodles/genECpayOrderForm?uuid="+uuid+"",
+// 		contentType: 'application/x-www-form-urlencoded', 
+// 		cache: false,  //不做快取
+// 	    async : true,
+// 	    success: function (response) {
+// 	    	console.log(response);
+// 	    	$('#ecpay').append(response);
+// 	    },error: function (url) {
+// 	    	console.log("Problems everywhere");
+// 	    }
+// 	});
+
+
 </script>
 <style>
-thead tr th {
-	font-size: 15px;
-}
-tbody tr td{
-	font-size: 20px;
-}
+
 
 </style>
 <body>
@@ -195,47 +178,15 @@ tbody tr td{
 		<!--Hero End -->
 	
 		<div class="listing-area pt-120 pb-120">
-			<div class="container" style="margin-bottom: 50px;">
-				<div class="row">
-					<div class="col-12">
-						<h2><strong>付款成功</strong></h2>					
-					</div>
-				</div>
-			</div>
-			<div class="container" style="margin-bottom: 170px;">
-				<div class="row">
-					<div class="col-12">
-						<div style="text-align: left;">
-							<a href="#" class="genric-btn primary medium" id="toquery">繼續購物</a>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="container">
 				<div class="row">
-					<div class="col-12">
-						<h2><strong>您的訂單</strong></h2>
-						<div class="table-responsive-sm">
-								<table class="table table-hover text-info text-justify ">
-									<thead>
-										<tr class=" Active">
-											<th>#編號</th>
-											<th>產品名</th>
-											<th>數量</th>
-											<th>單項總計</th>
-										</tr>
-									</thead>
-									<tbody>
-										<!-- product here -->
-									</tbody>
-								</table>
-							</div>
+					<div class="col-12" id="ecpay">
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	
-		
 	
 	</main>
 	<footer>

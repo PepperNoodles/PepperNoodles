@@ -1,14 +1,21 @@
 package com.infotran.springboot.loginsystem.controller;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
+
 @Controller
 @RequestMapping("/loginSystem")
 public class FindViewController {
+	
+	@Resource
+	CancelOrderServiceImpl cancelorderservice;
 
 	@GetMapping("/loginPage")
 	public String initPage() {
@@ -23,6 +30,7 @@ public class FindViewController {
 	
 	@GetMapping(value="/normaluser")
 	public String normaluserpage() {
+		
 		return "normaluser";
 	}
 	

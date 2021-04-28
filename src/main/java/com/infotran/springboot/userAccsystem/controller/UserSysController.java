@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,6 +57,7 @@ import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.loginsystem.dao.FoodTagUserRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
 import com.infotran.springboot.shoppingmall.model.OrderList;
+import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
 import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
@@ -69,7 +71,8 @@ public class UserSysController {
 
 	String imageRootDirectory = "C:\\myfolder\\PPNpics";
 
-
+	@Resource
+	CancelOrderServiceImpl cancelorderservice;
 	
 	File imageFolder = null; 
 	
@@ -961,8 +964,12 @@ public class UserSysController {
 	
 	@GetMapping(value="/user/getOrderList")
 	public @ResponseBody Map<String,ArrayList<OrderList>> findUserOrderListByUserName(@ModelAttribute("userAccount")UserAccount user){
+		
 		Map<String,ArrayList<OrderList>> mapview = new HashMap<String,ArrayList<OrderList>>();
 		ArrayList<OrderList>  orderViewList = olistservice.findOrderList(user.getAccountId());
+//		for(int i =0;i<orderViewList.size();i++) {
+//			System.out.println("uuid在user這邊"+orderViewList.get(i).getUuid());
+//		}
 		mapview.put("AccountMemberOrderList", orderViewList);
 		return mapview;
 	}

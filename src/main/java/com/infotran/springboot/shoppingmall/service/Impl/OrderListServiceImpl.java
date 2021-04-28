@@ -19,6 +19,12 @@ public class OrderListServiceImpl implements OrderListService {
 	OrderListRepository ordao;
 
 	@Override
+	public void delete(Integer orderlistid) {
+		ordao.deleteById(orderlistid);
+	}
+	
+	
+	@Override
 	public OrderList save(OrderList olist) {
 		return ordao.save(olist);
 	}
