@@ -65,11 +65,11 @@
 			<form action="<c:url value='/login/page'/>" method="post"
 				class="search-box align-items-center">
 				<div class="mt-10 col-36 ">
-					<input type="text" name="username" placeholder="E-mail:" required
+					<input id="username" type="text" name="username" placeholder="E-mail:" required
 						class="single-input">
 				</div>
 				<div class="mt-10 col-24">
-					<input type="password" name="password" placeholder="Password:" required
+					<input id="password" type="password" name="password" placeholder="Password:" required
 						class="single-input ">
 				</div>
 
@@ -80,7 +80,11 @@
 				<div class="mt-10 ">
 					<button type="submit" value="login"
 						class="genric-btn danger radius">Login</button>
-
+					<br><br><br>
+					<div class="pull-right">
+						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp;
+						<a href="#"  id="company">企業一鍵登入</a>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -100,6 +104,18 @@
 			$('body').delay(450).css({
 				'overflow' : 'visible'
 			});
+			
+			//一鍵新增-企業
+			$("#company").click(function(){
+				$("#password").val('123!Q123');
+				$("#username").val('oden@gmail.com');
+			});
+			//一鍵新增-會員
+			$("#user").click(function(){
+				$("#password").val('a123456@');
+				$("#username").val('chrislo5311@gmail.com');
+			});
+			
 		});
 	</script>
 

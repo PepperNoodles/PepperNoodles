@@ -263,7 +263,7 @@ body {
     	<div class="col-lg-2 nopadding">
       		<br>
         	<div class="list-group">
-        		<%@include file="../company/left2.jsp" %>
+        		<%@include file="../company/left.jsp" %>
         	</div>
         </div>
         
