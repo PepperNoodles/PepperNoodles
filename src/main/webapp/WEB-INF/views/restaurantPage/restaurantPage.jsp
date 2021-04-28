@@ -29,6 +29,9 @@
 $(document).ready(function(){
 	findMenus();
 
+});
+
+
 //ajax取Menus
 function findMenus() {
 let urls="Http://localhost:433";
@@ -41,9 +44,23 @@ $.ajax({
 		dataType: "text",
 		success: function (response) {
 			console.log(response);
-			menuId = JSON.parse(response);
-			console.log(menuId[0].menuDetailId);
-			console.log(menuId.length);
+			menu = JSON.parse(response);
+// 			console.log(menu[0].menuDetailId);
+			console.log(menu.length);
+			var text="";
+			if(menu.length == 0){
+				text="目前沒有菜單";
+			}
+			else{
+				for(i=0;i<menu.length;i++){
+				text += "<a href='<c:url value='/rest/getMenuPicture/"+menu[i].menuDetailId+"'/>'>;";
+				text += "<img width='20%' src='<c:url value='/rest/getMenuPicture/"+menu[i].menuDetailId+"'/>' />";
+				text += "</a>";
+				}
+			}
+			console.log(text);
+
+				$("#menuArea").html(text);
 		},
 		error: function (thrownError) {
 			console.log(thrownError);
@@ -54,7 +71,6 @@ $.ajax({
 
 
 
-});
 </script>
 
 <style>
