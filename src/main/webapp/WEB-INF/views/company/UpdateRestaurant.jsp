@@ -25,13 +25,7 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
-<%-- <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/magnific-popup.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/themify-icons.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
+
 
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
