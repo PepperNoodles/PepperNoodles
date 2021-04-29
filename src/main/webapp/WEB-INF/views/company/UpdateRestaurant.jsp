@@ -9,67 +9,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>restaurantCRUD</title>
+<title>Updaterestaurant</title>
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<!-- <script type="text/javascript" -->
-<%-- 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<!-- <link rel="stylesheet" -->
-<%-- 	href="<c:url value='/css/owl.carousel.min.css' />"> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/css/style.css' />"> --%>
-<!-- bloodHound ↓-->
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script> -->
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script> -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"> -->
 
-<!-- bloodHound ↑-->
+
 <style>
-.header {
-	background-color: #000000;
+.nopadding {
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .rest-infobox {
 	float: left;
-	width: 30%;
+	width: 50%;
+	margin: auto;
+	padding: 15px;
 }
 
 .rest-picbox {
 	float: right;
-	margin: auto;
-	width: 60%;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	height: 50%;
+	margin: 10px;
+	width: 400px;
+	border: 3px solid red;
+	border: 3px solid red;
+	height: auto;
 }
 
 #restaurantPicturePreview {
 	width: 100%;
-	heght: 100%;
-	object-fit: contain;
+	height: auto;
 }
 
-footer {
+#tagdiv {
 	clear: both;
-	/* 	清除上面float影響 */
+	/* 	清除上面float影響  */
 }
+</style>
+<style>
+/* 3.35 twitter-bootstrap */
+label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: bold;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.label:empty {
+	display: none;
+}
+
+.label-info {
+	background-color: #5bc0de;
+}
+
+.label-info[href]:hover, .label-info[href]:focus {
+	background-color: #31b0d5;
+}
+/* ↑3.35 twitter-bootstrap */
 </style>
 <style>
 /* ↓tag */
@@ -215,8 +234,8 @@ p {
 }
 /* ↑tag */
 </style>
-<script>
 <!--餐廳地址Ajax驗證不可重複 -->
+<script>
 	$(function() {
 
 		var checkboolean = "true";
@@ -239,25 +258,27 @@ p {
 </head>
 <body>
 
-	<%@include file="../includePage/includeNav.jsp" %>
+	<%@include file="../includePage/includeNav.jsp"%>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- 左邊的Bar -->
+			<div class="col-lg-2 nopadding" id=leftBar>
+				<br>
 
+				<div class="list-group">
+					<%@include file="left.jsp"%>
+				</div>
+			</div>
+			<!-- 右邊顯示的資料 背景圖片+自動填滿 -->
+			<div class="col-lg-10 nopadding image-container set-full-height"
+				style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
 
-	<!-- 餐廳管理頁面 -->
-	<!-- 背景圖片+自動填滿 -->
-	<div class="image-container set-full-height"
-		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-		<div class="container">
-			<div class="row">
-				<form:form method="POST" modelAttribute="updateRestaurant"
-					enctype='multipart/form-data' id="updatefrom">
-					<div class="col-sm-12 col-sm-offset-2">
-
-						<!--綁定model中的restaurant-->
-
-
-						<div class="rest-infobox">
+				<div class=" align-items-center justify-content-center">
+					<form:form method="POST" modelAttribute="updateRestaurant"
+						enctype='multipart/form-data' id="updatefrom">
+						<!-- 餐廳管理頁面 -->
+						<div class="rest-infobox ">
 							<h1 style="color: red">更新餐廳</h1>
-							<h3 style="color: red">目前身分${comDetail.userAccount.accountIndex}</h3>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' />
 							<form:errors path="restaurantName" cssClass="error" />
@@ -277,52 +298,79 @@ p {
 							<h5 style="color: #FF1493">餐廳網站：</h5>
 							<form:input path='restaurantWebsite' />
 							<form:errors path="restaurantWebsite" cssClass="error" />
+							<div id="tagdiv">
+								<h5 style="color: #FF1493">標籤：</h5>
+								<form:input class="typeahead" type="text" placeholder="add Tag"
+									path="foodTag" />
+								<form:errors path="foodTag" cssClass="error" />
+								
+								<form:input path='productImage' type='file'
+									id="restaurant-picture" accept="image/*" />
+								<form:errors path="productImage" cssClass="error" />
+
+								<div id="submitbox">
+								<br> <input type='button' value="提交" id="checkBeforeSubmit" >
+								<span id="submitError"></span>
+								</div>
+							</div>
 						</div>
-							<h5 style="color: #FF1493">餐廳照片：</h5>
-							<form:input path='productImage' type='file'
-								id="restaurant-picture" accept="image/*" />
-							<form:errors path="productImage" cssClass="error" />
 						<div class="rest-picbox">
-							<img
-								src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
-								class="picture-src" id="restaurantPicturePreview" />
+							<!--秀圖區 -->
+							<div>
+
+								<img
+									src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
+									class="picture-src" id="restaurantPicturePreview" />
+							</div>
+
 						</div>
+					</form:form>
 
+				</div>
 
-					</div>
-					<h5 style="color: #FF1493">標籤：</h5>
-					<div>
-						<form:input class="typeahead" type="text" placeholder="add Tag"
-							path="foodTag" />
-					</div>
-					<form:errors path="foodTag" cssClass="error" />
-							<br>
-
-							<br> <input type='button' value="提交" id="checkBeforeSubmit">
-							<span id="submitError"></span>
-				</form:form>
-
+				<div style="display: none" id="${updateRestaurant.restaurantId}"
+					name="restid"></div>
 			</div>
 		</div>
-		<div style="display: none" id="${updateRestaurant.restaurantId}"
-			name="restid"></div>
 	</div>
+	<!-- footer -->
+	<%@include file="../includePage/includeFooter.jsp"%>
 
-
+	<!-- Scroll Up -->
+	<div id="back-top">
+		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+	</div>
 	<!-- JS here -->
+	<!-- Scroll Up -->
+	<script>
+		$(window).on('load', function() {
+
+			// 			//讓bar固定在上面以及設定高度
+			$(".header-sticky").addClass("sticky-bar");
+			$(".header-sticky").css("height", "90px");
+			$(".header-sticky").css("position", "static")
+
+			//讓loading圖動起來
+			$('#preloader-active').delay(450).fadeOut('slow');
+			$('body').delay(450).css({
+				'overflow' : 'visible'
+			});
+
+		});
+	</script>
 	<!-- 抓餐廳tag -->
 	<script>
 		$(document)
 				.ready(
 						function() {
 							let n = $("div[name='restid']");
-// 							console.log($("div[name='restid']"));
-// 							console.log(n.length);
+							// 							console.log($("div[name='restid']"));
+							// 							console.log(n.length);
 							var jsontxt;
 							for (let i = 0; i < n.length; i++) {
 								var urls = "${pageContext.request.contextPath}/";
 								urls += "<c:url value='restTag2/'/>" + n[i].id;
-								console.log(urls);
+								// 								console.log(urls);
 								$.ajax({
 									type : "GET",
 									url : urls,
@@ -397,8 +445,8 @@ p {
 							reader.onload = function(e) {
 								$('#restaurantPicturePreview').attr('src',
 										e.target.result);
-							}
 
+							}
 							reader.readAsDataURL(this.files[0]);
 						}
 
