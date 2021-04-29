@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.restaurantSearchSystem.service.RestSearchService;
@@ -44,6 +47,41 @@ public class RestSearchController {
 	
 	@Autowired
 	ServletContext servletContext;
+	
+	@GetMapping(path="/map",produces = "application/json;charset=UTF-8" )
+	public String indexSearch(@RequestParam(name="restName",defaultValue = "") String searchName,
+			 				@RequestParam(name="searchTag",defaultValue = "") String searchTag,
+			 				Model model){
+		System.out.println(searchName+searchTag);
+		ObjectMapper mapper = new ObjectMapper();
+		if(searchTag.equals("NULL")) {			
+			List<Restaurant> rests = restSearchService.findRestaurantNameLike(searchName);
+			System.out.println(searchName);
+			System.out.println("======="+rests.size());
+			try {
+				String jsonString = mapper.writeValueAsString(rests);
+				model.addAttribute("rests",jsonString);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}else {
+			System.out.println(searchName+searchTag);
+			List<Restaurant> rests = restSearchService.findSearchNameAndTag(searchName, searchTag);
+			System.out.println("======="+rests.size());
+			try {
+				String jsonString = mapper.writeValueAsString(rests);
+				System.out.println(jsonString);
+				model.addAttribute("rests",jsonString);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		//System.out.println("so far so good");
+		return "mappage/showmap";
+	}
+	
 	
 	@GetMapping(path="/restId/{id}",produces = "application/json;charset=UTF-8" )
 	@ResponseBody

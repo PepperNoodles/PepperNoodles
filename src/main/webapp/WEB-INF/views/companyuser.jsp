@@ -14,7 +14,7 @@
 <div align="center">
 Welcome companyuser<br/>
 </div>
-<div id="time">2</div>
+<div id="time">0</div>
 <script>
 $(window).on('load', function () {
 	let urls="${pageContext.request.contextPath}/";
@@ -28,7 +28,7 @@ $(window).on('load', function () {
 		success: function (response) {
 			console.log(response);	
 			$(function () {
-				setInterval(ChangeTime, 500);
+				setInterval(ChangeTime, 10);
 				});		
 		},
 		error: function (thrownError) {

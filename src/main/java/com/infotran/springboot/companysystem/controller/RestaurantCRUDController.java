@@ -71,7 +71,6 @@ public class RestaurantCRUDController {
 	@GetMapping("/showAllrest")
 	public String allRest(Model model) {
 		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
 		return "company/AllRestaurants";
 	}
 	// 顯示所有餐廳資料ByComId
@@ -102,7 +101,6 @@ public class RestaurantCRUDController {
 			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 			map.put("value",tag.getFoodTagIid());
 			map.put("text",tag.getFoodTagName());
-//			map.put("continent","Asia");
 			foodTagJsonList.add(map);
 			foodTagListLength++;
 		}
@@ -111,28 +109,20 @@ public class RestaurantCRUDController {
 		return foodTagJsonList;
 	}
 
-	//標籤測試
-	@GetMapping("/test")
-	public String test(Model model) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
-		return "company/Tagtest";
+
+
+	
+	@ModelAttribute
+	public void foodTagListDataTest(Model model) {
+		List<FoodTag> foodTagListTest = restaurantService.getAllFoodTag();
+		model.addAttribute("foodTagListTest", foodTagListTest);
 	}
-	
-	@GetMapping("/test2")
-	public String test2(Model model) {
-		model.addAttribute("restaurants", restaurantService.getAllRestaurant());
-		System.out.println("showall"+model.getAttribute("restaurants"));
-		return "company/Tagtest2";
-	}
-	
-	
 	// 連進新增餐廳時 給預設值 回傳新增頁
 	@GetMapping(value = "/addrest")
 	public String initRestaurant(Model model) {
 		Restaurant rest= new Restaurant();
 		rest.setRestaurantName("幽靈炒飯好吃");
-		rest.setRestaurantAddress("台北市信義路四段2號");
+		rest.setRestaurantAddress("台北市 信義路 100號");
 		rest.setRestaurantContact("0909053909");
 		rest.setRestaurantWebsite("facebook.com");
 		model.addAttribute("restaurant", rest);
@@ -199,7 +189,7 @@ public class RestaurantCRUDController {
 		Restaurant rest = restaurantService.get(id);
 		model.addAttribute("updateRestaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/UpdateRestaurant";
+		return "company/UpdateRestaurant2";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
@@ -214,7 +204,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			//若有錯 回到修改頁面
-			return "company/UpdateRestaurant";
+			return "company/UpdateRestauran2";
 		}
 		//檢查提交表單的上傳圖片檔
 	
@@ -314,7 +304,14 @@ public class RestaurantCRUDController {
 		return map;
 		
 	}
-	
+	//請求餐廳標籤2
+	@GetMapping("/restTag2/{id}")
+	public @ResponseBody Set<FoodTag> restTag2(@PathVariable("id") Integer id) {
+		Restaurant rest = restaurantService.get(id);
+		Set<FoodTag> set = rest.getFoodTag();
+		return set;
+		
+	}
 	
 	// 給圖用↓
 	public byte[] blobToByteArray(Blob blob) {

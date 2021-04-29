@@ -1,6 +1,9 @@
 package com.infotran.springboot.companysystem.controller;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,12 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
+import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
-@SessionAttributes(names = {"comDetail"})
+@SessionAttributes(names = {"comDetail","rests","user"})
 @RequestMapping("/Company")
 public class CompanyFindViewController {
 	
@@ -69,8 +73,12 @@ public class CompanyFindViewController {
 		      currentUserName = authentication.getName();
 		      System.out.println(currentUserName);
 				UserAccount user = userSysService.findByAccountIndex(currentUserName);
+				Set<Restaurant> rests = user.getRestaurant();
+				System.out.println("rests:"+rests);
 				CompanyDetail comDetail = user.getCompanyDetail();
+				model.addAttribute("user", user);
 				model.addAttribute("comDetail", comDetail);
+				model.addAttribute("rests", rests);
 		      return currentUserName;
 		   }
 		  System.out.println("no logging user currently!!");
@@ -79,7 +87,12 @@ public class CompanyFindViewController {
 		
 	/**登入後的企業畫面**/
 	@GetMapping("/company")
-	public String companyloginByIndex(Model model) {
+	public String companyloginByIndex(Model model,HttpSession session) {
+		UserAccount user=(UserAccount) session.getAttribute("user");
+		Integer newUserId =  user.getAccountId();
+		UserAccount newUser = userSysService.get(newUserId);
+		Set<Restaurant> rests = newUser.getRestaurant();
+		model.addAttribute("rests", rests);
 		return "company/companyMain";
 	}
 	
