@@ -32,7 +32,7 @@
 <body>
 	
 	
-	<div class="row" style ="">
+	<div class="row" >
 		<div class="col-2 " >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
@@ -126,7 +126,7 @@
 			        	Table.clear().draw();
 			            Table.rows.add(result.AccountList).draw();
 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
-			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>")
+			           
 			        },
 			        error: function (result) {
 			        	console.log("有問題");
@@ -137,31 +137,36 @@
 	  //呼應button
 	  $('body').on('click','#update',function(e){
 	       e.preventDefault();
-	       var status = $(this).parent().prevAll().text();
-	       if (status == '資料更新'){
-	        var accountId = $(this).parent().next().text();
-	        data = new FormData();
-	        data.append("accountId",accountId);
+// 	       var status = $(this).parent().prevAll("tr td:eq(3)").text();
+// 	       alert(status)
+	       
+	        var status = $(this).parent().prevAll("tr td:eq(3)").text(); //編號id
+	       // data = new FormData();
+	       // data.append("account_id",new Blob([ JSON.stringify({"account_id" : status})])); //前面對應Controll
+	       // console.log(data);
 	        $.ajax({
 	         method:"GET",
-	         url:"/PepperNoodles/rearUserAccountUpdate.controller",
-	         data:data,  //後面data是 new FormData
-	         contentType: false, 
+	         url:"/PepperNoodles/rearUserAccountQueryById.controller?account_id="+status,
+	         //data:data,  //後面data是 new FormData
+	         contentType:"application/json",
 	         processData: false,
 	         cache: false,  //不做快取
-	               async : true,
-	               success: function (response) {
-	                localStorage.setItem("userAccountRearNormalUser",response.ecpayform);
-	                window.open("http://localhost:9090/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');
-	               },
-	               error: function (url) {
-	                console.log("綠界沒出去");
-	               } 
-	        });    
+             async : true,
+             success: function (response) {
+// 	                localStorage.setItem("userAccountRearNormalUser",response.normalUserform);
+             alert(response.accountIndex)
+             location.reload(); //成功重整頁面
+
+//              window.open("http://localhost:433/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');
+           	},
+            error: function (response) {
+             console.log("一般會員沒出去");
+            } 
+	        });
 	        
-	       } else {
-	        alert('該筆訂單已更新');
-	       }
+
+	        
+	      
 	       
 	      });
 </script>
