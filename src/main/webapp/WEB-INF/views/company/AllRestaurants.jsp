@@ -7,10 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type='text/javascript'
-	src="<c:url value='/scripts/jquery-1.9.1.min.js' />"></script>
 <meta charset="UTF-8">
-<title>restaurantCRUD</title>
+<title>MyRestaurants</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
@@ -32,18 +30,6 @@
 	href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 
-<!-- bloodHound ↓-->
-
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script> -->
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script> -->
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css"> -->
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"> -->
-
-<!-- bloodHound ↑-->
 <style>
 .nopadding {
 	padding: 0 !important;
@@ -66,13 +52,16 @@
 				</div>
 			</div>
 			<!-- 右邊顯示的資料 背景圖片+自動填滿-->
-			<div class="col-lg-10 nopadding image-container set-full-height" style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-				
-					<div class="container">
-						<div class="row d-flex align-items-center justify-content-center">
-							<!-- 餐廳管理頁面 -->
-							<div>
-							<h3 style="color: red"><a href="<c:url value='/addrest'/> ">新增餐廳</a></h3>
+			<div class="col-lg-10 nopadding image-container set-full-height"
+				style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
+
+				<div class="container">
+					<div class="row d-flex align-items-center justify-content-center">
+						<!-- 餐廳管理頁面 -->
+						<div>
+							<h3 style="color: red">
+								<a href="<c:url value='/addrest'/> ">建立餐廳</a>
+							</h3>
 							<c:choose>
 								<c:when test="${empty restaurants}">
 									<h5 style="color: #FF1493">沒有任何餐廳資料</h5>
@@ -85,6 +74,7 @@
 											<th width='120'>餐廳地址</th>
 											<th width='80'>聯絡方式</th>
 											<th width='80'>餐廳網站</th>
+											<th width='80'>營業時間</th>
 											<th width='80'>標籤</th>
 											<th width='80'>環境照片</th>
 											<th colspan='1' width='36'>資料維護</th>
@@ -95,8 +85,8 @@
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
+												<td style="text-align: center; font-weight: bold">營業時間</td>
 												<td style="text-align: center; font-weight: bold">
-													<%-- 								<input id="${restaurant.restaurantId}" name="restid" class="typeahead"   disabled > --%>
 													<div id="${restaurant.restaurantId}" name="restid"></div>
 												</td>
 												<td><img width='120' height='120'
@@ -111,10 +101,11 @@
 									</table>
 								</c:otherwise>
 							</c:choose>
-							</div>
 						</div>
+						<!-- ↑餐廳管理頁面 -->
 					</div>
-				
+				</div>
+
 			</div>
 		</div>
 	</div>
