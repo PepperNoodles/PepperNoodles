@@ -17,9 +17,6 @@ import cn.hutool.core.date.DateUtil;
 @Service
 public class CancelOrderServiceImpl implements CancelOrderService {
 
-	 /**
-     * 是否开启自动取消功能(1為開啟,0為關閉)
-     */
 	private Integer isStarted = 1;
 	
 	/**
@@ -35,10 +32,9 @@ public class CancelOrderServiceImpl implements CancelOrderService {
 	
 	@Override
 	public void cancelOrder() {
-		//新建一个线程，用来模拟定时取消订单job
         executorService.submit(()->{
             try {
-                System.out.println("开启自动取消订单job，當前時間：" + DateUtil.date());
+                System.out.println("開啟自動取消訂單，當前時間：" + DateUtil.date());
                 while (isStarted == 1) {
                     try {
                         OrderList order = queue.take();
