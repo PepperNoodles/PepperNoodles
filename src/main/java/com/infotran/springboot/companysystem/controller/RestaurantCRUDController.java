@@ -189,7 +189,7 @@ public class RestaurantCRUDController {
 		Restaurant rest = restaurantService.get(id);
 		model.addAttribute("updateRestaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/UpdateRestaurant2";
+		return "company/UpdateRestaurant";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
@@ -204,7 +204,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			//若有錯 回到修改頁面
-			return "company/UpdateRestauran2";
+			return "company/UpdateRestauran";
 		}
 		//檢查提交表單的上傳圖片檔
 	
