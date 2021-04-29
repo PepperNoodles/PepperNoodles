@@ -54,13 +54,8 @@ $(document).ready(function() {
 			        }
 				})
 			
-		})//end
+		});//end
 		
-		
-		//$("#addP").onclick(function(){
-			//pname="橘子20斤折價券";
-			
-		//});
 		
 		
 });
@@ -98,7 +93,7 @@ $(document).ready(function() {
 	text-decoration: none;
 }
 .productFrame{
-	padding:20px;
+ 	padding:20px; 
 	clear: both;
 }
 .addcart{
@@ -125,6 +120,10 @@ $(document).ready(function() {
 	  padding: 15px;
 	  border-radius: 4px;
 	}
+	
+label{
+	font-size: 18px;
+}
 </style>
 </head>
 <body>
@@ -250,7 +249,7 @@ $(document).ready(function() {
 	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">新增商品</h3> 
 	                                <!-- product frame start -->
 	                                <div class="row productFrame">
-		                                <div class="col-sm-12 col-sm-offset-1">
+		                                <div class="col-12">
 											<div class="picture-container">
 												<div class="picture">
 													<img src="<c:url value="/images/NoImage/NoImage.png"/>"
@@ -259,15 +258,38 @@ $(document).ready(function() {
 												</div>
 											</div>
 										</div>
-		                                <label>Name <small>(必填)</small></label>
+										<div class="col-12">
+		                                <label>產品名 <small>(必填)</small></label>
 										<input class="form-control" type="text" name="userName" id="productname" placeholder="">	
-		                                <label>Price <small>(必填)</small></label>
+		                                <label>產品價格 <small>(必填)</small></label>
 										<input class="form-control" type="text" name="userName" id="productprice" placeholder="">	
-		                                <label>Description <small>(必填)</small></label>
+		                                <label>產品描述 <small>(必填)</small></label>
 										<textarea class="form-control" id="productdescription" rows="2" cols="50" name="s1" style="display: block;"></textarea>	
-		                                <label>Quantity<small>(估計販賣數量)</small></label>
+		                                <label>庫存數量<small>(估計販賣數量)</small></label>
 										<input class="form-control" id="productquantity" type="number" placeholder="" step="1" min="0" max="100">	
-	                                	<div style="margin-top: 20px;">
+	                                	</div>
+	                                	<div class="col-12 " style="text-align: left;font-size: 18px;margin-top: 5px;margin-bottom: 5px;">
+	                                		商品主類別:
+	                                	</div>
+	                                	<div class="col-12" >
+		                                	<input type="radio" id="coupon" value="票券" name="radio" ><span style="font-size: 18px;">票券</span>
+		                                	<input type="radio" id="ingredient" value="食材" name="radio"><span style="font-size: 18px;">食材</span>
+	                                	</div>
+	                                	<div class="col-12" style="text-align: left;font-size: 18px;margin-top: 10px;margin-bottom: 5px;">
+		                                	商品子類別:
+		                                </div>	
+		                                <div  class="col-12" style="">
+											<select style="font-size: 18px;"> 
+												<option value="炸雞">炸雞</option>
+												<option value="冰淇淋">冰淇淋</option>
+												<option value="蔬菜水果">蔬菜水果</option>
+												<option value="甜點">甜點</option>
+												<option value="牛排">牛排</option>
+												<option value="火鍋">火鍋</option>
+												<option value="羊肉爐">羊肉爐</option>
+											</select>
+										</div>
+	                                	<div  class="col-12" style="margin-top: 20px;text-align: center;">
 		                                	<input type="submit"  id="submitproduct"  value="提交" >
 		                                	<span id="checkStatus" style="font-size: 18px;"></span>
 	                                	</div>
@@ -278,26 +300,7 @@ $(document).ready(function() {
                         </div>
                         
                         <!-- listing Details End -->
-                        <!--Pagination Start  -->
-                        <div class="pagination-area pt-70 text-center" id="pagination">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="single-wrap d-flex justify-content-center">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination justify-content-start">
-                                                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                                                <li class="page-item"><a class="page-link" href="#"><span class="ti-angle-right"></span></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Pagination End  -->
+
                     </div>
                 </div>
             </div>
