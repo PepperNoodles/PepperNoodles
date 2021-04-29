@@ -682,7 +682,7 @@ table a{
 				        		segment +="<table border='1' class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid blue 1px;border-radius:6px;-moz-border-radius:6px;'>";//<th>留言數</th><th>留言者</th><th>時間</th><th>讚數</th><th>留言內容</th><th>讚</th><th>編輯</th>";
 				        		segment += "<tr class='table-primary'><td>留言" + (i+1) + "</td><td>" ;
 				        		segment += result[i].netizenAccount.userAccountDetail.nickName + "</td><td>" ;
-				        		segment += formatPrint + "</td><td id='likeof" + i + "'  >" ;
+				        		segment += formatPrint + "</td><td data-toggle='tooltip' id='likeof" + i + "'  >" ;
 				        		segment += result[i].likeAmount + "</td><td><input  class='selectedinput ' disabled='disabled'size='20' value='" + result[i].text +"'>" ;
 			        			segment +=  "</input><button  name='updateComment' "+ i +" class='genric-btn default circle arrow' style='display:none;color:black' >confirm</button>";
 			        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].text + "</span>";
@@ -700,7 +700,7 @@ table a{
 									
 										segment += "<tr class='table-info'><td>回覆" + (j+1) + "</td><td>" ;
 						        		segment += result[i].replyMessageBoxes[j].netizenAccount.userAccountDetail.nickName  + "</td><td>" ;
-						        		segment += formatPrint  + "</td><td id='likeof" + i + j +"'>" ;
+						        		segment += formatPrint  + "</td><td data-toggle='tooltip' id='likeof" + i + j +"'>" ;
 						        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
 						        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
 										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black'  class='genric-btn default circle arrow' >confirm</button>";
@@ -932,36 +932,55 @@ table a{
 		        		});
 					
 // 					id='likeof"  看誰按讚的功能 直接點讚數
-					$('body').on('click','td[id^="likeof"]',function(e){
+					$('body').on('mouseenter','td[data-toggle="tooltip"]',function(e){
 	        			e.preventDefault;
+
 	        			var likebutton = $(this);
 	        			var msnID = $(this).next().next().next().next().children("span").text();
 
-						$.ajax({
-							type:"GET",
-							url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
-							dataType: "json",
-							success: function (result) {
-								console.log(result);
-								console.log(JSON.stringify(result));
-								
-								var x ="按讚的人有:" ;
-								
+// 						likebutton.tooltip();
+
+	        			$.ajax('/PepperNoodles/user/showWhoLikeAjax?msnID='+ msnID).always(function(result) {
+	        				var x ="按讚的人有:\n\r" ;
 								if(result.length==0){
 									x ="還沒有人按讚唷傻逼~"
 								}else{
 									for( i =0;i<result.length;i++){
 										x += result[i].userAccountDetail.nickName;
-										x += " ";
+										x += "\n\r";
 									}
 								}
+								likebutton.attr("title",x)
+// 								likebutton.tooltip();
 
-								alert(x);
-							        	},
-					        error: function (result) {
-					        	alert("fail");
-					        }
-						});
+		        			}
+	        	         );
+// 						$.ajax({
+// 							type:"GET",
+// 							url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
+// 							dataType: "json",
+// 							success: function (result) {
+// 								var x ="按讚的人有:" ;
+								
+// 								if(result.length==0){
+// 									x ="還沒有人按讚唷傻逼~"
+// 								}else{
+// 									for( i =0;i<result.length;i++){
+// 										x += result[i].userAccountDetail.nickName;
+// 										x += " ";
+// 									}
+// 								}
+								
+// 								$(this).attr('title', result);
+// 								$(this).tooltip({ position: "bottom right", opacity: 1 });
+// 								alert(x);
+// 								$(this).tooltip();
+// 							        	},
+							        	
+// 					        error: function (result) {
+// 					        	alert("fail");
+// 					        }
+// 						});
 
 					});
 

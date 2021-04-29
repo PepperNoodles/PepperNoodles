@@ -504,7 +504,7 @@
 		});	
 	
 //		id='likeof"  看誰按讚的功能 直接點讚數
-	$('body').on('click','td[id^="likeof"]',function(e){
+	$('body').on('mouseenter','td[id^="likeof"]',function(e){
 		e.preventDefault;
 		var likebutton = $(this);
 		var msnID = $(this).next().next().next().next().children("span").text();
@@ -514,21 +514,18 @@
 			url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
 			dataType: "json",
 			success: function (result) {
-				console.log(result);
-				console.log(JSON.stringify(result));
-				
-				var x ="按讚的人有:" ;
-				
+// 				console.log(result);
+// 				console.log(JSON.stringify(result));
+				var x ="按讚的人有:\n\r" ;
 				if(result.length==0){
 					x ="還沒有人按讚唷傻逼~"
 				}else{
 					for( i =0;i<result.length;i++){
 						x += result[i].userAccountDetail.nickName;
-						x += " ";
+						x += "\n\r";
 					}
 				}
-
-				alert(x);
+				likebutton.attr("title",x)
 			        	},
 	        error: function (result) {
 	        	alert("fail");
