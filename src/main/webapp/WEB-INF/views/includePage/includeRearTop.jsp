@@ -91,21 +91,8 @@
 <!-- 											<li class="login"><a href="loginSystem/loginPage"> <i -->
 <!-- 													class="ti-user"></i> Sign in or Register -->
 <!-- 											</a></li> -->
-											<li><a href="#">最新消息</a>
-												<ul class="submenu">
-													<li><a href="blog.html">菜色新聞</a></li>
-													<li><a href="blog_details.html">最新優惠</a></li>
-													<li><a href="elements.html">新開幕</a></li>
-													<li><a href="<c:url value='/loginSystem/normaluser'/>">normal
-															user page</a></li>
-													<li><a
-														href="<c:url value='/loginSystem/companyuser'/>">company
-															page</a></li>
-													<li><a href="<c:url value='/loginSystem/admin'/>">admin
-															page</a></li>
-
-												</ul></li>
-											<li><a href="about.html">發表食記</a></li>
+											
+											
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
                                             <li><a href="rearStage/indexRearStage">後台</a></li>
@@ -175,7 +162,7 @@
 		<script src="<c:url value='/scripts/plugins.js' />"></script>
  		<script src="<c:url value='/scripts/main.js' />"></script> 
  		 <!-- DataTables v1.10.16 -->
-		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
+		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 	
 </body>
 </html>
