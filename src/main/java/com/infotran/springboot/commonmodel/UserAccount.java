@@ -27,8 +27,6 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.websocket.model.SocketMessage;
 
 
