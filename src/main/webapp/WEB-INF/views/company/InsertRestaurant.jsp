@@ -13,6 +13,8 @@
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
+<script type="text/javascript"
+	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <link rel='stylesheet'
@@ -21,8 +23,7 @@
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
 <script type="text/javascript"
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+
 <link rel="stylesheet"
 	href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
