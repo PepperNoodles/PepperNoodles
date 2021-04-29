@@ -24,11 +24,12 @@ public class RearUserAccountController {
 	@Autowired
 	private RearUserAccountService rearUserAccountService;
 	
+	//Insert寫活的
 	@PostMapping("/rearUserAccountInsert.controller")
 	public UserAccount processUserAccountInsert(@RequestBody UserAccount userAccount) {
 		return rearUserAccountService.insert(userAccount);
 	}
-	
+	//Insert寫死的
 	@PostMapping("/rearUserAccountInsert1.controller")
 	public UserAccount processUserAccountInsert2() {
 		UserAccount userAccount1 = new UserAccount();
@@ -49,11 +50,12 @@ public class RearUserAccountController {
 		return rearUserAccountService.finById(id);
 	}
 	
-	public UserAccount processUserAccountupdate(@RequestParam UserAccount userAccount) {
+	@GetMapping("/rearUserAccountUpdate.controller")
+	public UserAccount processUserAccountUpdate(@RequestParam UserAccount userAccount) {		
 		return rearUserAccountService.update(userAccount);
 	}
 	
-	//找Account
+	//找AccountList
 	@GetMapping(value="/user/getAccountList")
 	public @ResponseBody Map<String,ArrayList<UserAccount>> findUserAccountListByUserName(@ModelAttribute("userAccount")UserAccount user){
 		Map<String,ArrayList<UserAccount>> mapview = new HashMap<String,ArrayList<UserAccount>>();
