@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="org.hibernate.Hibernate,java.util.Set,java.util.HashSet,com.infotran.springboot.commonmodel.FoodTagUser,com.infotran.springboot.commonmodel.UserAccount"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -160,8 +160,8 @@ table a{
 						<td><span >電話：</span></td><td><span id="phoneNumberSpan" >${userAccount.userAccountDetail.phoneNumber}</span><input   value="${userAccount.userAccountDetail.phoneNumber}" style="display:none" id="updateinputBasic2phoneNumber" ></input><button id="updateBaisc2phoneNumber" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable6" style="display:none"><button id="change2phoneNumber" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
 						<tr>
 						<td><span >真實姓名：</span></td><td><span id="realNameSpan" >${userAccount.userAccountDetail.realName}</span><input   value="${userAccount.userAccountDetail.realName}" style="display:none"  id="updateinputBasic2RealName"></input><button  id="updateBaisc2realName" class='genric-btn default circle arrow'  style="color: black;display:none">確認</button></td><td id="showtable7" style="display:none"><button id="change2realName" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-<!-- 						<tr> -->
-<%-- 						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr> --%>
+						<tr>
+						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
 						
 						</table>
 												<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
@@ -703,7 +703,7 @@ table a{
 						        		segment += formatPrint  + "</td><td id='likeof" + i + j +"'>" ;
 						        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
 						        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
-										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' >確定修改</button>";
+										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black'  class='genric-btn default circle arrow' >confirm</button>";
 					        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].replyMessageBoxes[j].text + "</span>";
 					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].time + "</span><span  style='display:none'>" + result[i].replyMessageBoxes[j].likeAmount + "</span>";
 					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></td><td>";
@@ -830,10 +830,10 @@ table a{
 							var time       =$(this).next().next().text();
 							var likeAmount =$(this).next().next().next().text();
 							var toHide         =$(this).next();
-							alert(id);
-							alert(text);
-							alert(time);
-							alert(likeAmount);
+// 							alert(id);
+// 							alert(text);
+// 							alert(time);
+// 							alert(likeAmount);
 							var data =
 							{
 									"userMessageId": id,
@@ -853,7 +853,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 
 								},
@@ -873,7 +873,7 @@ table a{
 							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 							urls += id;
-							alert(id);
+// 							alert(id);
 
 							
 							$.ajax({
@@ -881,7 +881,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 
 
 								},
@@ -906,7 +906,7 @@ table a{
 							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 							urls += id;
-							alert(id);
+// 							alert(id);
 
 							
 							$.ajax({
@@ -914,7 +914,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 
 
 								},
@@ -1032,7 +1032,7 @@ table a{
 							contentType:'application/json;charset=UTF-8',
 							dataType: "text",
 							success: function (result) {
-								alert(result);
+// 								alert(result);
 
 							},
 
@@ -1060,7 +1060,7 @@ table a{
 								url:"/PepperNoodles/user/getFoodTagsAjax",
 
 						        success: function (result) {
-					        		alert(result[0].foodTagName);
+// 					        		alert(result[0].foodTagName);
 					        		console.log(JSON.stringify(result));
 					        		checkboxs.empty();
 
@@ -1099,7 +1099,7 @@ table a{
 	        			checkboxs.toggle();
 	        			confirmEdit.toggle();
 	        			toshow.toggle();
-	        			alert(confirmEdit.value)
+// 	        			alert(confirmEdit.value)
 	        			
 							$.ajax({
 								type:"POST",
@@ -1140,7 +1140,7 @@ table a{
 							cache: false,  //不做快取
 					        async : true,
 					        success: function (result) {
-								alert("photo changed");
+// 								alert("photo changed");
 								
 								location.reload();
 								

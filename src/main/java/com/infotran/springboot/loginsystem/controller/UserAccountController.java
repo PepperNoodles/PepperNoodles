@@ -135,6 +135,8 @@ public class UserAccountController {
 		System.out.println("fuck======================================================0");
 //		UserAccount useraccount1 = new UserAccount();
 		useraccount1.setAccountIndex(dispatch.get("accountIndex"));
+		useraccount1.setEnabled(true);
+
 		//幫密碼加密
 		String bcEncode1 = new BCryptPasswordEncoder().encode(dispatch.get("password"));
 		useraccount1.setPassword(bcEncode1);
