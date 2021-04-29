@@ -112,7 +112,26 @@
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
-											<c:choose>
+<%-- 											<c:choose> --%>
+<%-- 												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login"> --%>
+<!-- 												<a href="loginSystem/loginPage"> <i class="ti-user">												 -->
+<!-- 												</i> Sign in or Register</a> -->
+<!-- 												<ul class="submenu"> -->
+<%-- 													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li> --%>
+<%-- 													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li> --%>
+<%-- 													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li> --%>
+<!-- 												</ul>	 -->
+<%-- 												</li></c:when> --%>
+<%-- 												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()"> --%>
+<%-- 												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize> --%>
+<!-- 												<ul class="submenu"> -->
+<%-- 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li> --%>
+<%-- 													<li><a href="<c:url value='/logout/page'/>">登出</a></li> --%>
+<!-- 												</ul>	 -->
+<%-- 												</li></c:otherwise> --%>
+												
+<%-- 											</c:choose> --%>
+		<c:choose>
 												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login">
 												<a href="loginSystem/loginPage"> <i class="ti-user">												
 												</i> Sign in or Register</a>
@@ -122,14 +141,26 @@
 													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
 												</ul>	
 												</li></c:when>
-												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()">
+												<c:when test="${userAccount != null}">
+												<li class="login"><sec:authorize access="isAuthenticated()">
 												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
 												<ul class="submenu">
 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
 													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
 												</ul>	
-												</li></c:otherwise>
-												
+												</li>
+												</c:when>
+												<c:when test="${comDetail != null}">
+												<li class="login"><sec:authorize access="isAuthenticated()">
+												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
+												<ul class="submenu">
+													<li><a href="<c:url value='/Company/company'/>">餐廳頁面</a></li>
+													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
+												</ul>	
+												</li>
+												</c:when>
+												<c:otherwise>
+												</c:otherwise>					
 											</c:choose>
 										</ul>
 									</nav>
