@@ -8,8 +8,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>restaurantCRUD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>restaurantCRUD</title>
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
@@ -19,24 +19,24 @@
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<!-- <script type="text/javascript" -->
+<%-- 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
-<link rel="stylesheet" href="<c:url value='/css/style.css' />">
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<c:url value='/css/owl.carousel.min.css' />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/css/style.css' />"> --%>
 <!-- bloodHound ↓-->
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<!-- <script type="text/javascript" -->
+<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+<!-- <script type="text/javascript" -->
+<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script> -->
+<!-- <script type="text/javascript" -->
+<!-- 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script> -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"> -->
 
 <!-- bloodHound ↑-->
 <style>
@@ -70,6 +70,8 @@ footer {
 	clear: both;
 	/* 	清除上面float影響 */
 }
+</style>
+<style>
 /* ↓tag */
 @font-face {
 	font-family: "Prociono";
@@ -237,8 +239,8 @@ p {
 </head>
 <body>
 
+	<%@include file="../includePage/includeNav.jsp" %>
 
-	
 
 	<!-- 餐廳管理頁面 -->
 	<!-- 背景圖片+自動填滿 -->
@@ -246,9 +248,10 @@ p {
 		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12 col-sm-offset-2">
+				<form:form method="POST" modelAttribute="updateRestaurant"
+					enctype='multipart/form-data' id="updatefrom">
+					<div class="col-sm-12 col-sm-offset-2">
 
-					<form:form method="POST" modelAttribute="updateRestaurant" enctype='multipart/form-data' id="updatefrom">
 						<!--綁定model中的restaurant-->
 
 
@@ -260,13 +263,13 @@ p {
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' id="RAdd" disabled="true"/>
+							<form:input path='restaurantAddress' id="RAdd" disabled="true" />
 							<span id="RAddError"></span>
 							<form:errors path="restaurantAddress" cssClass="error" />
 							<br> <span style="color: #FF1493">經度<form:input
-									path='longitude' id="RLong" size="10" disabled="true"/>
+									path='longitude' id="RLong" size="10" disabled="true" />
 							</span><br> <span style="color: #FF1493">緯度<form:input
-									path='latitude' id="RLati" size="10" disabled="true"/></span>
+									path='latitude' id="RLati" size="10" disabled="true" /></span>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
@@ -274,110 +277,115 @@ p {
 							<h5 style="color: #FF1493">餐廳網站：</h5>
 							<form:input path='restaurantWebsite' />
 							<form:errors path="restaurantWebsite" cssClass="error" />
-							<br>
+						</div>
 							<h5 style="color: #FF1493">餐廳照片：</h5>
 							<form:input path='productImage' type='file'
 								id="restaurant-picture" accept="image/*" />
 							<form:errors path="productImage" cssClass="error" />
-							<h5 style="color: #FF1493">標籤：</h5>
-							<div>
-								<form:input class="typeahead" type="text" placeholder="add Tag"
-									path="foodTag" />
-							</div>
-							<form:errors path="foodTag"  cssClass="error" />
-							<br> <input type='button' value="提交" id="checkBeforeSubmit">
-							<span id="submitError"></span>
-						</div>
 						<div class="rest-picbox">
-							<img src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
+							<img
+								src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
 								class="picture-src" id="restaurantPicturePreview" />
 						</div>
 
 
-					</form:form>
-				</div>
+					</div>
+					<h5 style="color: #FF1493">標籤：</h5>
+					<div>
+						<form:input class="typeahead" type="text" placeholder="add Tag"
+							path="foodTag" />
+					</div>
+					<form:errors path="foodTag" cssClass="error" />
+							<br>
+
+							<br> <input type='button' value="提交" id="checkBeforeSubmit">
+							<span id="submitError"></span>
+				</form:form>
+
 			</div>
 		</div>
-		<div style="display:none" id="${updateRestaurant.restaurantId}" name="restid"></div>
+		<div style="display: none" id="${updateRestaurant.restaurantId}"
+			name="restid"></div>
 	</div>
 
 
 	<!-- JS here -->
-<!-- 抓餐廳tag -->
+	<!-- 抓餐廳tag -->
 	<script>
+		$(document)
+				.ready(
+						function() {
+							let n = $("div[name='restid']");
+// 							console.log($("div[name='restid']"));
+// 							console.log(n.length);
+							var jsontxt;
+							for (let i = 0; i < n.length; i++) {
+								var urls = "${pageContext.request.contextPath}/";
+								urls += "<c:url value='restTag2/'/>" + n[i].id;
+								console.log(urls);
+								$.ajax({
+									type : "GET",
+									url : urls,
+									dataType : "text",
+									success : function(response) {
+										var divFoodTag = document
+												.getElementById(n[i].id);
 
-    $(document).ready(function() {
-        let n = $("div[name='restid']");
-        console.log($("div[name='restid']"));
-        console.log(n.length);
-        var jsontxt;
-        for(let i=0;i<n.length;i++){
-    	var urls="${pageContext.request.contextPath}/";
-		urls+="<c:url value='restTag2/'/>"+n[i].id;										
-		console.log(urls);
-		$.ajax({
-			type: "GET",
-			url: urls,				
-			dataType: "text",
-			success: function (response) {
-				var divFoodTag = document.getElementById(n[i].id);
+										jsontxt = JSON.parse(response);
+										// 				console.log(response);
+										// 				console.log("====="+jsontxt[0].foodTagName);
+										// 				console.log(jsontxt.length);
 
-				jsontxt=JSON.parse(response);
-// 				console.log(response);
-// 				console.log("====="+jsontxt[0].foodTagName);
-// 				console.log(jsontxt.length);
-				
-				for(i=0;i<jsontxt.length;i++){
-				$(divFoodTag).append(jsontxt[i].foodTagName+'&nbsp;');
-				giveValue(jsontxt[i].foodTagIid,jsontxt[i].foodTagName);
-				}
-				
-				
-			},
-			error: function (thrownError) {
-				console.log(thrownError);
-			}
-		
-		
-		});
-        }
+										for (i = 0; i < jsontxt.length; i++) {
+											$(divFoodTag).append(
+													jsontxt[i].foodTagName
+															+ '&nbsp;');
+											giveValue(jsontxt[i].foodTagIid,
+													jsontxt[i].foodTagName);
+										}
 
-        
-        
-        
-		// bloodhound
-		var foodTags = new Bloodhound({
-			datumTokenizer : Bloodhound.tokenizers.obj.whitespace('text'),
-			queryTokenizer : Bloodhound.tokenizers.whitespace,
-			prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
-			cache : false
-		});
+									},
+									error : function(thrownError) {
+										console.log(thrownError);
+									}
 
-		foodTags.initialize();
-		
-		var elt = $('.typeahead');
-		elt.tagsinput({
-			itemValue : 'value',
-			itemText : 'text',
-			
-			typeaheadjs : {
-				limit: 20,
-				name : 'foodTags',
-				displayKey : 'text',
-				source : foodTags.ttAdapter()
-			}
-		});
+								});
+							}
 
-		function giveValue(id,name){
-			elt.tagsinput('add', {
-				"value" : id,
-				"text":name
-			});
-        }
+							// bloodhound
+							var foodTags = new Bloodhound(
+									{
+										datumTokenizer : Bloodhound.tokenizers.obj
+												.whitespace('text'),
+										queryTokenizer : Bloodhound.tokenizers.whitespace,
+										prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
+										cache : false
+									});
 
-    })
+							foodTags.initialize();
 
-    </script>
+							var elt = $('.typeahead');
+							elt.tagsinput({
+								itemValue : 'value',
+								itemText : 'text',
+
+								typeaheadjs : {
+									limit : 20,
+									name : 'foodTags',
+									displayKey : 'text',
+									source : foodTags.ttAdapter()
+								}
+							});
+
+							function giveValue(id, name) {
+								elt.tagsinput('add', {
+									"value" : id,
+									"text" : name
+								});
+							}
+
+						})
+	</script>
 	<!--預覽照片-->
 	<script>
 		$(function() {
