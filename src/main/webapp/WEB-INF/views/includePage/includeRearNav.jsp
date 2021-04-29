@@ -81,11 +81,11 @@
     <a href="#item-1-2" class="list-group-item" data-toggle="collapse">
       <i class="glyphicon glyphicon-chevron-right"></i>企業會員
     </a>
-    <div class="list-group collapse" id="item-1-2">
-      <a href="#" class="list-group-item">Item 1.2.1</a>
-      <a href="#" class="list-group-item">Item 1.2.2</a>
-      <a href="#" class="list-group-item">Item 1.2.3</a>
-    </div>
+<!--     <div class="list-group collapse" id="item-1-2"> -->
+<!--       <a href="#" class="list-group-item">Item 1.2.1</a> -->
+<!--       <a href="#" class="list-group-item">Item 1.2.2</a> -->
+<!--       <a href="#" class="list-group-item">Item 1.2.3</a> -->
+<!--     </div> -->
     
     <a href="#item-1-3" class="list-group-item" data-toggle="collapse">
       <i class="glyphicon glyphicon-chevron-right"></i>後台管理
