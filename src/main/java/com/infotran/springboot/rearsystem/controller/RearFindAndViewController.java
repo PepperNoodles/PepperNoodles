@@ -20,9 +20,14 @@ public class RearFindAndViewController {
 	}
 	
 
-	@GetMapping("/rearStage2")
+	@GetMapping("/userAccountRearTest")
 	public String test() {
-		return "rearStage/rearStage2";
+		return "rearStage/userAccountRearTest";
+	}
+	
+	@GetMapping("/rearNormalUser")
+	public String rearNormalUser() {
+		return "rearStage/userAccountRearNormalUser";
 	}
 
 	@GetMapping("/rearStage")

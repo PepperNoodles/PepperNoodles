@@ -230,7 +230,7 @@
 		url:urls,
 
         success: function (result) {
-    		alert(result.length);
+//     		alert(result.length);
     		commentsLength =result.length;
 //        		alert(result[0].replyMessageBoxes);
     		console.log(JSON.stringify(result));
@@ -271,7 +271,7 @@
 		        		segment += formatPrint  + "</td><td id='likeof" + i + j +"'>" ;
 		        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
 		        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
-						segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' >確定修改</button>";
+						segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' class='genric-btn default circle arrow' >confirm</button>";
 	        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].replyMessageBoxes[j].text + "</span>";
 	        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].time + "</span><span  style='display:none'>" + result[i].replyMessageBoxes[j].likeAmount + "</span>";
 	        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></td><td>";
@@ -308,7 +308,7 @@
 				url:  urls,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -323,8 +323,8 @@
 			var messageIdValue = $(this).next().text();
 			var urls           ="/PepperNoodles/user/addNewReplyCommentAjax/" + messageIdValue;
 			var text           =$(this).prev().val();
-			alert(messageIdValue);
-			alert(text);
+// 			alert(messageIdValue);
+// 			alert(text);
 			
 			var data =
 			{
@@ -346,7 +346,7 @@
 				data:JSON.stringify(data),
 				
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -360,14 +360,14 @@
 			e.preventDefault;
 			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
 			var id =$(this).next().text();
-			alert(id);
+// 			alert(id);
 			urls += id;
 			$.ajax({
 				type:"GET",
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -402,10 +402,10 @@
 			var time       =$(this).next().next().text();
 			var likeAmount =$(this).next().next().next().text();
 			var toHide         =$(this).next();
-			alert(id);
-			alert(text);
-			alert(time);
-			alert(likeAmount);
+// 			alert(id);
+// 			alert(text);
+// 			alert(time);
+// 			alert(likeAmount);
 			var data =
 			{
 					"userMessageId": id,
@@ -425,7 +425,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 
 				},
@@ -445,7 +445,7 @@
 			var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 			var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 			urls += id;
-			alert(id);
+// 			alert(id);
 
 			
 			$.ajax({
@@ -453,7 +453,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 
 
 				},
@@ -478,7 +478,7 @@
 			var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 			var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 			urls += id;
-			alert(id);
+// 			alert(id);
 
 			
 			$.ajax({
@@ -486,7 +486,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 
 
 				},

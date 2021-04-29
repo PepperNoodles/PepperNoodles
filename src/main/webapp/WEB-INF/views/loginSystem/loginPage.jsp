@@ -431,7 +431,7 @@
 						accoutDetailPage2.classList.add("tohide");
 						tagPage3.classList.remove("tohide");
 						tagPage3.classList.add("toshow");
-						alert("123");
+// 						alert("123");
 					},
 					error : function(result) {
 						$("#checkAccountStatus2").text(result.fail); //填入提示訊息到result標籤內
@@ -537,9 +537,9 @@
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status == 200) {
 										interestResult = JSON.parse(xhr.responseText);
-										alert(interestResult);
-										alert(interestResult.success);
-										alert(interestResult.success.value);
+// 										alert(interestResult);
+// 										alert(interestResult.success);
+// 										alert(interestResult.success.value);
 					if (interestResult.success == 1) {
 						message = "<span><font color='green' size='-2'>興趣新增成功</font></span>";
 						console.log("興趣新增成功");
@@ -1058,9 +1058,8 @@
 
 <!-- 											</table> -->
 								<div class="col-sm-8 col-sm-offset-2">
-
-											<h3>選擇您的興趣：</h3>
 											<span id="divResult"></span>
+											<h3>選擇您的興趣：</h3>
 											<div class="[ col-xs-6 col-sm-6 ]">
 
 												<div class="[ form-group ]">
