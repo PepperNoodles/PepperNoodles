@@ -41,14 +41,14 @@ public class UserAccount implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
-	@JsonIgnore
+//	@JsonIgnore //忽略資料表的資料
 	private Integer accountId;
 
 	@Column(name = "acoount_index")
 	private String accountIndex;
 
 	@Column(name = "password")
-	@JsonIgnore
+//	@JsonIgnore
 	private String password;
 	
 	@Column(name = "enabled")
