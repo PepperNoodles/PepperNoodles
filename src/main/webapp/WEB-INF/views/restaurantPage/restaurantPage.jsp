@@ -137,7 +137,7 @@ $.ajax({
 						    </tr>
 						    <tr>
 						      <th scope="row">類型</th>
-						      <td>到時候要從資料庫抓</td>
+						      <td id="foodTag">到時候要從資料庫抓</td>
 						
 						    </tr>
 						  </tbody>
@@ -245,11 +245,40 @@ $.ajax({
 	<script>
  		$(window).on('load', function() {
 			
- 			$( "#toggleMenu" ).click(function() {
+ 			$("#toggleMenu").click(function() {
  				  $( "#menuArea" ).slideToggle("fast")
  				 });
+ 			let menusjson = ${menu}+"";
+ 			menusjson=menusjson.split(",");
+ 			let tagjson = ${tagsjson}+"";
+ 			console.log("tagjson:"+tagjson)
  			
+ 			createMenuArea();
+ 			createTag();
+ 			function createMenuArea(){
+ 				let menuArea = $("#menuArea"); 
+ 				console.log(menuArea)
+ 				for(let i= 0;i<menusjson.length;i++){
+ 					console.log(menusjson);
+ 					console.log(menusjson[i]);
+ 					let menuImg = document.createElement("img");
+ 					let url = "http://localhost:433/PepperNoodles/rest/getMenuPicture";
+ 					menuImg.src=url+"/"+menusjson[i];
+ 					menuArea.append(menuImg);
+ 					
+ 				}
+ 			}
  			
+ 			function createTag(){
+ 				let tagArea = $("#foodTag");
+ 				for(let i= 0;i<tagjson.length;i++){
+ 					console.log("tagName: "+tagjson[i]);
+ 					let button = document.createElement("button");
+ 					button.html()=tagjson[i];
+ 					tagArea.append(button);
+ 				}
+ 				
+ 			}
  			
  			
 // 			//讓bar固定在上面以及設定高度
