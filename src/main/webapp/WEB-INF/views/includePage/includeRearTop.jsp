@@ -91,47 +91,15 @@
 <!-- 											<li class="login"><a href="loginSystem/loginPage"> <i -->
 <!-- 													class="ti-user"></i> Sign in or Register -->
 <!-- 											</a></li> -->
-											<li><a href="#">最新消息</a>
-												<ul class="submenu">
-													<li><a href="blog.html">菜色新聞</a></li>
-													<li><a href="blog_details.html">最新優惠</a></li>
-													<li><a href="elements.html">新開幕</a></li>
-													<li><a href="<c:url value='/loginSystem/normaluser'/>">normal
-															user page</a></li>
-													<li><a
-														href="<c:url value='/loginSystem/companyuser'/>">company
-															page</a></li>
-													<li><a href="<c:url value='/loginSystem/admin'/>">admin
-															page</a></li>
-
-												</ul></li>
-											<li><a href="about.html">發表食記</a></li>
+											
+											
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
                                             <li><a href="rearStage/indexRearStage">後台</a></li>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
-<%-- 											<c:choose> --%>
-<%-- 												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login"> --%>
-<!-- 												<a href="loginSystem/loginPage"> <i class="ti-user">												 -->
-<!-- 												</i> Sign in or Register</a> -->
-<!-- 												<ul class="submenu"> -->
-<%-- 													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li> --%>
-<%-- 													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li> --%>
-<%-- 													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li> --%>
-<!-- 												</ul>	 -->
-<%-- 												</li></c:when> --%>
-<%-- 												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()"> --%>
-<%-- 												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize> --%>
-<!-- 												<ul class="submenu"> -->
-<%-- 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li> --%>
-<%-- 													<li><a href="<c:url value='/logout/page'/>">登出</a></li> --%>
-<!-- 												</ul>	 -->
-<%-- 												</li></c:otherwise> --%>
-												
-<%-- 											</c:choose> --%>
-		<c:choose>
+											<c:choose>
 												<c:when test="${pageContext['request'].userPrincipal == null}"><li class="login">
 												<a href="loginSystem/loginPage"> <i class="ti-user">												
 												</i> Sign in or Register</a>
@@ -141,26 +109,14 @@
 													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
 												</ul>	
 												</li></c:when>
-												<c:when test="${userAccount != null}">
-												<li class="login"><sec:authorize access="isAuthenticated()">
+												<c:otherwise><li class="login"><sec:authorize access="isAuthenticated()">
 												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
 												<ul class="submenu">
 													<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
 													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
 												</ul>	
-												</li>
-												</c:when>
-												<c:when test="${comDetail != null}">
-												<li class="login"><sec:authorize access="isAuthenticated()">
-												<a href="personalPage/edit"><i class="ti-user"></i><sec:authentication   property="principal.username" /> </a></sec:authorize>
-												<ul class="submenu">
-													<li><a href="<c:url value='/Company/company'/>">餐廳頁面</a></li>
-													<li><a href="<c:url value='/logout/page'/>">登出</a></li>
-												</ul>	
-												</li>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>					
+												</li></c:otherwise>
+												
 											</c:choose>
 										</ul>
 									</nav>
@@ -181,10 +137,9 @@
 	
 		<!-- JS here -->
 		<!-- All JS Custom Plugins Link Here here -->
-		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
 		<script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
-<!-- 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script> -->
-
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
 		<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 		<!-- Jquery Mobile Menu -->
@@ -200,14 +155,14 @@
 		<script src="<c:url value='/scripts/jquery.sticky.js' />"></script>
 		<script src="<c:url value='/scripts/contact.js' />"></script>
 		<script src="<c:url value='/scripts/jquery.form.js' />"></script>
-		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script>
-		<script src="<c:url value='/scripts/mail-script.js' />"></script>
+<%-- 		<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
+<%-- 		<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
 		<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script>
 		<!-- Jquery Plugins, main Jquery -->
 		<script src="<c:url value='/scripts/plugins.js' />"></script>
  		<script src="<c:url value='/scripts/main.js' />"></script> 
  		 <!-- DataTables v1.10.16 -->
-		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
+		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 	
 </body>
 </html>
