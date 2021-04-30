@@ -63,6 +63,7 @@ public class Restaurant {
 
 	// 新增修改時取圖的屬性
 	@Transient
+	@JsonIgnore
 	MultipartFile productImage;
 
 	@Column(name = "longitude")
@@ -83,13 +84,16 @@ public class Restaurant {
 
 	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@JsonIgnore
 	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
 
 	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@JsonIgnore
 	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@JsonIgnore
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
 
 	/** 一家餐廳有多個營業時間 **/
