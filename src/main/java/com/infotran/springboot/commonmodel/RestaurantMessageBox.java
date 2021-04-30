@@ -1,6 +1,6 @@
 package com.infotran.springboot.commonmodel;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*留言表*/
 

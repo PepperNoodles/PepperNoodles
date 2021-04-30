@@ -28,7 +28,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
@@ -111,8 +110,8 @@ public class Restaurant {
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
-	@JsonIgnore
-	List<Product> products =new ArrayList<Product>();
+	@JsonIgnore 
+	private List<Product> products =new ArrayList<Product>();
 
 
 

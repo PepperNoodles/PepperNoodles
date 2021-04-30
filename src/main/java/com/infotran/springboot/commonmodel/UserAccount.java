@@ -27,8 +27,6 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.websocket.model.SocketMessage;
 
 
@@ -41,14 +39,14 @@ public class UserAccount implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
-	@JsonIgnore
+//	@JsonIgnore //忽略資料表的資料
 	private Integer accountId;
 
 	@Column(name = "acoount_index")
 	private String accountIndex;
 
 	@Column(name = "password")
-	@JsonIgnore
+//	@JsonIgnore
 	private String password;
 	
 	@Column(name = "enabled")
