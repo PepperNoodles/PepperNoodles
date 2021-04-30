@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Component
@@ -33,6 +35,7 @@ public class EventList {
 	private String content;
 	
 	@Column(name = "EventPicture")
+	@JsonIgnore
 	private Blob eventPicture;
 	
 	@Column(name = "EventStartDate")
