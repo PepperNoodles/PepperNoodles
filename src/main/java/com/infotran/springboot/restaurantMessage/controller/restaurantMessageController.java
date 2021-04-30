@@ -49,7 +49,7 @@ public class restaurantMessageController {
 	
 	@GetMapping("/restauranMenu/{restId}")
 	@ResponseBody
-	public List<MenuDetail> restauranMenu(@PathVariable("restId") Integer restId , Model model) {
+	public List<MenuDetail> restauranMenu(@PathVariable("restId") Integer restId) {
 		Restaurant restaurant = restaurantService.findById(restId);
 		List <MenuDetail> menus =  menuDetailService.getByRest(restaurant);
 		System.out.println("幾張菜單:"+menus.size());
@@ -59,9 +59,9 @@ public class restaurantMessageController {
 	//新增留言
 	@PostMapping(value="/addRestaurantMessage")
 	@ResponseBody 
-	public RestaurantMessageBox addNewCommentAjax(@RequestPart("restMessageInfo")String toString,
-//												  @RequestBody RestaurantMessageBox RestaurantMessageBox,
-									              RestaurantMessageBox restMessage , Model model) throws Exception{
+	public RestaurantMessageBox addRestaurantMessage(@RequestPart("restMessageInfo")String toString,
+//												     @RequestBody RestaurantMessageBox RestaurantMessageBox,
+									                 RestaurantMessageBox restMessage) throws Exception{
 		System.out.println(toString);
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
 		String accountIndex = dispatch.get("netizenAccount");
@@ -80,10 +80,12 @@ public class restaurantMessageController {
 	
 	@GetMapping("/allRestaurantMessage/{restId}")
 	@ResponseBody
-	public List<RestaurantMessageBox> allRestaurantMessage(@PathVariable("restId") Integer restId , Model model) {
+	public List<RestaurantMessageBox> allRestaurantMessage(@PathVariable("restId") Integer restId) {
+		System.out.println("找餐廳ID="+restId+"的留言");
 		Restaurant restaurant = restaurantService.findById(restId);
 		List <RestaurantMessageBox> restaurantMessageBox =  restaurantMessageBoxService.getByRest(restaurant);
 		System.out.println("幾則留言:"+restaurantMessageBox.size());
+//		System.out.println(restaurantMessageBox.get(0).getTime());
 		return restaurantMessageBox;
 	}
 }

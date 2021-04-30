@@ -39,16 +39,68 @@ $(document).ready(function(){
 		}
 		else{
 			addMessageBox();
+			findAllMessage();
+			$("#message").val('');
 			text="";
 		}
 		$("#messageResult").html(text);
 	});
+	
+	
+	$("#allMessageDiv").on('click','.replyMessage',function(){
+		//被回覆的留言ID
+// 		$("").nextSibling()
+		$("#a~div").toggle();
+		
+	});
+	//回覆留言
+	$("#allMessageDiv").on('click','.getReplyMessage',function(){
+		var messageIdValue = $(this).next().text();
+		var text=$(this).prev().val();
+		userId="${userAccount.accountId}";
+		userIndex="${userAccount.accountIndex}";
+		console.log(userId);
+		console.log(messageIdValue);
+// 		alert(messageIdValue);
+// 		alert(text);
+		data ={
+				"replyNetizenAccountId": userId,
+				"replyMessageId": messageIdValue,
+				"replyText": text,
+				"time": null,
+				"likeAmount": null,
+				"userAccount": "${userAccount}",
+				"restaurantMessageBox": null
+			  };
+
+		$.ajax({
+			type:"POST",
+			url: "/PepperNoodles/addReplyRestaurantMessage",
+			contentType:'application/json;charset=UTF-8',
+			dataType: "text",
+			data:JSON.stringify(data),
+			success: function (response) {
+				console.log("新增回覆訊息回傳:"+response);
+			},
+	        error: function (thrownError) {
+				console.log(thrownError);
+			}
+		});
+		
+		
+		
+	});
+	
 
 });
+	
+
+
+
 
 //新增訊息
 function addMessageBox(){
-	let urls  = "/PepperNoodles/addRestaurantMessage";
+	urls  = "/PepperNoodles/addRestaurantMessage";
 	console.log(urls);
 	data = new FormData();
 	data.append('restMessageInfo',new Blob([JSON.stringify( {"netizenAccount":"${userAccount.accountIndex}",
@@ -64,7 +116,8 @@ function addMessageBox(){
 		cache: false,  //不做快取
 		async : true,
 		success: function (response) {
-			console.log(response);
+			console.log("新增訊息回傳:"+response);
+			findAllMessage();
 		},
         error: function (thrownError) {
 			console.log(thrownError);
@@ -107,6 +160,7 @@ $.ajax({
 		}
 	});
 }
+
 //ajax取留言
 function findAllMessage(){
 	let urls="Http://localhost:433";
@@ -120,33 +174,44 @@ $.ajax({
 		success: function (response) {
 			console.log(response);
 			allMessage = JSON.parse(response);
-// 			console.log(menu[0].menuDetailId);
-			console.log(allMessage.length);
+// 			console.log(allMessage.length);
 			var text="";
+			var allMessageLength = allMessage.length
 			if(allMessage.length == 0){
 				text="目前沒有留言";
 			}
 			else{
 				for(i=0;i<allMessage.length;i++){
-					text +="<div class='container row mt-1'>";
-					text +="<div class='col-2 d-flex justify-content-start'>";
-					text +="<img src='<c:url value='/userProtrait/"+allMessage[i].userAccount.userAccountDetail.useretailId+"'/>' height=100px>";
-					text +="</div>";
-					text +="<div class='col-10'>";
-					text +="<div class='d-flex justify-content-between font-weight-light'>";
-					text +="<span class='d-flex'>BBB</span>";
-					text +="<span>2021/01/01<button class='ml-1 text-dark'><i class='fas fa-thumbs-up'></i></button>";
-					text +="<button class='text-dark'><i class='fas fa-reply'></i></button></span>";
-					text +="</div>";
-					text +="<p>QQQ QAQ </p>";
-					text +="</div>";
+					var formatDate   =(new Date(allMessage[i].time)).toString().substring( 4 , 21 );
+	        		var formatString = formatDate.split(' ');
+	        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '&emsp;' +formatString[3];
+					text +="<div class='container border-left border-info mr-3'>";
+					text +="	<div class='media' id='a'>";
+					text +="		<img class='rounded border mr-3' src=' <c:url value='/userProtrait/"+allMessage[i].userAccount.userAccountDetail.useretailId+"'/> ' width='125px' height=125px>";
+					text +="		<div class='media-body'>";
+					text +="			<h5 class='mt-0 text-info'>"+allMessage[i].userAccount.userAccountDetail.nickName+"</h5>";
+					text +="			<span class='float-right'>"+formatPrint;
+					text +="				<button class='ml-1 text-dark'><i class='fas fa-thumbs-up'></i></button>";
+					text +="				<button class='text-dark replyMessage' ><i class='fas fa-reply' >回覆</i></button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
+					text +="			</span>";
+					text +="			<p>"+allMessage[i].text+"</p>";
+					text +="		</div>";
+					text +="	</div>";
+					//回覆留言的div
+					text +="	<div class='media  replyInput"+i+"'>";
+// 					text +="	<div style='display:none' class='media replyInput"+i+"'>";
+// 					text +="  		<div class='input-group-append'>";
+					text +="  			<input type='text' size='100%' class='form-control ml-5' placeholder='回覆...'>";
+					text +="			<button class='bg-secondary getReplyMessage' style='height:38px'>reply</button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
+// 					text +="		</div>";
+					text +="	</div>";
 					
 					
-	  					
+					text +="</div>";
+					text +="<hr>";
 				}
 			}
-			console.log(text);
-
+// 			console.log(text);
 			$("#allMessageDiv").html(text);
 		},
 		error: function (thrownError) {
@@ -154,6 +219,11 @@ $.ajax({
 		}
 	});
 }
+
+
+	
+
+
 
 
 </script>
@@ -211,8 +281,8 @@ $.ajax({
 		  <div class="row">
 		  	<div class="col-sm-5 mt-10 ">
 		  		<div class="d-flex align-items-center justify-content-center">
-		  			<figure class="m-3 justify-content-center" style="border: 1px solid #9D9D9D">
-		  				<img class="m-3" width="250px" src="<c:url value="/restpicture/${rest.restaurantId}"/>">
+		  			<figure class="m-3 rounded justify-content-center" style="border: 1px solid #9D9D9D">
+		  				<img class="m-2 rounded" width="250px" src="<c:url value="/restpicture/${rest.restaurantId}"/>">
 <!-- 		  		 		<figcaption class="ml-5"><i>restaurant picture</i></figcaption>	  		 -->
 		  			</figure>
 		  		</div>
@@ -267,46 +337,43 @@ $.ajax({
 			</div>
 					  
 		  <div class="d-flex container mt-1">	
+		  		<br>
 		  		<div class="col-2 d-flex justify-content-start">		  				
 		  				 <h5 class="ml-4">新增評論</h5>
 		  		</div>
+		  		<br>
 		  </div>	
-		  <div class="row d-flex align-items-center justify-content-center ml-5">				
-		  		<div class="container row mt-1"> 			
-		  			<div class="col-3 d-flex justify-content-start">		  				
-		  				<img src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> " height=100px>
-		  			</div>
-		  			<div class="col-9">
-		  				<div class="row">
-<!-- 		  					<div class="col-8"> -->
-		  						<textarea rows="5" cols="60" id="message" placeholder='分享你的用餐經驗吧....' ></textarea>			
-		  							<button class=" text--dark bg-secondary" id="addMessage">送出</button>
-<!-- 		  					</div> -->
-		  				</div>
-		  						<br>
-		  						<span id="messageResult">&nbsp;</span>
-		  			</div>
-		  		</div>
-		  	</div>
+		  	
+		  	 <div class="row">
+		  	 	<div class="container  p-8">
+		  	 		<div class="media mx-5">
+			  	 		<img class="rounded border" src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> "style="margin-top: 3px" width="125px" height=125px>
+		  	 			<textarea class="form-control" rows="5" cols="60" id="message" placeholder='分享你的用餐經驗吧....' ></textarea>
+		  	 			<button class="bg-secondary" id="addMessage" style="height:134px">送出</button>
+		  	 		</div>
+		  	 		<div>
+		  	 		</div>
+		  	 	</div>
+		  	 </div>
 		  	<hr>
 		  	
-		  	<div class="row d-flex align-items-center justify-content-center ml-5" id="allMessageDiv">
-		  	<!-- one comment  -->
-		  		<div class="container row mt-1"> 			
-		  			<div class="col-2 d-flex justify-content-start">		  				
-		  				<img src="https://bootdey.com/img/Content/avatar/avatar1.png" height=100px>		 	
-		  			</div>
-		  			<div class="col-10">	
-		  				<div class="d-flex justify-content-between font-weight-light">
-		  					<span class="d-flex">BBB</span>
-		  				    <span>2021/01/01<button class="ml-1 text-dark"><i class="fas fa-thumbs-up"></i></button>
-		  					<button class="text-dark"><i class="fas fa-reply"></i></button></span>
-		  				</div>
-						<p>QQQ QAQ </p>	 
-		  			</div>			
-		  	  	</div>	
-		  	  <!-- end of one comment  -->		  	 
-		  	  	<!-- if have reply  -->		  	  	
+<!-- 		  	<div class="row d-flex align-items-center justify-content-center ml-5" id="allMessageDiv"> -->
+<!-- 		  	one comment  -->
+<!-- 		  		<div class="container row mt-1"> 			 -->
+<!-- 		  			<div class="col-2 d-flex justify-content-start">		  				 -->
+<!-- 		  				<img src="https://bootdey.com/img/Content/avatar/avatar1.png" height=100px>		 	 -->
+<!-- 		  			</div> -->
+<!-- 		  			<div class="col-10">	 -->
+<!-- 		  				<div class="d-flex justify-content-between font-weight-light"> -->
+<!-- 		  					<span class="d-flex">BBB</span> -->
+<!-- 		  				    <span>2021/01/01<button class="ml-1 text-dark"><i class="fas fa-thumbs-up"></i></button> -->
+<!-- 		  					<button class="text-dark"><i class="fas fa-reply"></i></button></span> -->
+<!-- 		  				</div> -->
+<!-- 						<p>QQQ QAQ </p>	  -->
+<!-- 		  			</div>			 -->
+<!-- 		  	  	</div>	 -->
+<!-- 		  	  -------end of one comment------- 		  	  -->
+<!-- 		  	  	if have reply 		  	  	 -->
 <!-- 				  	  <div class="container row"> -->
 <!-- 				  				<div class="col-2"> -->
 <!-- 				  				</div> -->
@@ -318,11 +385,33 @@ $.ajax({
 <!-- 				  					<p>I am reply</p> -->
 <!-- 				  				</div> -->
 <!-- 				  	   </div>	  				  		 -->
-				   <!-- end of one reply -->		
-				<hr>
-		    </div>
-		 	
-		 	
+<!-- 				   end of one reply		 -->
+<!-- 				<hr> -->
+<!-- 		    </div> -->
+
+		 	<div class="row d-flex align-items-center justify-content-center mx-5" id="allMessageDiv">
+		 		<div class="container border-left border-info mr-3">
+		 			<div class="media">
+			 			<img class="rounded border mr-3" src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> " width="125px" height=125px>
+			 			<div class="media-body">
+			 				 <h5 class="mt-0 text-info">BBB</h5>
+			 				 <span class="float-right">2021/01/01
+			 				 	<button class="ml-1 text-dark"><i class="fas fa-thumbs-up"></i></button>
+		  					 	<button class="text-dark"><i class="fas fa-reply"></i></button>
+		  					 </span>
+		 				     <p>QQQ QAQ</p>
+				 			<div class="media mt-3">
+				 				<img src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
+				 				<div class="media-body">
+        							<h5 class="mt-0">Media heading</h5>
+        							<p>QQQ QAQ</p>
+      							</div>
+			 				</div>
+			 			</div>
+		 			</div>
+		 		</div>
+		 		<hr>
+		 	</div>
 		 	
 		  
 		</div>
