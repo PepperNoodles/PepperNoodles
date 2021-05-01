@@ -126,12 +126,10 @@ table a{
 			<!--左邊的分隔用-->
 			<div class="d-flex" >
 				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
-						<i class="fas fa-home"></i>Home</a> 
+					<a class="nav-link active" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="true">
+						<i class="fas fa-file-alt"></i>關於我</a> 
 					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
 						<i class="fas fa-users"></i>好友</a> 
-					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false">
-						<i class="fas fa-file-alt"></i>關於我</a>
 					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
 						<i class="fas fa-comments"></i>留言區</a>
 					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
@@ -140,9 +138,10 @@ table a{
 						<i class="fas fa-file-alt"></i>查詢訂單</a>
 
 				</div>
+					
 				<div class="tab-content" id="v-pills-tabContent col-9">
-					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-						<h2>基本資料</h2>
+					<div class="tab-pane fade show active" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
+						<h2>關於我</h2>
 						<table border='1'  class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid #F0F0F0 1px;border-radius:6px;-moz-border-radius:6px;'>
 						<tr>
 						<td><span id="accountIndex">email:</span></td><td><span > ${userAccount.accountIndex}</span><button   style="color: black;display:none ">確認</button></td ></tr>
@@ -223,10 +222,7 @@ table a{
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel"
-						aria-labelledby="v-pills-aboutUser-tab">
-						<h2>關於我</h2>
-					</div>
+
 					<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel"
 						aria-labelledby="v-pills-userMessage-tab">
 
@@ -245,7 +241,7 @@ table a{
 
 						<!-- 						使用Ajax的方法 -->
 						<div class="container-fluid"
-							style="overflow: scroll; height: 400px;" id="commentsForUser"
+							style="  overflow-y: auto; height:400px;" id="commentsForUser"
 							class="table"></div>
 
 
@@ -677,7 +673,37 @@ table a{
 				        		
 				        		var formatDate   =(new Date(result[i].time)).toString().substring( 4 , 21 );
 				        		var formatString = formatDate.split(' ');
-				        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+				        		
+				        		if(formatString[0]=="Jan"){
+				        			formatString[0] = "1";
+				        		}else if(formatString[0]=="Feb"){
+				        			formatString[0] = "2";
+				        		}else if(formatString[0]=="Mar"){
+				        			formatString[0] = "3";
+				        		}else if(formatString[0]=="Apr"){
+				        			formatString[0] = "4";
+				        		}else if(formatString[0]=="May"){
+				        			formatString[0] = "5";
+
+				        		}else if(formatString[0]=="Jun"){
+				        			formatString[0] = "6";
+				        		}else if(formatString[0]=="Jul"){
+				        			formatString[0] = "7";
+				        		}else if(formatString[0]=="Aug"){
+				        			formatString[0] = "8";
+				        		}else if(formatString[0]=="Sep"){
+				        			formatString[0] = "9";
+				        		}else if(formatString[0]=="Oct"){
+				        			formatString[0] = "10";
+				        		}else if(formatString[0]=="Nov"){
+				        			formatString[0] = "11";
+				        		}else if(formatString[0]=="Dec"){
+				        			formatString[0] = "12";
+				        		}else {
+				        			formatString[0] = "";
+				        		}
+// 				        		formatString[2] + '<br>' +
+				        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
 				        		
 				        		segment +="<table border='1' class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid blue 1px;border-radius:6px;-moz-border-radius:6px;'>";//<th>留言數</th><th>留言者</th><th>時間</th><th>讚數</th><th>留言內容</th><th>讚</th><th>編輯</th>";
 				        		segment += "<tr class='table-primary'><td>留言" + (i+1) + "</td><td>" ;
@@ -696,7 +722,38 @@ table a{
 									
 										var formatDate   =(new Date(result[i].replyMessageBoxes[j].time)).toString().substring( 4 , 21 );
 						        		var formatString = formatDate.split(' ');
-						        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+						        		
+						        		if(formatString[0]=="Jan"){
+						        			formatString[0] = "1";
+						        		}else if(formatString[0]=="Feb"){
+						        			formatString[0] = "2";
+						        		}else if(formatString[0]=="Mar"){
+						        			formatString[0] = "3";
+						        		}else if(formatString[0]=="Apr"){
+						        			formatString[0] = "4";
+						        		}else if(formatString[0]=="May"){
+						        			formatString[0] = "5";
+
+						        		}else if(formatString[0]=="Jun"){
+						        			formatString[0] = "6";
+						        		}else if(formatString[0]=="Jul"){
+						        			formatString[0] = "7";
+						        		}else if(formatString[0]=="Aug"){
+						        			formatString[0] = "8";
+						        		}else if(formatString[0]=="Sep"){
+						        			formatString[0] = "9";
+						        		}else if(formatString[0]=="Oct"){
+						        			formatString[0] = "10";
+						        		}else if(formatString[0]=="Nov"){
+						        			formatString[0] = "11";
+						        		}else if(formatString[0]=="Dec"){
+						        			formatString[0] = "12";
+						        		}else {
+						        			formatString[0] = "";
+						        		}
+// 						        		formatString[2] + '<br>' +
+						        		
+						        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
 									
 										segment += "<tr class='table-info'><td>回覆" + (j+1) + "</td><td>" ;
 						        		segment += result[i].replyMessageBoxes[j].netizenAccount.userAccountDetail.nickName  + "</td><td>" ;
@@ -712,10 +769,11 @@ table a{
 					        			segment +="<button class='genric-btn default circle arrow' type='button' style='color: black' name  ='deleteComment" + i + j +	"' >delete</button><span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></tr>";
 									}
 				        		segment += "</table><span class='mt-0 pt-0'><input placeholder='我想吃....'></input><button type='button' class='genric-btn default circle arrow' style='color: black' name='addreply"  + i +"' >reply</button><span  style='display:none'>" + result[i].userMessageId + "</span></span><br><br><br>";
-				        		;
+				        		
 // 				        		segment +="<button data-toggle='modal' data-target='#exampleModal' type='button' style='color: black' name  ='updateComment" + i +"' >更新主要留言</button><span  style='display:none'>" + result[i].text + "</span><span  style='display:none'>" + result[i].time + "</span><span  style='display:none'>" + result[i].likeAmount + "</span><br><br><hr>";
 				        	
 				        	}
+
 			        		commentsForUser.innerHTML = segment;
 				        	
 				        },
@@ -725,6 +783,18 @@ table a{
 				        }
 					});
 						}
+						
+						//留言滑到底的時候顯示
+						  $("#commentsForUser").scroll(function(){
+							    var h = $(this).height();//div可视区域的高度
+							    var sh = $(this)[0].scrollHeight;//滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点
+							    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
+							    if(h+st>=sh){
+							    //上面的代码是判断滚动条滑到底部的代码
+							      //alert("滑到底部了");
+							      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
+							    }
+							  })
 						
 						
 						//新增留言(usermain頁面的 useraccount 之後會抓預設的值)
