@@ -55,7 +55,7 @@ public class UserDetail {
 	
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "userAccountDetail",fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "userAccountDetail"/*,fetch = FetchType.LAZY*/)
 	private UserAccount userAccount;
 	
 	public UserDetail() {

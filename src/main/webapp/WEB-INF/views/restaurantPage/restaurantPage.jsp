@@ -48,28 +48,24 @@ $(document).ready(function(){
 	
 	
 	$("#allMessageDiv").on('click','.replyMessage',function(){
-		//被回覆的留言ID
-// 		$("").nextSibling()
 		$("#a~div").toggle();
-		
 	});
+	
 	//回覆留言
 	$("#allMessageDiv").on('click','.getReplyMessage',function(){
 		var messageIdValue = $(this).next().text();
 		var text=$(this).prev().val();
 		userId="${userAccount.accountId}";
 		userIndex="${userAccount.accountIndex}";
-		console.log(userId);
-		console.log(messageIdValue);
-// 		alert(messageIdValue);
-// 		alert(text);
+		console.log("回覆留言的人ID:"+userId);
+		console.log("被回覆的留言的ID:"+messageIdValue);
 		data ={
 				"replyNetizenAccountId": userId,
 				"replyMessageId": messageIdValue,
 				"replyText": text,
 				"time": null,
 				"likeAmount": null,
-				"userAccount": "${userAccount}",
+				"userAccount": null,
 				"restaurantMessageBox": null
 			  };
 
@@ -81,16 +77,13 @@ $(document).ready(function(){
 			data:JSON.stringify(data),
 			success: function (response) {
 				console.log("新增回覆訊息回傳:"+response);
+				findAllMessage();
 			},
 	        error: function (thrownError) {
 				console.log(thrownError);
 			}
 		});
-		
-		
-		
 	});
-	
 
 });
 	
@@ -174,7 +167,7 @@ $.ajax({
 		success: function (response) {
 			console.log(response);
 			allMessage = JSON.parse(response);
-// 			console.log(allMessage.length);
+			console.log(allMessage.length);
 			var text="";
 			var allMessageLength = allMessage.length
 			if(allMessage.length == 0){
@@ -185,30 +178,54 @@ $.ajax({
 					var formatDate   =(new Date(allMessage[i].time)).toString().substring( 4 , 21 );
 	        		var formatString = formatDate.split(' ');
 	        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '&emsp;' +formatString[3];
-					text +="<div class='container border-left border-info mr-3'>";
-					text +="	<div class='media' id='a'>";
-					text +="		<img class='rounded border mr-3' src=' <c:url value='/userProtrait/"+allMessage[i].userAccount.userAccountDetail.useretailId+"'/> ' width='125px' height=125px>";
-					text +="		<div class='media-body'>";
-					text +="			<h5 class='mt-0 text-info'>"+allMessage[i].userAccount.userAccountDetail.nickName+"</h5>";
-					text +="			<span class='float-right'>"+formatPrint;
-					text +="				<button class='ml-1 text-dark'><i class='fas fa-thumbs-up'></i></button>";
-					text +="				<button class='text-dark replyMessage' ><i class='fas fa-reply' >回覆</i></button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
-					text +="			</span>";
-					text +="			<p>"+allMessage[i].text+"</p>";
+	        		
+	        		text +="<div class='row d-flex align-items-center justify-content-center mx-5'>";
+					text +="	<div class='container border-left border-info mr-3'>";
+					text +="		<div class='media'>";
+					text +="			<img class='rounded border mr-3' src=' <c:url value='/userProtrait/"+allMessage[i].userAccount.userAccountDetail.useretailId+"'/> ' width='125px' height=125px>";
+					text +="			<div class='media-body'>";
+					text +="				<h5 class='mt-0 text-info'>"+allMessage[i].userAccount.userAccountDetail.nickName+"</h5>";
+					text +="				<span class='float-right'>"+formatPrint;
+					text +="					<button class='ml-1 text-dark'><i class='fas fa-thumbs-up'></i></button>";
+					text +="					<button class='text-dark replyMessage' data-toggle='collapse' data-target='#collapseExample"+i+"' ><i class='fas fa-reply' >回覆</i></button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
+					text +="				</span>";
+					text +="				<br>";
+					text +="				<div class='ml-5'>"+allMessage[i].text+"</div>";
+					text +="			</div>";
 					text +="		</div>";
-					text +="	</div>";
 					//回覆留言的div
-					text +="	<div class='media  replyInput"+i+"'>";
-// 					text +="	<div style='display:none' class='media replyInput"+i+"'>";
-// 					text +="  		<div class='input-group-append'>";
+					text +="		<div class='media collapse ml-5' id='collapseExample"+i+"'>";
 					text +="  			<input type='text' size='100%' class='form-control ml-5' placeholder='回覆...'>";
 					text +="			<button class='bg-secondary getReplyMessage' style='height:38px'>reply</button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
-// 					text +="		</div>";
+					text +="		</div>";
 					text +="	</div>";
-					
-					
 					text +="</div>";
-					text +="<hr>";
+					text +="<br>";
+					text +="<div class='row flex-row-reverse mx-5' id='reply'>";
+					for( j =0; j<allMessage[i].restaurantMessage.length; j++){
+						var formatReplyDate   =(new Date(allMessage[i].restaurantMessage[j].time)).toString().substring( 4 , 21 );
+	        			var formatReplyString = formatDate.split(' ');
+	        			var formatReplyPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '&emsp;' +formatString[3];
+	        		text +="	<div class='media mr-5 border-left border-danger mt-1' style='width: 80%'>";
+						if(allMessage[i].restaurantMessage[j].userAccount.userAccountDetail == null){
+					text +="		<img class='rounded border mr-3'  src=' <c:url value='/getComPicture/"+allMessage[i].restaurantMessage[j].userAccount.companyDetail.companyDetailId+"'/> ' width='125px' height=125px>";
+					text +="		<div class='media-body'>";
+					text +="			<h5 class='mt-0'>"+allMessage[i].restaurantMessage[j].userAccount.companyDetail.realname+"</h5>";
+						}
+						else{
+					text +="		<img class='rounded border mr-3'  src=' <c:url value='/userProtrait/"+allMessage[i].restaurantMessage[j].userAccount.userAccountDetail.useretailId+"'/> ' width='125px' height=125px>";
+					text +="		<div class='media-body'>";
+					text +="			<h5 class='mt-0'>"+allMessage[i].restaurantMessage[j].userAccount.userAccountDetail.nickName+"</h5>";
+						}
+					text +="				<span class='float-right'>"+formatReplyPrint;
+					text +="				</span>";
+					text +="				<br>";
+					text +="			<div class='ml-5'>"+allMessage[i].restaurantMessage[j].replyText+"</div>";
+					text +="		</div>";
+					text +="	</div>";
+					}
+					text +="	<hr>";
+					text +="</div>";
 				}
 			}
 // 			console.log(text);
@@ -219,8 +236,6 @@ $.ajax({
 		}
 	});
 }
-
-
 	
 
 
@@ -326,7 +341,7 @@ $.ajax({
 		  	</div>		  
 		  </div>
 		  
-		  
+
 		 	<div class="container">
 				<button class="text-primary" id="toggleMenu">顯示菜單</button>
 				<div class="" id="menuArea">
@@ -356,40 +371,9 @@ $.ajax({
 		  	 	</div>
 		  	 </div>
 		  	<hr>
-		  	
-<!-- 		  	<div class="row d-flex align-items-center justify-content-center ml-5" id="allMessageDiv"> -->
-<!-- 		  	one comment  -->
-<!-- 		  		<div class="container row mt-1"> 			 -->
-<!-- 		  			<div class="col-2 d-flex justify-content-start">		  				 -->
-<!-- 		  				<img src="https://bootdey.com/img/Content/avatar/avatar1.png" height=100px>		 	 -->
-<!-- 		  			</div> -->
-<!-- 		  			<div class="col-10">	 -->
-<!-- 		  				<div class="d-flex justify-content-between font-weight-light"> -->
-<!-- 		  					<span class="d-flex">BBB</span> -->
-<!-- 		  				    <span>2021/01/01<button class="ml-1 text-dark"><i class="fas fa-thumbs-up"></i></button> -->
-<!-- 		  					<button class="text-dark"><i class="fas fa-reply"></i></button></span> -->
-<!-- 		  				</div> -->
-<!-- 						<p>QQQ QAQ </p>	  -->
-<!-- 		  			</div>			 -->
-<!-- 		  	  	</div>	 -->
-<!-- 		  	  -------end of one comment------- 		  	  -->
-<!-- 		  	  	if have reply 		  	  	 -->
-<!-- 				  	  <div class="container row"> -->
-<!-- 				  				<div class="col-2"> -->
-<!-- 				  				</div> -->
-<!-- 				  				<div class="col-1 d-flex justify-content-start">		  				 -->
-<!-- 				  					<img src="https://bootdey.com/img/Content/user_2.jpg" height=70px> -->
-				  							 	
-<!-- 				  				</div> -->
-<!-- 				  				<div class="col-9">					  					 -->
-<!-- 				  					<p>I am reply</p> -->
-<!-- 				  				</div> -->
-<!-- 				  	   </div>	  				  		 -->
-<!-- 				   end of one reply		 -->
-<!-- 				<hr> -->
-<!-- 		    </div> -->
-
-		 	<div class="row d-flex align-items-center justify-content-center mx-5" id="allMessageDiv">
+		<div  id="allMessageDiv">
+	<!-- 大迴圈結束 -->
+		 	<div class="row d-flex align-items-center justify-content-center mx-5">
 		 		<div class="container border-left border-info mr-3">
 		 			<div class="media">
 			 			<img class="rounded border mr-3" src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> " width="125px" height=125px>
@@ -397,28 +381,49 @@ $.ajax({
 			 				 <h5 class="mt-0 text-info">BBB</h5>
 			 				 <span class="float-right">2021/01/01
 			 				 	<button class="ml-1 text-dark"><i class="fas fa-thumbs-up"></i></button>
-		  					 	<button class="text-dark"><i class="fas fa-reply"></i></button>
+		  					 	<button class="text-dark" data-toggle="collapse" data-target="#collapseExample"><i class="fas fa-reply"></i></button>
 		  					 </span>
 		 				     <p>QQQ QAQ</p>
-				 			<div class="media mt-3">
-				 				<img src="https://bootdey.com/img/Content/user_2.jpg" alt="...">
-				 				<div class="media-body">
-        							<h5 class="mt-0">Media heading</h5>
-        							<p>QQQ QAQ</p>
-      							</div>
-			 				</div>
-			 			</div>
-		 			</div>
+		 				</div>  
+		 			</div>	     
+		 		<!-- 回覆留言的div -->	   
+		 			<div class='media collapse ml-5' id='collapseExample'>
+		 				<input type='text' size='100%' class='form-control ml-5' placeholder='回覆...'>
+		 				<button class='bg-secondary getReplyMessage' style='height:38px'>reply</button>
+		 			</div>  
 		 		</div>
-		 		<hr>
 		 	</div>
-		 	
-		  
+		 	<br>
+		 	<div class="row flex-row-reverse mx-5 ">
+		 	<!-- 內迴圈 -->
+				<div class='media mr-5 border-left border-danger mt-1' style='width: 80%'>
+					<img  class="rounded border mr-3" src='https://bootdey.com/img/Content/user_2.jpg'  width="125px" height=125px>
+					<div class='media-body'>
+        				<h5 class='mt-0'>Media heading</h5>
+        				<p>QQQ QAQ</p>
+      				</div>
+		 		</div>
+		 	<!-- 內迴圈結束 -->
+		 	<hr>
+		 	</div>	
+		 	<!-- 大迴圈結束 -->
 		</div>
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		 	
+		</div>
+		 <hr>
 	</div>
-
-
 </div>
+
+
 
 	<%@include file="../includePage/includeFooter.jsp" %>
 	<!-- Scroll Up -->

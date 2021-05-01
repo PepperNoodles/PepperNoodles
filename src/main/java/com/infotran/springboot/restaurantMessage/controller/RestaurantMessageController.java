@@ -1,16 +1,22 @@
 package com.infotran.springboot.restaurantMessage.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,26 +25,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.MenuDetail;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.RestaurantMessageBox;
+import com.infotran.springboot.commonmodel.RestaurantReplyMessage;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.companysystem.service.impl.MenuDetailServiceImpl;
 import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
 import com.infotran.springboot.restaurantMessage.service.impl.RestaurantMessageBoxServiceImpl;
+import com.infotran.springboot.restaurantMessage.service.impl.RestaurantReplyMessageServiceImpl;
+import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
 
 @Controller
-public class restaurantMessageController {
+public class RestaurantMessageController {
 	
 	@Autowired
 	private RestaurantService restaurantService;
-	
 	@Autowired
 	private MenuDetailServiceImpl menuDetailService;
-	
 	@Autowired
 	private RestaurantMessageBoxServiceImpl restaurantMessageBoxService;
-	
 	@Autowired
 	private UserAccountServiceImpl userAccountService;
+	@Autowired
+	private UserSysServiceImpl uSysServiceImpl;
+	@Autowired
+	private RestaurantReplyMessageServiceImpl restaurantReplyMessageService;
+	
+	
 	
 	@GetMapping("/restPage/{restId}")
 	public String restaurantMessage(@PathVariable("restId") Integer restId , Model model) {
@@ -83,9 +95,45 @@ public class restaurantMessageController {
 	public List<RestaurantMessageBox> allRestaurantMessage(@PathVariable("restId") Integer restId) {
 		System.out.println("找餐廳ID="+restId+"的留言");
 		Restaurant restaurant = restaurantService.findById(restId);
-		List <RestaurantMessageBox> restaurantMessageBox =  restaurantMessageBoxService.getByRest(restaurant);
-		System.out.println("幾則留言:"+restaurantMessageBox.size());
-//		System.out.println(restaurantMessageBox.get(0).getTime());
-		return restaurantMessageBox;
+		List <RestaurantMessageBox> restMessageBox =  restaurantMessageBoxService.getByRest(restaurant);
+		Hibernate.initialize(restMessageBox);
+		List<RestaurantMessageBox> restaurantMessageBoxNull = new ArrayList<RestaurantMessageBox>();
+		System.out.println("---------------");
+        System.out.println("restaurantMessageBoxNull:"+ restaurantMessageBoxNull);
+		System.out.println("幾則留言:"+restMessageBox.size());
+		for(int i =0; i<restMessageBox.size(); i++) {
+			restaurantMessageBoxNull.add(restMessageBox.get(i));
+	        System.out.println("塞進去後:"+ restaurantMessageBoxNull);
+		}
+		return restaurantMessageBoxNull;
+	}
+	
+	//回覆留言
+	@PostMapping(value="/addReplyRestaurantMessage", consumes= {"application/json"})
+	@ResponseBody
+	public RestaurantReplyMessage addReplyRestaurantMessage(@RequestBody RestaurantReplyMessage restReplyMessage,
+														  	RestaurantReplyMessage replyMessage) {
+		//設定留言者
+		UserAccount userAccount = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		replyMessage.setUserAccount(userAccount);
+		//要被留言的留言
+		RestaurantMessageBox restMessage = restaurantMessageBoxService.findById(restReplyMessage.getReplyMessageId());
+		replyMessage.setRestaurantMessageBox(restMessage);
+		replyMessage.setReplyText(restReplyMessage.getReplyText());
+		replyMessage.setTime(new Date());
+		RestaurantReplyMessage newReply = restaurantReplyMessageService.insert(replyMessage);
+		return newReply;
+	}
+	
+	
+	public String returnNamePath() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String currentUserName = authentication.getName();
+		    System.out.println(currentUserName);
+		    return currentUserName;
+			}
+		System.out.println("no logging user currently!!");
+			return null;
 	}
 }

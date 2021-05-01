@@ -87,7 +87,8 @@ public class Restaurant {
 	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
 	@JsonIgnore
-	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+	private List<RestaurantMessageBox> restaurantMessageBox = new ArrayList<RestaurantMessageBox>();
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
@@ -103,7 +104,7 @@ public class Restaurant {
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
 	
-
+	
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
@@ -233,11 +234,12 @@ public class Restaurant {
 		Menus = menus;
 	}
 
-	public Set<RestaurantMessageBox> getRestaurantMessageBox() {
+
+	public List<RestaurantMessageBox> getRestaurantMessageBox() {
 		return restaurantMessageBox;
 	}
 
-	public void setRestaurantMessageBox(Set<RestaurantMessageBox> restaurantMessageBox) {
+	public void setRestaurantMessageBox(List<RestaurantMessageBox> restaurantMessageBox) {
 		this.restaurantMessageBox = restaurantMessageBox;
 	}
 
