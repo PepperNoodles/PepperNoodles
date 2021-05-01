@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.infotran.springboot.commonmodel.UserAccount;
@@ -45,13 +46,25 @@ public class RearUserAccountController {
 		return "ok";
 	}
 	
-	@GetMapping("/rearUserAccountQueryById.controller")
+	@GetMapping(value="/rearUserAccountQueryById.controller")
 	public UserAccount processUserAccountQueryById(@RequestParam(name = "account_id") Integer id) {
-		return rearUserAccountService.finById(id);
+		System.out.println("1");
+		UserAccount enabledStatus = rearUserAccountService.finById(id);		
+		//判斷enable改變狀態
+		if(enabledStatus.isEnabled()) {
+			enabledStatus.setEnabled(false);
+		}
+		else {
+			enabledStatus.setEnabled(true);
+		}
+		rearUserAccountService.insert(enabledStatus);
+		System.out.println(enabledStatus.isEnabled());		
+		return enabledStatus;
+		
 	}
 	
 	@GetMapping("/rearUserAccountUpdate.controller")
-	public UserAccount processUserAccountUpdate(@RequestParam UserAccount userAccount) {		
+	public UserAccount processUserAccountUpdate(@RequestParam UserAccount userAccount) {
 		return rearUserAccountService.update(userAccount);
 	}
 	

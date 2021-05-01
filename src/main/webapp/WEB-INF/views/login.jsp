@@ -108,7 +108,7 @@
 			//一鍵新增-企業
 			$("#company").click(function(){
 				$("#password").val('123!Q123');
-				$("#username").val('oden@gmail.com');
+				$("#username").val('ting0420a@gmail.com');
 			});
 			//一鍵新增-會員
 			$("#user").click(function(){

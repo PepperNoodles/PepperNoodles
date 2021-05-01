@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>一般會員資料</title>
+<title>企業會員資料</title>
 
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
@@ -24,7 +24,7 @@
 		border-radius: 6px;
 		-moz-border-radius: 6px;
 	}
-	
+
 </style>
 </head>
 
@@ -40,7 +40,7 @@
 		<!-- content -->
 		
 <!-- 			<div class="tab-pane fade" id="v-pills-userList" role="tabpanel" aria-labelledby="v-pills-userList-tab"> -->
-							<h2>一般會員資料</h2>
+							<h2>企業會員資料</h2>
 							<table  id="userlist" class="display">
 								<thead>
 									<tr>
@@ -48,8 +48,8 @@
 										<th>帳號</th>
 										<th>密碼</th>
 										<th>enable</th>
-<!-- 										<th>編輯</th> -->
-<!-- 										<th>刪除</th> -->
+<!-- 										<th>企業編號</th> -->
+										
 <!-- 										<th>accountdetail</th> -->
 <!-- 										<th>roles</th> -->
 <!-- 										<th>code</th> -->
@@ -95,6 +95,7 @@
 				    	{ "data": "accountIndex"  },
 		                { "data": "password"  },		               
 		                { "data": "enabled" }
+// 		                { "data": "companyDetailId"  }
 		               
 		                
 				    ],
@@ -160,7 +161,7 @@
 //              window.open("http://localhost:433/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');
            	},
             error: function (response) {
-             console.log("一般會員沒出去");
+             console.log("企業會員沒出去");
             } 
 	        });
 	        

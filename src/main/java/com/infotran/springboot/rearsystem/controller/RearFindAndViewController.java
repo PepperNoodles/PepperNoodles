@@ -25,10 +25,22 @@ public class RearFindAndViewController {
 		return "rearStage/userAccountRearTest";
 	}
 	
+	//一般會員
 	@GetMapping("/rearNormalUser")
 	public String rearNormalUser() {
 		return "rearStage/userAccountRearNormalUser";
 	}
+	//企業會員
+	@GetMapping("/userAccountRearCompanyUser")
+	public String rearCompanyUser() {
+		return "rearStage/userAccountRearCompanyUser";
+	}
+	//後台首頁
+	@GetMapping("/indexRearStage1")
+	public String index() {
+		return "rearStage/indexRearStage1";
+	}
+	
 
 	@GetMapping("/rearStage")
 	public String chrisRearStage() {
