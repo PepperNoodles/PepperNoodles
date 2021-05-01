@@ -49,6 +49,7 @@ public class Product {
 	private String description;
 	
 	@Column(name="ProductImage")
+	@JsonIgnore
 	private Blob productImage;
 	
 	@Column(name="Quantity")

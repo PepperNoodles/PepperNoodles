@@ -229,6 +229,15 @@ public class OrderList implements Delayed{
 		return unit.convert(cancelTime.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 	}
 
+	@Override
+	public String toString() {
+		return "OrderList [orderId=" + orderId + ", uuid=" + uuid + ", orderCreatedDate=" + orderCreatedDate
+				+ ", fkUserAccountId=" + fkUserAccountId + ", user=" + user + ", receiveName=" + receiveName
+				+ ", receivePhone=" + receivePhone + ", receiveAddress=" + receiveAddress + ", paidDate=" + paidDate
+				+ ", status=" + status + ", totalCost=" + totalCost + ", odetails=" + odetails + ", cancelTime="
+				+ cancelTime + "]";
+	}
+
 	
 	
 }
