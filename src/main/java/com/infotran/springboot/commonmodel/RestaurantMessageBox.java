@@ -1,8 +1,8 @@
 package com.infotran.springboot.commonmodel;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,11 +67,18 @@ public class RestaurantMessageBox {
 	private Restaurant restaurant;
 	
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantMessageBox" , cascade = CascadeType.ALL)
-	@JsonIgnore
-	Set<RestaurantReplyMessage> restaurantMessage = new LinkedHashSet<RestaurantReplyMessage>();
+//	@JsonIgnore
+	List<RestaurantReplyMessage> restaurantMessage = new ArrayList<RestaurantReplyMessage>();
 	
 
-	
+
+	public List<RestaurantReplyMessage> getRestaurantMessage() {
+		return restaurantMessage;
+	}
+
+	public void setRestaurantMessage(List<RestaurantReplyMessage> restaurantMessage) {
+		this.restaurantMessage = restaurantMessage;
+	}
 
 	public Integer getRestaurantMessageId() {
 		return restaurantMessageId;

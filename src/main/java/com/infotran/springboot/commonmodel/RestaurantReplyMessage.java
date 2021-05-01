@@ -26,7 +26,6 @@ public class RestaurantReplyMessage {
 	private Integer restaurantReplyId;
 	
 	@Transient
-	@JsonIgnore
 	@Column(name = "fk_ReplyNetizen_Account_id")
 	private Integer replyNetizenAccountId;
 	
@@ -44,7 +43,7 @@ public class RestaurantReplyMessage {
 	private Integer likeAmount;
 	
 	/** 一個會員可以有多個回覆留言 **/
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "fk_ReplyNetizen_Account_id")
 	private UserAccount userAccount;

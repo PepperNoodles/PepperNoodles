@@ -77,7 +77,7 @@ public class UserAccount implements Serializable{
 	private UserDetail userAccountDetail;
 
 	// =============================================================
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_companyDetail_id")
 	private CompanyDetail companyDetail;
@@ -210,7 +210,7 @@ public class UserAccount implements Serializable{
   	/** 1個User可以有多個餐廳 **/
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
-	Set<Restaurant> Restaurant = new LinkedHashSet<Restaurant>();
+	Set<Restaurant> restaurant = new LinkedHashSet<Restaurant>();
 	
 	/** 1個User可以對多個餐廳留言表留言 **/
 	@JsonIgnore
@@ -243,13 +243,13 @@ public class UserAccount implements Serializable{
 	
 
 	public Set<Restaurant> getRestaurant() {
-		return Restaurant;
+		return restaurant;
 	}
 
 
 
 	public void setRestaurant(Set<Restaurant> restaurant) {
-		Restaurant = restaurant;
+		this.restaurant = restaurant;
 	}
 
 
