@@ -82,7 +82,7 @@ public class Restaurant {
 
 	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
-	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
+	List<MenuDetail> Menus = new ArrayList<MenuDetail>();
 
 	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
@@ -226,14 +226,15 @@ public class Restaurant {
 		this.userAccount = userAccount;
 	}
 
-	public Set<MenuDetail> getMenus() {
+
+
+	public List<MenuDetail> getMenus() {
 		return Menus;
 	}
 
-	public void setMenus(Set<MenuDetail> menus) {
+	public void setMenus(List<MenuDetail> menus) {
 		Menus = menus;
 	}
-
 
 	public List<RestaurantMessageBox> getRestaurantMessageBox() {
 		return restaurantMessageBox;
