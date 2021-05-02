@@ -84,12 +84,13 @@ public class Restaurant {
 	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
 	@JsonIgnore
-	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
+	List<MenuDetail> Menus = new ArrayList<MenuDetail>();
 
 	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
 	@JsonIgnore
-	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+	private List<RestaurantMessageBox> restaurantMessageBox = new ArrayList<RestaurantMessageBox>();
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -106,7 +107,7 @@ public class Restaurant {
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
 	
-
+	
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
@@ -228,19 +229,21 @@ public class Restaurant {
 		this.userAccount = userAccount;
 	}
 
-	public Set<MenuDetail> getMenus() {
+
+
+	public List<MenuDetail> getMenus() {
 		return Menus;
 	}
 
-	public void setMenus(Set<MenuDetail> menus) {
+	public void setMenus(List<MenuDetail> menus) {
 		Menus = menus;
 	}
 
-	public Set<RestaurantMessageBox> getRestaurantMessageBox() {
+	public List<RestaurantMessageBox> getRestaurantMessageBox() {
 		return restaurantMessageBox;
 	}
 
-	public void setRestaurantMessageBox(Set<RestaurantMessageBox> restaurantMessageBox) {
+	public void setRestaurantMessageBox(List<RestaurantMessageBox> restaurantMessageBox) {
 		this.restaurantMessageBox = restaurantMessageBox;
 	}
 

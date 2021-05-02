@@ -13,6 +13,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Component
 @Table(name = "restaurantReplyMessage")
@@ -41,11 +43,13 @@ public class RestaurantReplyMessage {
 	private Integer likeAmount;
 	
 	/** 一個會員可以有多個回覆留言 **/
+//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "fk_ReplyNetizen_Account_id")
 	private UserAccount userAccount;
 	
 	/** 被回覆的那則留言 **/
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "fk_replyMessage_id")
 	private RestaurantMessageBox restaurantMessageBox;
