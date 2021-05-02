@@ -189,6 +189,54 @@
 				hasErrorCheckEmail = false;
 			}
 		}
+		
+		//圖形驗證碼驗證
+// 		$(window).on('load','button[id^="resetVcode"]',function(e){
+// 	        			e.preventDefault;
+// 		});
+		var graphicVCode = document.getElementById("graphicVCode");
+		var checkVCodeInput = document.getElementById("checkVCodeInput");
+		var GverifyCodeFromServer = "" ;
+		graphicVCode.onblur = function(){
+				$.ajax({
+					method:"GET", 
+					url: "/PepperNoodles/getNewestRnstrFromSession",
+					dataType: "text",
+
+					success: function (result) {
+						alert(result)
+						GverifyCodeFromServer=result;
+						alert(GverifyCodeFromServer)
+						
+						
+									var graphicVCodeVal = document.getElementById("graphicVCode").value;
+			if (graphicVCodeVal.length == "") {
+				graphicVCode.style.border = "2px solid red";
+				checkVCodeInput.innerHTML = "<font color='red' >Please Enter</font>";
+// 				hasErrorCheckEmail = false;
+			} else if (GverifyCodeFromServer == graphicVCodeVal) {
+							alert(graphicVCodeVal);
+							graphicVCode.style.border = "2px solid green";
+				checkVCodeInput.innerHTML = "<font color='green' >Correct</font>";
+// 				hasErrorCheckEmail = true;
+			} else {
+				graphicVCode.style.border = "2px solid red";
+				checkVCodeInput.innerHTML = "<font color='red' >Verify Code is Wrong</font>";
+// 				hasErrorCheckEmail = false;
+			}
+
+					},
+					error: function (thrownError) {
+						console.log(thrownError);
+					}
+					
+				});
+			
+			
+			
+
+		}
+	
 
 		//密碼驗證
 		var sendPwd = document.getElementById("userPwd");
@@ -861,6 +909,14 @@
 														class="form-control" type="text" name="verifycode"
 														id="verifycode" placeholder="請輸入驗證碼..."> <span
 														id="cheqMailResult"></span><br>
+														
+											<div class="form-group">
+													<button type="reset" onclick="refresh()" id="resetVcode"
+														style="margin-top: 10px; margin-bottom: 10px">重新產出驗證碼</button>
+													<label><img name="imgValidate" src = "<c:url value='/generateVCode'/>"  ><small id=""></small></label> <input
+														class="form-control" type="text" name="graphicVCode"
+														id="graphicVCode" placeholder="請輸入圖形驗證碼..."> <span
+														id="checkVCodeInput"> </span><br>
 												</div>
 											</div>
 											<div class="col-sm-10 col-sm-offset-1">
@@ -885,7 +941,7 @@
 												</div>
 												<div class="pull-right" style="margin-right: 20%;"
 													id="checkAccountStatus">
-													<div style="width: 150px; height: 30px;"></div>
+													<div style="width: 20px; height: 10px;"></div>
 												</div>
 												<div class="pull-left">
 													<input type='button'
@@ -1269,6 +1325,10 @@
 						}
 					});
 		});
+		
+	    function refresh() {
+	        imgValidate.src="<c:url value='/generateVCode'/>" + "?id="+Math.random();
+	    }
 	</script>
 
 </body>
