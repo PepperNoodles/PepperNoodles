@@ -56,8 +56,8 @@ public class RestSearchController {
 		ObjectMapper mapper = new ObjectMapper();
 		if(searchTag.equals("NULL")) {			
 			List<Restaurant> rests = restSearchService.findRestaurantNameLike(searchName);
-			System.out.println(searchName);
-			System.out.println("======="+rests.size());
+//			System.out.println(searchName);
+//			System.out.println("======="+rests.size());
 			try {
 				String jsonString = mapper.writeValueAsString(rests);
 				model.addAttribute("rests",jsonString);
