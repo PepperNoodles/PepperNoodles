@@ -56,7 +56,7 @@ public class RestaurantMessageController {
 	public String restaurantMessage(@PathVariable("restId") Integer restId , Model model) {
 		Restaurant rest = restaurantService.findById(restId);
 		model.addAttribute("rest", rest);
-		return "restaurantPage/restaurantPage";
+		return "restaurantPage/companyRestaurantPage";
 	}
 	
 	@GetMapping("/restauranMenu/{restId}")
@@ -107,6 +107,31 @@ public class RestaurantMessageController {
 		}
 		return restaurantMessageBoxNull;
 	}
+
+	//刪除留言deleteMessage
+	@GetMapping("/deleteMessage/{messageId}")
+	@ResponseBody
+	public List<RestaurantMessageBox> deleteMessage(@PathVariable("messageId") Integer MessageId) {
+		System.out.println("找刪除的留言ID="+MessageId);
+		RestaurantMessageBox restMessage = restaurantMessageBoxService.findById(MessageId);
+		restMessage.setRestaurant(null);
+		restMessage.setUserAccount(null);
+//		restMessage.setRestaurantMessage(null);
+		restaurantMessageBoxService.delete(MessageId);
+		return null;
+	}
+	
+	//刪除回覆留言deleteMessage
+		@GetMapping("/deleteReplyMessage/{replyMessageId}")
+		@ResponseBody
+		public List<RestaurantMessageBox> deleteReplyMessage(@PathVariable("replyMessageId") Integer replyMessageId) {
+			System.out.println("找刪除的回覆留言ID="+replyMessageId);
+			RestaurantReplyMessage replyMessage = restaurantReplyMessageService.findById(replyMessageId);
+			replyMessage.setRestaurantMessageBox(null);
+			replyMessage.setUserAccount(null);
+			restaurantReplyMessageService.delete(replyMessageId);
+			return null;
+		}
 	
 	//回覆留言
 	@PostMapping(value="/addReplyRestaurantMessage", consumes= {"application/json"})
@@ -125,7 +150,6 @@ public class RestaurantMessageController {
 		return newReply;
 	}
 	
-	
 	public String returnNamePath() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -136,4 +160,5 @@ public class RestaurantMessageController {
 		System.out.println("no logging user currently!!");
 			return null;
 	}
+	
 }
