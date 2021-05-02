@@ -26,12 +26,12 @@
 <%-- <link rel="stylesheet" href="<c:url value='/css/slick.css' />"> --%>
 <%-- <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />"> --%>
 <style>
-body {
-    background-color:#ECF5FF;
-}
-.nav {
-    background-color:#ECF5FF;
-}
+/* body { */
+/*     background-color:#ECF5FF; */
+/* } */
+/* .nav { */
+/*     background-color:#ECF5FF; */
+/* } */
 .nav-item a:hover{
 	background-color:#BEBEBE;
 }
@@ -44,7 +44,7 @@ h3{
 	text-align: center;
 }
 
-.nav-item .restEvent , .nav-item .messageByRest{
+.nav-item .restEvent , .nav-item .messageByRest , .nav-item .restMenu{
  	display:none; 
 }
 .nav-item .rest {
@@ -65,6 +65,31 @@ h3{
   <li class="nav-item">
     <a class="nav-link leftBar"  href="<c:url value='/showAllrestByComId/${comDetail.companyDetailId}' />">我的餐廳</a>
   </li>
+  
+  <li class="nav-item">
+  <ul>
+  		<li>
+		    <a class="nav-link leftBar addMenu" href="#">新增菜單</a>
+  		</li>
+  	</ul>
+    <ul class="list-group restMenu">
+	  <c:choose>
+	  	<c:when test="${empty rests}">
+	  		<li class="nav-item">
+    			<a class="nav-link leftBar rest">尚未有餐廳</a>
+  			</li>
+	  	</c:when>
+	  	<c:otherwise>
+	  		<c:forEach var='rests' items='${rests}'>
+  				<li class="nav-item">
+    				<a class="nav-link leftBar rest" href="<c:url value='/rest/menu/${rests.restaurantId}' />"> → ${rests.restaurantName}</a>
+  				</li>	
+	  		</c:forEach>
+	  	</c:otherwise>
+	  </c:choose>
+	</ul>
+  </li>
+  
 
   <li class="nav-item">
   	<ul>
@@ -91,7 +116,11 @@ h3{
   </li>
   
   <li class="nav-item">
-    <a class="nav-link leftBar restMessage" href="#">餐廳評論</a>
+  <ul>
+  		<li>
+		    <a class="nav-link leftBar restMessage" href="#">餐廳評論</a>
+  		</li>
+  	</ul>
     <ul class="list-group messageByRest">
 	  <c:choose>
 	  	<c:when test="${empty rests}">
@@ -117,16 +146,21 @@ h3{
 <script>
 $(document).ready(function(){
 	
+	$(".addMenu").click(function(){
+		$(".restEvent").slideUp("slow");
+		$(".messageByRest").slideUp("slow");
+		$(".restMenu").slideToggle("slow");
+	});
 	$(".addRestEvent").click(function(){
-// 		$(".nav-item").find(".rest").slideToggle();
+		$(".restMenu").slideUp("slow");
 		$(".messageByRest").slideUp("slow");
 		$(".restEvent").slideToggle("slow");
 	});
 	$(".restMessage").click(function(){
+		$(".restMenu").slideUp("slow");
 		$(".restEvent").slideUp("slow");
 		$(".messageByRest").slideToggle("slow");
 	});
-	
 	
 	
 });

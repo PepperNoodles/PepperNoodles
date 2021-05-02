@@ -1,24 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix='form' uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ViewRestaurant</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- site.webmanifest run offline -->
-<!-- <link rel="manifest" href="site.webmanifest"> -->
-<!-- favicon的圖-每頁都要加 -->
+<title>修改店家基本資料</title>
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
-<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
-
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-
 <script>
 $(document).ready(function(){
 	findMenus();
@@ -337,7 +330,7 @@ $.ajax({
 					text +="		</div>";
 					text +="	</div>";
 					}
-					text +="	<hr>";
+// 					text +="	<br>";
 					text +="</div>";
 				}
 			}
@@ -350,8 +343,11 @@ $.ajax({
 	});
 }
 </script>
-
 <style>
+.nopadding{
+	padding:0 !important;
+	margin: 0 !important;
+}
 img{
 	margin: 10px;
 }
@@ -380,8 +376,20 @@ hr {
 </head>
 <body>
 <%@include file="../includePage/includeNav.jsp" %>
-<!-- 讀取圖案 -->
-<div id="preloader-active">
+	
+<div class="container-fluid">
+	<div class="row">
+    <!-- 左邊的Bar -->
+    	<div class="col-lg-2 nopadding">
+      		<br>
+        	<div class="list-group">
+        		<%@include file="../company/left.jsp" %>
+        	</div>
+        </div>
+        
+		<div class="col-lg-10 nopadding " >
+			<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
+				<div id="preloader-active">
 	<div class="preloader d-flex align-items-center justify-content-center">
 		<div class="preloader-inner position-relative">
 			<div class="preloader-circle" style="background-color: rgb(102, 102, 102);"></div>
@@ -521,15 +529,19 @@ hr {
 		<br>
 	</div>
 </div>
+			
+			
 
-
-
-<%@include file="../includePage/includeFooter.jsp" %>
-<!-- Scroll Up -->
-<div id="back-top">
-	<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+			</div>
+		<!--  big container -->
+		</div>
+	</div>
 </div>
-
+<%@include file="../includePage/includeFooter.jsp" %>
+	<!-- Scroll Up -->
+	<div id="back-top">
+		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+	</div>
 <script>
 	$(window).on('load', function() {
 		$("#toggleMenu").click(function() {
@@ -549,6 +561,5 @@ hr {
 			
 	});
 </script>
-
 </body>
 </html>

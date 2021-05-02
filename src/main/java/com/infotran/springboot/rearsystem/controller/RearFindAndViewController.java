@@ -48,4 +48,11 @@ public class RearFindAndViewController {
 	}
 	
 	
+	//餐廳用的
+
+	@GetMapping("/rest")
+	public String rearRestaurant() {
+		return "rearStage/rearStageRestaurant";
+	}
+	
 }

@@ -1,8 +1,8 @@
 package com.infotran.springboot.commonmodel;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,18 +57,28 @@ public class RestaurantMessageBox {
 	
 	/** 1個User可以對多個餐廳留言表留言 **/
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="fk_netizen_account_id")
+	@JoinColumn(name="fk_netizen_account_id") 
+//	@JsonIgnore  //前端要用留言找到userAccount所以不可用這個
 	private UserAccount userAccount;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_restaurant_id")
+	@JsonIgnore
 	private Restaurant restaurant;
 	
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantMessageBox" , cascade = CascadeType.ALL)
-	Set<RestaurantReplyMessage> restaurantMessage = new LinkedHashSet<RestaurantReplyMessage>();
+//	@JsonIgnore
+	List<RestaurantReplyMessage> restaurantMessage = new ArrayList<RestaurantReplyMessage>();
 	
 
-	
+
+	public List<RestaurantReplyMessage> getRestaurantMessage() {
+		return restaurantMessage;
+	}
+
+	public void setRestaurantMessage(List<RestaurantReplyMessage> restaurantMessage) {
+		this.restaurantMessage = restaurantMessage;
+	}
 
 	public Integer getRestaurantMessageId() {
 		return restaurantMessageId;

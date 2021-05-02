@@ -28,7 +28,7 @@ public class RestPageController {
 	@GetMapping("/viewRest/{restId}")
 	public String findRestaurnatPage(@PathVariable(name="restId") Integer restId,Model model) {
 		Restaurant rest = restaurantService.findById(restId);
-		Set<MenuDetail> menus = rest.getMenus();
+		List<MenuDetail> menus = rest.getMenus();
 		Set<FoodTag> tags = rest.getFoodTag();
 		List<Integer> menuIdCollect = new ArrayList<>();
 		List<String> tagCollect = new ArrayList<>();
