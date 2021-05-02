@@ -140,6 +140,16 @@ public class UserSysController {
 		imageFolder = new File(imageRootDirectory, "images");
 		if ( !imageFolder.exists() )
 			imageFolder.mkdirs();
+		
+	}
+	
+	//登入後預設的主頁面
+	@GetMapping(value="/welcome")
+	public String welcome(Model m) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		m.addAttribute("userAccount", user);
+		
+		return "index";
 	}
 
 	public String returnNamePath() {
@@ -736,12 +746,10 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public String updateDisLikeComment( @RequestParam(value = "id") Integer msnID) {
 		String message = null;
-		
 		MessageBox msn = msnServiceImpl.findById(msnID);
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 
 		System.out.println("=======================================要被刪刪刪刪刪刪刪的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
-		
 		Integer delete =likeServiceImpl.delete(user, msn);
 		if(delete==1) {
 			msn.setLikeAmount(msn.getLikeAmount()-1);
@@ -766,7 +774,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		for(int i=0;i<msnLikes.size();i++) {
 			preToSend.add(msnLikes.get(i).getFkUAId());
 		}
-				
 		return preToSend;
 	}
 	

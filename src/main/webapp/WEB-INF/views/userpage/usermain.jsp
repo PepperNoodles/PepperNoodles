@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="../includePage/includeNav.jsp"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,33 @@
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<script type="text/javascript">
+
+	$(window).on('load', function() {
+			
+		let urlss="${pageContext.request.contextPath}/";
+		urlss+="<c:url value='userLoggin/getName'/>";
+		console.log(urlss);
+		
+		$.ajax({
+			type: "GET",
+			url: urlss,	
+// 			async:true
+			dataType: "text",
+			success: function (response) {
+				console.log(response);	
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+			
+		});
+		
+	});
+
+</script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
@@ -323,7 +351,9 @@ table a{
 
 
 	<script>
-			$(document).ready(function () {
+			$(document).ready(function () {			
+				
+
 				
 					var Table = $("#orderlist").DataTable({
 						 language: {
@@ -1310,6 +1340,24 @@ table a{
 
 	<script>
  		$(window).on('load', function() {
+ 			
+// 			let urlss="${pageContext.request.contextPath}/";
+// 			urlss+="<c:url value='userLoggin/getName'/>";
+// 			console.log(urlss);
+			
+// 			$.ajax({
+// 				type: "GET",
+// 				url: urlss,				
+// 				dataType: "text",
+// 				success: function (response) {
+// 					console.log(response);	
+// 				},
+// 				error: function (thrownError) {
+// 					console.log(thrownError);
+// 				}
+				
+// 			});
+ 		
 			
 // 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");

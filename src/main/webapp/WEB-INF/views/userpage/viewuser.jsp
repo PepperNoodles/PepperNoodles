@@ -29,6 +29,32 @@
 	<script src="<c:url value='/scripts/popper.min.js' />"></script>
 	<script type="text/javascript"
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+	
+	<script type="text/javascript">
+
+	$(window).on('load', function() {
+			
+		let urlss="${pageContext.request.contextPath}/";
+		urlss+="<c:url value='userLoggin/getName'/>";
+		console.log(urlss);
+		
+		$.ajax({
+			type: "GET",
+			url: urlss,	
+// 			async:true
+			dataType: "text",
+			success: function (response) {
+				console.log(response);	
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+			
+		});
+		
+	});
+
+</script>
 
 <style>
 	#body{
