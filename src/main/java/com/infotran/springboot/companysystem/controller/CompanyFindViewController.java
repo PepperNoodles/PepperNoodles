@@ -117,5 +117,4 @@ public class CompanyFindViewController {
 		return "company/left";
 	}
 	
-
 }
