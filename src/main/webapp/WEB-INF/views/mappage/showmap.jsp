@@ -144,6 +144,10 @@ tr a:hover{
 	<script>
 	
 	$(document).ready(function() {
+		let currentCenterLong=0;
+		let currentCenterLat=0;
+		
+		
 		var loca=[{"restaurantId":1,"restaurantName":"餵我早餐","totalScore":null,"rankAmount":null,"restaurantAddress":"106台北市大安區信義路四段26號","restaurantContact":"0912345678","restaurantWebsite":"www.google.com","restaurantPhoto":null,"productImage":null,"longitude":"121.5442443","latitude":"25.0332834","userAccountId":null,"userAccount":null,"restaurantMessageBox":[],"eventList":[],"foodTag":[{"foodTagIid":5,"foodTagName":"hamburger","forums":[],"foodTagUsers":[],"product":[]},{"foodTagIid":3,"foodTagName":"pizza","forums":[],"foodTagUsers":[],"product":[]}],"products":[],"menus":[],"restaurantBusinHour":[]}];
 		//let loca=[{"restaurantId":1,"restaurantName":"餵我早餐","totalScore":null,"rankAmount":null,"restaurantAddress":"106台北市大安區信義路四段26號","restaurantContact":"0912345678","restaurantWebsite":"www.google.com","restaurantPhoto":null,"productImage":null,"longitude":"121.5442443","latitude":"25.0332834","userAccountId":null,"userAccount":null,"restaurantMessageBox":[],"eventList":[],"foodTag":[{"foodTagIid":5,"foodTagName":"hamburger","forums":[],"foodTagUsers":[],"product":[]},{"foodTagIid":3,"foodTagName":"pizza","forums":[],"foodTagUsers":[],"product":[]}],"products":[],"menus":[],"restaurantBusinHour":[]},{"restaurantId":2,"restaurantName":"小李子清粥小菜","totalScore":null,"rankAmount":null,"restaurantAddress":"106台北市大安區復興南路二段142之1號","restaurantContact":"0912345678","restaurantWebsite":"www.google.com","restaurantPhoto":null,"productImage":null,"longitude":"121.5431836","latitude":"25.0288295","userAccountId":null,"userAccount":null,"restaurantMessageBox":[],"eventList":[],"foodTag":[{"foodTagIid":6,"foodTagName":"springRoll","forums":[],"foodTagUsers":[],"product":[]}],"products":[],"menus":[],"restaurantBusinHour":[]},{"restaurantId":3,"restaurantName":"泰讚泰式料理","totalScore":null,"rankAmount":null,"restaurantAddress":"100台北市中正區信義路二段285號","restaurantContact":"0912345678","restaurantWebsite":"www.google.com","restaurantPhoto":null,"productImage":null,"longitude":"121.531794","latitude":"25.033419","userAccountId":null,"userAccount":null,"restaurantMessageBox":[],"eventList":[],"foodTag":[{"foodTagIid":3,"foodTagName":"pizza","forums":[],"foodTagUsers":[],"product":[]},{"foodTagIid":1,"foodTagName":"curry","forums":[],"foodTagUsers":[],"product":[]}],"products":[],"menus":[],"restaurantBusinHour":[]}];
 		
@@ -289,13 +293,13 @@ tr a:hover{
 	        		 urls+="&searchTag="+tag;
 	        		 
 	        	}else if(keyWord&&dist!="NULL"){
-	        		 console.log("keydisttttt");
+	        		 //console.log("keydisttttt");
 	        		 urls+="/restSearchandDist";
 	        		 urls+="?restName="+keyWord;
 	        		 urls+="&searchDist="+dist;	        		
 	        		
 	        	}else if(keyWord&&tag!="NULL"){
-	        		console.log("keytaggggg");
+	        		//console.log("keytaggggg");
 	        		 urls+="/restSearchandTag";
 	        		 urls+="?restName="+keyWord;	        		
 	        		 urls+="&searchTag="+tag;
@@ -311,7 +315,7 @@ tr a:hover{
 	        	
 	        	if(tag!="NULL"&&dist!="NULL"){
 	        		
-	        	    console.log("tagdistttttt");
+	        	    //console.log("tagdistttttt");
 	        	    urls+="/restSearchandDistandTag";	        		
 	        		urls+="?searchDist="+dist;
 	        		urls+="&searchTag="+tag;
@@ -319,7 +323,7 @@ tr a:hover{
 	        	    
 	        	}else{
 	        		
-	        		console.log("taggggggggg");
+	        		//console.log("taggggggggg");
 	        		 urls+="/restSearchandTag";	        		        		
 	        		 urls+="?searchTag="+tag;
 	        		 urls+="&restName=";
@@ -327,14 +331,14 @@ tr a:hover{
 	        	
 	        }else if(dist!="NULL"){
 	        	
-	        	console.log("distttt");
+	        	//console.log("distttt");
 	        	 urls+="/restSearchandDist";        		 
         		 urls+="?searchDist="+dist;	  
         		 urls+="&restName=";
 	        	
 	        }else{
 	        	
-	        	console.log("000000");
+	        	//console.log("000000");
 	        	urls+="/restName";        		
 	        }
 	        
@@ -373,49 +377,72 @@ tr a:hover{
 			if(selectedMarker){
 				map.removeLayer(selectedMarker)
 			}
+			
+			
 		  let lat = e.latlng.lat; // 緯度
 		  let lng = e.latlng.lng; // 經度
 		
-
-		  let bound = map.getBounds()
-// 		  popup
-//  		    .setLatLng(e.latlng)		    
-//  		    .setContent("緯度："+lat+"<br/>經度："+lng)
-// 		    .openOn(map);	  
+		  //設定距離多遠在抓
+		  let disLat=Math.abs(lat-currentCenterLat);
+		  let disLong=Math.abs(lng-currentCenterLong);
 		  
-		  map.panTo(e.latlng); 		  
-		  //ajax取地圖		  
-		  let urls="Http://localhost:433";
-		      urls+="<c:url value='/restSearch/restNear' />";
-			  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
-			 // console.log(urls);
-		  $.ajax({
-				type: "GET",
-				url: urls,				
-				dataType: "text",
-				success: function (response) {
-					//console.log(response);
-					loca=[];
-					loca = JSON.parse(response);
-					if(loca.length>0){
-				//		console.log(loca[0].restaurantName);
-				//		console.log(loca.length);
+		  
+		  
+		  //console.log("distance: lat: "+disLat+" long: "+disLong);
+		  if(disLat > 0.0045 ||  disLong> 0.0055 || (disLat+disLong)>0.007){			 
+			  currentCenterLat=lat;
+			  currentCenterLong=lng;
+			  
+			  
+			  let bound = map.getBounds()
+//	 		  popup
+//	  		    .setLatLng(e.latlng)		    
+//	  		    .setContent("緯度："+lat+"<br/>經度："+lng)
+//	 		    .openOn(map);	  
+			  
+			  map.panTo(e.latlng); 		  
+			  //ajax取地圖		  
+			  let urls="Http://localhost:433";
+			      urls+="<c:url value='/restSearch/restNear' />";
+				  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
+				 // console.log(urls);
+			  $.ajax({
+					type: "GET",
+					url: urls,				
+					dataType: "text",
+					success: function (response) {
+						//console.log(response);
+						loca=[];
+						loca = JSON.parse(response);
+						if(loca.length>0){
+					//		console.log(loca[0].restaurantName);
+					//		console.log(loca.length);
+							
+							createSideMemo(loca,1);
+							addMapMarker(loca);
+							let page =Math.ceil(loca.length/6);
+							buttonGenerater(page);
+						}else{
+							let memo=document.getElementById("memoBoard");
+							memo.innerHTML="";
+							$("#pageButton").html("");
+						}
 						
-						createSideMemo(loca,1);
-						addMapMarker(loca);
-						let page =Math.ceil(loca.length/6);
-						buttonGenerater(page);
-					}else{
-						let memo=document.getElementById("memoBoard");
-						memo.innerHTML="";
-						$("#pageButton").html("");
+					},
+					error: function (thrownError) {
+						console.log(thrownError);
 					}
-					
-				},
-				error: function (thrownError) {
-					console.log(thrownError);
-				}
-			});
+				});
+			  
+			  
+			  
+			  
+		  }else{
+			  
+			  map.panTo([lat,lng]);
+		  }
+		  
+
 		}
 		//將餐廳物件陣列丟進去,不要亂改位置
 		function addMapMarker(loca){			
@@ -515,7 +542,9 @@ tr a:hover{
 			    let tr2 = document.createElement("tr");
 			    let td2=document.createElement("td");
 			    let restAnchor = document.createElement("a");
+			    
 			    restAnchor.href="#";
+			    
 			    restAnchor.innerHTML=loca[i].restaurantName;
 			    restAnchor.style.color="#0000C6";
 			    td2.appendChild(restAnchor);
@@ -587,7 +616,7 @@ tr a:hover{
 							}	
 							select.appendChild(option);						
 							
-							console.log(tags[i-1]);
+							//console.log(tags[i-1]);
 						}
 						
 						let divSelect = document.getElementById("tagSelect");
