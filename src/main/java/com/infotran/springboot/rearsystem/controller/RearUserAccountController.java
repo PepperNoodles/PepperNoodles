@@ -69,7 +69,7 @@ public class RearUserAccountController {
 	}
 	
 	//找AccountList
-	@GetMapping(value="/user/getAccountList")
+	@GetMapping(value="/rearStage/getAccountList") //如改成/user/getAccountList就要登入會員才會顯示資料
 	public @ResponseBody Map<String,ArrayList<UserAccount>> findUserAccountListByUserName(@ModelAttribute("userAccount")UserAccount user){
 		Map<String,ArrayList<UserAccount>> mapview = new HashMap<String,ArrayList<UserAccount>>();
 		ArrayList<UserAccount>  accountViewList = rearUserAccountService.findAccountList();
