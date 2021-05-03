@@ -47,8 +47,11 @@
 										<th>編號</th>
 										<th>帳號</th>
 										<th>密碼</th>
+										<th>企業編號</th>
 										<th>enable</th>
-<!-- 										<th>企業編號</th> -->
+										<th>編輯</th>
+										
+										
 										
 <!-- 										<th>accountdetail</th> -->
 <!-- 										<th>roles</th> -->
@@ -93,9 +96,12 @@
 				    columns: [	
 				    	{ "data": "accountId"  },
 				    	{ "data": "accountIndex"  },
-		                { "data": "password"  },		               
-		                { "data": "enabled" }
-// 		                { "data": "companyDetailId"  }
+		                { "data": "password"  },
+		                { "data": "companyDetail.companyDetailId"  },
+		                { "data": "enabled" },
+		                { "render":function(data,type,row,meta){
+			                return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
+			              }}
 		               
 		                
 				    ],
@@ -115,18 +121,18 @@
 				
 				$.ajax({
 					method:"GET",	
-					url:"/PepperNoodles/user/getAccountList",
+					url:"/PepperNoodles/rearStage/getCompanyList",
 					contentType: 'application/json; charset=utf-8',
 					dataType:'json',
 			        async : true,
 			        cache: false,
 			        success:function(result){
 			        	console.log("yes123");
-			        	console.log(JSON.stringify(result)); //Map的List物件
-			        	console.log(result.AccountList);
+			        	console.log(JSON.stringify(result)); //Map的List物件	
+			        	console.log(result.CompanyList);
 			        	Table.clear().draw();
-			            Table.rows.add(result.AccountList).draw();
-			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
+			            Table.rows.add(result.CompanyList).draw();
+// 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
 			           
 			        },
 			        error: function (result) {
@@ -141,7 +147,7 @@
 // 	       var status = $(this).parent().prevAll("tr td:eq(3)").text();
 // 	       alert(status)
 	       
-	        var status = $(this).parent().prevAll("tr td:eq(3)").text(); //編號id
+	        var status = $(this).parent().prevAll("tr td:eq(4)").text(); //編號id
 	       // data = new FormData();
 	       // data.append("account_id",new Blob([ JSON.stringify({"account_id" : status})])); //前面對應Controll
 	       // console.log(data);

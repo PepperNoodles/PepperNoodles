@@ -48,7 +48,7 @@
 										<th>帳號</th>
 										<th>密碼</th>
 										<th>enable</th>
-<!-- 										<th>編輯</th> -->
+										<th>編輯</th>
 <!-- 										<th>刪除</th> -->
 <!-- 										<th>accountdetail</th> -->
 <!-- 										<th>roles</th> -->
@@ -94,7 +94,11 @@
 				    	{ "data": "accountId"  },
 				    	{ "data": "accountIndex"  },
 		                { "data": "password"  },		               
-		                { "data": "enabled" }
+		                { "data": "enabled" },
+		                { "data": "" ,
+		                  "render":function(data,type,row,meta){
+		                	  return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
+		                  }}
 		               
 		                
 				    ],
@@ -114,7 +118,7 @@
 				
 				$.ajax({
 					method:"GET",	
-					url:"/PepperNoodles/user/getAccountList",
+					url:"/PepperNoodles/rearStage/getAccountList", //如改成/user/getAccountList就要登入會員才會顯示資料
 					contentType: 'application/json; charset=utf-8',
 					dataType:'json',
 			        async : true,
@@ -125,7 +129,7 @@
 			        	console.log(result.AccountList);
 			        	Table.clear().draw();
 			            Table.rows.add(result.AccountList).draw();
-			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
+// 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
 			           
 			        },
 			        error: function (result) {
