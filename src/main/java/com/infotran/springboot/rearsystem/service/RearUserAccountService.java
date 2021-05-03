@@ -46,9 +46,17 @@ public class RearUserAccountService {
 		return account;
 	}
 	
+//	public ArrayList<UserAccount> findCompanyList(Integer companyDetailId) {
+//		ArrayList<UserAccount> company = rearaccountRepository.findCompanyList(companyDetailId);
+//		return company;
+//	}
 	
 	
-	
+	public ArrayList<UserAccount> findCompanyUserList() {
+		ArrayList<UserAccount> company = rearaccountRepository.findCompanyUserList();
+		return company;
+	}
+		
 	
 
 }
