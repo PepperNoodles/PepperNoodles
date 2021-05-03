@@ -377,10 +377,43 @@
 		$("#checkBeforeSubmit").click(function() {
 			//有營業+時間OK 可送出
 			if ($('#MondayOpenRadio').prop("checked")==true & day1checktime == "true"  ) {
-				console.log('設定成功'); 
-				console.log('day1checktime='+day1checktime); 
-				console.log('inputValue='+$('#open1')[0].value); 
-				$("#MondayOpenform").submit();
+// 				console.log('設定成功'); 
+// 				console.log('day1checktime='+day1checktime); 
+// 				console.log('inputValue='+$('#open1')[0].value); 
+
+				var data = $("#MondayOpenform").serializeArray();
+				console.log(data);
+				var urls = "${pageContext.request.contextPath}/";
+				urls += "<c:url value='Hours/'/>" +${restaurantBusinHour.restaurant.restaurantId};
+// 				urls +="/"+data[0][0].value;
+					
+				
+			
+// 				console.log(data[0][0].value);
+				$.ajax({
+					type : "POST",
+					url : urls,
+					contentType:'application/json; charset=UTF-8',
+					data:data,
+					dataType : "text",
+					success : function(response) {
+						var ShowMondayTimeResult = document
+								.getElementById("ShowMondayTimeResult");
+// 						console.log(ShowMondayTimeResult);
+// 						console.log(${restaurantBusinHour.restaurant.restaurantId});
+// 						var jsontxt = JSON.parse(response);
+						console.log(response);
+
+						
+						ShowMondayTimeResult.innerHTML=response;
+				
+					
+					},
+					error : function(thrownError) {
+						console.log(thrownError);
+					}
+
+				});
 				
 			//不營業
 			} else if($('#MondayCloseRadio').prop("checked")==true){
