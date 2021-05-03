@@ -32,7 +32,7 @@
 	rel="stylesheet" id="bootstrap-css">
 <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <style>
 .form-group input[type="checkbox"] {
 	display: none;
@@ -918,6 +918,8 @@
 														id="graphicVCode" placeholder="請輸入圖形驗證碼..."> <span
 														id="checkVCodeInput"> </span><br>
 												</div>
+														</div>
+												
 											</div>
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group" id=""
@@ -1307,7 +1309,6 @@
 				</div>
 			</div>
 
-		</div>
 	</form>
 	<script>
 		$(function() {
