@@ -55,4 +55,9 @@ public class EventListServiceImpl implements EventListService {
 		return eventList;
 	}
 
+	@Override
+	public List<EventList> getAllEvents() {
+		return eventListlDao.findAll();
+	}
+
 }

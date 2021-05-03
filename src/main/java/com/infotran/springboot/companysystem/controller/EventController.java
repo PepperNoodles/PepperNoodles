@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.EventList;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.UserAccount;
-import com.infotran.springboot.companysystem.service.EventListService;
-import com.infotran.springboot.companysystem.service.RestaurantService;
+import com.infotran.springboot.companysystem.service.impl.EventListServiceImpl;
+import com.infotran.springboot.companysystem.service.impl.RestaurantServiceImpl;
 
 @Controller
 @SessionAttributes(names = {"event","events"})
@@ -52,10 +53,44 @@ public class EventController {
 	ServletContext context;
 	
 	@Autowired
-	EventListService eventListService;
+	private EventListServiceImpl eventListService;
 	
 	@Autowired
-	private RestaurantService restaurantService;
+	private RestaurantServiceImpl restaurantService;
+	
+	
+	@GetMapping("/showEvent")
+	public String blog() {
+		return "event/showEvent";
+	}
+	
+	@GetMapping("/notOverEvent")
+	@ResponseBody
+	public List<EventList> notOverEvent() {
+		List<EventList> allEvent = eventListService.getAllEvents();
+		List<EventList> notOverEvent = new ArrayList<EventList>();
+		for(int i =0; i<allEvent.size(); i++) {
+			Date endTime = allEvent.get(i).getEventEndDate();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String endTimeS = sdf.format(endTime);
+			String currentDate = sdf.format(new Date());
+			System.out.println("活動結束日期:"+endTimeS);
+			System.out.println("現在日期:"+currentDate);
+			
+			String[] evenEndTimeS = endTimeS.split("-");
+			String[] currentDateS = currentDate.split("-");
+			
+			for(int j=0;j<1;j++) {
+				if(Integer.parseInt(evenEndTimeS[0]) >= Integer.parseInt(currentDateS[0]) && 
+				   Integer.parseInt(evenEndTimeS[1]) >= Integer.parseInt(currentDateS[1]) &&
+				   Integer.parseInt(evenEndTimeS[2]) >= Integer.parseInt(currentDateS[2])) {
+					notOverEvent.add(allEvent.get(i));
+				}
+			}
+		}
+		return notOverEvent;
+	}
+	
 	
 	@GetMapping("/event/{restId}")
 	public String event(Model model ,@PathVariable("restId") Integer restId) {
@@ -197,9 +232,6 @@ public class EventController {
 		}
 		return result;
 	}
-	
-	
-	
 	
 	
 }

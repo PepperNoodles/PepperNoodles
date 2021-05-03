@@ -56,7 +56,7 @@ public class RestaurantMessageController {
 	public String restaurantMessage(@PathVariable("restId") Integer restId , Model model) {
 		Restaurant rest = restaurantService.findById(restId);
 		model.addAttribute("rest", rest);
-		return "restaurantPage/companyRestaurantPage";
+		return "restaurantPage/companyRestaurantMessage";
 	}
 	
 	//一般會員連的評論區
