@@ -12,4 +12,5 @@ public interface EventListService {
 	EventList findById(Integer id);
 	
 	List<EventList> getByRest(Restaurant rest);
+	List<EventList> getAllEvents();
 }
