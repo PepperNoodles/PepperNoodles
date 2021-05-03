@@ -150,9 +150,9 @@
 							id="addNewComment">新增留言</button>
 
 						<!-- 						使用Ajax的方法 -->
-						<div class="container-fluid"
+						<div class="table rounded border border-warning container-fluid table"
 							style="overflow-y: auto; height:400px;" id="commentsForViewUser"
-							class="table"></div>
+							></div>
 			</div>	
 			
 			<div class="tab-pane fade" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">

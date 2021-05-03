@@ -25,7 +25,7 @@
 		$.ajax({
 			type: "GET",
 			url: urlss,	
-// 			async:true
+			async:false,
 			dataType: "text",
 			success: function (response) {
 				console.log(response);	
@@ -91,6 +91,15 @@ color: black;
 table a{
 	color:#0000C6;
 }
+
+
+
+/* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
+I've added a few comments on why we're using certain properties
+*/
+
+
+
 
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
@@ -268,9 +277,9 @@ table a{
 							id="addNewComment">新增留言</button>
 
 						<!-- 						使用Ajax的方法 -->
-						<div class="container-fluid"
+						<div class="rounded border border-warning container-fluid table "
 							style="  overflow-y: auto; height:400px;" id="commentsForUser"
-							class="table"></div>
+							></div>
 
 
 						<!--      使用jstl的方法 -->
