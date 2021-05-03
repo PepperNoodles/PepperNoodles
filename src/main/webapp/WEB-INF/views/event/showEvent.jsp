@@ -19,6 +19,7 @@
 <!-- 有她左邊的BAR會變小 -->
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
 <link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
+
 <script>
 $(document).ready(function(){
 	showEvent();
@@ -38,24 +39,26 @@ $.ajax({
 			console.log("未結束的活動有幾筆:"+notOverEvent.length);
 			
 			var text="";
+// 				text +="<div class='container'>";
+// 				text +="	<div class='row ml-2'>";
 			for(i=0;i<notOverEvent.length;i++){
-				text +="<div class='card'>";
-				text +="	<div class='row rowOdd'>";
-				text +="		<div class='col-md-3'>";
-				text +="			<img width='180px' src='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' />";
-				text +="		</div>";
-				text +="		<div class='col-md-9'>";
-				text +="			<div class='card-body'>";
-				text +="				<h5 class='card-title'>"+notOverEvent[i].eventName+"</h5>";
+				
+				text +="		<div class='page col-md-4' style='width: 30rem;'>";
+				text +="			<div class='item'>";
+				text +="				<p> </p>";
+				text +="				<a href='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' >";
+				text +="				<img class'mh-10' width='260px' src='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' />";
+				text +="				</a>";
+				text +="				<p />";
+				text +="				<h4>"+notOverEvent[i].eventName+"</h4>";
+				text +="				<p class='time'>"+notOverEvent[i].eventStartDate+"-"+notOverEvent[i].eventEndDate+"</p>";
+				text +="				<P>"+notOverEvent[i].content+"</P>";
 				text +="			</div>";
 				text +="		</div>";
-				text +="	</div>";
-				text +="</div>";
-	
-				
-				text +="";
-				text +="";
 			}
+// 				text +="	</div>";
+// 				text +="</div>";
+			
 			$("#showNotOver").html(text);
 		},
 		error: function (thrownError) {
@@ -65,50 +68,54 @@ $.ajax({
 }
 </script>
 <style>
-.rowOdd{
-	text-align:left;
-	border-left: 5px solid #00CACA;
-	height: 200px;
+.page{
+	height:450px;
+	background-color:#FFFAF4;
+	border:5px	#842B00 double;
+	margin:0px 20px 20px 0px; 
+	border-radius: 10px;
 }
-/* .rowOdd img{ */
-/* max-width:180px */
-/* } */
+.time{
+	color: red;
+}
 
-.rowEven{
-	margin-left: 10%;
-	border-left: 5px solid #FF0080;
-}
 </style>
 </head>
 <body>
-<div class="container" id="showNotOver">
+<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/event.jpg"/>)" >
+<br>
+<div class="section-tittle text-center mb-80">
+	<h2>活動進行中</h2>
+</div>
+<div class="container mt-5" id="showNotOver">
 
-	<div class="card">
-		<div class="row rowOdd">
-			<div class="col-md-3">
-				<img width="500px" src='https://bootdey.com/img/Content/user_2.jpg' >
-			</div>
-			<div class="col-md-9">
-				<div class="card-body">
-					<h5 class="card-title">Card title</h5>
-				</div>
-			</div>		
-		</div>
-	</div>
-	<div class="card">
-		<div class="row rowEven">
-			<div class="col-md-3 ">
-				<img src='https://bootdey.com/img/Content/user_2.jpg' >
-			</div>
-			<div class="col-md-9">
-				<div class="card-body">
-					<h5 class="card-title">Card title</h5>
-				</div>
-			</div>		
-		</div>
-	</div>
+<!-- 	<div class="card"> -->
+<!-- 		<div class="row rowOdd"> -->
+<!-- 			<div class="col-md-3"> -->
+<!-- 				<img width="500px" src='https://bootdey.com/img/Content/user_2.jpg' > -->
+<!-- 			</div> -->
+<!-- 			<div class="col-md-9"> -->
+<!-- 				<div class="card-body"> -->
+<!-- 					<h5 class="card-title">Card title</h5> -->
+<!-- 				</div> -->
+<!-- 			</div>		 -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<div class="card"> -->
+<!-- 		<div class="row rowEven"> -->
+<!-- 			<div class="col-md-3 "> -->
+<!-- 				<img src='https://bootdey.com/img/Content/user_2.jpg' > -->
+<!-- 			</div> -->
+<!-- 			<div class="col-md-9"> -->
+<!-- 				<div class="card-body"> -->
+<!-- 					<h5 class="card-title">Card title</h5> -->
+<!-- 				</div> -->
+<!-- 			</div>		 -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 	
 	
+</div>
 </div>
 </body>
 
