@@ -42,6 +42,7 @@ public class SocketMessage {
 	@Column(name="fk_toUserAccount")
 	private Integer fkToUserAccount;
 	
+	
 	//從Message list找往右邊找
 	@ManyToOne
 	@JoinColumn(name="fk_toUserAccount")
@@ -51,6 +52,7 @@ public class SocketMessage {
 	private String message;
 	
 	@Column(name="date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss",locale = "Asia/Taipei")
 	private Date date;
 
 	public Integer getSocketMessageId() {

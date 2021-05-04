@@ -1,37 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix='form' uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>修改店家基本資料</title>
+<title>ViewRestaurant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- site.webmanifest run offline -->
+<!-- <link rel="manifest" href="site.webmanifest"> -->
+<!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
+
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+
 <script>
 $(document).ready(function(){
 	findMenus();
 	findAllMessage();
 	$("#add").click(function(){
 		$("#comMessage").val('歡迎大家來我們店用餐，10人以上建議提前一天預約呦!!!');
-		$("#message").val('老闆人超好，東西又好吃，直接列入口袋名單!!');
+		$("#userMessage").val('老闆人超好，東西又好吃，直接列入口袋名單!!');
 	});
 	
-	$("#addMessage").click(function(){
-		var message = $("#message").val();
-		
-		if(message == null || message ==""){
+	$("#addUserMessage").click(function(){
+		var userMessage = $("#userMessage").val();
+		console.log("新增使用者留言");
+		if(userMessage == null || userMessage ==""){
 			text="請輸入訊息...";
 			$("#messageResult").css({"color":"red","font-size":"small"});
 		}
 		else{
-			addMessageBox();
+			addUserMessageBox();
 			findAllMessage();
-			$("#message").val('');
+			$("#userMessage").val('');
 			text="";
 		}
 		$("#messageResult").html(text);
@@ -39,14 +46,15 @@ $(document).ready(function(){
 	
 	$("#addComMessage").click(function(){
 		var comMessage = $("#comMessage").val();
+		console.log("新增企業留言");
 		if(comMessage == null || comMessage ==""){
 			text="請輸入訊息...";
 			$("#messageResult").css({"color":"red","font-size":"small"});
 		}
 		else{
-			addMessageBox();
+			addComMessageBox();
 			findAllMessage();
-			$("#message").val('');
+			$("#comMessage").val('');
 			text="";
 		}
 		$("#messageResult").html(text);
@@ -138,13 +146,14 @@ $(document).ready(function(){
 });
 	
 //新增訊息-使用者
-function addMessageBox(){
+function addUserMessageBox(){
 	urls  = "/PepperNoodles/addRestaurantMessage";
 	console.log(urls);
+	console.log("新增使用者留言的function");
 	data = new FormData();
 	data.append('restMessageInfo',new Blob([JSON.stringify( {"netizenAccount":"${userAccount.accountIndex}",
 															 "restaurantId": ${rest.restaurantId},
-		   											   		 "text": $("#message").val()
+		   											   		 "text": $("#userMessage").val()
 		   											   		 } )],{type: "application/json"}));
 	$.ajax({
 		method:"POST",
@@ -165,9 +174,10 @@ function addMessageBox(){
 }
 
 //新增訊息-店家
-function addMessageBox(){
+function addComMessageBox(){
 	urls  = "/PepperNoodles/addRestaurantMessage";
 	console.log(urls);
+	console.log("新增企業留言的function");
 	data = new FormData();
 	data.append('restMessageInfo',new Blob([JSON.stringify( {"netizenAccount":"${comDetail.userAccount.accountIndex}",
 															 "restaurantId": ${rest.restaurantId},
@@ -279,7 +289,6 @@ $.ajax({
 					text +="				<h5 class='mt-0' style='color:#005AB5;'><i class='fas fa-user'></i> "+allMessage[i].userAccount.userAccountDetail.nickName;
 							if("${userAccount.userAccountDetail.useretailId}" == allMessage[i].userAccount.userAccountDetail.useretailId){
 					text +="					<button class='ml-2 mb-1 close' data-dismiss='modal' aria-label='Close' name='deleteMessage"+allMessage[i].restaurantMessageId+"'>&times;</button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
-
 							}
 					text +="				</h5>";
 					text +="				<span class='float-right'>"+formatPrint;
@@ -330,7 +339,7 @@ $.ajax({
 					text +="		</div>";
 					text +="	</div>";
 					}
-// 					text +="	<br>";
+					text +="	<hr>";
 					text +="</div>";
 				}
 			}
@@ -343,11 +352,8 @@ $.ajax({
 	});
 }
 </script>
+
 <style>
-.nopadding{
-	padding:0 !important;
-	margin: 0 !important;
-}
 img{
 	margin: 10px;
 }
@@ -369,38 +375,12 @@ hr {
 	 clear:both;
 	 display:block;
 	 width: 96%;               
-	 background-color:#FF0000;
+	 background-color:#f7f7f7;
 	 height: 1px;
 }
 </style>
 </head>
 <body>
-<%@include file="../includePage/includeNav.jsp" %>
-	
-<div class="container-fluid">
-	<div class="row">
-    <!-- 左邊的Bar -->
-    	<div class="col-lg-2 nopadding">
-      		<br>
-        	<div class="list-group">
-        		<%@include file="../company/left.jsp" %>
-        	</div>
-        </div>
-        
-		<div class="col-lg-10 nopadding " >
-			<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
-				<div id="preloader-active">
-	<div class="preloader d-flex align-items-center justify-content-center">
-		<div class="preloader-inner position-relative">
-			<div class="preloader-circle" style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
-<div>
-		
 <div class="container-fluid" id="wholeBody">
 	<div class="container" id="body">
 		<div class="row">
@@ -437,7 +417,7 @@ hr {
 					    <tr>
 					    	<th scope="row">類型</th>
 					      	<td id="foodTag">
-					      		到時候要從資料庫抓
+					      		<div id="${rest.restaurantId}" name="restid"></div>
 					        </td>
 					    </tr>
 					  </tbody>
@@ -476,8 +456,8 @@ hr {
 	  	 			<div class="container  p-8">
 	  	 				<div class="media mx-5">
 		  	 				<img class="rounded border" src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> "style="margin-top: 3px" width="125px" height=125px>
-	  	 					<textarea class="form-control" rows="5" cols="60" id="message" placeholder='分享你的用餐經驗吧....' ></textarea>
-	  	 					<button class="bg-secondary" id="addMessage" style="height:134px">送出</button>
+	  	 					<textarea class="form-control" rows="5" cols="60" id="userMessage" placeholder='分享你的用餐經驗吧....' ></textarea>
+	  	 					<button class="bg-secondary" id="addUserMessage" style="height:134px">送出</button>
 	  	 				</div>
 	  	 				<div>
 	  	 				</div>
@@ -528,20 +508,6 @@ hr {
 		</div>
 		<br>
 	</div>
-</div>
-			
-			
-
-			</div>
-		<!--  big container -->
-		</div>
-	</div>
-</div>
-<%@include file="../includePage/includeFooter.jsp" %>
-	<!-- Scroll Up -->
-	<div id="back-top">
-		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-	</div>
 <script>
 	$(window).on('load', function() {
 		$("#toggleMenu").click(function() {
@@ -557,7 +523,33 @@ hr {
  		$('#preloader-active').delay(450).fadeOut('slow');
  		$('body').delay(450).css({
  			'overflow' : 'visible'
- 		});			
+ 		});		
+ 		
+ 		//抓餐廳tag
+		let n = $("div[name='restid']");
+		//         console.log($("input[name='restid']"));
+		console.log("--------------------"+n.length);
+		console.log(n[0].id);
+// 		for (let i = 0; i < n.length; i++) {
+		var urls  = "${pageContext.request.contextPath}/";
+			urls += "<c:url value='restTag2/'/>" + n[0].id;
+		// 		console.log(urls);
+		$.ajax({
+				type : "GET",
+				url : urls,
+				dataType : "text",
+				success : function(response) {
+					var divFoodTag = document.getElementById(n[0].id);
+					var jsontxt = JSON.parse(response);
+					for (i = 0; i < jsontxt.length; i++) {
+						$(divFoodTag).append("<i style='color:#EA0000;' class='fas fa-tag'> "+jsontxt[i].foodTagName+"</i>&emsp;");
+					}
+				},
+				error : function(thrownError) {
+					console.log(thrownError);
+				}
+			});
+// 		}
 			
 	});
 </script>
