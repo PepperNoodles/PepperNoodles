@@ -45,6 +45,8 @@ public class FriendSysServiceImpl implements FriendSysService {
 		
 		return friendSysRepository.findFriendByFriendAndRelation(user, friendship);
 	}
+
+
 	
 	
 	

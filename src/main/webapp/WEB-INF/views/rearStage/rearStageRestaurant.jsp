@@ -28,7 +28,7 @@
     position: relative;
 	}
 	
-	img{  
+	td img{  
 		object-fit: cover; 
 	    max-height: 100%;  
 	    max-width: 100%; 
@@ -46,8 +46,16 @@
 	input{
 	width:250px;
 	}
+		
+	.tagButton{
+	 background-color:#D26900;
+	}
 	
-
+	.tagButton:hover{
+	 background-color:#FFDCB9;
+	 color:black;
+	}
+	
 </style>
 </head>
 
@@ -74,6 +82,7 @@
 										<th>電話</th>
 										<th>擁有者</th>
 										<th>參考照片</th>
+										<th>標籤</th>
 										<th>修改</th>
 <!-- 										<th>編輯</th> -->
 <!-- 										<th>刪除</th> -->
@@ -87,6 +96,10 @@
 							</table>
 
 		</div>
+	</div>
+	
+	<div>
+		<h2>EndOfPage</h2>
 	</div>
 	<!-- 彈出修改視窗 -->
 	<div class="modal" id="updateModal" tabindex="-1">
@@ -195,6 +208,15 @@
 		                { "data": 'userIndex' },
 		                { "render": function (data, type, JsonResultRow, meta) {
                             return '<img class="frame" src="<c:url value='/restSearch/restPicByid'/>'+"/"+JsonResultRow.rest.restaurantId+'">';
+                        }},
+                        {"render": function (data, type, JsonResultRow, meta){
+                        	let buttons="";
+                        	for (let i=0; i<JsonResultRow.rest.foodTag.length;i++ ){                        	
+                        		buttons += '<button class="tagButton" style="border-radius:5px;" id=tag'+JsonResultRow.rest.foodTag[i].foodTagIid+'>'+JsonResultRow.rest.foodTag[i].foodTagName+'</button>'
+                        	}
+                        	
+                        	
+                        	return buttons;
                         }},
                         { "render": function (data, type, JsonResultRow, meta) {
                             return '<button class="updateButton" style="background-color:#00008B;border-radius:15px;" id='+JsonResultRow.rest.restaurantId+'><i class="fas fa-edit"></i></button>';
