@@ -98,7 +98,7 @@
     
   </div>
   
-  <a href="#item-2" class="list-group-item" data-toggle="collapse">
+  <a href="<c:url value='/rearStage/rest'/>" class="list-group-item" >
     <i class="glyphicon glyphicon-chevron-right"></i>餐廳
   </a>
   <div class="list-group collapse" id="item-2">

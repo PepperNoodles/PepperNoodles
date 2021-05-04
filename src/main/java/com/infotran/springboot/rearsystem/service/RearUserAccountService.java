@@ -41,6 +41,7 @@ public class RearUserAccountService {
 		return userAccountOptional.get();
 	}
 	
+	//取得所有使用者
 	public ArrayList<UserAccount> findAccountList() {
 		ArrayList<UserAccount> account = rearaccountRepository.findUserAccountList();
 		return account;
@@ -51,7 +52,13 @@ public class RearUserAccountService {
 //		return company;
 //	}
 	
+	//取得一般使用者清單
+	public ArrayList<UserAccount> findAccountUserList() {
+		ArrayList<UserAccount> account = rearaccountRepository.findAccountUserList();
+		return account;
+	}
 	
+	//取得企業清單
 	public ArrayList<UserAccount> findCompanyUserList() {
 		ArrayList<UserAccount> company = rearaccountRepository.findCompanyUserList();
 		return company;
