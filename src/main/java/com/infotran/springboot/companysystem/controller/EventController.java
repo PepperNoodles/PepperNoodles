@@ -66,27 +66,30 @@ public class EventController {
 	
 	@GetMapping("/notOverEvent")
 	@ResponseBody
-	public List<EventList> notOverEvent() {
+	public List<EventList> notOverEvent() throws ParseException {
 		List<EventList> allEvent = eventListService.getAllEvents();
 		List<EventList> notOverEvent = new ArrayList<EventList>();
 		for(int i =0; i<allEvent.size(); i++) {
 			Date endTime = allEvent.get(i).getEventEndDate();
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String endTimeS = sdf.format(endTime);
-			String currentDate = sdf.format(new Date());
-			System.out.println("活動結束日期:"+endTimeS);
-			System.out.println("現在日期:"+currentDate);
+			String currentDateS = sdf.format(new Date());
+			Date currentDate = sdf.parse(currentDateS);
 			
-			String[] evenEndTimeS = endTimeS.split("-");
-			String[] currentDateS = currentDate.split("-");
+			System.out.println("活動結束時間:"+endTime);
+			System.out.println("現在時間時間:"+currentDate);
 			
-			for(int j=0;j<1;j++) {
-				if(Integer.parseInt(evenEndTimeS[0]) >= Integer.parseInt(currentDateS[0]) && 
-				   Integer.parseInt(evenEndTimeS[1]) >= Integer.parseInt(currentDateS[1]) &&
-				   Integer.parseInt(evenEndTimeS[2]) >= Integer.parseInt(currentDateS[2])) {
-					notOverEvent.add(allEvent.get(i));
-				}
-			}
+//			ParsePosition pos = new ParsePosition(8);  
+//			Date currentTime_2 = formatter.parse(dateString, pos);  
+			
+			if (currentDate.before(endTime)) {
+				System.out.println("結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+			  }else {
+				  System.out.println("尚未結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+				  notOverEvent.add(allEvent.get(i));
+			  }
+
+			
 		}
 		return notOverEvent;
 	}
