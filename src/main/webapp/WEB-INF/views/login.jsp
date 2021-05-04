@@ -78,7 +78,7 @@
 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a>
 				</div>
 				<div class="mt-10 ">
-					<button type="submit" value="login"
+					<button type="submit" id="loginButton" value="login"
 						class="genric-btn danger radius">Login</button>
 					<br><br><br>
 					<div class="pull-right">
@@ -115,6 +115,34 @@
 				$("#password").val('a123456@');
 				$("#username").val('chrislo5311@gmail.com');
 			});
+			
+			$('form').submit(function(ev){
+				 ev.preventDefault();
+				 let username = $("#username").val();
+				// console.log(username);
+				 let urls = "<c:url value='/userPreLoggin/getName'/>";
+				 urls +="?username="+username;
+				 $.ajax({
+						type: "GET",
+						url: urls,				
+						dataType: "text",
+						success: function (response) {
+							console.log(response);	
+							if (response == 'true'){
+								//console.log('ok');	
+								$('form').unbind('submit').submit()
+							}
+							$('form').unbind('submit').submit()
+						},
+						error: function (thrownError) {
+							console.log(thrownError);
+						}
+					});
+				 
+		         //later you decide you want to submit
+		         //			
+			})
+			
 			
 		});
 	</script>
