@@ -44,11 +44,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import com.infotran.springboot.commonmodel.AuthUserDetails;
+import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.FoodTagUser;
 import com.infotran.springboot.commonmodel.FriendList;
 import com.infotran.springboot.commonmodel.Like;
 import com.infotran.springboot.commonmodel.MessageBox;
+import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
@@ -64,8 +66,7 @@ import com.infotran.springboot.userAccsystem.service.inplement.LikeServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.MessageBoxServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserDetailServiceImpl;
 import com.infotran.springboot.userAccsystem.service.inplement.UserSysServiceImpl;
-
-@SessionAttributes(names = "userAccount")
+@SessionAttributes(names = {"userAccount","comDetail","rests","user"})
 @Controller
 public class UserSysController {
 
@@ -122,6 +123,8 @@ public class UserSysController {
 	@Autowired
 	FoodTagUserRepository foodTagUserRepository;
 	
+	
+
 	//使用Spring Security列出目前上線人數帳號的方法
     public void listLoggedInUsers() {
         final List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
@@ -135,6 +138,33 @@ public class UserSysController {
             }
         }
     }
+    
+    
+    //在Security前先偷偷塞session
+    @GetMapping("/userPreLoggin/getName")
+	@ResponseBody
+	 public String userPreLoggin(@RequestParam(name = "username")String username,Model model) {
+
+			UserAccount user = uSysServiceImpl.findByAccountIndex(username);	
+			if (user != null) {
+				
+				if(user.getCompanyDetail() != null) {
+					Set<Restaurant> rests = user.getRestaurant();
+					CompanyDetail comDetail = user.getCompanyDetail();
+					model.addAttribute("user", user);
+					model.addAttribute("comDetail", comDetail);
+					model.addAttribute("rests", rests);
+				}else {
+					model.addAttribute("userAccount", user);
+				}
+				
+				
+				return "true";
+			}
+	  
+	   return "false";
+	 }
+    
 	
 	public UserSysController() {
 		imageFolder = new File(imageRootDirectory, "images");
