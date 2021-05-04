@@ -6,6 +6,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,26 +71,23 @@ public class EventController {
 		List<EventList> allEvent = eventListService.getAllEvents();
 		List<EventList> notOverEvent = new ArrayList<EventList>();
 		for(int i =0; i<allEvent.size(); i++) {
-			Date endTime = allEvent.get(i).getEventEndDate();
-			
+			Date startDate = allEvent.get(i).getEventStartDate();
+			Date endDate = allEvent.get(i).getEventEndDate();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String currentDateS = sdf.format(new Date());
-			Date currentDate = sdf.parse(currentDateS);
-			
-			System.out.println("活動結束時間:"+endTime);
-			System.out.println("現在時間時間:"+currentDate);
-			
-//			ParsePosition pos = new ParsePosition(8);  
-//			Date currentTime_2 = formatter.parse(dateString, pos);  
-			
-			if (currentDate.before(endTime)) {
+			Date currentDate = java.sql.Date.valueOf(sdf.format(new Date()));
+//			System.out.println("活動開始時間:"+startDate);
+//			System.out.println("活動結束時間:"+endDate);
+//			System.out.println("現在時間時間:"+currentDate);
+			if (currentDate.after(endDate)) {
 				System.out.println("結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
-			  }else {
-				  System.out.println("尚未結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
-				  notOverEvent.add(allEvent.get(i));
-			  }
-
-			
+			}
+			else if ( currentDate.before(startDate) ) {
+				System.out.println("未進行活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+			}
+			else{
+				System.out.println("進行中:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+				notOverEvent.add(allEvent.get(i));
+			}
 		}
 		return notOverEvent;
 	}
