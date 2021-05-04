@@ -74,10 +74,10 @@
 											<th width='120'>餐廳地址</th>
 											<th width='80'>聯絡方式</th>
 											<th width='80'>餐廳網站</th>
-											<th width='80'>營業時間</th>
+											<th width='120'>營業時間</th>
 											<th width='80'>標籤</th>
 											<th width='80'>環境照片</th>
-											<th colspan='1' width='36'>資料維護</th>
+											<th colspan='1' width='80'>資料維護</th>
 										</tr>
 										<c:forEach var='restaurant' items='${restaurants}'>
 											<tr>
@@ -85,7 +85,8 @@
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
-												<td style="text-align: center; font-weight: bold">營業時間</td>
+												<td style="text-align: center; font-weight: bold"><a class='updatelink'
+													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a><br></td>
 												<td style="text-align: center; font-weight: bold">
 													<div id="${restaurant.restaurantId}" name="restid"></div>
 												</td>
@@ -93,9 +94,9 @@
 													src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
 													id='restpicture' /></td>
 												<td style="font-weight: bold"><a class='updatelink'
-													href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯</a><br>
+													href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯餐廳</a><br>
 													<a class='deletelink'
-													href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除</a></td>
+													href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除餐廳</a></td>
 											</tr>
 										</c:forEach>
 									</table>
