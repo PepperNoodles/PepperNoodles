@@ -189,6 +189,54 @@
 				hasErrorCheckEmail = false;
 			}
 		}
+		
+		//圖形驗證碼驗證
+// 		$(window).on('load','button[id^="resetVcode"]',function(e){
+// 	        			e.preventDefault;
+// 		});
+		var graphicVCode = document.getElementById("graphicVCode");
+		var checkVCodeInput = document.getElementById("checkVCodeInput");
+		var GverifyCodeFromServer = "" ;
+		graphicVCode.onblur = function(){
+				$.ajax({
+					method:"GET", 
+					url: "/PepperNoodles/getNewestRnstrFromSession",
+					dataType: "text",
+
+					success: function (result) {
+						alert(result)
+						GverifyCodeFromServer=result;
+						alert(GverifyCodeFromServer)
+						
+						
+									var graphicVCodeVal = document.getElementById("graphicVCode").value;
+			if (graphicVCodeVal.length == "") {
+				graphicVCode.style.border = "2px solid red";
+				checkVCodeInput.innerHTML = "<font color='red' >Please Enter</font>";
+// 				hasErrorCheckEmail = false;
+			} else if (GverifyCodeFromServer == graphicVCodeVal) {
+							alert(graphicVCodeVal);
+							graphicVCode.style.border = "2px solid green";
+				checkVCodeInput.innerHTML = "<font color='green' >Correct</font>";
+// 				hasErrorCheckEmail = true;
+			} else {
+				graphicVCode.style.border = "2px solid red";
+				checkVCodeInput.innerHTML = "<font color='red' >Verify Code is Wrong</font>";
+// 				hasErrorCheckEmail = false;
+			}
+
+					},
+					error: function (thrownError) {
+						console.log(thrownError);
+					}
+					
+				});
+			
+			
+			
+
+		}
+	
 
 		//密碼驗證
 		var sendPwd = document.getElementById("userPwd");
@@ -429,7 +477,7 @@
 						accoutDetailPage2.classList.add("tohide");
 						tagPage3.classList.remove("tohide");
 						tagPage3.classList.add("toshow");
-						alert("123");
+// 						alert("123");
 					},
 					error : function(result) {
 						$("#checkAccountStatus2").text(result.fail); //填入提示訊息到result標籤內
@@ -535,9 +583,9 @@
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status == 200) {
 										interestResult = JSON.parse(xhr.responseText);
-										alert(interestResult);
-										alert(interestResult.success);
-										alert(interestResult.success.value);
+// 										alert(interestResult);
+// 										alert(interestResult.success);
+// 										alert(interestResult.success.value);
 					if (interestResult.success == 1) {
 						message = "<span><font color='green' size='-2'>興趣新增成功</font></span>";
 						console.log("興趣新增成功");
@@ -859,7 +907,17 @@
 														class="form-control" type="text" name="verifycode"
 														id="verifycode" placeholder="請輸入驗證碼..."> <span
 														id="cheqMailResult"></span><br>
+														
+											<div class="form-group">
+													<button type="reset" onclick="refresh()" id="resetVcode"
+														style="margin-top: 10px; margin-bottom: 10px">重新產出驗證碼</button>
+													<label><img name="imgValidate" src = "<c:url value='/generateVCode'/>"  ><small id=""></small></label> <input
+														class="form-control" type="text" name="graphicVCode"
+														id="graphicVCode" placeholder="請輸入圖形驗證碼..."> <span
+														id="checkVCodeInput"> </span><br>
 												</div>
+														</div>
+												
 											</div>
 											<div class="col-sm-10 col-sm-offset-1">
 												<div class="form-group" id=""
@@ -883,7 +941,7 @@
 												</div>
 												<div class="pull-right" style="margin-right: 20%;"
 													id="checkAccountStatus">
-													<div style="width: 150px; height: 30px;"></div>
+													<div style="width: 20px; height: 10px;"></div>
 												</div>
 												<div class="pull-left">
 													<input type='button'
@@ -1056,9 +1114,8 @@
 
 <!-- 											</table> -->
 								<div class="col-sm-8 col-sm-offset-2">
-
-											<h3>選擇您的興趣：</h3>
 											<span id="divResult"></span>
+											<h3>選擇您的興趣：</h3>
 											<div class="[ col-xs-6 col-sm-6 ]">
 
 												<div class="[ form-group ]">
@@ -1250,7 +1307,6 @@
 				</div>
 			</div>
 
-		</div>
 	</form>
 	<script>
 		$(function() {
@@ -1268,6 +1324,10 @@
 						}
 					});
 		});
+		
+	    function refresh() {
+	        imgValidate.src="<c:url value='/generateVCode'/>" + "?id="+Math.random();
+	    }
 	</script>
 
 </body>

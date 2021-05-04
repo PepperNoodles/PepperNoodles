@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,6 +119,26 @@ public class UserAccountController {
 //	
 	
 	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/webapp/imagedata";
+	
+	
+	@GetMapping(value = "/generateVCode")
+	public String generateVCode() {
+
+		return "loginSystem/indexForGraohiCode";
+	}
+	
+	
+	@GetMapping(value = "/getNewestRnstrFromSession")
+	@ResponseBody
+	public String getNewestRnstrFromSession(HttpServletRequest request) {
+		HttpSession ses = request.getSession();
+		String x =(String) ses.getAttribute("randStr");
+
+		return x;
+	}
+	
+	
+	
 
 	@PostMapping(value="/members",consumes={"multipart/mixed","multipart/form-data","application/json"})
 	public @ResponseBody Map<String,String> Registure( @RequestPart("userinfo")String toString,
@@ -135,6 +157,8 @@ public class UserAccountController {
 		System.out.println("fuck======================================================0");
 //		UserAccount useraccount1 = new UserAccount();
 		useraccount1.setAccountIndex(dispatch.get("accountIndex"));
+		useraccount1.setEnabled(true);
+
 		//幫密碼加密
 		String bcEncode1 = new BCryptPasswordEncoder().encode(dispatch.get("password"));
 		useraccount1.setPassword(bcEncode1);

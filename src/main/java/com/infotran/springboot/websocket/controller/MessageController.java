@@ -75,7 +75,6 @@ public class MessageController {
 				  mess.setFromLogin(soc.getMainUser().getAccountIndex());
 				  mess.setTo(soc.getToUserAccounts().getAccountIndex());
 				  mess.setDate(soc.getDate());
-				 
 				  String dbMessage =soc.getMessage().replaceAll("\\n", "");
 				 
 				  mess.setMessage(dbMessage);

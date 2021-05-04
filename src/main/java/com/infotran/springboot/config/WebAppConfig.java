@@ -14,5 +14,4 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addViewController("/logout/page").setViewName("logout");
 		registry.addViewController("/logout").setViewName("/index");
 	}
-   
 }

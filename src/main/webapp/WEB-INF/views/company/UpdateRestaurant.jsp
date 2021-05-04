@@ -8,60 +8,234 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>restaurantCRUD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Updaterestaurant</title>
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<link rel='stylesheet'
-	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
+
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
 
 
-<link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <style>
-.header {
-	background-color: #000000;
+.nopadding {
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .rest-infobox {
 	float: left;
-	width: 30%;
+	width: 50%;
+	margin: auto;
+	padding: 15px;
 }
 
 .rest-picbox {
 	float: right;
-	margin: auto;
-	width: 60%;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	border: 3px solid #73AD21;
-	padding: 10px 10px 10px 10px;
-	height: 50%;
+	margin: 10px;
+	width: 400px;
+	border: 3px solid red;
+	border: 3px solid red;
+	height: auto;
 }
 
 #restaurantPicturePreview {
 	width: 100%;
-	heght: 100%;
-	object-fit: contain;
+	height: auto;
 }
 
-footer {
+#tagdiv {
 	clear: both;
-	/* 	清除上面float影響 */
+	/* 	清除上面float影響  */
 }
 </style>
-<script>
+<style>
+/* 3.35 twitter-bootstrap */
+label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: bold;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.label:empty {
+	display: none;
+}
+
+.label-info {
+	background-color: #5bc0de;
+}
+
+.label-info[href]:hover, .label-info[href]:focus {
+	background-color: #31b0d5;
+}
+/* ↑3.35 twitter-bootstrap */
+</style>
+<style>
+/* ↓tag */
+@font-face {
+	font-family: "Prociono";
+	src: url("../font/Prociono-Regular-webfont.ttf");
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 750px;
+	text-align: center;
+}
+
+.tt-dropdown-menu, .gist {
+	text-align: left;
+}
+
+html {
+	color: #333333;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	line-height: 1.2;
+}
+
+#scrollable-dropdown-menu .tt-dropdown-menu {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+.title, .example-name {
+	font-family: Prociono;
+}
+
+p {
+	margin: 0 0 10px;
+}
+
+.title {
+	font-size: 64px;
+	margin: 20px 0 0;
+}
+
+.example {
+	padding: 30px 0;
+}
+
+.example-name {
+	font-size: 32px;
+	margin: 20px 0;
+}
+
+.demo {
+	margin: 50px 0;
+	position: relative;
+}
+
+.typeahead, .tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px 8px 8px 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+
+.typeahead {
+	background-color: #FFFFFF;
+}
+
+.typeahead:focus {
+	border: 2px solid #0097CF;
+}
+
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.tt-hint {
+	color: #999999;
+}
+
+.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px 8px 8px 8px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	padding: 8px 0;
+	width: 422px;
+}
+
+.tt-suggestion {
+	font-size: 18px;
+	line-height: 24px;
+	padding: 3px 20px;
+}
+
+.tt-suggestion.tt-cursor {
+	background-color: #0097CF;
+	color: #FFFFFF;
+}
+
+.tt-suggestion p {
+	margin: 0;
+}
+
+.gist {
+	font-size: 14px;
+}
+
+.example-twitter-oss .tt-suggestion {
+	padding: 8px 20px;
+}
+
+.example-twitter-oss .tt-suggestion+.tt-suggestion {
+	border-top: 1px solid #CCCCCC;
+}
+
+.example-twitter-oss .repo-language {
+	float: right;
+	font-style: italic;
+}
+
+.example-twitter-oss .repo-name {
+	font-weight: bold;
+}
+
+.example-twitter-oss .repo-description {
+	font-size: 14px;
+}
+
+.example-sports .league-name {
+	border-bottom: 1px solid #CCCCCC;
+	margin: 0 20px 5px;
+	padding: 3px 0;
+}
+
+.example-arabic .tt-dropdown-menu {
+	text-align: right;
+}
+/* ↑tag */
+</style>
 <!--餐廳地址Ajax驗證不可重複 -->
+<script>
 	$(function() {
 
 		var checkboolean = "true";
@@ -83,122 +257,40 @@ footer {
 </script>
 </head>
 <body>
-	<!-- 讀取圖案 -->
-	<div id="preloader-active">
-		<div
-			class="preloader d-flex align-items-center justify-content-center">
-			<div class="preloader-inner position-relative">
-				<div class="preloader-circle"
-					style="background-color: rgb(102, 102, 102);"></div>
-				<div class="preloader-img pere-text">
-					<img src="<c:url value="/images/logo/peppernoodle.png"/>" alt="">
+
+	<%@include file="../includePage/includeNav.jsp"%>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- 左邊的Bar -->
+			<div class="col-lg-2 nopadding" id=leftBar>
+				<br>
+
+				<div class="list-group">
+					<%@include file="left.jsp"%>
 				</div>
 			</div>
-		</div>
-	</div>
+			<!-- 右邊顯示的資料 背景圖片+自動填滿 -->
+			<div class="col-lg-10 nopadding image-container set-full-height"
+				style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
 
-	<!-- 最上層bar -->
-	<header>
-		<!-- Header Start -->
-		<!-- 覆蓋用 -->
-		<div style="height: 90px"></div>
-
-		<div class="header-area header">
-			<!--  header-transparent -->
-			<div class="main-header sticky-top">
-				<div class="header-bottom header-sticky">
-					<div class="container-fluid">
-						<div class="row align-items-center">
-							<!-- Logo -->
-							<div class="col-xl-2 col-lg-2 col-md-1">
-								<div class="logo">
-									<a href="/PepperNoodles"><img style="height: 80px"
-										src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""></a>
-								</div>
-							</div>
-							<div class="col-xl-10 col-lg-10 col-md-8">
-								<!-- Main-menu -->
-								<div class="main-menu f-right d-none d-lg-block">
-									<nav>
-										<ul id="navigation">
-											<li><a href="index.html">Home</a></li>
-											<li><a href="about.html">About</a></li>
-											<li><a href="#">城市</a>
-												<ul class="submenu">
-													<li><a href="blog.html">台北</a></li>
-													<li><a href="blog_details.html">新北</a></li>
-													<li><a href="elements.html">基隆</a></li>
-													<li><a href="listing_details.html">桃園</a></li>
-												</ul></li>
-											<li><a href="#">美食</a>
-												<ul class="submenu">
-													<li><a href="blog.html">美式</a></li>
-													<li><a href="blog_details.html">日式燒烤</a></li>
-													<li><a href="elements.html">韓式</a></li>
-													<li><a href="listing_details.html">炸物</a></li>
-												</ul></li>
-											<li><a href="#">排行榜</a>
-												<ul class="submenu">
-													<li><a href="blog.html">免費排行</a></li>
-													<li><a href="blog_details.html">付費排行</a></li>
-													<li><a href="elements.html">周排行</a></li>
-													<li><a href="listing_details.html">綜合排行</a></li>
-												</ul></li>
-											<li><a href="about.html">論壇</a></li>
-											<li><a href="#">最新消息</a>
-												<ul class="submenu">
-													<li><a href="blog.html">菜色新聞</a></li>
-													<li><a href="blog_details.html">最新優惠</a></li>
-													<li><a href="elements.html">新開幕</a></li>
-												</ul></li>
-											<li><a href="about.html">發表食記</a></li>
-											<!-- <li><a href="contact.html">Contact</a></li> -->
-											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
-											<li class="login"><a href="loginSystem/loginPage"> <i
-													class="ti-user"></i> Sign in or Register
-											</a></li>
-										</ul>
-									</nav>
-								</div>
-							</div>
-							<!-- Mobile Menu -->
-							<div class="col-12">
-								<div class="mobile_menu d-block d-lg-none"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Header End -->
-	</header>
-
-	<!-- 餐廳管理頁面 -->
-	<!-- 背景圖片+自動填滿 -->
-	<div class="image-container set-full-height"
-		style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 col-sm-offset-2">
-
-					<form:form method="POST" modelAttribute="updateRestaurant" enctype='multipart/form-data' id="updatefrom">
-						<!--綁定model中的restaurant-->
-
-
-						<div class="rest-infobox">
-							<h1 style="color: red">add rest</h1>
+				<div class=" align-items-center justify-content-center">
+					<form:form method="POST" modelAttribute="updateRestaurant"
+						enctype='multipart/form-data' id="updatefrom">
+						<!-- 餐廳管理頁面 -->
+						<div class="rest-infobox ">
+							<h1 style="color: red">更新餐廳</h1>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' />
 							<form:errors path="restaurantName" cssClass="error" />
 							<br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
-							<form:input path='restaurantAddress' id="RAdd" disabled="true"/>
+							<form:input path='restaurantAddress' id="RAdd" disabled="true" />
 							<span id="RAddError"></span>
 							<form:errors path="restaurantAddress" cssClass="error" />
 							<br> <span style="color: #FF1493">經度<form:input
-									path='longitude' id="RLong" size="10" disabled="true"/>
+									path='longitude' id="RLong" size="10" disabled="true" />
 							</span><br> <span style="color: #FF1493">緯度<form:input
-									path='latitude' id="RLati" size="10" disabled="true"/></span>
+									path='latitude' id="RLati" size="10" disabled="true" /></span>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
@@ -206,146 +298,143 @@ footer {
 							<h5 style="color: #FF1493">餐廳網站：</h5>
 							<form:input path='restaurantWebsite' />
 							<form:errors path="restaurantWebsite" cssClass="error" />
-							<br>
-							<h5 style="color: #FF1493">餐廳照片：</h5>
-							<form:input path='productImage' type='file'
-								id="restaurant-picture" accept="image/*" />
-							<form:errors path="productImage" cssClass="error" />
-							<h5 style="color: #FF1493">標籤：</h5>
-							<form:select path="foodTag">
-								<form:option label="請挑選" value="-1" />
-								<form:options items="${foodTagList}" itemLabel='foodTagName'
-									itemValue='foodTagIid' />
-							</form:select>
-							<form:errors path="foodTag"  cssClass="error" />
-							<br> <input type='button' value="提交" id="checkBeforeSubmit">
-							<span id="submitError"></span>
+							<div id="tagdiv">
+								<h5 style="color: #FF1493">標籤：</h5>
+								<form:input class="typeahead" type="text" placeholder="Tags e.g., BBQ"
+									path="foodTag" />
+								<form:errors path="foodTag" cssClass="error" />
+								
+								<form:input path='productImage' type='file'
+									id="restaurant-picture" accept="image/*" hidden="true" />
+								<form:errors path="productImage" cssClass="error" />
+
+								<div id="submitbox">
+								<br> <input type='button' value="提交" id="checkBeforeSubmit" >
+								<span id="submitError"></span>
+								</div>
+							</div>
 						</div>
 						<div class="rest-picbox">
-							<img src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
-								class="picture-src" id="restaurantPicturePreview" />
+							<!--秀圖區 -->
+							
+								<label for="restaurant-picture" style="cursor: pointer">
+								<img
+									src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
+									class="picture-src" id="restaurantPicturePreview" />
+								</label>
+
 						</div>
-
-
 					</form:form>
+
 				</div>
+
+				<div style="display: none" id="${updateRestaurant.restaurantId}"
+					name="restid"></div>
 			</div>
 		</div>
 	</div>
+	<!-- footer -->
+	<%@include file="../includePage/includeFooter.jsp"%>
 
-
-
-
-
-
-
-	<footer>
-		<!-- Footer Start-->
-		<div class="footer-area">
-			<div class="container">
-				<div class="footer-top footer-padding">
-					<div class="row justify-content-between">
-						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="single-footer-caption mb-30">
-									<!-- logo -->
-									<div class="footer-logo">
-										<a href="index.html"><img
-											src="<c:url value='/images/logo/peppernoodle.png'/>" alt=""></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-2 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Quick Link</h4>
-									<ul>
-										<li><a href="#">Home</a></li>
-										<li><a href="#">Listing</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Categories</h4>
-									<ul>
-										<li><a href="#">台北美食</a></li>
-										<li><a href="#">熱門餐廳</a></li>
-										<li><a href="#">點券優惠</a></li>
-										<li><a href="#">每周排行</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="footer-tittle">
-									<h4>Download App</h4>
-									<ul>
-										<li class="app-log"><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo.png'/>" alt=""></a></li>
-										<li><a href="#"><img
-												src="<c:url value='/images/gallery/app-logo2.png'/>" alt=""></a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-bottom">
-					<div class="row d-flex justify-content-between align-items-center">
-						<div class="col-xl-9 col-lg-8">
-							<div class="footer-copy-right">
-								<p>
-									Copyright &copy;
-									<script>
-										document
-												.write(new Date().getFullYear());
-									</script>
-									All rights reserved | U copy <i class="fa fa-heart"
-										aria-hidden="true"></i> <a href="https://colorlib.com"
-										target="_blank">U died</a>
-								</p>
-							</div>
-						</div>
-						<div class="col-xl-3 col-lg-4">
-							<!-- Footer Social -->
-							<div class="footer-social f-right">
-								<a href="#"><i class="fab fa-facebook-f"></i></a> <a href="#"><i
-									class="fab fa-instagram"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Footer End-->
-	</footer>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-
+	<!-- JS here -->
+	<!-- Scroll Up -->
 	<script>
 		$(window).on('load', function() {
+
+			// 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
 			$(".header-sticky").css("height", "90px");
-			//$(".header-sticky").css("position","static ")
+			$(".header-sticky").css("position", "static")
 
+			//讓loading圖動起來
 			$('#preloader-active').delay(450).fadeOut('slow');
 			$('body').delay(450).css({
 				'overflow' : 'visible'
 			});
+
 		});
 	</script>
+	<!-- 抓餐廳tag -->
+	<script>
+		$(document)
+				.ready(
+						function() {
+							let n = $("div[name='restid']");
+							// 							console.log($("div[name='restid']"));
+							// 							console.log(n.length);
+							var jsontxt;
+							for (let i = 0; i < n.length; i++) {
+								var urls = "${pageContext.request.contextPath}/";
+								urls += "<c:url value='restTag2/'/>" + n[i].id;
+								// 								console.log(urls);
+								$.ajax({
+									type : "GET",
+									url : urls,
+									dataType : "text",
+									success : function(response) {
+										var divFoodTag = document
+												.getElementById(n[i].id);
 
-	<!-- JS here -->
-	<!--預覽照片 -->
+										jsontxt = JSON.parse(response);
+										// 				console.log(response);
+										// 				console.log("====="+jsontxt[0].foodTagName);
+										// 				console.log(jsontxt.length);
+
+										for (i = 0; i < jsontxt.length; i++) {
+											$(divFoodTag).append(
+													jsontxt[i].foodTagName
+															+ '&nbsp;');
+											giveValue(jsontxt[i].foodTagIid,
+													jsontxt[i].foodTagName);
+										}
+
+									},
+									error : function(thrownError) {
+										console.log(thrownError);
+									}
+
+								});
+							}
+
+							// bloodhound
+							var foodTags = new Bloodhound(
+									{
+										datumTokenizer : Bloodhound.tokenizers.obj
+												.whitespace('text'),
+										queryTokenizer : Bloodhound.tokenizers.whitespace,
+										prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
+										cache : false
+									});
+
+							foodTags.initialize();
+
+							var elt = $('.typeahead');
+							elt.tagsinput({
+								itemValue : 'value',
+								itemText : 'text',
+
+								typeaheadjs : {
+									limit : 20,
+									name : 'foodTags',
+									displayKey : 'text',
+									source : foodTags.ttAdapter()
+								}
+							});
+
+							function giveValue(id, name) {
+								elt.tagsinput('add', {
+									"value" : id,
+									"text" : name
+								});
+							}
+
+						})
+	</script>
+	<!--預覽照片-->
 	<script>
 		$(function() {
 			$("#restaurant-picture").change(
@@ -356,51 +445,16 @@ footer {
 							reader.onload = function(e) {
 								$('#restaurantPicturePreview').attr('src',
 										e.target.result);
-							}
 
+							}
 							reader.readAsDataURL(this.files[0]);
 						}
+
 					});
 		});
 	</script>
 
 
-	<!-- All JS Custom Plugins Link Here here -->
-	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 
-	<!-- Jquery, Popper, Bootstrap -->
-	<script src="<c:url value='/scripts/vendor/jquery-1.12.4.min.js' />"></script>
-
-	<%-- 	<script src="<c:url value='/scripts/popper.min.js' />"></script> --%>
-
-	<!-- 	<script type="text/javascript" -->
-	<%-- 		src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
-	<!-- Jquery Mobile Menu -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script> --%>
-
-	<!-- Jquery Slick , Owl-Carousel Plugins -->
-	<%-- 	<script src="<c:url value='/scripts/owl.carousel.min.js' />"></script> --%>
-
-
-	<%-- 	<script src="<c:url value='/scripts/slick.min.js' />"></script> --%>
-
-	<!-- One Page, Animated-HeadLin -->
-	<%-- 	<script src="<c:url value='/scripts/wow.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/animated.headline.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.magnific-popup.js' />"></script> --%>
-	<!-- Nice-select, sticky -->
-	<%-- 	<script src="<c:url value='/scripts/jquery.nice-select.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.sticky.js' />"></script> --%>
-	<!-- contact js -->
-	<%-- 	<script src="<c:url value='/scripts/contact.js' />"></script> --%>
-
-	<%-- 	<script src="<c:url value='/scripts/jquery.form.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.validate.min.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/mail-script.js' />"></script> --%>
-	<%-- 	<script src="<c:url value='/scripts/jquery.ajaxchimp.min.js' />"></script> --%>
-
-	<!-- Jquery Plugins, main Jquery -->
-	<script src="<c:url value='/scripts/plugins.js' />"></script>
-	<%-- 	<script src="<c:url value='/scripts/main.js' />"></script> --%>
 </body>
 </html>

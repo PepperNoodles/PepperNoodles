@@ -53,29 +53,6 @@
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-
-	<script>
- 		$(window).on('load', function() {
-			
-// 			//讓bar固定在上面以及設定高度
-			$(".header-sticky").addClass("sticky-bar");
- 			$(".header-sticky").css("height", "90px");
-			$(".header-sticky").css("position","static")
-
- 			//讓loading圖動起來
- 			$('#preloader-active').delay(450).fadeOut('slow');
- 			$('body').delay(450).css({
- 				'overflow' : 'visible'
- 		});			
-			
- 		});
- 	</script>
-	<!-- JS here -->
 </body>
-<!--   Core JS Files   -->
-<script src="<c:url value='/scripts/jquery.bootstrap.wizard.js'/>" type="text/javascript"></script>
-<script type="text/javascript" src="<c:url value="/scripts/bootstrap2.min.js"/>"></script>
-<!--  Plugin for the Wizard -->
-<script src="<c:url value='/scripts/gsdk-bootstrap-wizard.js'/>"></script>
 
 </html>

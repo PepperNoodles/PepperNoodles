@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.infotran.springboot.commonmodel.UserAccount;
@@ -24,11 +25,12 @@ public class RearUserAccountController {
 	@Autowired
 	private RearUserAccountService rearUserAccountService;
 	
+	//Insert寫活的
 	@PostMapping("/rearUserAccountInsert.controller")
 	public UserAccount processUserAccountInsert(@RequestBody UserAccount userAccount) {
 		return rearUserAccountService.insert(userAccount);
 	}
-	
+	//Insert寫死的
 	@PostMapping("/rearUserAccountInsert1.controller")
 	public UserAccount processUserAccountInsert2() {
 		UserAccount userAccount1 = new UserAccount();
@@ -44,17 +46,30 @@ public class RearUserAccountController {
 		return "ok";
 	}
 	
-	@GetMapping("/rearUserAccountQueryById.controller")
+	@GetMapping(value="/rearUserAccountQueryById.controller")
 	public UserAccount processUserAccountQueryById(@RequestParam(name = "account_id") Integer id) {
-		return rearUserAccountService.finById(id);
+		System.out.println("1");
+		UserAccount enabledStatus = rearUserAccountService.finById(id);		
+		//判斷enable改變狀態
+		if(enabledStatus.isEnabled()) {
+			enabledStatus.setEnabled(false);
+		}
+		else {
+			enabledStatus.setEnabled(true);
+		}
+		rearUserAccountService.insert(enabledStatus);
+		System.out.println(enabledStatus.isEnabled());		
+		return enabledStatus;
+		
 	}
 	
-	public UserAccount processUserAccountupdate(@RequestParam UserAccount userAccount) {
+	@GetMapping("/rearUserAccountUpdate.controller")
+	public UserAccount processUserAccountUpdate(@RequestParam UserAccount userAccount) {
 		return rearUserAccountService.update(userAccount);
 	}
 	
-	//找Account
-	@GetMapping(value="/user/getAccountList")
+	//找AccountList
+	@GetMapping(value="/rearStage/getAccountList") //如改成/user/getAccountList就要登入會員才會顯示資料
 	public @ResponseBody Map<String,ArrayList<UserAccount>> findUserAccountListByUserName(@ModelAttribute("userAccount")UserAccount user){
 		Map<String,ArrayList<UserAccount>> mapview = new HashMap<String,ArrayList<UserAccount>>();
 		ArrayList<UserAccount>  accountViewList = rearUserAccountService.findAccountList();

@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="org.hibernate.Hibernate,java.util.Set,java.util.HashSet,com.infotran.springboot.commonmodel.FoodTagUser,com.infotran.springboot.commonmodel.UserAccount"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="../includePage/includeNav.jsp"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,44 +13,84 @@
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
-.header {
-	background-color: #000000;
-}
-a {
-	color: black;
-}
-.nav a {
-	color: black;
-}
+	.header {
+		background-color: #000000;
+	}
+	td a {
+		color: #0000C6;
+	}
+	.searchButton{
+		height: 30px;
+		border-radius: 5px;
+	}
+	.friendsysImg {  
+    height: 120px; /*can be anything*/
+    width: 160px; /*can be anything*/
+    position: relative;
+	}
+	
+	
+	
+	.friendsysImg img{
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+	    position: absolute;  
+	    top: 0;  
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
+	}
 
-a:hover {
-	color: blue;
-}
+	.nav a {
+		color: black;
+	}
 
-tr:hover {
-	background-color: #BEBEBE;
-}
+	a:hover {
+		color: blue;
+	}
 
-td>img {
-	height: 100px;
-}
+	tr:hover {
+		background-color: #BEBEBE;
+	}
+	
+	td>img {
+		height: 100px;
+	}
+	
+	table {
+		border-collapse: separate;
+		border: solid black 1px;
+		border-radius: 6px;
+		-moz-border-radius: 6px;
+	}
+	.display{
+ 		font-family: 'Noto Serif TC', serif;
+ 		font-size: 15px; 
 
-table {
-	border-collapse: separate;
-	border: solid black 1px;
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-}
-.display{
- 	font-family: 'Noto Serif TC', serif;
- 	font-size: 15px; 
-}
-button{
-color: black;
-}
+	button{
+		color: black;
+	}
+	
+	.collumntogreen{
+		color:green;
+	}
+	.collumntored{
+		red;
+	}
+	table a{
+		color:#0000C6;
+	}
+	
+>>>>>>> f878cce85bb579045dcfaa5b2d82255141f5d9a2
 .collumntogreen{
 	color:green;
 }
@@ -59,7 +100,9 @@ color: black;
 table a{
 	color:#0000C6;
 }
-
+/* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
+I've added a few comments on why we're using certain properties
+*/
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
 /*      border-top:solid black 1px;  */
@@ -82,6 +125,28 @@ table a{
 			document.getElementById("fbLike").src = "http://www.facebook.com/plugins/like.php?href=" + location.href + "&layout=standard&show_faces=true&width=350&action=like&colorscheme=light&height=25";
 			}
 		}
+		
+		$(window).on('load', function() {
+			
+			let urlss="${pageContext.request.contextPath}/";
+			urlss+="<c:url value='userLoggin/getName'/>";
+			console.log(urlss);
+			
+			$.ajax({
+				type: "GET",
+				url: urlss,	
+				async:false,
+				dataType: "text",
+				success: function (response) {
+					console.log(response);	
+				},
+				error: function (thrownError) {
+					console.log(thrownError);
+				}
+				
+			});
+			
+		});
 </script>
 </head>
 <body>
@@ -122,12 +187,10 @@ table a{
 			<!--左邊的分隔用-->
 			<div class="d-flex" >
 				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
-						<i class="fas fa-home"></i>Home</a> 
+					<a class="nav-link active" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="true">
+						<i class="fas fa-file-alt"></i>關於我</a> 
 					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
 						<i class="fas fa-users"></i>好友</a> 
-					<a class="nav-link" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="false">
-						<i class="fas fa-file-alt"></i>關於我</a>
 					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
 						<i class="fas fa-comments"></i>留言區</a>
 					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
@@ -136,9 +199,10 @@ table a{
 						<i class="fas fa-file-alt"></i>查詢訂單</a>
 
 				</div>
+					
 				<div class="tab-content" id="v-pills-tabContent col-9">
-					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-						<h2>基本資料</h2>
+					<div class="tab-pane fade show active" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
+						<h2>關於我</h2>
 						<table border='1'  class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid #F0F0F0 1px;border-radius:6px;-moz-border-radius:6px;'>
 						<tr>
 						<td><span id="accountIndex">email:</span></td><td><span > ${userAccount.accountIndex}</span><button   style="color: black;display:none ">確認</button></td ></tr>
@@ -156,11 +220,11 @@ table a{
 						<td><span >電話：</span></td><td><span id="phoneNumberSpan" >${userAccount.userAccountDetail.phoneNumber}</span><input   value="${userAccount.userAccountDetail.phoneNumber}" style="display:none" id="updateinputBasic2phoneNumber" ></input><button id="updateBaisc2phoneNumber" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable6" style="display:none"><button id="change2phoneNumber" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
 						<tr>
 						<td><span >真實姓名：</span></td><td><span id="realNameSpan" >${userAccount.userAccountDetail.realName}</span><input   value="${userAccount.userAccountDetail.realName}" style="display:none"  id="updateinputBasic2RealName"></input><button  id="updateBaisc2realName" class='genric-btn default circle arrow'  style="color: black;display:none">確認</button></td><td id="showtable7" style="display:none"><button id="change2realName" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-<!-- 						<tr> -->
-<%-- 						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr> --%>
+						<tr>
+						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
 						
 						</table>
-												<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
+						<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
 						
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
@@ -197,7 +261,7 @@ table a{
 							<div class="tab-pane fade show active" id="nav-myFriend"
 								role="tabpanel" aria-labelledby="nav-myFriend-tab">
 								<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
-								<div id="userFriendList"></div>
+								<div class="friendsys m-3" id="userFriendList"></div>
 
 							</div>
 							<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel"
@@ -205,9 +269,9 @@ table a{
 								<div class="d-flex mt-3">
 									<input class="m-2" id="nameSearch" type="search"
 										placeholder="Search By nickName" aria-label="Search">
-									<button class="btn-link" id="btn-search">Search</button>
+									<button class="searchButton btn-link mt-1" id="btn-search">Search</button>
 								</div>
-								<div id="searchResult"></div>
+								<div class="friendsys m-3" id="searchResult"></div>
 							</div>
 
 
@@ -215,14 +279,11 @@ table a{
 								aria-labelledby="nav-friendQequest-tab">
 								<h6>好友邀請</h6>
 								<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
-								<div id="friendRequest"></div>
+								<div class="friendsys m-3" id="friendRequest"></div>
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade" id="v-pills-aboutUser" role="tabpanel"
-						aria-labelledby="v-pills-aboutUser-tab">
-						<h2>關於我</h2>
-					</div>
+
 					<div class="tab-pane fade" id="v-pills-userMessage" role="tabpanel"
 						aria-labelledby="v-pills-userMessage-tab">
 
@@ -240,9 +301,9 @@ table a{
 							id="addNewComment">新增留言</button>
 
 						<!-- 						使用Ajax的方法 -->
-						<div class="container-fluid"
-							style="overflow: scroll; height: 400px;" id="commentsForUser"
-							class="table"></div>
+						<div class="rounded border border-warning container-fluid table "
+							style="  overflow-y: auto; height:400px;" id="commentsForUser"
+							></div>
 
 
 						<!--      使用jstl的方法 -->
@@ -323,7 +384,9 @@ table a{
 
 
 	<script>
-			$(document).ready(function () {
+			$(document).ready(function () {			
+				
+
 				
 					var Table = $("#orderlist").DataTable({
 						 language: {
@@ -531,7 +594,18 @@ table a{
 							//console.log(response[0]);
 							let table =  document.createElement("table");
 							table.border="1";
-
+							let trh = document.createElement("tr");
+ 							let th1 = document.createElement("th");
+ 							th1.innerHTML= "照片"
+ 							let th2 = document.createElement("th");
+ 							th2.innerHTML = "帳號"
+ 							let th3 = document.createElement("th");
+ 							th3.innerHTML = "名稱"
+ 							trh.appendChild(th1);
+ 							trh.appendChild(th2);
+ 							trh.appendChild(th3);
+ 							table.appendChild(trh);
+							
 							let length = Object.keys(response).length;
 							for (let i =0;i< length;i++){
 								let tr  = document.createElement("tr");
@@ -539,10 +613,18 @@ table a{
 								let td2 = document.createElement("td");
 								let td3 = document.createElement("td");
 								let img = document.createElement("img");
+								
+								let divFrame = document.createElement("div");
+								divFrame.className="friendsysImg";
+								
 								img.class="tdimg";
 								let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
 								img.src="<c:url value='"+imgSrc+"'/>";
-								td3.appendChild(img);
+								
+								divFrame.append(img);
+								
+								td3.appendChild(divFrame);
+								
 								td1.innerHTML=response[i].accountIndex;
 								console.log(response[i].accountIndex);
 								console.log(response[i].userAccountDetail);								
@@ -587,10 +669,21 @@ table a{
 					function showRequestList(response){
 							$("#friendRequest").html("");
 							//let result = JSON.stringify(response);
-							console.log(response[0]);
+							//console.log(response[0]);
 							let table =  document.createElement("table");
 							table.border="1";
-
+ 							let trh = document.createElement("tr");
+ 							let th1 = document.createElement("th");
+ 							th1.innerHTML= "照片"
+ 							let th2 = document.createElement("th");
+ 							th2.innerHTML = "帳號"
+ 							let th3 = document.createElement("th");
+ 							th3.innerHTML = "名稱"
+ 							trh.appendChild(th1);
+ 							trh.appendChild(th2);
+ 							trh.appendChild(th3);
+ 							table.appendChild(trh);
+ 							
 							let length = Object.keys(response).length;
 							for (let i =0;i< length;i++){
 								let tr  = document.createElement("tr");
@@ -599,10 +692,15 @@ table a{
 								let td2 = document.createElement("td");
 								let td3 = document.createElement("td");
 								let td4 = document.createElement("td");
+								let divFrame = document.createElement("div");
+								divFrame.className="friendsysImg";
 								let img = document.createElement("img");
 								let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
 								img.src="<c:url value='"+imgSrc+"'/>";
-								td3.appendChild(img);
+								divFrame.append(img);
+								
+								td3.appendChild(divFrame);								
+								
 								td1.innerHTML=response[i].accountIndex;
 								console.log(response[i].accountIndex);
 								console.log(response[i].userAccountDetail);
@@ -695,12 +793,42 @@ table a{
 				        		
 				        		var formatDate   =(new Date(result[i].time)).toString().substring( 4 , 21 );
 				        		var formatString = formatDate.split(' ');
-				        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+				        		
+				        		if(formatString[0]=="Jan"){
+				        			formatString[0] = "1";
+				        		}else if(formatString[0]=="Feb"){
+				        			formatString[0] = "2";
+				        		}else if(formatString[0]=="Mar"){
+				        			formatString[0] = "3";
+				        		}else if(formatString[0]=="Apr"){
+				        			formatString[0] = "4";
+				        		}else if(formatString[0]=="May"){
+				        			formatString[0] = "5";
+
+				        		}else if(formatString[0]=="Jun"){
+				        			formatString[0] = "6";
+				        		}else if(formatString[0]=="Jul"){
+				        			formatString[0] = "7";
+				        		}else if(formatString[0]=="Aug"){
+				        			formatString[0] = "8";
+				        		}else if(formatString[0]=="Sep"){
+				        			formatString[0] = "9";
+				        		}else if(formatString[0]=="Oct"){
+				        			formatString[0] = "10";
+				        		}else if(formatString[0]=="Nov"){
+				        			formatString[0] = "11";
+				        		}else if(formatString[0]=="Dec"){
+				        			formatString[0] = "12";
+				        		}else {
+				        			formatString[0] = "";
+				        		}
+// 				        		formatString[2] + '<br>' +
+				        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
 				        		
 				        		segment +="<table border='1' class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid blue 1px;border-radius:6px;-moz-border-radius:6px;'>";//<th>留言數</th><th>留言者</th><th>時間</th><th>讚數</th><th>留言內容</th><th>讚</th><th>編輯</th>";
 				        		segment += "<tr class='table-primary'><td>留言" + (i+1) + "</td><td>" ;
 				        		segment += result[i].netizenAccount.userAccountDetail.nickName + "</td><td>" ;
-				        		segment += formatPrint + "</td><td id='likeof" + i + "'  >" ;
+				        		segment += formatPrint + "</td><td data-toggle='tooltip' id='likeof" + i + "'  >" ;
 				        		segment += result[i].likeAmount + "</td><td><input  class='selectedinput ' disabled='disabled'size='20' value='" + result[i].text +"'>" ;
 			        			segment +=  "</input><button  name='updateComment' "+ i +" class='genric-btn default circle arrow' style='display:none;color:black' >confirm</button>";
 			        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].text + "</span>";
@@ -714,14 +842,45 @@ table a{
 									
 										var formatDate   =(new Date(result[i].replyMessageBoxes[j].time)).toString().substring( 4 , 21 );
 						        		var formatString = formatDate.split(' ');
-						        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+						        		
+						        		if(formatString[0]=="Jan"){
+						        			formatString[0] = "1";
+						        		}else if(formatString[0]=="Feb"){
+						        			formatString[0] = "2";
+						        		}else if(formatString[0]=="Mar"){
+						        			formatString[0] = "3";
+						        		}else if(formatString[0]=="Apr"){
+						        			formatString[0] = "4";
+						        		}else if(formatString[0]=="May"){
+						        			formatString[0] = "5";
+
+						        		}else if(formatString[0]=="Jun"){
+						        			formatString[0] = "6";
+						        		}else if(formatString[0]=="Jul"){
+						        			formatString[0] = "7";
+						        		}else if(formatString[0]=="Aug"){
+						        			formatString[0] = "8";
+						        		}else if(formatString[0]=="Sep"){
+						        			formatString[0] = "9";
+						        		}else if(formatString[0]=="Oct"){
+						        			formatString[0] = "10";
+						        		}else if(formatString[0]=="Nov"){
+						        			formatString[0] = "11";
+						        		}else if(formatString[0]=="Dec"){
+						        			formatString[0] = "12";
+						        		}else {
+						        			formatString[0] = "";
+						        		}
+// 						        		formatString[2] + '<br>' +
+						        		
+						        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
 									
 										segment += "<tr class='table-info'><td>回覆" + (j+1) + "</td><td>" ;
 						        		segment += result[i].replyMessageBoxes[j].netizenAccount.userAccountDetail.nickName  + "</td><td>" ;
-						        		segment += formatPrint  + "</td><td id='likeof" + i + j +"'>" ;
+						        		segment += formatPrint  + "</td><td data-toggle='tooltip' id='likeof" + i + j +"'>" ;
 						        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
 						        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
-										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' >確定修改</button>";
+										segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black'  class='genric-btn default circle arrow' >confirm</button>";
 					        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].replyMessageBoxes[j].text + "</span>";
 					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].time + "</span><span  style='display:none'>" + result[i].replyMessageBoxes[j].likeAmount + "</span>";
 					        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></td><td>";
@@ -730,10 +889,11 @@ table a{
 					        			segment +="<button class='genric-btn default circle arrow' type='button' style='color: black' name  ='deleteComment" + i + j +	"' >delete</button><span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></tr>";
 									}
 				        		segment += "</table><span class='mt-0 pt-0'><input placeholder='我想吃....'></input><button type='button' class='genric-btn default circle arrow' style='color: black' name='addreply"  + i +"' >reply</button><span  style='display:none'>" + result[i].userMessageId + "</span></span><br><br><br>";
-				        		;
+				        		
 // 				        		segment +="<button data-toggle='modal' data-target='#exampleModal' type='button' style='color: black' name  ='updateComment" + i +"' >更新主要留言</button><span  style='display:none'>" + result[i].text + "</span><span  style='display:none'>" + result[i].time + "</span><span  style='display:none'>" + result[i].likeAmount + "</span><br><br><hr>";
 				        	
 				        	}
+
 			        		commentsForUser.innerHTML = segment;
 				        	
 				        },
@@ -743,6 +903,18 @@ table a{
 				        }
 					});
 						}
+						
+						//留言滑到底的時候顯示
+						  $("#commentsForUser").scroll(function(){
+							    var h = $(this).height();//div可视区域的高度
+							    var sh = $(this)[0].scrollHeight;//滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点
+							    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
+							    if(h+st>=sh){
+							    //上面的代码是判断滚动条滑到底部的代码
+							      //alert("滑到底部了");
+							      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
+							    }
+							  })
 						
 						
 						//新增留言(usermain頁面的 useraccount 之後會抓預設的值)
@@ -848,10 +1020,10 @@ table a{
 							var time       =$(this).next().next().text();
 							var likeAmount =$(this).next().next().next().text();
 							var toHide         =$(this).next();
-							alert(id);
-							alert(text);
-							alert(time);
-							alert(likeAmount);
+// 							alert(id);
+// 							alert(text);
+// 							alert(time);
+// 							alert(likeAmount);
 							var data =
 							{
 									"userMessageId": id,
@@ -871,7 +1043,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
 
 								},
@@ -891,7 +1063,7 @@ table a{
 							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 							urls += id;
-							alert(id);
+// 							alert(id);
 
 							
 							$.ajax({
@@ -899,7 +1071,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 
 
 								},
@@ -924,7 +1096,7 @@ table a{
 							var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 							var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 							urls += id;
-							alert(id);
+// 							alert(id);
 
 							
 							$.ajax({
@@ -932,7 +1104,7 @@ table a{
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 
 
 								},
@@ -950,36 +1122,55 @@ table a{
 		        		});
 					
 // 					id='likeof"  看誰按讚的功能 直接點讚數
-					$('body').on('click','td[id^="likeof"]',function(e){
+					$('body').on('mouseenter','td[data-toggle="tooltip"]',function(e){
 	        			e.preventDefault;
+
 	        			var likebutton = $(this);
 	        			var msnID = $(this).next().next().next().next().children("span").text();
 
-						$.ajax({
-							type:"GET",
-							url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
-							dataType: "json",
-							success: function (result) {
-								console.log(result);
-								console.log(JSON.stringify(result));
-								
-								var x ="按讚的人有:" ;
-								
+// 						likebutton.tooltip();
+
+	        			$.ajax('/PepperNoodles/user/showWhoLikeAjax?msnID='+ msnID).always(function(result) {
+	        				var x ="按讚的人有:\n\r" ;
 								if(result.length==0){
 									x ="還沒有人按讚唷傻逼~"
 								}else{
 									for( i =0;i<result.length;i++){
 										x += result[i].userAccountDetail.nickName;
-										x += " ";
+										x += "\n\r";
 									}
 								}
+								likebutton.attr("title",x)
+// 								likebutton.tooltip();
 
-								alert(x);
-							        	},
-					        error: function (result) {
-					        	alert("fail");
-					        }
-						});
+		        			}
+	        	         );
+// 						$.ajax({
+// 							type:"GET",
+// 							url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
+// 							dataType: "json",
+// 							success: function (result) {
+// 								var x ="按讚的人有:" ;
+								
+// 								if(result.length==0){
+// 									x ="還沒有人按讚唷傻逼~"
+// 								}else{
+// 									for( i =0;i<result.length;i++){
+// 										x += result[i].userAccountDetail.nickName;
+// 										x += " ";
+// 									}
+// 								}
+								
+// 								$(this).attr('title', result);
+// 								$(this).tooltip({ position: "bottom right", opacity: 1 });
+// 								alert(x);
+// 								$(this).tooltip();
+// 							        	},
+							        	
+// 					        error: function (result) {
+// 					        	alert("fail");
+// 					        }
+// 						});
 
 					});
 
@@ -1050,7 +1241,7 @@ table a{
 							contentType:'application/json;charset=UTF-8',
 							dataType: "text",
 							success: function (result) {
-								alert(result);
+// 								alert(result);
 
 							},
 
@@ -1078,7 +1269,7 @@ table a{
 								url:"/PepperNoodles/user/getFoodTagsAjax",
 
 						        success: function (result) {
-					        		alert(result[0].foodTagName);
+// 					        		alert(result[0].foodTagName);
 					        		console.log(JSON.stringify(result));
 					        		checkboxs.empty();
 
@@ -1117,7 +1308,7 @@ table a{
 	        			checkboxs.toggle();
 	        			confirmEdit.toggle();
 	        			toshow.toggle();
-	        			alert(confirmEdit.value)
+// 	        			alert(confirmEdit.value)
 	        			
 							$.ajax({
 								type:"POST",
@@ -1158,7 +1349,7 @@ table a{
 							cache: false,  //不做快取
 					        async : true,
 					        success: function (result) {
-								alert("photo changed");
+// 								alert("photo changed");
 								
 								location.reload();
 								
@@ -1239,6 +1430,24 @@ table a{
 
 	<script>
  		$(window).on('load', function() {
+ 			
+// 			let urlss="${pageContext.request.contextPath}/";
+// 			urlss+="<c:url value='userLoggin/getName'/>";
+// 			console.log(urlss);
+			
+// 			$.ajax({
+// 				type: "GET",
+// 				url: urlss,				
+// 				dataType: "text",
+// 				success: function (response) {
+// 					console.log(response);	
+// 				},
+// 				error: function (thrownError) {
+// 					console.log(thrownError);
+// 				}
+				
+// 			});
+ 		
 			
 // 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");

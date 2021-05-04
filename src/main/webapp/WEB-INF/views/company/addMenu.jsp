@@ -172,32 +172,33 @@ td a:hover{
 					<input type='hidden' name='_method' value='DELETE'>
 				</form>
 				
-				<c:choose>
-					<c:when test="${empty menus}">
-	    				<h4 style="text-align:center">沒有任何菜單</h4><br> 
-					</c:when>
-					<c:otherwise>
-						<table style="text-align:center">
-							<tr><th height="100px"><h1>我的菜單</h1></th></tr>
-							<c:forEach var='menus' items='${menus}'>
-								<tr>
-<%-- 									<td>${menus.menuDetailId}</td> --%>
-									<td>
-										<a href="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>">
-											<img width='20%' src="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>" />
-										</a>
-										<br>
-									</td>
-								</tr>
-								<tr>
-									<td height="80px">
-										<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
-									</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</c:otherwise>
-				</c:choose>
+			<c:choose>
+				<c:when test="${empty menus}">
+	    			<h4 style="text-align:center">沒有任何菜單</h4><br> 
+				</c:when>
+				<c:otherwise>
+					<div style="text-align:center">
+						<div><h1>我的菜單</h1></div>
+						<div class="container">
+		  					<div class="row  align-items-start">
+								<c:forEach var='menus' items='${menus}'>
+									<div class="col-4 card " style="height: 400px">
+										<div class="card-header" style="height: 350px">
+											<a href="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>">
+												<img style="max-width:100%" height='300px' src="<c:url value="/rest/getMenuPicture/${menus.menuDetailId}"/>" />
+											</a>
+										</div>
+										<div class="modal-footer">
+											<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+				</c:otherwise>
+			</c:choose>	
+				<br>		
       	</div>
 	  <!-- 右邊顯示的資料結束 -->  
       </div>

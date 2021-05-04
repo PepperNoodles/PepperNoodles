@@ -18,7 +18,7 @@ import com.infotran.springboot.commonmodel.AuthUserDetailsService;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
 	@Autowired
 	private AuthUserDetailsService userDetailsService;
 	
@@ -27,8 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth
 		   .userDetailsService(userDetailsService)
 		   .passwordEncoder(new BCryptPasswordEncoder());
-		
-
 	}
 	
 	@Override
@@ -40,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
+    
 
     @Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
@@ -59,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/loginSystem/admin").hasAnyAuthority("admin")
 		.anyRequest().permitAll()
         .and()
-        .formLogin().loginPage("/login/page").defaultSuccessUrl("/login/welcome")
+        .formLogin().loginPage("/login/page").defaultSuccessUrl("/welcome")
         .and()
         .logout().logoutUrl("/logout/page").logoutSuccessUrl("/logout")
         .and()
@@ -69,8 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.rememberMe().tokenValiditySeconds(1200).key("rememberMe");
 		http.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
         
-
-
 //      .formLogin()
 //      .formLogin().loginPage("/login/page")
 //      .formLogin().loginPage("/login_page").loginProcessingUrl("/perform_login").failureUrl("/login_page?error")
