@@ -156,7 +156,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -219,7 +219,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -281,7 +281,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -342,7 +342,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -406,7 +406,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -468,7 +468,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -530,7 +530,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -598,7 +598,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -673,7 +673,7 @@ $(document).ready(function() {
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
-							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="#" id="'+i+'">'+i+'</a></li>');
+							$("#pagframe").append('<li class="page-item active"><a class="page-link" href="javascript:void(0);" id="'+i+'">'+i+'</a></li>');
 						}
 						//print products		        	
 		        		$.each(productlist,
@@ -723,7 +723,6 @@ $(document).ready(function() {
 			}
 			var page = $(this).attr("id");//第一頁
 			$("#pframeall > div").remove();
-			console.log("pagframe flag===>>"+flag);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpage/"+ifprice+"/"+flag+"/"+(page-1)+"?input="+input+"",

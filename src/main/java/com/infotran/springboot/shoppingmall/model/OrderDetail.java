@@ -32,8 +32,8 @@ public class OrderDetail {
 	@Transient
 	private Integer fkProductId;
 	
-
-	private Integer Amount;
+	@Column(name="Amount")
+	private Integer amount;
 
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -80,10 +80,10 @@ public class OrderDetail {
 		this.product = product;
 	}
 	public Integer getAmount() {
-		return Amount;
+		return amount;
 	}
 	public void setAmount(Integer amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 	
 	

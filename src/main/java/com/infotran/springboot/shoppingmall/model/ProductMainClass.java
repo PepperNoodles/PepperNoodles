@@ -27,9 +27,10 @@ public class ProductMainClass {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ProductMainClass_id")
-	private Integer ProductMainClassId;
+	private Integer productMainClassId;
 	
-	private String MainClassName;
+	@Column(name="MainClassName")
+	private String mainClassName;
 	
 	/*對應子類別*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "productMainClass",cascade =CascadeType.ALL)
@@ -40,19 +41,19 @@ public class ProductMainClass {
 	}
 
 	public Integer getProductMainClassId() {
-		return ProductMainClassId;
+		return productMainClassId;
 	}
 
 	public void setProductMainClassId(Integer productMainClassId) {
-		ProductMainClassId = productMainClassId;
+		this.productMainClassId = productMainClassId;
 	}
 
 	public String getMainClassName() {
-		return MainClassName;
+		return mainClassName;
 	}
 
 	public void setMainClassName(String mainClassName) {
-		MainClassName = mainClassName;
+		this.mainClassName = mainClassName;
 	}
 
 	public List<ProductDetailClass> getProductDetailClass() {
