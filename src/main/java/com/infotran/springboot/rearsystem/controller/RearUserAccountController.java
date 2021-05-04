@@ -76,5 +76,14 @@ public class RearUserAccountController {
 		mapview.put("AccountList", accountViewList);
 		return mapview;
 	}
+	
+	//取得一般使用者
+	@GetMapping(value="/rearStage/getAccountList1") //如改成/user/getAccountList就要登入會員才會顯示資料
+	public @ResponseBody Map<String,ArrayList<UserAccount>> findUserAccountListByUserName1(@ModelAttribute("userAccount")UserAccount user){
+		Map<String,ArrayList<UserAccount>> mapview = new HashMap<String,ArrayList<UserAccount>>();
+		ArrayList<UserAccount>  accountViewList = rearUserAccountService.findAccountUserList();
+		mapview.put("AccountList1", accountViewList);
+		return mapview;
+	}
 
 }
