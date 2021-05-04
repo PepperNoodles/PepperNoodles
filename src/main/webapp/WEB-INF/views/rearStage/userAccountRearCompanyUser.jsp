@@ -48,8 +48,8 @@
 										<th>帳號</th>
 										<th>密碼</th>
 										<th>企業編號</th>
-										<th>enable</th>
-										<th>編輯</th>
+										<th>權限</th>
+										<th>停權</th>
 										
 										
 										

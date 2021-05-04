@@ -134,8 +134,6 @@
 												</c:otherwise>
 											</c:choose>
 								      </sec:authorize>
-											<!-- <li><a href="contact.ht
-											
 
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->

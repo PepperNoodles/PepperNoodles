@@ -2,6 +2,7 @@ package com.infotran.springboot.rearsystem.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.rearsystem.dao.RearSendEmail;
 import com.infotran.springboot.rearsystem.service.RearUserAccountService;
 import com.infotran.springboot.shoppingmall.model.OrderList;
 
@@ -24,6 +26,9 @@ public class RearUserAccountController {
 	
 	@Autowired
 	private RearUserAccountService rearUserAccountService;
+	
+//	@Autowired
+//	private RearSendEmail rearSendEmail;
 	
 	//Insert寫活的
 	@PostMapping("/rearUserAccountInsert.controller")
@@ -50,17 +55,20 @@ public class RearUserAccountController {
 	public UserAccount processUserAccountQueryById(@RequestParam(name = "account_id") Integer id) {
 		System.out.println("1");
 		UserAccount enabledStatus = rearUserAccountService.finById(id);		
-		//判斷enable改變狀態
+		RearSendEmail rearSendEmail = new RearSendEmail(); //寄信
+		//判斷enable改變狀態並寄信通知
 		if(enabledStatus.isEnabled()) {
+			rearSendEmail.sendRightEmail(enabledStatus);
 			enabledStatus.setEnabled(false);
 		}
 		else {
+			rearSendEmail.sendRightEmail(enabledStatus);
 			enabledStatus.setEnabled(true);
 		}
 		rearUserAccountService.insert(enabledStatus);
 		System.out.println(enabledStatus.isEnabled());		
 		return enabledStatus;
-		
+			
 	}
 	
 	@GetMapping("/rearUserAccountUpdate.controller")
@@ -84,6 +92,12 @@ public class RearUserAccountController {
 		ArrayList<UserAccount>  accountViewList = rearUserAccountService.findAccountUserList();
 		mapview.put("AccountList1", accountViewList);
 		return mapview;
+	}
+	
+	//模糊搜尋帳號
+	@GetMapping(value = "/rearStage/findAccountLike")
+	public List<UserAccount> processFindAccountLike(@RequestParam(name = "acoount_index") String accountIndex){
+		return rearUserAccountService.findAccountLike("%" + accountIndex + "%");
 	}
 
 }
