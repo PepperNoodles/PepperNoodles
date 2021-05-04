@@ -46,9 +46,11 @@ $.ajax({
 				text +="		<div class='page col-md-4' style='width: 30rem;'>";
 				text +="			<div class='item'>";
 				text +="				<p> </p>";
+				text +="				<div class='eventImg'>";
 				text +="				<a href='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' >";
 				text +="				<img class'mh-10' width='260px' src='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' />";
 				text +="				</a>";
+				text +="				</div>";
 				text +="				<p />";
 				text +="				<h4>"+notOverEvent[i].eventName+"</h4>";
 				text +="				<p class='time'>"+notOverEvent[i].eventStartDate+"-"+notOverEvent[i].eventEndDate+"</p>";
@@ -77,6 +79,25 @@ $.ajax({
 }
 .time{
 	color: red;
+}
+.eventImg{
+	height:250px;
+	}
+
+
+.eventImg img{
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+/* 	    position: absolute;   */
+	    top: 0;  
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
 }
 
 </style>
