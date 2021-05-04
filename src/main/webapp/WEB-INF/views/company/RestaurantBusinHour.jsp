@@ -44,19 +44,28 @@
 
 
 	<div id="Monday">
-		<span id="MondaySelect"> 星期一 <input type="radio" name="Day1"
-			value="1" id="MondayOpenRadio" checked="true" />營業 <input
-			type="radio" name="Day1" value="1" id="MondayCloseRadio" />不營業
-		</span>
+		<select id="MondaySelect">
+			<option value="">請選擇日期</option>
+			<option value="一">星期一</option>
+			<option value="二">星期二</option>
+			<option value="三">星期三</option>
+			<option value="四">星期四</option>
+			<option value="五">星期五</option>
+			<option value="六">星期六</option>
+			<option value="日">星期日</option>
+		</select> 
+		<input type="radio" name="Day1" value="1" id="MondayOpenRadio"checked="true" />營業 
+		<input type="radio" name="Day1" value="1" id="MondayCloseRadio" />不營業
+
 		<form:form id="MondayCloseform" method="POST"
 			modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
-			<form:input path="day" type="text" value="二" id="day1close"
+			<form:input path="day" type="text" value="" id="day1close"
 				style="display:none" />
 		</form:form>
 		<div id="MondayOpen" style="">
 			<form:form id="MondayOpenform" method="POST"
 				modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
-				<form:input path="day" type="text" value="二" id="day1open"
+				<form:input path="day" type="text" value="" id="day1open"
 					style="display:none" />
 			from <form:input path="openTime" type="text" id="open1" /> to <form:input
 					path="closeTime" type="text" id="close1" />
@@ -363,16 +372,36 @@
 		<script>
 // 		hide or show Open div
 		$(function() {
+			
 			var MondayOpen = $('#MondayOpen');		
-			  $("#MondaySelect").click(function() {
-				  
+			  $("#Monday").click(function() {
+		
 				  if($('#MondayOpenRadio').prop("checked")==true){
-					  
+				
 					  MondayOpen.removeClass("tohide");
+					  
+
 				  }
 				  else if($('#MondayOpenRadio').prop("checked")==false){
+					  
 					  MondayOpen.addClass("tohide");
+
 				  }
+				  
+	          });
+			  
+			  $("#MondaySelect").change(function() {
+				  var day=this.value;
+				  console.log("選擇了星期"+day);
+			
+				
+					  
+					  $('#day1open').val(day);
+		
+					  
+					  $('#day1close').val(day);
+				
+			
 				  
 	          });
 			
@@ -479,15 +508,15 @@
 
 	</div>
 
-	
-	
-	
-	<div id="showresult">	
-	
-	
-	<div id="ShowMondayTimeResult">設定結果</div>
-	
-	
+
+
+
+	<div id="showresult">
+
+
+		<div id="ShowMondayTimeResult">設定結果</div>
+
+
 	</div>
 
 
