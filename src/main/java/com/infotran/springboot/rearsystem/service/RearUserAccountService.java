@@ -1,6 +1,7 @@
 package com.infotran.springboot.rearsystem.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -63,7 +64,10 @@ public class RearUserAccountService {
 		ArrayList<UserAccount> company = rearaccountRepository.findCompanyUserList();
 		return company;
 	}
-		
 	
+	//模糊搜尋
+	public List<UserAccount> findAccountLike(String accountIndex){
+		return rearaccountRepository.findAccountLike(accountIndex);
+	}
 
 }
