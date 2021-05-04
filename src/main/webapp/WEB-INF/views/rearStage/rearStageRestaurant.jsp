@@ -229,7 +229,7 @@
 			        success:function(result){
 // 			        	console.log("yes123");
 // 			        	console.log(JSON.stringify(result));
- 			        	console.log(result[6].userIndex);
+ 			        	//console.log(result[6].userIndex);
 			        	Table.clear().draw();
 			            Table.rows.add(result).draw();
 			            

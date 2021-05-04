@@ -82,7 +82,9 @@ h3{
 	  	<c:otherwise>
 	  		<c:forEach var='rests' items='${rests}'>
   				<li class="nav-item">
-    				<a class="nav-link leftBar rest" href="<c:url value='/rest/menu/${rests.restaurantId}' />"> → ${rests.restaurantName}</a>
+    				<a class="nav-link leftBar rest" href="<c:url value='/rest/menu/${rests.restaurantId}' />">
+    					<i class="fas fa-utensils"></i> ${rests.restaurantName}
+    				</a>
   				</li>	
 	  		</c:forEach>
 	  	</c:otherwise>
@@ -107,7 +109,9 @@ h3{
 	  	<c:otherwise>
 	  		<c:forEach var='rests' items='${rests}'>
   				<li class="nav-item">
-    				<a class="nav-link leftBar rest" href="<c:url value='/event/${rests.restaurantId}' />"> → ${rests.restaurantName}</a>
+    				<a class="nav-link leftBar rest" href="<c:url value='/event/${rests.restaurantId}' />"> 
+    					<i class="fas fa-utensils"></i> ${rests.restaurantName}
+    				</a>
   				</li>	
 	  		</c:forEach>
 	  	</c:otherwise>
@@ -131,7 +135,9 @@ h3{
 	  	<c:otherwise>
 	  		<c:forEach var='rests' items='${rests}'>
   				<li class="nav-item">
-    				<a class="nav-link leftBar rest" href="<c:url value='/restPage/${rests.restaurantId}' />"> → ${rests.restaurantName}</a>
+    				<a class="nav-link leftBar rest" href="<c:url value='/restPage/${rests.restaurantId}' />">
+    					<i class="fas fa-utensils"></i>  ${rests.restaurantName}
+    				</a>
   				</li>	
 	  		</c:forEach>
 	  	</c:otherwise>

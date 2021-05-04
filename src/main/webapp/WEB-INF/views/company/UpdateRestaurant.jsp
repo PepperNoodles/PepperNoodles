@@ -300,12 +300,12 @@ p {
 							<form:errors path="restaurantWebsite" cssClass="error" />
 							<div id="tagdiv">
 								<h5 style="color: #FF1493">標籤：</h5>
-								<form:input class="typeahead" type="text" placeholder="add Tag"
+								<form:input class="typeahead" type="text" placeholder="Tags e.g., BBQ"
 									path="foodTag" />
 								<form:errors path="foodTag" cssClass="error" />
 								
 								<form:input path='productImage' type='file'
-									id="restaurant-picture" accept="image/*" />
+									id="restaurant-picture" accept="image/*" hidden="true" />
 								<form:errors path="productImage" cssClass="error" />
 
 								<div id="submitbox">
@@ -316,12 +316,12 @@ p {
 						</div>
 						<div class="rest-picbox">
 							<!--秀圖區 -->
-							<div>
-
+							
+								<label for="restaurant-picture" style="cursor: pointer">
 								<img
 									src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
 									class="picture-src" id="restaurantPicturePreview" />
-							</div>
+								</label>
 
 						</div>
 					</form:form>
