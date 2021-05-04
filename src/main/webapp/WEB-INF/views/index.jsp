@@ -11,7 +11,7 @@
 <title>Welcome to PepperNoodles</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
+<!-- <link rel="manifest" href="site.webmanifest"> -->
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
@@ -96,9 +96,10 @@ $(document).ready(function(){
 
 </script>
 <style>
-.form-control{
-	height:60px
+select.form-control{
+	height:60px;
 }
+
 </style>
 </head>
 <body>
@@ -271,13 +272,8 @@ $(document).ready(function(){
 								</div>
 								<div class="select-form">
 									<div class="select-itms" id="tagSelect">
-<!-- 										<select name="select" id="select1"> -->
-<!-- 											<option value="">全部</option> -->
-<!-- 											<option value="">胡椒麵</option> -->
-<!-- 											<option value="">日式炸雞</option> -->
-<!-- 											<option value="">泰式料理</option> -->
-<!-- 											<option value="">燒仙草</option> -->
-<!-- 										</select> -->
+									<!--JS給資料  -->
+
 									</div>
 								</div>
 								<div class="search-form">
