@@ -29,6 +29,32 @@
 	<script src="<c:url value='/scripts/popper.min.js' />"></script>
 	<script type="text/javascript"
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+	
+	<script type="text/javascript">
+
+	$(window).on('load', function() {
+			
+		let urlss="${pageContext.request.contextPath}/";
+		urlss+="<c:url value='userLoggin/getName'/>";
+		console.log(urlss);
+		
+		$.ajax({
+			type: "GET",
+			url: urlss,	
+// 			async:true
+			dataType: "text",
+			success: function (response) {
+				console.log(response);	
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+			
+		});
+		
+	});
+
+</script>
 
 <style>
 	#body{
@@ -43,6 +69,11 @@
 	#main{
 	background-color:#FFFFFF;
 	}
+	.butt{
+	height:60px;
+	width:105px;
+	}
+	
 </style>
 </head>
 <body id="body" >
@@ -61,28 +92,35 @@
 		</div>
 	</div>
 
-	<div id="main" class="container mt-10" style="width: 80%; height: 100vh"> >
-			<h1>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h1>
+	<div id="main" class="container mt-5" style="width: 80%; height: 100vh">
+<%-- 			<h5>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h5> --%>
+ 			<h5>您好${userAccount.accountIndex},我是:</h5>
 			<!-- 圖片+姓名bar-->
-			<div class="d-flex">
-				<div class="p-2 bg-info">
+			<div class="d-flex justify-content-start">
+				<div class="p-2 bg-secondary">
 					
 					<img style="height: 100px" src="<c:url value='/userProtrait/${viewUserAccountDetail.useretailId}'/>">
 				</div>
 
-				<div id="nickname" class="p-2 flex-fill align-self-end justify-content-start">
+				<div id="nickname" class="p-2 flex-fill align-self-end ">
 					<h1>${viewUserAccountDetail.nickName}</h1>
 				</div>
 
-				<div id="" class="align-self-start justify-content-start">
-					<button style="color:#4a4aFF" id="AddFriendChecker">加好友</button>
+				<div id="" class="align-self-end justify-content-start">
+					<button class="butt" style="color:#4a4aFF" id="AddFriendChecker">加好友</button>
 				</div>
 				
 
 			</div>
+			<div class="d-flex ml-5 mt-3 bg-secondary" style="height: 5px" >
+				
+			</div>
+				<div class="d-flex mt-1 mr-5 bg-info" style="height: 5px" >
+				
+			</div>
 			
 			
-			<div class="d-flex">
+			<div class="d-flex mt-3" style="height: 70vh">
  				<div class="nav flex-column nav-pills p-2 bg-dark" id="nav-tab" role="tablist" aria-orientation="horizontal">
 				
 					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>		
@@ -124,9 +162,9 @@
 							id="addNewComment">新增留言</button>
 
 						<!-- 						使用Ajax的方法 -->
-						<div class="content-fluid"
-							style="overflow: scroll; height: 400px;" id="commentsForViewUser"
-							class="table"></div>
+						<div class="table rounded border border-warning container-fluid table"
+							style="overflow-y: auto; height:400px;" id="commentsForViewUser"
+							></div>
 			</div>	
 			
 			<div class="tab-pane fade" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
@@ -207,7 +245,7 @@
 					url: urls,							
 					dataType: "text",
 					success: function (response) {		
-						alert(response);
+				//		alert(response);
 						judgeRelation();
 					},
 						error: function (thrownError) {
@@ -230,7 +268,7 @@
 		url:urls,
 
         success: function (result) {
-    		alert(result.length);
+//     		alert(result.length);
     		commentsLength =result.length;
 //        		alert(result[0].replyMessageBoxes);
     		console.log(JSON.stringify(result));
@@ -245,7 +283,36 @@
         		
         		var formatDate   =(new Date(result[i].time)).toString().substring( 4 , 21 );
         		var formatString = formatDate.split(' ');
-        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+        		if(formatString[0]=="Jan"){
+        			formatString[0] = "1";
+        		}else if(formatString[0]=="Feb"){
+        			formatString[0] = "2";
+        		}else if(formatString[0]=="Mar"){
+        			formatString[0] = "3";
+        		}else if(formatString[0]=="Apr"){
+        			formatString[0] = "4";
+        		}else if(formatString[0]=="May"){
+        			formatString[0] = "5";
+
+        		}else if(formatString[0]=="Jun"){
+        			formatString[0] = "6";
+        		}else if(formatString[0]=="Jul"){
+        			formatString[0] = "7";
+        		}else if(formatString[0]=="Aug"){
+        			formatString[0] = "8";
+        		}else if(formatString[0]=="Sep"){
+        			formatString[0] = "9";
+        		}else if(formatString[0]=="Oct"){
+        			formatString[0] = "10";
+        		}else if(formatString[0]=="Nov"){
+        			formatString[0] = "11";
+        		}else if(formatString[0]=="Dec"){
+        			formatString[0] = "12";
+        		}else {
+        			formatString[0] = "";
+        		}
+//	        		formatString[2] + '<br>' +
+        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
         		
         		segment +="<table border='1' class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid blue 1px;border-radius:6px;-moz-border-radius:6px;'>";//<th>留言數</th><th>留言者</th><th>時間</th><th>讚數</th><th>留言內容</th><th>讚</th><th>編輯</th>";
         		segment += "<tr class='table-primary'><td>留言" + (i+1) + "</td><td>" ;
@@ -264,14 +331,43 @@
 					
 						var formatDate   =(new Date(result[i].replyMessageBoxes[j].time)).toString().substring( 4 , 21 );
 		        		var formatString = formatDate.split(' ');
-		        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '/' +formatString[3];
+		        		if(formatString[0]=="Jan"){
+		        			formatString[0] = "1";
+		        		}else if(formatString[0]=="Feb"){
+		        			formatString[0] = "2";
+		        		}else if(formatString[0]=="Mar"){
+		        			formatString[0] = "3";
+		        		}else if(formatString[0]=="Apr"){
+		        			formatString[0] = "4";
+		        		}else if(formatString[0]=="May"){
+		        			formatString[0] = "5";
+
+		        		}else if(formatString[0]=="Jun"){
+		        			formatString[0] = "6";
+		        		}else if(formatString[0]=="Jul"){
+		        			formatString[0] = "7";
+		        		}else if(formatString[0]=="Aug"){
+		        			formatString[0] = "8";
+		        		}else if(formatString[0]=="Sep"){
+		        			formatString[0] = "9";
+		        		}else if(formatString[0]=="Oct"){
+		        			formatString[0] = "10";
+		        		}else if(formatString[0]=="Nov"){
+		        			formatString[0] = "11";
+		        		}else if(formatString[0]=="Dec"){
+		        			formatString[0] = "12";
+		        		}else {
+		        			formatString[0] = "";
+		        		}
+//			        		formatString[2] + '<br>' +
+		        		var formatPrint  =  formatString[0]+ '/' + formatString[1] +  '<br>' + formatString[3];
 					
 						segment += "<tr class='table-info'><td>回覆" + (j+1) + "</td><td>" ;
 		        		segment += result[i].replyMessageBoxes[j].netizenAccount.userAccountDetail.nickName  + "</td><td>" ;
 		        		segment += formatPrint  + "</td><td id='likeof" + i + j +"'>" ;
 		        		segment += result[i].replyMessageBoxes[j].likeAmount + "</td><td>";
 		        		segment += "<input disabled='disabled'size='20' value='" + result[i].replyMessageBoxes[j].text +"'>" ;
-						segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' >確定修改</button>";
+						segment +=  "</input><button name='updateComment' " + i + j +" style='display:none;color:black' class='genric-btn default circle arrow' >confirm</button>";
 	        			segment += "<span  style='display:none;visibility:hidden'>" + result[i].replyMessageBoxes[j].text + "</span>";
 	        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].time + "</span><span  style='display:none'>" + result[i].replyMessageBoxes[j].likeAmount + "</span>";
 	        			segment += "<span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></td><td>";
@@ -289,10 +385,22 @@
         },
         error: function (result) {
         	alert(result);
-            $("#commentsForViewrUser").text("fail"); //填入提示訊息到result標籤內
+            $("#commentsForViewUser").text("fail"); //填入提示訊息到result標籤內
         }
 	});
 		}
+		
+		//留言滑到底的時候顯示
+		  $("#commentsForViewUser").scroll(function(){
+			    var h = $(this).height();//div可视区域的高度
+			    var sh = $(this)[0].scrollHeight;//滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点
+			    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
+			    if(h+st>=sh){
+			    //上面的代码是判断滚动条滑到底部的代码
+			      //alert("滑到底部了");
+			      $("#commentsForViewUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
+			    }
+			  })
 		
 		
 		//新增留言(usermain頁面的 useraccount 之後會抓預設的值)
@@ -308,7 +416,7 @@
 				url:  urls,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -323,8 +431,8 @@
 			var messageIdValue = $(this).next().text();
 			var urls           ="/PepperNoodles/user/addNewReplyCommentAjax/" + messageIdValue;
 			var text           =$(this).prev().val();
-			alert(messageIdValue);
-			alert(text);
+// 			alert(messageIdValue);
+// 			alert(text);
 			
 			var data =
 			{
@@ -346,7 +454,7 @@
 				data:JSON.stringify(data),
 				
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -360,14 +468,14 @@
 			e.preventDefault;
 			var urls = "/PepperNoodles/user/deleteCommentAjax?id=";
 			var id =$(this).next().text();
-			alert(id);
+// 			alert(id);
 			urls += id;
 			$.ajax({
 				type:"GET",
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -402,10 +510,10 @@
 			var time       =$(this).next().next().text();
 			var likeAmount =$(this).next().next().next().text();
 			var toHide         =$(this).next();
-			alert(id);
-			alert(text);
-			alert(time);
-			alert(likeAmount);
+// 			alert(id);
+// 			alert(text);
+// 			alert(time);
+// 			alert(likeAmount);
 			var data =
 			{
 					"userMessageId": id,
@@ -425,7 +533,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
 
 				},
@@ -445,7 +553,7 @@
 			var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 			var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 			urls += id;
-			alert(id);
+// 			alert(id);
 
 			
 			$.ajax({
@@ -453,7 +561,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 
 
 				},
@@ -478,7 +586,7 @@
 			var id         =$(this).parent().prevAll().children("td span:eq(3)").text();
 			var changeLikeAmount = $(this).parent().prevAll("td:eq(1)");
 			urls += id;
-			alert(id);
+// 			alert(id);
 
 			
 			$.ajax({
@@ -486,7 +594,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 
 
 				},
@@ -504,7 +612,7 @@
 		});	
 	
 //		id='likeof"  看誰按讚的功能 直接點讚數
-	$('body').on('click','td[id^="likeof"]',function(e){
+	$('body').on('mouseenter','td[id^="likeof"]',function(e){
 		e.preventDefault;
 		var likebutton = $(this);
 		var msnID = $(this).next().next().next().next().children("span").text();
@@ -514,21 +622,18 @@
 			url:"/PepperNoodles/user/showWhoLikeAjax?msnID=" + msnID,
 			dataType: "json",
 			success: function (result) {
-				console.log(result);
-				console.log(JSON.stringify(result));
-				
-				var x ="按讚的人有:" ;
-				
+// 				console.log(result);
+// 				console.log(JSON.stringify(result));
+				var x ="按讚的人有:\n\r" ;
 				if(result.length==0){
 					x ="還沒有人按讚唷傻逼~"
 				}else{
 					for( i =0;i<result.length;i++){
 						x += result[i].userAccountDetail.nickName;
-						x += " ";
+						x += "\n\r";
 					}
 				}
-
-				alert(x);
+				likebutton.attr("title",x)
 			        	},
 	        error: function (result) {
 	        	alert("fail");

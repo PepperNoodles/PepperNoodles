@@ -23,7 +23,7 @@ public class RestSearchServiceImpl implements RestSearchService {
 	
 	@Override
 	public List<Restaurant> findRestaurantNameLike(String restName) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
 		
 		Page<Restaurant> restspage = restSearchRepository.findRestaurantNameLike(restName, pageable);
 //		Integer pages = restspage.getTotalPages();		
@@ -37,7 +37,7 @@ public class RestSearchServiceImpl implements RestSearchService {
 
 	@Override
 	public List<Restaurant> findAddressNameLike(String restAddr) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
 		List<Restaurant> rests = restSearchRepository.findAddressNameLike(restAddr, pageable);
 		return rests;
 	}
@@ -55,14 +55,17 @@ public class RestSearchServiceImpl implements RestSearchService {
 
 	@Override
 	public List<Restaurant> findNameAndTag(String restName, String tagName) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
 		List<Restaurant> rests = restSearchRepository.findNameAndTag(restName, tagName, pageable);
 		return rests;
 	}
 
 	@Override
 	public List<Restaurant> findAll() {
-		List<Restaurant> rests = restSearchRepository.findAll();
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
+		Page<Restaurant> restspage = restSearchRepository.findAll(pageable);
+		List<Restaurant> rests = restspage.getContent();
+		
 		return rests;
 	}
 
@@ -80,21 +83,21 @@ public class RestSearchServiceImpl implements RestSearchService {
 
 	@Override
 	public List<Restaurant> findSearchNameAndTag(String restName, String tagName) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
 		List<Restaurant> rests= restSearchRepository.findSearchNameAndTag(restName, tagName, pageable);
 		return rests;
 	}
 
 	@Override
 	public List<Restaurant> findASearchtNameAndDistName(String restName, String distName) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0,50, Sort.Direction.DESC, "totalScore");
 		List<Restaurant> rests = restSearchRepository.findASearchtNameAndDistName(restName, distName, pageable);
 		return rests;
 	}
 
 	@Override
 	public List<Restaurant> findSearchNameAndDistAndTag(String restName, String distName, String tagName) {
-		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "totalScore");
+		Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "totalScore");
 		List<Restaurant> rests = restSearchRepository.findSearchNameAndDistAndTag(restName, distName, tagName, pageable);
 		return rests;
 	}

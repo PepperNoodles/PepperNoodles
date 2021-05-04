@@ -28,7 +28,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.infotran.springboot.shoppingmall.model.Product;
 
 @Entity
@@ -63,6 +62,7 @@ public class Restaurant {
 
 	// 新增修改時取圖的屬性
 	@Transient
+	@JsonIgnore
 	MultipartFile productImage;
 
 	@Column(name = "longitude")
@@ -83,13 +83,17 @@ public class Restaurant {
 
 	/** 1個餐廳可以有多個菜單 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
-	Set<MenuDetail> Menus = new LinkedHashSet<MenuDetail>();
+	@JsonIgnore
+	List<MenuDetail> Menus = new ArrayList<MenuDetail>();
 
 	/** 1個餐廳可以有多個留言 **/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
-	Set<RestaurantMessageBox> restaurantMessageBox = new LinkedHashSet<RestaurantMessageBox>();
+	@JsonIgnore
+	private List<RestaurantMessageBox> restaurantMessageBox = new ArrayList<RestaurantMessageBox>();
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@JsonIgnore
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
 
 	/** 一家餐廳有多個營業時間 **/
@@ -103,11 +107,11 @@ public class Restaurant {
 	private Set<FoodTag> foodTag = new HashSet<FoodTag>();
 
 	
-
+	
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
-//	@JsonManagedReference 
+	@JsonIgnore 
 	private List<Product> products =new ArrayList<Product>();
 
 
@@ -225,19 +229,21 @@ public class Restaurant {
 		this.userAccount = userAccount;
 	}
 
-	public Set<MenuDetail> getMenus() {
+
+
+	public List<MenuDetail> getMenus() {
 		return Menus;
 	}
 
-	public void setMenus(Set<MenuDetail> menus) {
+	public void setMenus(List<MenuDetail> menus) {
 		Menus = menus;
 	}
 
-	public Set<RestaurantMessageBox> getRestaurantMessageBox() {
+	public List<RestaurantMessageBox> getRestaurantMessageBox() {
 		return restaurantMessageBox;
 	}
 
-	public void setRestaurantMessageBox(Set<RestaurantMessageBox> restaurantMessageBox) {
+	public void setRestaurantMessageBox(List<RestaurantMessageBox> restaurantMessageBox) {
 		this.restaurantMessageBox = restaurantMessageBox;
 	}
 

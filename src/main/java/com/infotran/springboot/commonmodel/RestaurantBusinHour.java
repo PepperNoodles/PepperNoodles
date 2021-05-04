@@ -1,10 +1,5 @@
 package com.infotran.springboot.commonmodel;
 
-import java.util.Date;
-
-
-import javax.persistence.CascadeType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 
 import org.springframework.stereotype.Component;
 
@@ -35,7 +29,8 @@ public class RestaurantBusinHour {
 	@Transient
 	private Integer restaurantId;
 	
-	private Date day;
+	@Column(name = "day")
+	private String  day;
 	
 	@Column(name = "open_time")
 	private String openTime;
@@ -78,11 +73,11 @@ public class RestaurantBusinHour {
 		this.restaurantId = restaurantId;
 	}
 
-	public Date getDay() {
+	public String getDay() {
 		return day;
 	}
 
-	public void setDay(Date day) {
+	public void setDay(String day) {
 		this.day = day;
 	}
 

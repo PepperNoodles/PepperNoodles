@@ -72,7 +72,7 @@ body{
     
   
      <div class="friends ">
-        <ul class="list" style="height:80vh" id="usersList">
+        <ul class="list" style="height:60vh; overflow:scroll; overflow-x:hidden;overflow-y:auto;" id="usersList">
 
 
         </ul>
@@ -81,7 +81,7 @@ body{
 </div>
     <div class="chat my-3" style="height:700px">
         <div class="chat-header clearfix" >
-            <img alt="avatar" height="55px" id="avatar" 
+            <img alt="avatar" height="55px" id="avatar_to" 
                  src="http://localhost:433/PepperNoodles/userProtrait/${userAccount.userAccountDetail.useretailId}"
                  width="70px"/>
 
@@ -145,6 +145,7 @@ $(window).load(function(){
  	let currentUser =document.getElementById("userName").innerHTML;
 	let stompClient;
 	let selectedUser;
+	let newMessages = new Map();
 	
 	
 	$("#registration").on("click",registration);
@@ -181,7 +182,21 @@ $(window).load(function(){
 	            	console.log("收到訊息嗎?2");
 	            	
 	                newMessages.set(data.fromLogin, data.message);
-	                $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
+	                userColId="userNameAppender_"+data.fromLogin;
+	              
+	                //創造通知區
+	                let selectUSerNameSpan = document.getElementsByClassName("newMessage_"+data.fromLogin);
+	                if(selectUSerNameSpan.length>0){	                
+	                	selectUSerNameSpan[0].innerHTML='!!';
+	                }else{	                
+	                	let div = document.getElementById(userColId);
+	 	                noticediv = document.createElement('div');
+	 	                noticediv.className = 'newMessage_'+data.fromLogin;
+	 	                noticediv.style.color='red';
+	 	                noticediv.innerHTML = '!!';
+	 	                
+	 	                div.appendChild(noticediv);
+	                }	                
 	            }
 	      
 	        });
@@ -195,8 +210,6 @@ $(window).load(function(){
 	        //增加時間
 	        var today =  new Date().getTime();
 			console.log(today);
-
-	    
 			//新增時間	        
 	        stompClient.send("/app/chat/"+selectedUser,{},JSON.stringify(
 	            {
@@ -235,21 +248,38 @@ $(window).load(function(){
 	    }
 
         function selectUser(){
+        	
+        	//建立聊天室頭上的小圖
+        	let img = $(this).find("img");        	
+        	//console.log($(this));
+        	console.log(img);
+        	let imgUrl =img.attr("src");
+        	$("#avatar_to").attr("src",imgUrl);
+        	
         	let userName = this.name;
+        	selectedUser=userName;
+            //取消通知小點點
+            let selectUSerNameSpan = document.getElementsByClassName("newMessage_"+selectedUser);
+            if(selectUSerNameSpan.length>0){
+            	selectUSerNameSpan[0].innerHTML='';
+            }
+        	
+            
         	let userNick=$(this).find('.name').html()
             console.log("selecting user"+userName);
-            selectedUser=userName;
             $chatHistoryList.html('');
             
             $('#selectedUserId').html('');
             $('#selectedUserId').append('Chat with ' + userNick);
+      
+            
             createChatHistory(currentUser,selectedUser);
             
         }
-
+	//創造好友聊天左邊的區塊
 	    function fetchAll(){	    	
 	        $.get(url+"/fetchAllUser/"+currentUser,function(response){	    
-	        	console.log(response);
+	        	console.log("fetchAll: "+response);
 	            //let users = JSON.parse(response);
 	            let users=response;
 	            console.log(users);
@@ -261,7 +291,7 @@ $(window).load(function(){
 	                     'src='+imgUrl+' '+
 	                     'width="70px"/>'+
 	                '<div class="about">'+
-	                    '<div class="name">'+users[i].mUserAccountNickName+'</div>'+
+	                    '<div id="userNameAppender_'+users[i].mUserAccountIndex+'" class="name">'+users[i].mUserAccountNickName+'</div>'+
 	                    '<div class="status">'+
 	                        '<i class="fa fa-circle online"></i></div></div></li></a>';
 	            
@@ -371,7 +401,7 @@ $(window).load(function(){
 	    			messagg=JSON.parse(response);
 	    		  	for (let i = 0;i<messagg.length;i++){
 	    	    		if(currentUser ==messagg[i].fromLogin){
-	    	    			console.log(messagg[i].fromLogin+":"+messagg[i].message);
+	    	    			//console.log(messagg[i].fromLogin+":"+messagg[i].message);
 	    	    			//送出
 	    	    			  var template = Handlebars.compile($("#message-template").html());
 	    	                  var context = {
@@ -381,7 +411,7 @@ $(window).load(function(){
 	    	                  };
 	    	                  $chatHistoryList.append(template(context));	    	    			
 	    	    		}else{
-	    	    			console.log(messagg[i].fromLogin+":"+messagg[i].message);
+	    	    			//console.log(messagg[i].fromLogin+":"+messagg[i].message);
 	    	    			//收到
 	    	    			var templateResponse = Handlebars.compile($("#message-response-template").html());
 	    	                var contextResponse = {

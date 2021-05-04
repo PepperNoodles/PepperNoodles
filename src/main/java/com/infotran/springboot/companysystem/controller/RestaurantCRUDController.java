@@ -38,8 +38,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
+import com.infotran.springboot.commonmodel.RestaurantBusinHour;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
+import com.infotran.springboot.companysystem.service.impl.BusinessHourServiceImpl;
 import com.infotran.springboot.companysystem.service.impl.CompanyDetailServiceImpl;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
@@ -66,6 +68,9 @@ public class RestaurantCRUDController {
 	@Autowired
 	CompanyDetailServiceImpl companyDetailServiceImpl;
 	
+	@Autowired
+	BusinessHourServiceImpl businessHourServiceImpl; 
+	
 	
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
@@ -88,25 +93,28 @@ public class RestaurantCRUDController {
 		return "company/AllRestaurants";
 	}
 	
-	//建立餐廳list基本資料 for 新增餐廳使用
+	// 顯示餐廳營業時間頁面
+	@GetMapping("/Hours")
+	public String showRestaurantBusinHourPage(Model model) {
+		RestaurantBusinHour restaurantBusinHour=new RestaurantBusinHour();
+		model.addAttribute("restaurantBusinHour", restaurantBusinHour);
+		return "company/RestaurantBusinHour";
+	}
+	
+	@PostMapping("/Hours")
+	public String addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,Model model) {
+		System.out.println("收到");
+		System.out.println("restaurantBusinHour="+restaurantBusinHour);
+		System.out.println("Day="+restaurantBusinHour.getDay());
+		System.out.println("OpenTime="+restaurantBusinHour.getOpenTime());
+		System.out.println("CloseTime="+restaurantBusinHour.getCloseTime());
+		System.out.println("OpenTime2="+restaurantBusinHour.getOpenTime2nd());
+		System.out.println("CloseTime2="+restaurantBusinHour.getCloseTime2nd());
+		System.out.println("OpenTime2="+restaurantBusinHour.getOpenTime3rd());
+		System.out.println("CloseTime2="+restaurantBusinHour.getCloseTime3rd());
+		businessHourServiceImpl.save(restaurantBusinHour);
 
-	@SuppressWarnings("rawtypes")
-	@GetMapping("/foodTagJson")
-	public @ResponseBody ArrayList<Map> foodTagJsonData(Model model) {
-		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
-		ArrayList<Map> foodTagJsonList=new ArrayList<Map>();
-		Integer foodTagListLength=0;
-		for(FoodTag tag:foodTagList) {
-			System.out.println(tag.getFoodTagIid()+":"+tag.getFoodTagName());
-			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
-			map.put("value",tag.getFoodTagIid());
-			map.put("text",tag.getFoodTagName());
-			foodTagJsonList.add(map);
-			foodTagListLength++;
-		}
-		model.addAttribute("foodTagJsonList", foodTagJsonList);
-		model.addAttribute("foodTagListLength", foodTagListLength);
-		return foodTagJsonList;
+		return "company/RestaurantBusinHour";
 	}
 
 
@@ -189,7 +197,7 @@ public class RestaurantCRUDController {
 		Restaurant rest = restaurantService.get(id);
 		model.addAttribute("updateRestaurant", rest);
 		System.out.println("選擇更新編號:" + id + "的餐廳");
-		return "company/UpdateRestaurant2";
+		return "company/UpdateRestaurant";
 	}
 
 	// 收到更新post後進行檢查 若沒有問題就完成交易 有問題傳回修改頁面
@@ -204,7 +212,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			//若有錯 回到修改頁面
-			return "company/UpdateRestauran2";
+			return "company/UpdateRestauran";
 		}
 		//檢查提交表單的上傳圖片檔
 	
@@ -270,40 +278,7 @@ public class RestaurantCRUDController {
 		return map;
 	}
 	
-	//建立餐廳list基本資料 for 新增餐廳使用
-	@ModelAttribute
-	public void foodTagListData(Model model) {
-		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
-		model.addAttribute("foodTagList", foodTagList);
-	}
-	
-	//請求餐廳標籤
-	@GetMapping("/restTag/{id}")
-	public @ResponseBody Map<String,String> restTag(@PathVariable("id") Integer id) {
-		
-		Restaurant rest = restaurantService.get(id);
-		System.out.println(rest.getRestaurantName());
-		Map<String,String> map = new HashMap<String, String>();
-		
-		Set<FoodTag> set = rest.getFoodTag();
-		for(FoodTag tag:set) {
-			
-			map.putIfAbsent(tag.getFoodTagIid().toString(),tag.getFoodTagName());
 
-		}
-		
-		
-		Iterator<FoodTag> it = set.iterator();
-		 
-		while (it.hasNext()) {   
-			
-			
-			
-             System.out.println("餐廳標籤:"+it.next().getFoodTagName());}
-
-		return map;
-		
-	}
 	//請求餐廳標籤2
 	@GetMapping("/restTag2/{id}")
 	public @ResponseBody Set<FoodTag> restTag2(@PathVariable("id") Integer id) {
@@ -371,4 +346,63 @@ public class RestaurantCRUDController {
 	}
 
 	// 給圖用↑
+	
+//	//建立餐廳list基本資料 for 新增餐廳使用(停用)
+//
+//	@SuppressWarnings("rawtypes")
+//	@GetMapping("/foodTagJson")
+//	public @ResponseBody ArrayList<Map> foodTagJsonData(Model model) {
+//		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
+//		ArrayList<Map> foodTagJsonList=new ArrayList<Map>();
+//		Integer foodTagListLength=0;
+//		for(FoodTag tag:foodTagList) {
+//			System.out.println(tag.getFoodTagIid()+":"+tag.getFoodTagName());
+//			Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+//			map.put("value",tag.getFoodTagIid());
+//			map.put("text",tag.getFoodTagName());
+//			foodTagJsonList.add(map);
+//			foodTagListLength++;
+//		}
+//		model.addAttribute("foodTagJsonList", foodTagJsonList);
+//		model.addAttribute("foodTagListLength", foodTagListLength);
+//		return foodTagJsonList;
+//	}
+//	//建立餐廳list基本資料 for 新增餐廳使用(停用)
+//	@ModelAttribute
+//	public void foodTagListData(Model model) {
+//		List<FoodTag> foodTagList = restaurantService.getAllFoodTag();
+//		model.addAttribute("foodTagList", foodTagList);
+//	}
+//	
+//	//請求餐廳標籤(停用)
+//	@GetMapping("/restTag/{id}")
+//	public @ResponseBody Map<String,String> restTag(@PathVariable("id") Integer id) {
+//		
+//		Restaurant rest = restaurantService.get(id);
+//		System.out.println(rest.getRestaurantName());
+//		Map<String,String> map = new HashMap<String, String>();
+//		
+//		Set<FoodTag> set = rest.getFoodTag();
+//		for(FoodTag tag:set) {
+//			
+//			map.putIfAbsent(tag.getFoodTagIid().toString(),tag.getFoodTagName());
+//
+//		}
+//		
+//		
+//		Iterator<FoodTag> it = set.iterator();
+//		 
+//		while (it.hasNext()) {   
+//			
+//			
+//			
+//             System.out.println("餐廳標籤:"+it.next().getFoodTagName());}
+//
+//		return map;
+//		
+//	}
+	
+	
 }
+
+

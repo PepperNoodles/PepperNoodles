@@ -23,4 +23,7 @@ public interface FriendSysRepository extends JpaRepository<FriendList,Integer> {
 	
 	@Query(value="from FriendList f Where f.friends =?1 and f.friendship=?2",nativeQuery = false)
 	public List<FriendList> findFriendByFriendAndRelation(UserAccount user,String friendship);
+	
+	@Query(value="from FriendList f Where f.mainUser =?1 and f.friendship=?2",nativeQuery = false)
+	public List<FriendList> findFriendListFromUser(UserAccount user,String friendship);
 }
