@@ -200,7 +200,15 @@ select.form-control{
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
 											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>
-                                            <li><a href="rearStage/indexRearStage1">後台</a></li>
+                                     <sec:authorize access="hasAnyAuthority('admin')" var="isAuthenticated">
+										<c:choose>
+											<c:when test="${isAuthenticated == true}">
+                                           		 <li><a href="rearStage/indexRearStage1">後台</a></li>
+											</c:when>
+											<c:otherwise>
+												</c:otherwise>
+											</c:choose>
+								      </sec:authorize>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
@@ -873,7 +881,10 @@ select.form-control{
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 	<script src="<c:url value='/scripts/main.js' />"></script>
 
-
+			<script>
+			console.log("hi")
+		console.log(isAuthenticated)
+		console.log(${isAuthenticated})</script>
 
 </body>
 </html>
