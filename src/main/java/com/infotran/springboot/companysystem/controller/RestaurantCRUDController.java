@@ -106,7 +106,8 @@ public class RestaurantCRUDController {
 	}
 
 	@PostMapping("/Hours/{restIdForSettingHour}")
-	public  @ResponseBody Map<String,String> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,@PathVariable("restIdForSettingHour") Integer id,Model model) {
+	public  @ResponseBody Map<String,String> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,
+			@PathVariable("restIdForSettingHour") Integer id,Model model) {
 		Restaurant restForSettingHour = restaurantService.get(id);
 	
 		
@@ -161,23 +162,23 @@ public class RestaurantCRUDController {
 		
 		Map<String,String> map = new HashMap<String, String>();
 		if(openTime1==null) {
-			map.put("星期",day);
+			map.put("day",day);
 			map.put("Close","Close");
 		}
 		else if(openTime1.length()!=0 & closeTime1.length()!=0 && openTime2.length()==0 ) {
-			map.put("星期",day);
-			map.put("營業時間",openTime1+"~"+closeTime1);
+			map.put("day",day);
+			map.put("time1",openTime1+"~"+closeTime1);
 		}
 		else if(openTime1.length()!=0 & closeTime1.length()!=0 & openTime2.length()!=0 & closeTime2.length()!=0 &openTime3.length()==0) {
-			map.put("星期",day);
-			map.put("營業時間一",openTime1+"~"+closeTime1);
-			map.put("營業時間二",openTime2+"~"+closeTime2);
+			map.put("day",day);
+			map.put("time1",openTime1+"~"+closeTime1);
+			map.put("time2",openTime2+"~"+closeTime2);
 		}
 		else if(openTime1.length()!=0 & closeTime1.length()!=0 & openTime2.length()!=0 & closeTime2.length()!=0 & openTime3.length()!=0 & closeTime3.length()!=0 ) {
-			map.put("星期",day);
-			map.put("營業時間一",openTime1+"~"+closeTime1);
-			map.put("營業時間二",openTime2+"~"+closeTime2);
-			map.put("營業時間三",openTime3+"~"+closeTime3);
+			map.put("day",day);
+			map.put("time1",openTime1+"~"+closeTime1);
+			map.put("time2",openTime2+"~"+closeTime2);
+			map.put("time3",openTime3+"~"+closeTime3);
 		}
 		else {
 			System.out.println("sth wrong!");

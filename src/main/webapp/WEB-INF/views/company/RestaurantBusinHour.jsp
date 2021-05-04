@@ -41,31 +41,39 @@
 </head>
 <body>
 
-	
-	
-	<div id="Monday" >
-	<span id="MondaySelect">	
-	星期一
-	<input type="radio" name="Day1" value="1" id="MondayOpenRadio" checked="true" />營業
-	<input type="radio" name="Day1" value="1" id="MondayCloseRadio"/>不營業
-			</span>
-	<form:form id="MondayCloseform" method="POST" modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
-	<form:input path="day" type="text" value="1" id="day1close" style="display:none" />
-	</form:form>
-	<div id="MondayOpen" style="display" >
-<form:form id="MondayOpenform" method="POST" modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
-			<form:input path="day" type="text" value="1" id="day1open" style="display:none" />
-			from <form:input path="openTime" type="text" id="open1" /> to <form:input path="closeTime" type="text" id="close1" /><br>
-			from <form:input path="openTime2nd" type="text" id="open2" /> to <form:input path="closeTime2nd" type="text" id="close2" /><br>
-			from <form:input path="openTime3rd" type="text" id="open3" /> to <form:input path="closeTime3rd" type="text" id="close3" />
-	</form:form>
-	
-	
-		<input type="button" id="checktime" value="檢查時間" />
-		
-		
-		
-		<script>
+
+
+	<div id="Monday">
+		<span id="MondaySelect"> 星期一 <input type="radio" name="Day1"
+			value="1" id="MondayOpenRadio" checked="true" />營業 <input
+			type="radio" name="Day1" value="1" id="MondayCloseRadio" />不營業
+		</span>
+		<form:form id="MondayCloseform" method="POST"
+			modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
+			<form:input path="day" type="text" value="二" id="day1close"
+				style="display:none" />
+		</form:form>
+		<div id="MondayOpen" style="">
+			<form:form id="MondayOpenform" method="POST"
+				modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
+				<form:input path="day" type="text" value="二" id="day1open"
+					style="display:none" />
+			from <form:input path="openTime" type="text" id="open1" /> to <form:input
+					path="closeTime" type="text" id="close1" />
+				<br>
+			from <form:input path="openTime2nd" type="text" id="open2" /> to <form:input
+					path="closeTime2nd" type="text" id="close2" />
+				<br>
+			from <form:input path="openTime3rd" type="text" id="open3" /> to <form:input
+					path="closeTime3rd" type="text" id="close3" />
+			</form:form>
+
+
+			<input type="button" id="checktime" value="檢查時間" />
+
+
+
+			<script>
 			$(function() {
 				alert(${restaurantBusinHour.restaurant.restaurantId});
 				//open1
@@ -349,7 +357,8 @@
 				
 			})
 		</script>
-	</div><!-- monday Open -->
+		</div>
+		<!-- monday Open -->
 		<input type="button" id="checkBeforeSubmit" value="設定" />
 		<script>
 // 		hide or show Open div
@@ -377,35 +386,40 @@
 		$("#checkBeforeSubmit").click(function() {
 			//有營業+時間OK 可送出
 			if ($('#MondayOpenRadio').prop("checked")==true & day1checktime == "true"  ) {
-// 				console.log('設定成功'); 
-// 				console.log('day1checktime='+day1checktime); 
-// 				console.log('inputValue='+$('#open1')[0].value); 
 
 				var data = $("#MondayOpenform").serializeArray();
+
 				console.log(data);
 				var urls = "${pageContext.request.contextPath}/";
 				urls += "<c:url value='Hours/'/>" +${restaurantBusinHour.restaurant.restaurantId};
-// 				urls +="/"+data[0][0].value;
-					
-				
-			
-// 				console.log(data[0][0].value);
+
 				$.ajax({
 					type : "POST",
 					url : urls,
-					contentType:'application/json; charset=UTF-8',
+					//contentType:'application/json; charset=UTF-8', //不可以唷! controller會接不到
 					data:data,
 					dataType : "text",
 					success : function(response) {
 						var ShowMondayTimeResult = document
 								.getElementById("ShowMondayTimeResult");
-// 						console.log(ShowMondayTimeResult);
-// 						console.log(${restaurantBusinHour.restaurant.restaurantId});
-// 						var jsontxt = JSON.parse(response);
-						console.log(response);
-
 						
-						ShowMondayTimeResult.innerHTML=response;
+
+					
+						var result=JSON.parse(response);
+						
+						console.log('1:'+result);
+						txt ='<table ><tr><td>星期'+result.day+'</td>';
+						txt += "<td>"+result.time1+'</td></tr>';
+						
+						if(result.time2 !=null){
+							txt += "<td></td><td>"+result.time2+'</td></tr>';
+						}
+						if(result.time3 !=null){
+							txt += "<td></td><td>"+result.time3+'</td></tr>';
+						}
+						
+						txt+="</table>";
+						ShowMondayTimeResult.innerHTML=txt;
 				
 					
 					},
@@ -417,8 +431,37 @@
 				
 			//不營業
 			} else if($('#MondayCloseRadio').prop("checked")==true){
-				console.log('星期一不營業')
-				$("#MondayCloseform").submit();
+	
+	
+				var data = $("#MondayCloseform").serializeArray();
+
+				console.log(data);
+				var urls = "${pageContext.request.contextPath}/";
+				urls += "<c:url value='Hours/'/>" +${restaurantBusinHour.restaurant.restaurantId};
+
+				$.ajax({
+					type : "POST",
+					url : urls,
+					//contentType:'application/json; charset=UTF-8', //不可以唷! controller會接不到
+					data:data,
+					dataType : "text",
+					success : function(response) {
+						var ShowMondayTimeResult = document
+								.getElementById("ShowMondayTimeResult");
+					
+						var result=JSON.parse(response);
+						
+						console.log('1:'+result);
+						txt ='<table ><tr><td>星期'+result.day+'</td>';
+						txt += "<td>"+result.Close+'</td></tr>';
+						txt+="</table>";
+						ShowMondayTimeResult.innerHTML=txt;
+					},
+					error : function(thrownError) {
+						console.log(thrownError);
+					}
+
+				});
 			}else{
 				alert('設定失敗')
 				console.log('day1checktime='+day1checktime);
@@ -432,13 +475,21 @@
 
 		
 		
-		</script>	
+		</script>
 
-	</div> <!-- monday -->
-	<div id="ShowMondayTimeResult">
-	
-	設定結果
 	</div>
+
+	
+	
+	
+	<div id="showresult">	
+	
+	
+	<div id="ShowMondayTimeResult">設定結果</div>
+	
+	
+	</div>
+
 
 
 
