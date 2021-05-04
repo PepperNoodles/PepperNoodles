@@ -1,6 +1,7 @@
 package com.infotran.springboot.rearsystem.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,7 @@ public interface RearUserAccountRepository extends JpaRepository<UserAccount, St
 	@Query(value="select user from UserAccount user where user.companyDetail != null")
 	public ArrayList<UserAccount> findCompanyUserList ();
 	
-	
+	//模糊搜尋帳號
+	@Query(value="from UserAccount where accountIndex like concat('%', ?1, '%')")
+	public List<UserAccount> findAccountLike(String accountIndex);
 }
