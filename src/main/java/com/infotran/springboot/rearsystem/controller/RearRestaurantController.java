@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.sql.rowset.serial.SerialBlob;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
@@ -63,6 +65,7 @@ public class RearRestaurantController {
 		 if (rest.getUserAccount()!=null) {
 			 userIndex = rest.getUserAccount().getAccountIndex();
 		 }
+		 
 		HashMap<String, Object> mapWithUser = new HashMap<String, Object>();
 		mapWithUser.put("rest",rest);
 		mapWithUser.put("userIndex", userIndex);
@@ -82,15 +85,12 @@ public class RearRestaurantController {
 		 for(Restaurant re:rests) {
 			 HashMap<String, Object> restUser = new HashMap<String,Object>();
 			 if (re.getUserAccount()!=null) {
-				 userIndex = re.getUserAccount().getAccountIndex();
+				 userIndex = re.getUserAccount().getAccountIndex();				 
 			 }
-			
-			 
-			
 			 restUser.put("userIndex", userIndex);
 			 restUser.put("rest",re);
 			 restsWithUser.add(restUser);
-			 
+			 userIndex="";
 		 }
 		 
 		return restsWithUser;

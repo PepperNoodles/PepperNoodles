@@ -69,6 +69,11 @@
 	#main{
 	background-color:#FFFFFF;
 	}
+	.butt{
+	height:60px;
+	width:105px;
+	}
+	
 </style>
 </head>
 <body id="body" >
@@ -87,28 +92,35 @@
 		</div>
 	</div>
 
-	<div id="main" class="container mt-10" style="width: 80%; height: 100vh"> >
-			<h1>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h1>
+	<div id="main" class="container mt-5" style="width: 80%; height: 100vh">
+<%-- 			<h5>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h5> --%>
+ 			<h5>您好${userAccount.accountIndex},我是:</h5>
 			<!-- 圖片+姓名bar-->
-			<div class="d-flex">
-				<div class="p-2 bg-info">
+			<div class="d-flex justify-content-start">
+				<div class="p-2 bg-secondary">
 					
 					<img style="height: 100px" src="<c:url value='/userProtrait/${viewUserAccountDetail.useretailId}'/>">
 				</div>
 
-				<div id="nickname" class="p-2 flex-fill align-self-end justify-content-start">
+				<div id="nickname" class="p-2 flex-fill align-self-end ">
 					<h1>${viewUserAccountDetail.nickName}</h1>
 				</div>
 
-				<div id="" class="align-self-start justify-content-start">
-					<button style="color:#4a4aFF" id="AddFriendChecker">加好友</button>
+				<div id="" class="align-self-end justify-content-start">
+					<button class="butt" style="color:#4a4aFF" id="AddFriendChecker">加好友</button>
 				</div>
 				
 
 			</div>
+			<div class="d-flex ml-5 mt-3 bg-secondary" style="height: 5px" >
+				
+			</div>
+				<div class="d-flex mt-1 mr-5 bg-info" style="height: 5px" >
+				
+			</div>
 			
 			
-			<div class="d-flex">
+			<div class="d-flex mt-3" style="height: 70vh">
  				<div class="nav flex-column nav-pills p-2 bg-dark" id="nav-tab" role="tablist" aria-orientation="horizontal">
 				
 					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>		
@@ -233,7 +245,7 @@
 					url: urls,							
 					dataType: "text",
 					success: function (response) {		
-						alert(response);
+				//		alert(response);
 						judgeRelation();
 					},
 						error: function (thrownError) {
