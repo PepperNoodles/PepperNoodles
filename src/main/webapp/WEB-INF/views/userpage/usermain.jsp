@@ -1,5 +1,7 @@
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="org.hibernate.Hibernate,java.util.Set,java.util.HashSet,com.infotran.springboot.commonmodel.FoodTagUser,com.infotran.springboot.commonmodel.UserAccount"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"
+	import="org.hibernate.Hibernate,java.util.Set,java.util.HashSet,com.infotran.springboot.commonmodel.FoodTagUser,com.infotran.springboot.commonmodel.UserAccount"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="../includePage/includeNav.jsp"%>
@@ -12,93 +14,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
+@import
+	url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap')
+	;
 
-	.header {
-		background-color: #000000;
-	}
-	td a {
-		color: #0000C6;
-	}
-	.searchButton{
-		height: 30px;
-		border-radius: 5px;
-	}
-	.friendsysImg {  
-    height: 120px; /*can be anything*/
-    width: 160px; /*can be anything*/
-    position: relative;
-	}
-	
-	
-	
-	.friendsysImg img{
-		object-fit: cover; 
-	    max-height: 100%;  
-	    max-width: 100%; 
-	    width: auto;
-	    height: auto;
-	    position: absolute;  
-	    top: 0;  
-	    bottom: 0;  
-	    left: 0;  
-	    right: 0;  
-	    margin: auto;   
-  		display: block;
-	}
-
-	.nav a {
-		color: black;
-	}
-
-	a:hover {
-		color: blue;
-	}
-
-	tr:hover {
-		background-color: #BEBEBE;
-	}
-	
-	td>img {
-		height: 100px;
-	}
-	
-	table {
-		border-collapse: separate;
-		border: solid black 1px;
-		border-radius: 6px;
-		-moz-border-radius: 6px;
-	}
-	.display{
- 		font-family: 'Noto Serif TC', serif;
- 		font-size: 15px; 
-
-	button{
-		color: black;
-	}
-	
-	.collumntogreen{
-		color:green;
-	}
-	.collumntored{
-		red;
-	}
-	table a{
-		color:#0000C6;
-	}
-	
->>>>>>> f878cce85bb579045dcfaa5b2d82255141f5d9a2
-.collumntogreen{
-	color:green;
+.header {
+	background-color: #000000;
 }
-.collumntored{
-	red;
+
+td a {
+	color: #0000C6;
 }
-table a{
-	color:#0000C6;
+
+.searchButton {
+	height: 30px;
+	border-radius: 5px;
+}
+
+.friendsysImg {
+	height: 120px; /*can be anything*/
+	width: 160px; /*can be anything*/
+	position: relative;
+}
+
+.friendsysImg img {
+	object-fit: cover;
+	max-height: 100%;
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	display: block;
+}
+
+.nav a {
+	color: black;
+}
+
+a:hover {
+	color: blue;
+}
+
+tr:hover {
+	background-color: #BEBEBE;
+}
+
+td>img {
+	height: 100px;
+}
+
+table {
+	border-collapse: separate;
+	border: solid black 1px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+}
+
+.display {
+	font-family: 'Noto Serif TC', serif;
+	font-size: 15px;
+	button
+	{
+	color
+	:
+	black;
+}
+
+.collumntogreen {
+	color: green;
+}
+
+.collumntored {red;
+	
+}
+
+table a {
+	color: #0000C6;
+}
+
+>>>>>>>
+f878cce85bb579045dcfaa5b2d82255141f5d9a2
+.collumntogreen {
+	color: green;
+}
+
+.collumntored {red;
+	
+}
+
+table a {
+	color: #0000C6;
 }
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
@@ -151,7 +165,7 @@ I've added a few comments on why we're using certain properties
 </head>
 <body>
 	<!-- 讀取圖案 -->
-	<div id="preloader-active" >
+	<div id="preloader-active">
 		<div
 			class="preloader d-flex align-items-center justify-content-center">
 			<div class="preloader-inner position-relative">
@@ -185,47 +199,143 @@ I've added a few comments on why we're using certain properties
 			<div class="flex-fill bg-secondary p-1 mb-5"></div>
 
 			<!--左邊的分隔用-->
-			<div class="d-flex" >
-				<div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" id="v-pills-aboutUser-tab" data-toggle="pill" href="#v-pills-aboutUser" role="tab" aria-controls="v-pills-aboutUser" aria-selected="true">
-						<i class="fas fa-file-alt"></i>關於我</a> 
-					<a  class="nav-link" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="false">
-						<i class="fas fa-users"></i>好友</a> 
-					<a class="nav-link" id="v-pills-userMessage-tab" data-toggle="pill" href="#v-pills-userMessage" role="tab" aria-controls="v-pills-userMessage" aria-selected="false">
-						<i class="fas fa-comments"></i>留言區</a>
-					<a class="nav-link" id="v-pills-userCollection-tab" data-toggle="pill" href="#v-pills-userCollection" role="tab" aria-controls="v-pills-userCollection" aria-selected="false">
-						<i class="fas fa-heart"></i>收藏區</a>
-					<a class="nav-link" id="v-pills-userOrderList-tab" data-toggle="pill" href="#v-pills-userOrderList" role="tab" aria-controls="v-pills-userOrderList" aria-selected="false">
-						<i class="fas fa-file-alt"></i>查詢訂單</a>
+			<div class="d-flex">
+				<div class="nav flex-column nav-pills col-3" id="v-pills-tab"
+					role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="v-pills-aboutUser-tab"
+						data-toggle="pill" href="#v-pills-aboutUser" role="tab"
+						aria-controls="v-pills-aboutUser" aria-selected="true"> <i
+						class="fas fa-file-alt"></i>關於我
+					</a> <a class="nav-link" id="v-pills-friend-tab" data-toggle="pill"
+						href="#v-pills-friend" role="tab" aria-controls="v-pills-friend"
+						aria-selected="false"> <i class="fas fa-users"></i>好友
+					</a> <a class="nav-link" id="v-pills-userMessage-tab"
+						data-toggle="pill" href="#v-pills-userMessage" role="tab"
+						aria-controls="v-pills-userMessage" aria-selected="false"> <i
+						class="fas fa-comments"></i>留言區
+					</a> <a class="nav-link" id="v-pills-userCollection-tab"
+						data-toggle="pill" href="#v-pills-userCollection" role="tab"
+						aria-controls="v-pills-userCollection" aria-selected="false">
+						<i class="fas fa-heart"></i>收藏區
+					</a> <a class="nav-link" id="v-pills-userOrderList-tab"
+						data-toggle="pill" href="#v-pills-userOrderList" role="tab"
+						aria-controls="v-pills-userOrderList" aria-selected="false"> <i
+						class="fas fa-file-alt"></i>查詢訂單
+					</a>
 
 				</div>
-					
+
 				<div class="tab-content" id="v-pills-tabContent col-9">
-					<div class="tab-pane fade show active" id="v-pills-aboutUser" role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
+					<div class="tab-pane fade show active" id="v-pills-aboutUser"
+						role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
 						<h2>關於我</h2>
-						<table border='1'  class='table table-hover table-bordered ' style='font-size: 8px border-collapse:separate; border:solid #F0F0F0 1px;border-radius:6px;-moz-border-radius:6px;'>
-						<tr>
-						<td><span id="accountIndex">email:</span></td><td><span > ${userAccount.accountIndex}</span><button   style="color: black;display:none ">確認</button></td ></tr>
-						<tr>
-						<td  ><span >照片修改：</span></td><td ><input class='genric-btn default circle arrow' style='color:black' type="file" 	disabled="disabled" id="wizard-picture" accept="image/*" name="photo"></td><td id="showtable9" style="display:none"><button id="confirmPhoto" class='genric-btn default circle arrow'  style="color: black;">確認</button></td></tr>
-						<tr>
-						<td><span >綽號：</span></td><td><span id="nickNameSpan" >${userAccount.userAccountDetail.nickName}</span><input value="${userAccount.userAccountDetail.nickName}" style="display:none" id="updateinputBasic2NickName"></input><button id="updateBaisc2NickName" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable2" style="display:none"><button class='genric-btn default circle arrow' id="change2NickName"  style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >生日：</span></td><td><span id="birthDaySpan" >${userAccount.userAccountDetail.birthDay}</span><input  value="${userAccount.userAccountDetail.birthDay}" style="display:none" id="updateinputBasic2birthDay" ></input><button  id="updateBaisc2birthDay" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable3" style="display:none"><button class='genric-btn default circle arrow' id="change2birthDay"  style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >性別：</span></td><td><span id="sexValueSpan" >${userAccount.userAccountDetail.gender}</span><input   value="${userAccount.userAccountDetail.gender}" style="display:none" id="updateinputBasic2gender" ></input><button  id="updateBaisc2gender" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable4" style="display:none"><button id="change2gender" class='genric-btn default circle arrow'  style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >地區：</span></td><td><span id="locationSpan" >${userAccount.userAccountDetail.location}</span><input   value="${userAccount.userAccountDetail.location}" style="display:none" id="updateinputBasic2location" ></input><button id="updateBaisc2location" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable5" style="display:none"><button id="change2location" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >電話：</span></td><td><span id="phoneNumberSpan" >${userAccount.userAccountDetail.phoneNumber}</span><input   value="${userAccount.userAccountDetail.phoneNumber}" style="display:none" id="updateinputBasic2phoneNumber" ></input><button id="updateBaisc2phoneNumber" class='genric-btn default circle arrow' style="color: black;display:none">確認</button></td><td id="showtable6" style="display:none"><button id="change2phoneNumber" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >真實姓名：</span></td><td><span id="realNameSpan" >${userAccount.userAccountDetail.realName}</span><input   value="${userAccount.userAccountDetail.realName}" style="display:none"  id="updateinputBasic2RealName"></input><button  id="updateBaisc2realName" class='genric-btn default circle arrow'  style="color: black;display:none">確認</button></td><td id="showtable7" style="display:none"><button id="change2realName" class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-						<tr>
-						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
-						
+						<table border='1' class='table table-hover table-bordered '
+							style='font-size: 8px border-collapse:separate; border: solid #F0F0F0 1px; border-radius: 6px; -moz-border-radius: 6px;'>
+							<tr>
+								<td><span id="accountIndex">email:</span></td>
+								<td><span> ${userAccount.accountIndex}</span>
+								<button style="color: black; display: none">確認</button></td>
+							</tr>
+							<tr>
+								<td><span>照片修改：</span></td>
+								<td><input class='genric-btn default circle arrow'
+									style='color: black' type="file" disabled="disabled"
+									id="wizard-picture" accept="image/*" name="photo"></td>
+								<td id="showtable9" style="display: none"><button
+										id="confirmPhoto" class='genric-btn default circle arrow'
+										style="color: black;">確認</button></td>
+							</tr>
+							<tr>
+								<td><span>綽號：</span></td>
+								<td><span id="nickNameSpan">${userAccount.userAccountDetail.nickName}</span><input
+									value="${userAccount.userAccountDetail.nickName}"
+									style="display: none" id="updateinputBasic2NickName"></input>
+								<button id="updateBaisc2NickName"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable2" style="display: none"><button
+										class='genric-btn default circle arrow' id="change2NickName"
+										style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>生日：</span></td>
+								<td><span id="birthDaySpan">${userAccount.userAccountDetail.birthDay}</span><input
+									value="${userAccount.userAccountDetail.birthDay}"
+									style="display: none" id="updateinputBasic2birthDay"></input>
+								<button id="updateBaisc2birthDay"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable3" style="display: none"><button
+										class='genric-btn default circle arrow' id="change2birthDay"
+										style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>性別：</span></td>
+								<td><span id="sexValueSpan">${userAccount.userAccountDetail.gender}</span><input
+									value="${userAccount.userAccountDetail.gender}"
+									style="display: none" id="updateinputBasic2gender"></input>
+								<button id="updateBaisc2gender"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable4" style="display: none"><button
+										id="change2gender" class='genric-btn default circle arrow'
+										style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>地區：</span></td>
+								<td><span id="locationSpan">${userAccount.userAccountDetail.location}</span><input
+									value="${userAccount.userAccountDetail.location}"
+									style="display: none" id="updateinputBasic2location"></input>
+								<button id="updateBaisc2location"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable5" style="display: none"><button
+										id="change2location" class='genric-btn default circle arrow'
+										style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>電話：</span></td>
+								<td><span id="phoneNumberSpan">${userAccount.userAccountDetail.phoneNumber}</span><input
+									value="${userAccount.userAccountDetail.phoneNumber}"
+									style="display: none" id="updateinputBasic2phoneNumber"></input>
+								<button id="updateBaisc2phoneNumber"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable6" style="display: none"><button
+										id="change2phoneNumber"
+										class='genric-btn default circle arrow' style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>真實姓名：</span></td>
+								<td><span id="realNameSpan">${userAccount.userAccountDetail.realName}</span><input
+									value="${userAccount.userAccountDetail.realName}"
+									style="display: none" id="updateinputBasic2RealName"></input>
+								<button id="updateBaisc2realName"
+										class='genric-btn default circle arrow'
+										style="color: black; display: none">確認</button></td>
+								<td id="showtable7" style="display: none"><button
+										id="change2realName" class='genric-btn default circle arrow'
+										style="color: black;">修改</button></td>
+							</tr>
+							<tr>
+								<td><span>興趣：</span></td>
+								<td><span id="userTagsSpan"><c:forEach
+											items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span
+									id="updateinputBasic3FoodTagNames"
+									style="color: black; display: none"></span> &nbsp; &nbsp;
+									<button class='genric-btn default circle arrow'
+										id="FoodTagNames" style="color: black; display: none">確認</button></td>
+								<td id="showtable8" style="display: none"><button
+										id="change3FoodTagNames"
+										class='genric-btn default circle arrow' style="color: black;">修改</button></td>
+							</tr>
+
 						</table>
-						<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
-						
+						<button class='genric-btn default circle arrow' id="openchange"
+							style="color: black;">修改基本資料</button>
+						<button class='genric-btn default circle arrow' id="closechange"
+							style="color: black;">取消</button>
+
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
 						aria-labelledby="v-pills-friend-tab">
@@ -247,13 +357,13 @@ I've added a few comments on why we're using certain properties
 									aria-controls="nav-friendQequest" aria-selected="false">
 									<button class="btn-link" id="checkRequestList"
 										style="color: black">查看邀請</button>
-								</a>
-								<a class="nav-item nav-link" id="nav-message-tab"
+								</a> <a class="nav-item nav-link" id="nav-message-tab"
 									data-toggle="tab" href="#nav-message" role="tab"
 									aria-controls="nav-message" aria-selected="false">
-									<button onclick="location.href='<c:url value='/user/websocket'/>'" class="btn-link" id="checkmessage"
-										style="color: black">聊天室 </button>
-<%-- 										<a href="<c:url value='/user/websocket'/>">聊天室</a> --%>
+									<button
+										onclick="location.href='<c:url value='/user/websocket'/>'"
+										class="btn-link" id="checkmessage" style="color: black">聊天室
+									</button> <%-- 										<a href="<c:url value='/user/websocket'/>">聊天室</a> --%>
 								</a>
 							</div>
 						</nav>
@@ -302,8 +412,7 @@ I've added a few comments on why we're using certain properties
 
 						<!-- 						使用Ajax的方法 -->
 						<div class="rounded border border-warning container-fluid table "
-							style="  overflow-y: auto; height:400px;" id="commentsForUser"
-							></div>
+							style="overflow-y: auto; height: 400px;" id="commentsForUser"></div>
 
 
 						<!--      使用jstl的方法 -->
@@ -343,15 +452,43 @@ I've added a few comments on why we're using certain properties
 						<%--       </c:otherwise> --%>
 						<%--      </c:choose> --%>
 					</div>
+
+
 					<div class="tab-pane fade" id="v-pills-userCollection"
 						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
-						<h2>userCollection</h2>
+						<h2>我的餐廳收藏</h2>
+						<a href="<c:url value='/restSearch/map'/>"><button
+								type="button" class="genric-btn default circle arrow"
+								id="addNewComment">新增收藏</button></a>
+
+						<table id="" class="display">
+							<thead>
+								<tr>
+									<th>編號</th>
+									<th>餐廳名稱</th>
+									<th>標籤</th>
+									<th>收件人</th>
+									<th>環境照片	</th>
+									<th>金額</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								</tr>
+							</tbody>
+						</table>
+
 					</div>
-					
+
+
+
+
 					<!-- 訂單表 -->
-					<div class="tab-pane fade" id="v-pills-userOrderList" role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+					<div class="tab-pane fade" id="v-pills-userOrderList"
+						role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
 						<h2>訂單明細</h2>
-						<table  id="orderlist" class="display">
+						<table id="orderlist" class="display">
 							<thead>
 								<tr>
 									<th>編號</th>
@@ -374,9 +511,9 @@ I've added a few comments on why we're using certain properties
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="listing-area pt-120 pb-120"></div>
-	
+
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>

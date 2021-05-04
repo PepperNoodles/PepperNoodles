@@ -218,8 +218,8 @@ select.form-control{
 												</i> Sign in or Register</a>
 												<ul class="submenu">
 													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li>
-													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li>
-													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
+													<li><a href="<c:url value='/user/login'/>">使用者登入</a></li>
+													<li><a href="<c:url value='/Company/company'/>">企業登入</a></li>
 												</ul>	
 												</li></c:when>
 												<c:when test="${userAccount != null}">

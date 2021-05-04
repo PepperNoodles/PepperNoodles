@@ -228,6 +228,13 @@ public class UserAccount implements Serializable{
 	private List<Like> Likes = new ArrayList<Like>();
 
 	
+	// Restaurants Collections=============================================================
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "fkUAId",cascade = CascadeType.ALL)
+	private List<Restaurant> restaurantCollections = new ArrayList<Restaurant>();
+
+	
 	// =============================================================
 	
 	@Transient
