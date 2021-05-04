@@ -7,10 +7,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template For inClude</title>
+<title>Search For Food</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
@@ -48,6 +47,7 @@ html, body {
 	width: 70%;
 	height: 70%;
 	}
+
 tr a:hover{
 	color:#FFFFFF;
 	background-color:#FFBB77;
@@ -55,6 +55,40 @@ tr a:hover{
 .nice-select{
  	position:relative;
  	z-index:1020;
+}
+	.frame2 {  
+   		 height: 60px; /*can be anything*/
+    	 width: 90px; /*can be anything*/
+   		 position: relative;
+	}	
+
+
+	
+	.frame2 img{  
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+	    position: absolute;  
+	    top: 0;   
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
+	}
+	
+	.memoBoard{
+		overflow-x:hidden;
+		overflow-y:auto;
+	}
+
+.buttonblack{
+	color:#8E8E8E;
+}
+.buttonblack:hover{
+	color:#3C3C3C;
 }
 
 
@@ -99,7 +133,7 @@ tr a:hover{
 	
 	
     <input id="keyWord" class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button id="keyWordSearch">Search</button>
+    <button class="buttonblack" id="keyWordSearch">Search</button>
 	</nav>
 	
 	
@@ -118,18 +152,22 @@ tr a:hover{
     </div>
   </div>
 </div>
-	
-		<div id="memoBoard"
-		style="float: left; height: 100vh;width:28%;  overflow: scroll;"></div>
-
+		
+		
+			<div class="memoBoard" id="memoBoard"
+			style="float: left; height: 70%;width:28%; border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black">
+				<h2 class="m-2">搜尋結果區</h2>
+			</div>
+		
 
 		<div id="map" style="float: left;">
 	
 		</div>
-		<br>
+		<div style="height: 5px;clear: left;"></div>
+		
 		<div id="pageButton" style="float: left;">
 		</div>
-		<p style="clear: left;"></p>
+		
 	
 	
 		<p style="clear: left;"></p>
@@ -252,6 +290,7 @@ tr a:hover{
 				let button = document.createElement("button");
 				button.id="pageButton"+i;
 				button.value=(i+1);
+				button.className="buttonblack";
 				button.innerHTML="<span>"+(i+1)+"</span>";
 				button.addEventListener('click',showSideBar);
 				$("#pageButton").append(button);
@@ -260,13 +299,17 @@ tr a:hover{
 	
 		function showSideBar(){
 			let page = this.value;
-			console.log(page);
+			//console.log(page);
 			createSideMemo(loca,page);
 		}
 		
 		//////////////////////////目前最新的function
 		//關鍵字查詢
 		function keyWordSearch(){
+			if(selectedMarker){
+				map.removeLayer(selectedMarker)
+			}
+			
 			console.log("keyWordSearch function");
 						
 			let keyWord = $("#keyWord").val();
@@ -519,75 +562,88 @@ tr a:hover{
 			let start = 6*(page-1)
 			
 			let end = Math.ceil(loca.length/6)==(page) ? loca.length : 6*page;
-			console.log(start+":"+end);
-			
-			for(let i=start;i<end;i++){
-			
-				//建立td1和roleSpan
-			    let tr1 = document.createElement("tr");
-			    // td1.className="tdtop";
-			    let td1=document.createElement("td");
-			    td1.rowSpan="4";	   
-			    let img =document.createElement("img");	   
-			    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
-			    img.src=url;
-			    img.name=loca[i].restaurantName;
-			    img.style.height="80px";
-			    img.id=loca[i].restaurantId;
-			    td1.appendChild(img);
-			    img.removeEventListener("click",showMemo);
-			    img.addEventListener("click",showMemo);	    
-			    tr1.appendChild(td1);
-			    
-			    let tr2 = document.createElement("tr");
-			    let td2=document.createElement("td");
-			    let restAnchor = document.createElement("a");
-			    
-			    restAnchor.href="#";
-			    
-			    restAnchor.innerHTML=loca[i].restaurantName;
-			    restAnchor.style.color="#0000C6";
-			    td2.appendChild(restAnchor);
-			    tr2.appendChild(td2);     			        
-			        
-			    let tr3 = document.createElement("tr");
-			    let td3=document.createElement("td");
-			    td3.innerHTML=loca[i].restaurantAddress;
-			        tr3.appendChild(td3);
-			        
-			    //標籤列表
-			    let tr4 = document.createElement("tr");
-			    let td4=document.createElement("td");
-			    td4.innerHTML="Tags:&nbsp"
-			    td4.className="tdbot";
-			    
-			    for(let j = 0; j<loca[i].foodTag.length;j++){
-			    	let tagAnchor = document.createElement("a");
-					tagAnchor.href="#";
+// 			console.log(start+":"+end);
+// 			console.log("loca長度:=="+loca.length)
+			if(loca.length>0){
+				for(let i=start;i<end;i++){
 					
-					tagAnchor.innerHTML+=loca[i].foodTag[j].foodTagName+"&nbsp&nbsp";
-					tagAnchor.style.color="#A23400";
-					td4.appendChild(tagAnchor);
-			    }
-			    
-			    
-			    //td4.innerHTML=loca[i].restaurantAddress;
-			    tr4.appendChild(td4);
-				
-			    let tr5= document.createElement("tr");
-			    tr5.style.height="5px";
-			    tr5.style.backgroundColor="#9D9D9D";
-			    tr5.appendChild(document.createElement("td"));
-			    tr5.appendChild(document.createElement("td"));
-			    tr5.appendChild(document.createElement("td"));
-			    
-			    memosheet.appendChild(tr1);
-			    memosheet.appendChild(tr2);
-			    memosheet.appendChild(tr3);
-			    memosheet.appendChild(tr4);    
-			    memosheet.appendChild(tr5); 
-			    }
-			memo.appendChild(memosheet);
+					//建立td1和roleSpan
+				    let tr1 = document.createElement("tr");
+				    // td1.className="tdtop";
+				    let td1=document.createElement("td");
+				    td1.rowSpan="4";	   
+				    let img =document.createElement("img");	   
+				    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
+				    img.src=url;
+				    img.name=loca[i].restaurantName;
+				    img.style.height="80px";
+				    img.id=loca[i].restaurantId;
+				    let imgframe =document.createElement("div");
+				    imgframe.className='frame2';
+				    imgframe.appendChild(img);
+				    
+				    td1.appendChild(imgframe);
+				    
+				    
+				    img.removeEventListener("click",showMemo);
+				    img.addEventListener("click",showMemo);	    
+				    tr1.appendChild(td1);
+				    
+				    let tr2 = document.createElement("tr");
+				    let td2=document.createElement("td");
+				    let restAnchor = document.createElement("a");
+				    
+				    let resturl ="<c:url value='/userPage/'/>"+loca[i].restaurantId;
+				    restAnchor.href=resturl;
+				    
+				    restAnchor.innerHTML=loca[i].restaurantName;
+				    restAnchor.style.color="#0000C6";
+				    td2.appendChild(restAnchor);
+				    tr2.appendChild(td2);     			        
+				        
+				    let tr3 = document.createElement("tr");
+				    let td3=document.createElement("td");
+				    td3.innerHTML=loca[i].restaurantAddress;
+				        tr3.appendChild(td3);
+				        
+				    //標籤列表
+				    let tr4 = document.createElement("tr");
+				    let td4=document.createElement("td");
+				    td4.innerHTML="Tags:&nbsp"
+				    td4.className="tdbot";
+				    
+				    for(let j = 0; j<loca[i].foodTag.length;j++){
+				    	let tagAnchor = document.createElement("a");
+						tagAnchor.href="#";
+						
+						tagAnchor.innerHTML+=loca[i].foodTag[j].foodTagName+"&nbsp&nbsp";
+						tagAnchor.style.color="#A23400";
+						td4.appendChild(tagAnchor);
+				    }
+				    
+				    
+				    //td4.innerHTML=loca[i].restaurantAddress;
+				    tr4.appendChild(td4);
+					
+				    let tr5= document.createElement("tr");
+				    tr5.style.height="5px";
+				    tr5.style.backgroundColor="#9D9D9D";
+				    tr5.appendChild(document.createElement("td"));
+				    tr5.appendChild(document.createElement("td"));
+				    tr5.appendChild(document.createElement("td"));
+				    
+				    memosheet.appendChild(tr1);
+				    memosheet.appendChild(tr2);
+				    memosheet.appendChild(tr3);
+				    memosheet.appendChild(tr4);    
+				    memosheet.appendChild(tr5); 
+				    }
+				memo.appendChild(memosheet);
+			}else{
+				memo.innerHTML="<h2>沒有符合的餐廳</h2>";
+			}
+			
+		
 		}	
 		
 		//創立tag選擇器

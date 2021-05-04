@@ -822,14 +822,17 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public List<UserAccount> findMainUserFriend(@PathVariable("userAccountIndex") String mainAccountIndex){
 		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);
-		 Hibernate.initialize(user.getFriends());
-		Set<FriendList> mainUserFriends = user.getFriends();
+		
+		
+		List<FriendList> mainUserFriends = friendSysServiceImpl.findFriendByUserAndRelation(user,"Y");
+//		Hibernate.initialize(user.getFriends());
+//		Set<FriendList> mainUserFriends = user.getFriends();
 
 		List<UserAccount> myFriend = new ArrayList<UserAccount>();
 		if (mainUserFriends.isEmpty()==false) {
 			for(FriendList flist:mainUserFriends) {
 				UserAccount myFriendList = flist.getFriends();
-				System.out.println(myFriendList.getAccountIndex());
+				//System.out.println(myFriendList.getAccountIndex());
 				myFriend.add(myFriendList);
 				}
 			return myFriend;
