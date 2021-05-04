@@ -10,7 +10,7 @@ public class MessageModel {
 	private String fromLogin;
 	private String to;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss",locale = "Asia/Taipei")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss",locale = "Asia/Taipei", timezone = "GMT+8")
 	private Date date;
 	
 

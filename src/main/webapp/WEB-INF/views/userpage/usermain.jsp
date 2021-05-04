@@ -43,45 +43,79 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 
-.header {
-	background-color: #000000;
-}
-a {
-	color: black;
-}
-.nav a {
-	color: black;
-}
+	.header {
+		background-color: #000000;
+	}
+	td a {
+		color: #0000C6;
+	}
+	.searchButton{
+		height: 30px;
+		border-radius: 5px;
+	}
+	.friendsysImg {  
+    height: 120px; /*can be anything*/
+    width: 160px; /*can be anything*/
+    position: relative;
+	}
+	
+	
+	
+	.friendsysImg img{
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+	    position: absolute;  
+	    top: 0;  
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
+	}
 
-a:hover {
-	color: blue;
-}
+	.nav a {
+		color: black;
+	}
 
-tr:hover {
-	background-color: #BEBEBE;
-}
+	a:hover {
+		color: blue;
+	}
 
-td>img {
-	height: 100px;
-}
+	tr:hover {
+		background-color: #BEBEBE;
+	}
+	
+	td>img {
+		height: 100px;
+	}
+	
+	table {
+		border-collapse: separate;
+		border: solid black 1px;
+		border-radius: 6px;
+		-moz-border-radius: 6px;
+	}
+	.display{
+ 		font-family: 'Noto Serif TC', serif;
+ 		font-size: 15px; 
 
-table {
-	border-collapse: separate;
-	border: solid black 1px;
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-}
-.display{
- 	font-family: 'Noto Serif TC', serif;
- 	font-size: 15px; 
-
-button{
-color: black;
-}
-
-
-
-
+	button{
+		color: black;
+	}
+	
+	.collumntogreen{
+		color:green;
+	}
+	.collumntored{
+		red;
+	}
+	table a{
+		color:#0000C6;
+	}
+	
 .collumntogreen{
 	color:green;
 }
@@ -91,16 +125,9 @@ color: black;
 table a{
 	color:#0000C6;
 }
-
-
-
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
 */
-
-
-
-
 /*  td, th {  */
 /*      border-left:solid black 1px;  */
 /*      border-top:solid black 1px;  */
@@ -200,7 +227,7 @@ I've added a few comments on why we're using certain properties
 						<td><span >興趣：</span></td><td><span  id="userTagsSpan" ><c:forEach items="${userAccount.userTags}" var="hobby">${hobby.fkfoodtagid.foodTagName} </c:forEach></span><span   id="updateinputBasic3FoodTagNames" style="color: black;display:none"></span> &nbsp; &nbsp;<button class='genric-btn default circle arrow' id="FoodTagNames" style="color: black;display:none">確認</button></td><td id="showtable8" style="display:none"><button id="change3FoodTagNames"  class='genric-btn default circle arrow' style="color: black;">修改</button></td></tr>
 						
 						</table>
-												<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
+						<button class='genric-btn default circle arrow' id="openchange" style="color: black;">修改基本資料</button><button class='genric-btn default circle arrow' id="closechange" style="color: black;">取消</button>
 						
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
@@ -237,7 +264,7 @@ I've added a few comments on why we're using certain properties
 							<div class="tab-pane fade show active" id="nav-myFriend"
 								role="tabpanel" aria-labelledby="nav-myFriend-tab">
 								<!--<button id="checkFriendList" style="color:black">我的好友</button>-->
-								<div id="userFriendList"></div>
+								<div class="friendsys m-3" id="userFriendList"></div>
 
 							</div>
 							<div class="tab-pane fade" id="nav-searchFriend" role="tabpanel"
@@ -245,9 +272,9 @@ I've added a few comments on why we're using certain properties
 								<div class="d-flex mt-3">
 									<input class="m-2" id="nameSearch" type="search"
 										placeholder="Search By nickName" aria-label="Search">
-									<button class="btn-link" id="btn-search">Search</button>
+									<button class="searchButton btn-link mt-1" id="btn-search">Search</button>
 								</div>
-								<div id="searchResult"></div>
+								<div class="friendsys m-3" id="searchResult"></div>
 							</div>
 
 
@@ -255,7 +282,7 @@ I've added a few comments on why we're using certain properties
 								aria-labelledby="nav-friendQequest-tab">
 								<h6>好友邀請</h6>
 								<!--<button id="checkRequestList" style="color:black">查看邀請</button>-->
-								<div id="friendRequest"></div>
+								<div class="friendsys m-3" id="friendRequest"></div>
 							</div>
 						</div>
 					</div>
@@ -548,7 +575,18 @@ I've added a few comments on why we're using certain properties
 							//console.log(response[0]);
 							let table =  document.createElement("table");
 							table.border="1";
-
+							let trh = document.createElement("tr");
+ 							let th1 = document.createElement("th");
+ 							th1.innerHTML= "照片"
+ 							let th2 = document.createElement("th");
+ 							th2.innerHTML = "帳號"
+ 							let th3 = document.createElement("th");
+ 							th3.innerHTML = "名稱"
+ 							trh.appendChild(th1);
+ 							trh.appendChild(th2);
+ 							trh.appendChild(th3);
+ 							table.appendChild(trh);
+							
 							let length = Object.keys(response).length;
 							for (let i =0;i< length;i++){
 								let tr  = document.createElement("tr");
@@ -556,10 +594,18 @@ I've added a few comments on why we're using certain properties
 								let td2 = document.createElement("td");
 								let td3 = document.createElement("td");
 								let img = document.createElement("img");
+								
+								let divFrame = document.createElement("div");
+								divFrame.className="friendsysImg";
+								
 								img.class="tdimg";
 								let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
 								img.src="<c:url value='"+imgSrc+"'/>";
-								td3.appendChild(img);
+								
+								divFrame.append(img);
+								
+								td3.appendChild(divFrame);
+								
 								td1.innerHTML=response[i].accountIndex;
 								console.log(response[i].accountIndex);
 								console.log(response[i].userAccountDetail);								
@@ -604,10 +650,21 @@ I've added a few comments on why we're using certain properties
 					function showRequestList(response){
 							$("#friendRequest").html("");
 							//let result = JSON.stringify(response);
-							console.log(response[0]);
+							//console.log(response[0]);
 							let table =  document.createElement("table");
 							table.border="1";
-
+ 							let trh = document.createElement("tr");
+ 							let th1 = document.createElement("th");
+ 							th1.innerHTML= "照片"
+ 							let th2 = document.createElement("th");
+ 							th2.innerHTML = "帳號"
+ 							let th3 = document.createElement("th");
+ 							th3.innerHTML = "名稱"
+ 							trh.appendChild(th1);
+ 							trh.appendChild(th2);
+ 							trh.appendChild(th3);
+ 							table.appendChild(trh);
+ 							
 							let length = Object.keys(response).length;
 							for (let i =0;i< length;i++){
 								let tr  = document.createElement("tr");
@@ -616,10 +673,15 @@ I've added a few comments on why we're using certain properties
 								let td2 = document.createElement("td");
 								let td3 = document.createElement("td");
 								let td4 = document.createElement("td");
+								let divFrame = document.createElement("div");
+								divFrame.className="friendsysImg";
 								let img = document.createElement("img");
 								let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
 								img.src="<c:url value='"+imgSrc+"'/>";
-								td3.appendChild(img);
+								divFrame.append(img);
+								
+								td3.appendChild(divFrame);								
+								
 								td1.innerHTML=response[i].accountIndex;
 								console.log(response[i].accountIndex);
 								console.log(response[i].userAccountDetail);

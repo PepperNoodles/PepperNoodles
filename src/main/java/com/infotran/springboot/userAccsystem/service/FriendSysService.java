@@ -16,4 +16,5 @@ public interface FriendSysService {
 	public List<FriendList> findFriendByFriendAndRelation(UserAccount user,String friendship);
 	
 	public FriendList save(FriendList friendList);
+	
 }
