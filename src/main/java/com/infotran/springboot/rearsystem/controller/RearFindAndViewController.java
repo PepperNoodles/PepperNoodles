@@ -30,5 +30,9 @@ public class RearFindAndViewController {
 		return "rearStage/rearStage";
 	}
 	
+	@GetMapping("/Editproduct")
+	public String editproduct() {
+		return "shoppingSystem/Editproduct";
+	}
 	
 }

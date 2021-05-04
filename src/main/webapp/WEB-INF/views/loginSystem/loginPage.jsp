@@ -403,9 +403,7 @@
 					"birthDay" : birthday,
 					"gender" : sexValue,
 					"location" : location
-				}) ], {
-					type : "application/json"
-				}));
+				}) ], {type : "application/json"}));
 				// 				var jsonMember = {
 				// 					"account" : userValue,
 				// 					"password" : pwdValue,

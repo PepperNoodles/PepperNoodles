@@ -11,15 +11,11 @@ import com.infotran.springboot.shoppingmall.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
-	
-	Optional<Product> findById(Integer product);
-	
-	
 	@Query(value= "SELECT distinct p "
 				+ "FROM Product p,FoodTagProduct ftp INNER JOIN "
 				+ "FoodTag ft ON ftp.fkFoodtagid = ft.foodTagIid INNER JOIN "
 				+ "Product p ON ftp.fkproductid = p.productId "
-				+ "where ft.foodTagName like %:input% or p.productName like %:input%")
+				+ "where ft.foodTagName like %:input% or p.productName like %:input% and p.status ='上架中'")
 	Page<Product> findBySearch(String input,Pageable pageable);
 	
 	
@@ -28,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "FoodTag ft ON ftp.fkFoodtagid = ft.foodTagIid INNER JOIN "
 			+ "Product p ON ftp.fkproductid = p.productId "
 			+ "where (ft.foodTagName like %:input% or p.productName like %:input%) "
-			+ "and (p.productPrice BETWEEN :startPrice AND :endPrice)")
+			+ "and (p.productPrice BETWEEN :startPrice AND :endPrice) and p.status ='上架中'")
 	Page<Product> findBySearchAndPriceBetween(String input,Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	
@@ -37,14 +33,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 				+ "FROM Product p,FoodTagProduct ftp INNER JOIN "
 				+ "FoodTag ft ON ftp.fkFoodtagid = ft.foodTagIid INNER JOIN "
 				+ "Product p ON ftp.fkproductid = p.productId "
-				+ "where ft.foodTagName = ?1")
+				+ "where ft.foodTagName = ?1 and p.status ='上架中'")
 	Page<Product> findByExactLikeTag(String tagname,Pageable pageable);
 	
 	@Query(value= "SELECT distinct p "
 				+ "FROM Product p,FoodTagProduct ftp INNER JOIN "
 				+ "FoodTag ft ON ftp.fkFoodtagid = ft.foodTagIid INNER JOIN "
 				+ "Product p ON ftp.fkproductid = p.productId "
-				+ "where ft.foodTagName = ?1 and (p.productPrice BETWEEN ?2 AND ?3)")
+				+ "where ft.foodTagName = ?1 and (p.productPrice BETWEEN ?2 AND ?3) and p.status ='上架中'")
 	Page<Product> findByExactLikeTagAndPriceBetween(String tagname,Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	/*模糊查詢*/
@@ -54,7 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	List<Product> findByProductPriceBetween(Integer startPrice, Integer endPrice);
 	
 	
-	@Query(value = "select p from Product p where p.productPrice BETWEEN ?1 AND ?2")
+	@Query(value = "select p from Product p where p.productPrice BETWEEN ?1 AND ?2 and p.status ='上架中'")
 	Page<Product> findPageByProductPriceBetween(Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	
@@ -65,7 +61,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 				+"FoodTagProduct fp ON ft.foodTagIid = fp.fkFoodtagid INNER JOIN "
 				+"Product p ON fp.fkproductid = p.productId INNER JOIN "
 				+"UserAccount ua ON fu.fkuserid = ua.accountId "
-				+"where ua.accountIndex = ?1")
+				+"where ua.accountIndex = ?1 and p.status ='上架中'")
 	public Page<Product> findByTag(String accountindex,Pageable pageable);
 	
 	
@@ -76,39 +72,41 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 				+"FoodTagProduct fp ON ft.foodTagIid = fp.fkFoodtagid INNER JOIN "
 				+"Product p ON fp.fkproductid = p.productId INNER JOIN "
 				+"UserAccount ua ON fu.fkuserid = ua.accountId "
-				+"where ua.accountIndex = ?1 and (p.productPrice BETWEEN ?2 AND ?3)")
+				+"where ua.accountIndex = ?1 and (p.productPrice BETWEEN ?2 AND ?3) and p.status ='上架中'")
 	public Page<Product> findByTag(String accountindex,Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	/*主分類搜尋/可以sortby productname*/
 	@Query(value="SELECT distinct p "
 				+"FROM Product p, ProductMainClass as pm INNER JOIN "
-				+"ProductDetailClass pd ON pm.ProductMainClassId = pd.FkProductMainClassId INNER JOIN "
+				+"ProductDetailClass pd ON pm.productMainClassId = pd.FkProductMainClassId INNER JOIN "
 				+"Product p ON pd.DetailClassId = p.fkProductDetailClassId "
-				+"where pm.MainClassName = ?1")
-	Page<Product> findByProductMainClass(String MainClassName,Pageable pageable);
+				+"where pm.mainClassName = ?1 and p.status ='上架中'")
+	Page<Product> findByProductMainClass(String mainClassName,Pageable pageable);
 	
 	
 	/*主分類搜尋和價格間距/可以sortby productname*/
 	@Query(value="SELECT distinct p "
 				+"FROM Product p, ProductMainClass as pm INNER JOIN "
-				+"ProductDetailClass pd ON pm.ProductMainClassId = pd.FkProductMainClassId INNER JOIN "
+				+"ProductDetailClass pd ON pm.productMainClassId = pd.FkProductMainClassId INNER JOIN "
 				+"Product p ON pd.DetailClassId = p.fkProductDetailClassId "
-				+"where pm.MainClassName = ?1 and (p.productPrice BETWEEN ?2 AND ?3)")
-	Page<Product> findByProductMainClass(String MainClassName,Integer startPrice, Integer endPrice,Pageable pageable);
+				+"where pm.mainClassName = ?1 and (p.productPrice BETWEEN ?2 AND ?3) and p.status ='上架中'")
+	Page<Product> findByProductMainClass(String mainClassName,Integer startPrice, Integer endPrice,Pageable pageable);
 	
 	
 	/*子分類搜尋/可以sortby productname*/
 	@Query(value="SELECT distinct p FROM Product p, ProductMainClass as pm INNER JOIN "
-				+"ProductDetailClass pd ON pm.ProductMainClassId = pd.FkProductMainClassId INNER JOIN "
+				+"ProductDetailClass pd ON pm.productMainClassId = pd.FkProductMainClassId INNER JOIN "
 				+"Product p ON pd.DetailClassId = p.fkProductDetailClassId "
-				+"where pd.DetailClassName = ?1")
+				+"where pd.DetailClassName = ?1 and p.status ='上架中'")
 	Page<Product> findByProductDetailClass(String DetailClassName,Pageable pageable);
 	
 	/*子分類搜尋和價格間距/可以sortby productname*/
 	@Query(value="SELECT distinct p FROM Product p, ProductMainClass as pm INNER JOIN "
-				+"ProductDetailClass pd ON pm.ProductMainClassId = pd.FkProductMainClassId INNER JOIN "
+				+"ProductDetailClass pd ON pm.productMainClassId = pd.FkProductMainClassId INNER JOIN "
 				+"Product p ON pd.DetailClassId = p.fkProductDetailClassId "
-				+"where pd.DetailClassName = ?1 and (p.productPrice BETWEEN ?2 AND ?3)")
+				+"where pd.DetailClassName = ?1 and (p.productPrice BETWEEN ?2 AND ?3) and p.status ='上架中'")
 	Page<Product> findByProductDetailClass(String DetailClassName,Integer startPrice, Integer endPrice,Pageable pageable);
 	
+	
+	Optional<Product> findById(Integer product);
 }

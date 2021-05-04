@@ -63,7 +63,7 @@ public class ShoppingMallController {
 		return map;
 	}
 	
-	@GetMapping(value="/getProductImages")
+	@GetMapping(value={"/getProductImages","/user/rearStage/getProductImages"})
 	public ResponseEntity<byte[]> getBookImage(@RequestParam("no") Integer no) {
 		ResponseEntity<byte[]> re = null;
 		Product product = shopservice.get(no);

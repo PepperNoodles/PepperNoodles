@@ -107,7 +107,7 @@ public class Restaurant {
 	
 	/*對應產品*/
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade =CascadeType.ALL)
-	@JsonManagedReference 
+//	@JsonManagedReference 
 	private List<Product> products =new ArrayList<Product>();
 
 

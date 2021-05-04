@@ -78,4 +78,6 @@ public interface ShoppingMallService {
 	Map<String, Integer> getBtnFromSearchAndPriceRange(String input, Integer startPrice, Integer endPrice, int page,
 			int size);
 
+	List<Product> findAll();
+
 }

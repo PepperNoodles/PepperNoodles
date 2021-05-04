@@ -46,14 +46,10 @@ table {
 .display{
  	font-family: 'Noto Serif TC', serif;
  	font-size: 15px; 
-
+}
 button{
 color: black;
 }
-
-
-
-
 .collumntogreen{
 	color:green;
 }
@@ -357,11 +353,16 @@ table a{
 				                { "data": "uuid"  },
 				                { "data": "orderCreatedDate" ,
 			                	  "render": function (data, type, row, meta) {
-			                       return data.substr(0,4)+'/'+data.substr(5,2)+'/'+data.substr(8,2)}},
+			                	   var time2 = new Date(data).format("yyyy-MM-dd hh:mm:ss");
+			                       return time2.substr(0,4)+'/'+time2.substr(5,2)+'/'+time2.substr(8,2)+' '+time2.substr(11,5)}},
 				                { "data": "receiveName" },
 				                { "data": "receivePhone" },
 				                { "data": "totalCost" },
-				                { "data": "status"}
+				                { "data": "status"},
+				                { "data": "",
+				                  "render": function(data,type,row,meta){
+				                  return "<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>";
+				                  }}
 						    ],
 						    filter: true,
 						    bPaginate: true,
@@ -371,6 +372,23 @@ table a{
 						    retrieve: true,
 						    searching: true, //關閉filter功能
 						});
+					
+					
+					Date.prototype.format = function (fmt) {
+						  var o = {
+						    "M+": this.getMonth() + 1, //月份
+						    "d+": this.getDate(), //日
+						    "h+": this.getHours(), //小時
+						    "m+": this.getMinutes(), //分
+						    "s+": this.getSeconds(), //秒
+						    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+						    "S": this.getMilliseconds() //毫秒
+						  };
+						  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+						  for (var k in o)
+						  if (new RegExp("(" +  k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +  o[k]).substr(("" + o[k]).length)));
+						  return fmt;
+						}
 					
 						///////////////////////////////////////////////////////
 						$.ajax({
@@ -384,7 +402,7 @@ table a{
 					        	var orderlist = result.AccountMemberOrderList;
 					        	Table.clear().draw();
 					            Table.rows.add(result.AccountMemberOrderList).draw();
-					            $('#orderlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>")
+// 					            $('#orderlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>");
 					        },
 					        error: function (result) {
 					        	console.log("有問題");

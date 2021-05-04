@@ -304,4 +304,9 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 	}
 	
 	
+	@Override
+	public List<Product> findAll(){
+		return productrepository.findAll();
+	}
+	
 }

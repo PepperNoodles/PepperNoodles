@@ -1,6 +1,8 @@
 package com.infotran.springboot.shoppingmall.service.Impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class OrderListServiceImpl implements OrderListService {
 	
 	@Autowired
 	OrderListRepository ordao;
+	
+	
 
 	@Override
 	public void delete(Integer orderlistid) {
@@ -59,5 +63,20 @@ public class OrderListServiceImpl implements OrderListService {
 		return order;
 	}
 	
+	
+	@Override
+	public Integer countSumByProductId(Integer productid) {
+		return ordao.countSumByProductId(productid);
+	}
+	
+	@Override
+	public ArrayList<OrderList> findOrderListByDateBetween(Date stratDate,Date endDate){
+		return ordao.findOrderListByDateBetween(stratDate, endDate);
+	}
+	
+	@Override
+	public Integer sumBySameDateWithConvertTo111(String date) {
+		return ordao.sumBySameDateWithConvertTo111(date);
+	}
 	
 }

@@ -1,6 +1,8 @@
 package com.infotran.springboot.shoppingmall.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +28,14 @@ public interface OrderListRepository extends JpaRepository<OrderList, Integer> {
 	
 	public Optional<OrderList> findById(Integer orderlistid);
 	
+	@Query(value="select sum(amount) from OrderDetail where product.productId=?1")
+	public Integer countSumByProductId(Integer fkproductid);
 	
+	
+	@Query(value="select orlist from OrderList orlist where orlist.orderCreatedDate BETWEEN ?1 and ?2 and orlist.status='已付款'")
+	public ArrayList<OrderList> findOrderListByDateBetween(Date stratDate,Date endDate);
+	
+	@Query(value="select sum(totalCost) from OrderList orlist where convert(varchar,orlist.orderCreatedDate,111) = ?1 and orlist.status='已付款'")
+	public Integer sumBySameDateWithConvertTo111(String date);
 	
 }

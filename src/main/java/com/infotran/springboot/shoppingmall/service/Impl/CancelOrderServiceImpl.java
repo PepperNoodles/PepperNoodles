@@ -1,13 +1,18 @@
 package com.infotran.springboot.shoppingmall.service.Impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.DelayQueue;
+
 import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.infotran.springboot.shoppingmall.model.OrderDetail;
 import com.infotran.springboot.shoppingmall.model.OrderList;
+import com.infotran.springboot.shoppingmall.model.Product;
 import com.infotran.springboot.shoppingmall.service.CancelOrderService;
 import com.infotran.springboot.shoppingmall.service.OrderListService;
 
@@ -27,6 +32,9 @@ public class CancelOrderServiceImpl implements CancelOrderService {
    @Autowired
    OrderListService orderlistservice;
    
+   @Autowired
+   ShoppingMallServiceImpl shoppingservice;
+   
    @Resource
    private ThreadPoolTaskExecutor executorService;
 	
@@ -45,8 +53,15 @@ public class CancelOrderServiceImpl implements CancelOrderService {
                         	OrderList orderlist = orderlistservice.findById(order.getOrderId());
                         	System.out.println("訂單：" + order.getOrderId() + "付款超时，自動取消，當前時間：" + DateUtil.date());
                         	orderlist.setStatus("超時取消訂單");
+                        	ArrayList<OrderDetail> orderdetail = orderlistservice.findOrderDetailByFkOrderId(orderlist.getOrderId());
+                        	for (OrderDetail od : orderdetail) {
+                        		Integer amount = od.getAmount();
+                        		Integer productid = od.getProduct().getProductId();
+                        		Product product = shoppingservice.findById(productid);
+                        		Integer quantity = product.getQuantity();
+                        		quantity += amount; 
+                        	}
                         	orderlistservice.save(orderlist);
-//                        	orderlistservice.delete(orderlist.getOrderId());
                         	queue.clear();
                         }
                     } catch (InterruptedException e) {
