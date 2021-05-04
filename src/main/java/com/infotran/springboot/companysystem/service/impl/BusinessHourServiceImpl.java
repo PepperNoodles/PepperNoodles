@@ -1,5 +1,7 @@
 package com.infotran.springboot.companysystem.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,12 @@ public class BusinessHourServiceImpl implements BusinessHourService {
 	public void update(RestaurantBusinHour restaurantBusinHour) {
 		businessHourRepository.save(restaurantBusinHour);
 		
+	}
+
+	@Override
+	public List<RestaurantBusinHour> businHourSByRestID(Integer id) {
+		
+		return businessHourRepository.businHourSByRestID(id);
 	}
 
 

@@ -46,16 +46,16 @@
 	<div id="Monday">
 		<select id="MondaySelect">
 			<option value="">請選擇日期</option>
-			<option value="一">星期一</option>
-			<option value="二">星期二</option>
-			<option value="三">星期三</option>
-			<option value="四">星期四</option>
-			<option value="五">星期五</option>
-			<option value="六">星期六</option>
-			<option value="日">星期日</option>
-		</select> 
-		<input type="radio" name="Day1" value="1" id="MondayOpenRadio"checked="true" />營業 
-		<input type="radio" name="Day1" value="1" id="MondayCloseRadio" />不營業
+			<option value="1">星期一</option>
+			<option value="2">星期二</option>
+			<option value="3">星期三</option>
+			<option value="4">星期四</option>
+			<option value="5">星期五</option>
+			<option value="6">星期六</option>
+			<option value="7">星期日</option>
+		</select> <input type="radio" name="Day1" value="1" id="MondayOpenRadio"
+			checked="true" />營業 <input type="radio" name="Day1" value="1"
+			id="MondayCloseRadio" />不營業
 
 		<form:form id="MondayCloseform" method="POST"
 			modelAttribute="restaurantBusinHour" enctype='multipart/form-data'>
@@ -418,7 +418,7 @@
 
 				var data = $("#MondayOpenform").serializeArray();
 
-				console.log(data);
+		
 				var urls = "${pageContext.request.contextPath}/";
 				urls += "<c:url value='Hours/'/>" +${restaurantBusinHour.restaurant.restaurantId};
 
@@ -435,22 +435,32 @@
 
 					
 						var result=JSON.parse(response);
-						
-						console.log('1:'+result);
-						txt ='<table ><tr><td>星期'+result.day+'</td>';
-						txt += "<td>"+result.time1+'</td></tr>';
-						
-						if(result.time2 !=null){
-							txt += "<td></td><td>"+result.time2+'</td></tr>';
+						var weekday = ['一', '二', '三', '四', '五', '六', '日'];
+							
+						txt ='<table >';
+						for(i=0;i<result.length;i++){
+						console.log('1:'+result[i]);
+						txt +='<tr><td>星期'+weekday[i]+'</td>';
+						if(result[i].openTime==null){
+							txt += '<td>不營業</td></tr>';
 						}
-						if(result.time3 !=null){
-							txt += "<td></td><td>"+result.time3+'</td></tr>';
+						else{
+							txt += "<td>"+result[i].openTime+'~'+result[i].closeTime+'</td></tr>';
+							
 						}
 						
+						
+						if(result[i].openTime2nd !=null && result[i].openTime2nd.length!=0){
+							txt += "<td></td><td>"+result[i].openTime2nd+'~'+result[i].closeTime2nd+'</td></tr>';
+						}
+						if(result[i].openTime3rd !=null&& result[i].openTime3rd.length!=0){
+							txt += "<td></td><td>"+result[i].openTime3rd+'~'+result[i].closeTime3rd+'</td></tr>';
+						}
+						
+						}
+					
 						txt+="</table>";
 						ShowMondayTimeResult.innerHTML=txt;
-				
-					
 					},
 					error : function(thrownError) {
 						console.log(thrownError);
@@ -479,10 +489,31 @@
 								.getElementById("ShowMondayTimeResult");
 					
 						var result=JSON.parse(response);
+
 						
-						console.log('1:'+result);
-						txt ='<table ><tr><td>星期'+result.day+'</td>';
-						txt += "<td>"+result.Close+'</td></tr>';
+						var weekday = ['一', '二', '三', '四', '五', '六', '日'];
+						
+						txt ='<table >';
+						for(i=0;i<result.length;i++){
+						txt +='<tr><td>星期'+weekday[i]+'</td>';
+						if(result[i].openTime==null){
+							txt += '<td>不營業</td></tr>';
+						}
+						else{
+							txt += "<td>"+result[i].openTime+'~'+result[i].closeTime+'</td></tr>';
+							
+						}
+						
+						
+						if(result[i].openTime2nd !=null && result[i].openTime2nd.length!=0){
+							txt += "<td></td><td>"+result[i].openTime2nd+'~'+result[i].closeTime2nd+'</td></tr>';
+						}
+						if(result[i].openTime3rd !=null&& result[i].openTime3rd.length!=0){
+							txt += "<td></td><td>"+result[i].openTime3rd+'~'+result[i].closeTime3rd+'</td></tr>';
+						}
+						
+						}
+					
 						txt+="</table>";
 						ShowMondayTimeResult.innerHTML=txt;
 					},
