@@ -118,7 +118,7 @@
 				
 				$.ajax({
 					method:"GET",	
-					url:"/PepperNoodles/rearStage/getAccountList", //如改成/user/getAccountList就要登入會員才會顯示資料
+					url:"/PepperNoodles/rearStage/getAccountList1", //如改成/user/getAccountList就要登入會員才會顯示資料
 					contentType: 'application/json; charset=utf-8',
 					dataType:'json',
 			        async : true,
@@ -126,9 +126,9 @@
 			        success:function(result){
 			        	console.log("yes123");
 			        	console.log(JSON.stringify(result)); //Map的List物件
-			        	console.log(result.AccountList);
+			        	console.log(result.AccountList1);
 			        	Table.clear().draw();
-			            Table.rows.add(result.AccountList).draw();
+			            Table.rows.add(result.AccountList1).draw();
 // 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
 			           
 			        },
