@@ -556,7 +556,8 @@ hr {
 					    <tr>
 					    	<th scope="row">營業時間</th>
 					      	<td>
-						    	到時候要從資料庫抓
+					      		<div id="getrestHour${rest.restaurantId}" name="restHour" >到時候要從資料庫抓</div>
+						    	
 					      	</td>
 					    </tr>
 					    <tr>
@@ -565,12 +566,16 @@ hr {
 					      		<div id="${rest.restaurantId}" name="restid"></div>
 					        </td>
 					    </tr>
+					<c:choose>
+						<c:when test="${userAccount!=null}">
 					    <tr>
 					    	<th scope="row">收藏</th>
 					      	<td id="collect">
 					      		<button type="button" id="collectbutton" class="text-primary" >新增收藏</button> <button type="button" id="collectbuttonCancel" class="text-primary" >取消收藏</button>
 					        </td>
 					    </tr>
+						</c:when>
+					</c:choose>
 					  </tbody>
 				</table>
 	  		</div>		  
@@ -738,7 +743,82 @@ hr {
 					console.log(thrownError);
 				}
 			});
-// 		}
+		
+		//抓餐廳營業時間
+		var x = $("div[name='restHour']");
+		        console.log($("input[name='restHour']"));
+		var getHourid=x[0].id.substring(11, 15);
+//			        console.log(x.length);
+//			        console.log(${restaurant.restaurantId});
+//			        console.log(${restaurant.restaurantId});
+
+	
+			var urls = "${pageContext.request.contextPath}/";
+			urls += "<c:url value='getHours/'/>" +${rest.restaurantId};
+					console.log(urls);
+
+			$.ajax({
+				type : "GET",
+				url : urls,
+				dataType : "text",
+				success : function(response) {
+					var divrestHour = document
+							.getElementById("getrestHour"+${rest.restaurantId});
+
+					var result = JSON.parse(response);
+			
+					var weekday = [
+						'一',
+						'二',
+						'三',
+						'四',
+						'五',
+						'六',
+						'日' ];
+
+				txt = '<table ><h6>';
+				for (k = 0; k < result.length; k++) {
+					txt += '<tr><td>星期'
+							+ weekday[parseInt(result[k].day)]
+							+ '</td>';
+					if (result[k].openTime == null) {
+						txt += '<td>不營業</td></tr>';
+					} else {
+						txt += '<td>'
+								+ result[k].openTime
+								+ '~'
+								+ result[k].closeTime
+								+ '</td></tr>';
+
+					}
+
+					if (result[k].openTime2nd != null
+							&& result[k].openTime2nd.length != 0) {
+						txt += '<td></td><td>'
+								+ result[k].openTime2nd
+								+ '~'
+								+ result[k].closeTime2nd
+								+ '</td></tr>';
+					}
+					if (result[k].openTime3rd != null
+							&& result[k].openTime3rd.length != 0) {
+						txt += '<td></td><td>'+ result[k].openTime3rd
+								+ '~'+ result[k].closeTime3rd+ '</td></tr>';
+					}
+
+				}
+
+				txt += "</h6></table>";
+				divrestHour.innerHTML = txt;
+				},
+				error : function(thrownError) {
+					console.log(thrownError);
+				}
+
+			});
+			
+			
+		//	
 			
 	});
 	
@@ -754,12 +834,12 @@ hr {
 			url:urls,
 			dataType:'text',
 			success:function(result){
-				alert(result);
+// 				alert(result);
 				$('#collectbutton').toggle();
 				$('#collectbuttonCancel').toggle();
 			},
 			error:function(result){
-				alert(result);
+// 				alert(result);
 
 			}
 			
@@ -785,7 +865,7 @@ hr {
 				$('#collectbutton').hide();
 				$('#collectbuttonCancel').show();
 			}else{
-				alert('沒有收藏!! ');
+// 				alert('沒有收藏!! ');
 
 				$('#collectbutton').show();
 				$('#collectbuttonCancel').hide();
@@ -793,7 +873,7 @@ hr {
 			}
 		},
 		error:function(result){
-		alert(result);
+// 		alert(result);
 		}
 	});
 
