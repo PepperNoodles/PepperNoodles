@@ -372,6 +372,7 @@
 
 														});
 
+										
 										//一鍵新增
 										$('#flashinput').click(function() {
 											
@@ -389,6 +390,7 @@
 											day1checktime='true';
 
 										});
+										
 									})	
 									
 									
