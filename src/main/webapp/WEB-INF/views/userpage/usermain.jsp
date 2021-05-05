@@ -18,6 +18,20 @@
 	href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
 <style>
+
+	#body{
+	height: 100vh;
+    background-image: url(
+    "https://images.unsplash.com/photo-1523294587484-bae6cc870010?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1464&q=80"
+    );
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+	}
+
+	#main{
+	background-color:#FCFCFC			;
+	}
 @import
 	url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap')
 	;
@@ -124,6 +138,9 @@ table a {
 		overflow-x:hidden;
 		overflow-y:auto;
 	}
+	
+
+
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
 */
@@ -173,7 +190,8 @@ I've added a few comments on why we're using certain properties
 		});
 </script>
 </head>
-<body>
+<body id="body">
+
 	<!-- 讀取圖案 -->
 	<div id="preloader-active">
 		<div
@@ -187,6 +205,7 @@ I've added a few comments on why we're using certain properties
 			</div>
 		</div>
 	</div>
+	<div id="main" class="container mt-5" style="width: 80%; height: 100vh">
 
 	<div class="listing-area pt-30 pb-30"></div>
 
@@ -471,14 +490,9 @@ I've added a few comments on why we're using certain properties
 								type="button" class="genric-btn default circle arrow"
 								id="addNewComment">新增收藏</button></a><br><br>
 
-			<div class="memoBoard" id="memoBoard"
-			>
-			</div>
+			<div class="memoBoard" id="memoBoard"></div>
 
 					</div>
-
-
-
 
 					<!-- 訂單表 -->
 					<div class="tab-pane fade" id="v-pills-userOrderList"
@@ -507,6 +521,7 @@ I've added a few comments on why we're using certain properties
 			</div>
 		</div>
 	</div>
+</div>
 
 	<div class="listing-area pt-120 pb-120"></div>
 
@@ -1554,7 +1569,6 @@ I've added a few comments on why we're using certain properties
 
 
 
-
 	<%@include file="../includePage/includeFooter.jsp"%>
 	<!-- Scroll Up -->
 	<div id="back-top">
@@ -1609,6 +1623,8 @@ I've added a few comments on why we're using certain properties
  					
  		 				var memo=document.getElementById("memoBoard");
  		 				var memosheet = document.createElement("table");
+		 					memosheet.style.margin='10px';
+
  		 				var HTMLtable="";
  					
  						if(result.length>0){
@@ -1682,7 +1698,6 @@ I've added a few comments on why we're using certain properties
  		 					    memosheet.appendChild(tr5); 
  		 					    }
  		 					memo.appendChild(memosheet);
- 		 					memosheet.style.padding='5px';
  		 				}else{
  		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
  		 				}
