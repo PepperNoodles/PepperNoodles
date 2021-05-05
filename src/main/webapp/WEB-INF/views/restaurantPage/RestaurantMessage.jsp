@@ -420,6 +420,12 @@ hr {
 					      		<div id="${rest.restaurantId}" name="restid"></div>
 					        </td>
 					    </tr>
+					    <tr>
+					    	<th scope="row">收藏</th>
+					      	<td id="collect">
+					      		<button type="button" id="collectbutton" class="text-primary" >新增收藏</button> <button type="button" id="collectbuttonCancel" class="text-primary" >取消收藏</button>
+					        </td>
+					    </tr>
 					  </tbody>
 				</table>
 	  		</div>		  
@@ -510,6 +516,9 @@ hr {
 	</div>
 <script>
 	$(window).on('load', function() {
+		checkCollectionButton();
+
+		
 		$("#toggleMenu").click(function() {
       	  $( "#menuArea" ).slideToggle("slow")
  		});
@@ -552,6 +561,64 @@ hr {
 // 		}
 			
 	});
+	
+	
+	$('body').on('click','button[id^="collectbutton"]' ,function(e){
+		e.preventDefault;
+		var urls = '/PepperNoodles/user/addRestaurantCollection?resID=';
+		var resID = '${rest.restaurantId}' ;
+		urls += resID;
+		$.ajax({
+			
+			method:'GET',
+			url:urls,
+			dataType:'text',
+			success:function(result){
+				alert(result);
+				$('#collectbutton').toggle();
+				$('#collectbuttonCancel').toggle();
+			},
+			error:function(result){
+				alert(result);
+
+			}
+			
+		});
+		
+	});
+	
+	function checkCollectionButton() {
+		var collectionButton = $('#collectbutton');
+		var collectionButtonCancel = $('#collectbuttonCancel');
+		var urls = '/PepperNoodles/user/checkRestaurantCollection?resID=';
+		var resID = '${rest.restaurantId}' ;
+		urls += resID;
+
+	$.ajax({
+		method:'GET',
+		url: urls,
+		dataType: 'text',
+		success:function(result){
+			if(result=='true'){
+				alert('已經有收藏了!! ');
+
+				$('#collectbutton').hide();
+				$('#collectbuttonCancel').show();
+			}else{
+				alert('沒有收藏!! ');
+
+				$('#collectbutton').show();
+				$('#collectbuttonCancel').hide();
+				
+			}
+		},
+		error:function(result){
+		alert(result);
+		}
+	});
+
+};
+	
 </script>
 </body>
 </html>
