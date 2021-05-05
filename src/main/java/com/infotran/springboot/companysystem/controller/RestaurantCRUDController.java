@@ -104,7 +104,16 @@ public class RestaurantCRUDController {
 		model.addAttribute("restForSettingHour", restForSettingHour);
 		return "company/RestaurantBusinHour";
 	}
-
+	
+	//ajax get方法純拿餐廳資料
+	@GetMapping("/getHours/{restId}")
+	public @ResponseBody List<RestaurantBusinHour> getHours(Model model,@PathVariable("restId") Integer id) {
+		List<RestaurantBusinHour> businessHourlist = businessHourServiceImpl.businHourSByRestID(id);
+		return businessHourlist;
+	}
+	
+	
+	//ajax post方法存取餐廳資料
 	@PostMapping("/Hours/{restIdForSettingHour}")
 	public  @ResponseBody List<RestaurantBusinHour> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,
 			@PathVariable("restIdForSettingHour") Integer id,Model model) {
@@ -161,43 +170,8 @@ public class RestaurantCRUDController {
 	
 		List<RestaurantBusinHour> businessHourlist = businessHourServiceImpl.businHourSByRestID(id);
 		
-		ArrayList<HashMap<String, String>> newlist=new ArrayList<HashMap<String, String>>();
-		
-		
-		
-//		for(RestaurantBusinHour BusinHour:businessHourlist) {
-//			String openTime1DB = BusinHour.getOpenTime();
-//			String openTime2DB = BusinHour.getOpenTime2nd();
-//			String openTime3DB = BusinHour.getOpenTime3rd();
-//			String closeTime1DB = BusinHour.getCloseTime();
-//			String closeTime2DB = BusinHour.getCloseTime2nd();
-//			String closeTime3DB = BusinHour.getCloseTime3rd();
-//			Map<String,String> map = new HashMap<String, String>();
-//			if(openTime1DB==null) {
-//				map.put("day",day);
-//				map.put("time1","Close");
-//			}
-//			else if(openTime1DB.length()!=0 & closeTime1DB.length()!=0 && openTime2DB.length()==0 ) {
-//				map.put("day",day);
-//				map.put("time1",openTime1DB+"~"+closeTime1DB);
-//			}
-//			else if(openTime1DB.length()!=0 & closeTime1DB.length()!=0 & openTime2DB.length()!=0 & closeTime2DB.length()!=0 &openTime3DB.length()==0) {
-//				map.put("day",day);
-//				map.put("time1",openTime1DB+"~"+closeTime1DB);
-//				map.put("time2",openTime2DB+"~"+closeTime2);
-//			}
-//			else if(openTime1DB.length()!=0 & closeTime1DB.length()!=0 & openTime2DB.length()!=0 & closeTime2DB.length()!=0 & openTime3DB.length()!=0 & closeTime3DB.length()!=0 ) {
-//				map.put("day",day);
-//				map.put("time1",openTime1DB+"~"+closeTime1DB);
-//				map.put("time2",openTime2DB+"~"+closeTime2);
-//				map.put("time3",openTime3DB+"~"+closeTime3DB);
-//			}
-//			else {
-//				System.out.println("sth wrong!");
-//			}
-			
-//			newlist.add(BusinHour);
-//		}
+
+
 		return businessHourlist;
 	}
 
@@ -332,6 +306,7 @@ public class RestaurantCRUDController {
 		Restaurant restToDelete = restaurantService.get(id);
 		restToDelete.setUserAccount(null);
 		restToDelete.setFoodTag(null);
+		restToDelete.setRestaurantBusinHour(null);
 		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
 		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
