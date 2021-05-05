@@ -833,7 +833,9 @@
 </style>
 </head>
 <body>
-	<form name="form1">
+	<script src="https://www.google.com/recaptcha/api.js" async defer ></script>
+
+	<form name="form1" onsubmit="return validateForm()" >
 		<div class="image-container set-full-height"
 			style="background-image: url(<c:url value="/images/login/noodles.jpg"/>)">
 			<div class="logo-container">
@@ -841,10 +843,11 @@
 					<a href="/PepperNoodles"><img
 						src="<c:url value="/images/logo/peppernoodle.png"/>" width="100px"
 						height="100px" style="margin-left: 93%;"></a>
-				</div>
+			</div>
 			</div>
 			<!-- container   -->
 			<div class="container">
+			
 				<div class="row">
 					<div class="col-sm-8 col-sm-offset-2">
 						<!--      Wizard container        -->
@@ -929,8 +932,10 @@
 													</pre>
 												</div>
 												<label><input type="checkbox" id="privacycheck">我已經閱讀個人資料保護法並且同意註冊為會員</label>
+<!-- 														<div class="pull-right g-recaptcha m-3 "  -->
+<!-- 											data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"></div> -->
 											</div>
-
+									
 											<div
 												class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 												<div class="pull-right">
@@ -1306,6 +1311,7 @@
 					</div>
 				</div>
 			</div>
+				</div>
 
 	</form>
 	<script>
@@ -1329,7 +1335,16 @@
 	        imgValidate.src="<c:url value='/generateVCode'/>" + "?id="+Math.random();
 	    }
 	</script>
-
+<script type="text/javascript">
+// function validateForm(){
+// 	if(grecaptcha.getResponse()){
+// 		return true;
+// 	}else{
+// 		alert("Please prove that you're not robot!!!");
+// 		return false;
+// 	}
+// }
+</script>
 </body>
 <!--   Core JS Files   -->
 <script src="<c:url value='/scripts/jquery.bootstrap.wizard.js'/>"
