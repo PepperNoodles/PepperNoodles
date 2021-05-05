@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.infotran.springboot.commonmodel.MenuDetail;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.RestaurantMessageBox;
+import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.restaurantMessage.dao.RestaurantMessageBoxRepository;
 import com.infotran.springboot.restaurantMessage.service.RestaurantMessageBoxService;
 
@@ -52,6 +53,13 @@ public class RestaurantMessageBoxServiceImpl implements RestaurantMessageBoxServ
 	public List<RestaurantMessageBox> getByRest(Restaurant rest) {
 		Pageable pageable = PageRequest.of(0, 200, Sort.Direction.ASC, "restaurantMessageId");
 		List<RestaurantMessageBox> restaurantMessageBox = restaurantMessageBoxDao.getByRest(rest, pageable);
+		return restaurantMessageBox;
+	}
+
+	@Override
+	public List<RestaurantMessageBox> getByRestAndUser(Restaurant restaurant, UserAccount user) {
+		Pageable pageable = PageRequest.of(0, 200, Sort.Direction.ASC, "restaurantMessageId");
+		List<RestaurantMessageBox> restaurantMessageBox = restaurantMessageBoxDao.getByRestAndUser(restaurant, user, pageable);
 		return restaurantMessageBox;
 	}
 
