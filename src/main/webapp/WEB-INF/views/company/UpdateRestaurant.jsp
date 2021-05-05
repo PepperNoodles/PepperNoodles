@@ -300,7 +300,7 @@ p {
 							<form:errors path="restaurantWebsite" cssClass="error" />
 							<div id="tagdiv">
 								<h5 style="color: #FF1493">標籤：</h5>
-								<form:input class="typeahead" type="text" placeholder="Tags e.g., BBQ"
+								<form:input class="typeahead" type="text" placeholder="Tags e.g., 炸雞"
 									path="foodTag" />
 								<form:errors path="foodTag" cssClass="error" />
 								
