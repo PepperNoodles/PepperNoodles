@@ -17,6 +17,19 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 <!-- bloodHound ↑ -->
 <script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
+
+<!-- 營業時間 -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/locale/ja.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/zh-tw.min.js"></script>
+	
+	<!-- 營業時間 -->
+	
 <link rel='stylesheet'
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.css' />" />
 <link rel="stylesheet"
@@ -134,8 +147,6 @@
 												</c:otherwise>
 											</c:choose>
 								      </sec:authorize>
-											<!-- <li><a href="contact.ht
-											
 
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
