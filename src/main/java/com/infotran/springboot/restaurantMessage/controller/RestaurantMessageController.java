@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -86,11 +87,19 @@ public class RestaurantMessageController {
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
 		String accountIndex = dispatch.get("netizenAccount");
 		Integer restaurantId = Integer.valueOf(dispatch.get("restaurantId"));
+		
+		Integer score = null;
+		if (dispatch.get("score") != null) {
+			score = Integer.valueOf(dispatch.get("score"));
+		}
+	
+		
 		String text =dispatch.get("text");
 		UserAccount netizenAccount = userAccountService.getByName(accountIndex);
 		Restaurant restaurant = restaurantService.findById(restaurantId);
 		
 		restMessage.setText(text);
+		restMessage.setScore(score);
 		restMessage.setTime(new Date());
 		restMessage.setUserAccount(netizenAccount);
 		restMessage.setRestaurant(restaurant);
@@ -156,6 +165,23 @@ public class RestaurantMessageController {
 		return newReply;
 	}
 	
+	//判斷是否可留
+	@PostMapping(value="/judgeCanLeaveMessage")
+	@ResponseBody
+	public String judgeCanLeaveMessage(@RequestParam String userIndex,@RequestParam Integer restId ) {
+		UserAccount userAccount = uSysServiceImpl.findByAccountIndex(userIndex);
+		Restaurant restaurant = restaurantService.findById(restId);
+		List<RestaurantMessageBox> messages = restaurantMessageBoxService.getByRestAndUser(restaurant, userAccount);
+		
+		if (messages.size()>2) {
+			return "false";
+		}else {
+			return "true";	
+		}		
+		
+	}
+	
+	
 	public String returnNamePath() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -166,5 +192,6 @@ public class RestaurantMessageController {
 		System.out.println("no logging user currently!!");
 			return null;
 	}
+		
 	
 }
