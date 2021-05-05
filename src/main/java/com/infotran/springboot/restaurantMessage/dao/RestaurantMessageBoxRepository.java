@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.RestaurantMessageBox;
+import com.infotran.springboot.commonmodel.UserAccount;
 
 public interface RestaurantMessageBoxRepository extends JpaRepository<RestaurantMessageBox, Integer> {
 	
 	@Query(value="from RestaurantMessageBox r where r.restaurant = :restaurant")
 	List<RestaurantMessageBox> getByRest(Restaurant restaurant,Pageable page);
+	
+	@Query(value="from RestaurantMessageBox r where r.restaurant = :restaurant and userAccount= :user")
+	List<RestaurantMessageBox> getByRestAndUser(Restaurant restaurant,UserAccount user,Pageable page);
 }
