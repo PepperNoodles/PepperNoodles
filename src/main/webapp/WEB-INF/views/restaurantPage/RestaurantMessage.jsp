@@ -191,7 +191,7 @@ $(document).ready(function(){
          function catdiselect(){
              this.style.filter="grayscale(1)";
              count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"顆星";
          }
 
          function catselect(){
@@ -199,12 +199,12 @@ $(document).ready(function(){
              for(let i =0;i<count;i++){                   
                  s[i].style.filter="grayscale(0)";                    
              }
-             document.getElementById("rankResult").innerHTML="評分中..."+count+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+count+"顆星";
          }
 
          function catCheck(){
              let count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="rank"+count+'隻貓';
+             document.getElementById("rankResult").innerHTML="rank"+count+'顆星';
              document.getElementById("hiddenScore").innerHTML=count;
               for (s1 of s){
                  s1.removeEventListener("mouseover",catselect);
@@ -754,12 +754,12 @@ hr {
 			url:urls,
 			dataType:'text',
 			success:function(result){
-				alert(result);
+				//alert(result);
 				$('#collectbutton').toggle();
 				$('#collectbuttonCancel').toggle();
 			},
 			error:function(result){
-				alert(result);
+				//alert(result);
 
 			}
 			
@@ -780,12 +780,12 @@ hr {
 		dataType: 'text',
 		success:function(result){
 			if(result=='true'){
-				alert('已經有收藏了!! ');
+				//alert('已經有收藏了!! ');
 
 				$('#collectbutton').hide();
 				$('#collectbuttonCancel').show();
 			}else{
-				alert('沒有收藏!! ');
+				//alert('沒有收藏!! ');
 
 				$('#collectbutton').show();
 				$('#collectbuttonCancel').hide();
@@ -793,7 +793,7 @@ hr {
 			}
 		},
 		error:function(result){
-		alert(result);
+		//alert(result);
 		}
 	});
 
