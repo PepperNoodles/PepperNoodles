@@ -97,6 +97,7 @@ public class Restaurant {
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
 
 	/** 一家餐廳有多個營業時間 **/
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
 	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
 
