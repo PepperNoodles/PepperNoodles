@@ -372,6 +372,23 @@
 
 														});
 
+										//一鍵新增
+										$('#flashinput').click(function() {
+											
+											$('#open1').val('07:30');
+											$('#close1').val('11:30');
+											
+											$('#open2').val('13:30');
+											$('#close2').val('17:30');
+
+											
+											$(".checkinput").css({
+												"border" : "2px solid green",
+												"background-color" : "#BBFFBB"
+											});
+											day1checktime='true';
+
+										});
 									})	
 									
 									
@@ -597,23 +614,7 @@
 
 		});
 		
-		//一鍵新增
-// 		$('#flashinput').click(function() {
-			
-// 			$('#open1').val('07:30');
-// 			$('#close1').val('11:30');
-			
-// 			$('#open2').val('13:30');
-// 			$('#close2').val('17:30');
 
-			
-// 			$(".checkinput").css({
-// 				"border" : "2px solid green",
-// 				"background-color" : "#BBFFBB"
-// 			});
-// 			day1checktime='true';
-
-// 		});
 		
 		
 	</script>
