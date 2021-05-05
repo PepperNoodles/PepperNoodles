@@ -878,6 +878,18 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		return message;
 	}
 	
+	
+	//使用者頁面顯示餐廳收藏
+	@GetMapping(value="/user/showUserCollections" )
+	@ResponseBody
+	public List<Restaurant> showUserCollections( ) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		List<Restaurant> userCollections = user.getRestaurantCollections();
+		
+
+
+		return userCollections;
+	}
 
 	
 	

@@ -881,10 +881,5 @@ select.form-control{
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 	<script src="<c:url value='/scripts/main.js' />"></script>
 
-			<script>
-			console.log("hi")
-		console.log(isAuthenticated)
-		console.log(${isAuthenticated})</script>
-
 </body>
 </html>
