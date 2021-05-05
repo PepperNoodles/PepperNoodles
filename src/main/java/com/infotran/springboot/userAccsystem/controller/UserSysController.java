@@ -890,8 +890,19 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 
 		return userCollections;
 	}
-
 	
+	
+	//瀏覽他人頁面的餐廳收藏
+	@GetMapping(value="/user/showOtherUserCollections" )
+	@ResponseBody
+	public List<Restaurant> showOthersUserCollections(@RequestParam(value = "viewUserAccount") String accountIndex ) {
+		UserAccount user = uSysServiceImpl.findByAccountIndex(accountIndex);
+		System.out.println("被看的帳號: " + accountIndex);
+		Hibernate.initialize(user);
+		List<Restaurant> userCollections = user.getRestaurantCollections();
+		
+		return userCollections;
+	}
 	
 	
 //======================================================================================================================
