@@ -52,9 +52,7 @@
 				</div>
 			</div>
 			<!-- 右邊顯示的資料 背景圖片+自動填滿-->
-			<div class="col-lg-10 nopadding image-container set-full-height"
-				style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
-
+			<div class="col-lg-10 nopadding image-container set-full-height">
 				<div class="container">
 					<div class="row d-flex align-items-center justify-content-center">
 						<!-- 餐廳管理頁面 -->
@@ -70,11 +68,11 @@
 								<c:otherwise>
 									<table border='1' cellpadding="3" cellspacing="1">
 										<tr>
-											<th width='80'>餐廳名稱</th>
+											<th width='100'>餐廳名稱</th>
 											<th width='120'>餐廳地址</th>
 											<th width='80'>聯絡方式</th>
 											<th width='80'>餐廳網站</th>
-											<th width='120'>營業時間</th>
+											<th width='180'>營業時間</th>
 											<th width='80'>標籤</th>
 											<th width='80'>環境照片</th>
 											<th colspan='1' width='80'>資料維護</th>
@@ -85,19 +83,100 @@
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
-												<td style="text-align: center; font-weight: bold"><a class='updatelink'
-													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a><br></td>
+												<td style="text-align: center; font-weight: bold">
+												
+												<h6><a class='updatelink'
+													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a></h6>
+													<br>
+													<div id="getrestHour${restaurant.restaurantId}" name="restHour" >test</div>
+													</td>
 												<td style="text-align: center; font-weight: bold">
 													<div id="${restaurant.restaurantId}" name="restid"></div>
 												</td>
 												<td><img width='120' height='120'
 													src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
 													id='restpicture' /></td>
-												<td style="font-weight: bold"><a class='updatelink'
+												<td style="font-weight: bold"><h6><a class='updatelink'
 													href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯餐廳</a><br>
 													<a class='deletelink'
-													href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除餐廳</a></td>
+													href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除餐廳</a></h6></td>
 											</tr>
+											<script>
+											//抓餐廳營業時間
+											var x = $("div[name='restHour']");
+											        console.log($("input[name='restHour']"));
+											var getHourid=x[0].id.substring(11, 15);
+// 											        console.log(x.length);
+// 											        console.log(${restaurant.restaurantId});
+// 											        console.log(${restaurant.restaurantId});
+
+										
+												var urls = "${pageContext.request.contextPath}/";
+												urls += "<c:url value='getHours/'/>" +${restaurant.restaurantId};
+														console.log(urls);
+
+												$.ajax({
+													type : "GET",
+													url : urls,
+													dataType : "text",
+													success : function(response) {
+														var divrestHour = document
+																.getElementById("getrestHour"+${restaurant.restaurantId});
+
+														var result = JSON.parse(response);
+												
+														var weekday = [
+															'一',
+															'二',
+															'三',
+															'四',
+															'五',
+															'六',
+															'日' ];
+
+													txt = '<table ><h6>';
+													for (j = 0; j < result.length; j++) {
+														txt += '<tr><td>星期'
+																+ weekday[parseInt(result[j].day)]
+																+ '</td>';
+														if (result[j].openTime == null) {
+															txt += '<td>不營業</td></tr>';
+														} else {
+															txt += '<td>'
+																	+ result[j].openTime
+																	+ '~'
+																	+ result[j].closeTime
+																	+ '</td></tr>';
+
+														}
+
+														if (result[j].openTime2nd != null
+																&& result[j].openTime2nd.length != 0) {
+															txt += '<td></td><td>'
+																	+ result[j].openTime2nd
+																	+ '~'
+																	+ result[j].closeTime2nd
+																	+ '</td></tr>';
+														}
+														if (result[j].openTime3rd != null
+																&& result[j].openTime3rd.length != 0) {
+															txt += '<td></td><td>'+ result[j].openTime3rd
+																	+ '~'+ result[j].closeTime3rd+ '</td></tr>';
+														}
+
+													}
+
+													txt += "</h6></table>";
+													divrestHour.innerHTML = txt;
+													},
+													error : function(thrownError) {
+														console.log(thrownError);
+													}
+
+												});
+											
+											
+											</script>
 										</c:forEach>
 									</table>
 								</c:otherwise>
@@ -185,8 +264,7 @@
 											$(divFoodTag).append(
 													jsontxt[i].foodTagName
 															+ '<br>');
-											giveValue(jsontxt[i].foodTagIid,
-													jsontxt[i].foodTagName);
+						
 										}
 									},
 									error : function(thrownError) {
@@ -195,37 +273,10 @@
 
 								});
 							}
-							// bloodhound
-							var foodTags = new Bloodhound(
-									{
-										datumTokenizer : Bloodhound.tokenizers.obj
-												.whitespace('text'),
-										queryTokenizer : Bloodhound.tokenizers.whitespace,
-										prefetch : 'http://localhost:433/PepperNoodles/data/FoodTag.json',
-										cache : false
-									});
-
-							foodTags.initialize();
-
-							var elt = $('.typeahead');
-							elt.tagsinput({
-								itemValue : 'value',
-								itemText : 'text',
-
-								typeaheadjs : {
-									limit : 20,
-									name : 'foodTags',
-									displayKey : 'text',
-									source : foodTags.ttAdapter()
-								}
-							});
-
-							function giveValue(id, name) {
-								elt.tagsinput('add', {
-									"value" : id,
-									"text" : name
-								});
-							}
+				
+							
+						
+							
 
 						})
 	</script>
