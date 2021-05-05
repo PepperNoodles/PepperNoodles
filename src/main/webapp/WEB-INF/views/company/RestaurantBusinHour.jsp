@@ -390,8 +390,7 @@ $(document).ready(function () {
 	});
 										
 })	
-			</script>	
-			<script>					
+				
 									
 	
 	//以下	
@@ -417,8 +416,8 @@ $(document).ready(function () {
 					$("#checkBeforeSubmit").click(function() {
 										//判斷是否選擇哪一天
 										if ($(":selected")[0].value != "X") {
-											console.log('有選擇日期');
-											console.log('checkBeforeSubmit day1checktime '+day1checktime);
+// 											console.log('有選擇日期');
+// 											console.log('checkBeforeSubmit day1checktime '+day1checktime);
 											//有無營業+時間OK 可送出
 											if ($('#MondayOpenRadio').prop("checked") == true& day1checktime == "true") {
 
@@ -432,11 +431,11 @@ $(document).ready(function () {
 															url : urls,
 															//contentType:'application/json; charset=UTF-8', //不可以唷! controller會接不到
 															data : data,
-															dataType : "json",
+															dataType : "text",
 															success : function(response) {
 																var ShowMondayTimeResult = document.getElementById("ShowMondayTimeResult");
 																var result = JSON.parse(response);
-																console.log("----------------------------")
+																
 														var weekday = ['一','二','三','四','五','六','日'];
 
 														txt = '<table >';
@@ -475,7 +474,7 @@ $(document).ready(function () {
 														ShowMondayTimeResult.innerHTML = txt;
 														},
 														error : function(thrownError) {
-																console.log(thrownError);
+// 																console.log(thrownError);
 															}
 
 														});
@@ -489,18 +488,18 @@ $(document).ready(function () {
 												urls += "<c:url value='Hours/'/>"+ ${restaurantBusinHour.restaurant.restaurantId};
 
 												$.ajax({
-															type : "GET",
+															type : "POST",
 															url : urls,
 															//contentType:'application/json; charset=UTF-8', //不可以唷! controller會接不到
 															data : data,
-															dataType : "json",
+															dataType : "text",
 															success : function(response) {
 																var ShowMondayTimeResult = document.getElementById("ShowMondayTimeResult");
 
 																var result = JSON.parse(response);
 
 																var weekday = ['一','二','三','四','五','六','日'];
-															console.log("----------------------------")
+														
 																txt = '<table >';
 																for (i = 0; i < result.length; i++) {
 																	txt += '<tr><td><h2 style="color:red">星期'
@@ -537,7 +536,7 @@ $(document).ready(function () {
 																ShowMondayTimeResult.innerHTML = txt;
 															},
 															error : function(thrownError) {
-																console.log(thrownError);
+// 																console.log(thrownError);
 															}
 
 														});
