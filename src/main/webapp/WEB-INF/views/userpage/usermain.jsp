@@ -73,6 +73,7 @@ td>img {
 }
 
 table {
+	padding:5px;
 	border-collapse: separate;
 	border: solid black 1px;
 	border-radius: 6px;
@@ -101,8 +102,6 @@ table a {
 	color: #0000C6;
 }
 
->>>>>>>
-f878cce85bb579045dcfaa5b2d82255141f5d9a2
 .collumntogreen {
 	color: green;
 }
@@ -114,6 +113,17 @@ f878cce85bb579045dcfaa5b2d82255141f5d9a2
 table a {
 	color: #0000C6;
 }
+
+	.frame2 {  
+   		 height: 60px; /*can be anything*/
+    	 width: 90px; /*can be anything*/
+   		 position: relative;
+	}	
+	
+		.memoBoard{
+		overflow-x:hidden;
+		overflow-y:auto;
+	}
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
 */
@@ -459,25 +469,11 @@ I've added a few comments on why we're using certain properties
 						<h2>我的餐廳收藏</h2>
 						<a href="<c:url value='/restSearch/map'/>"><button
 								type="button" class="genric-btn default circle arrow"
-								id="addNewComment">新增收藏</button></a>
+								id="addNewComment">新增收藏</button></a><br><br>
 
-						<table id="" class="display">
-							<thead>
-								<tr>
-									<th>編號</th>
-									<th>餐廳名稱</th>
-									<th>標籤</th>
-									<th>收件人</th>
-									<th>環境照片	</th>
-									<th>金額</th>
-
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-								</tr>
-							</tbody>
-						</table>
+			<div class="memoBoard" id="memoBoard"
+			>
+			</div>
 
 					</div>
 
@@ -1567,7 +1563,7 @@ I've added a few comments on why we're using certain properties
 
 	<script>
  		$(window).on('load', function() {
- 			
+ 			createSideMemo();
 // 			let urlss="${pageContext.request.contextPath}/";
 // 			urlss+="<c:url value='userLoggin/getName'/>";
 // 			console.log(urlss);
@@ -1600,7 +1596,103 @@ I've added a few comments on why we're using certain properties
  		});
  		
  		
- 		
+ 			//建立隔壁memo的function
+ 			function createSideMemo(){
+ 				//memo
+				urls = "/PepperNoodles/user/showUserCollections"; 				
+ 				$.ajax({
+ 					method:'GET',
+ 					url: urls,
+ 					dataType:'json',
+ 					success:function(result){
+ 						console.log(JSON.stringify(result));
+ 					
+ 		 				var memo=document.getElementById("memoBoard");
+ 		 				var memosheet = document.createElement("table");
+ 		 				var HTMLtable="";
+ 					
+ 						if(result.length>0){
+ 		 					for(let i=0;i<result.length;i++){
+ 		 						
+ 		 						//建立td1和roleSpan
+ 		 					    let tr1 = document.createElement("tr");
+ 		 					    // td1.className="tdtop";
+ 		 					    let td1=document.createElement("td");
+ 		 					    td1.rowSpan="4";	   
+ 		 					    let img =document.createElement("img");	   
+ 		 					    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+result[i].restaurantId;
+ 		 					    img.src=url;
+ 		 					    img.name=result[i].restaurantName;
+ 		 					    img.style.height="80px";
+ 		 					    img.id=result[i].restaurantId;
+ 		 					    let imgframe =document.createElement("div");
+ 		 					    imgframe.className='frame2';
+ 		 					    imgframe.appendChild(img);
+ 		 					    
+ 		 					    td1.appendChild(imgframe);
+ 		 					    tr1.appendChild(td1);
+ 		 					    
+ 		 					    let tr2 = document.createElement("tr");
+ 		 					    let td2=document.createElement("td");
+ 		 					    let restAnchor = document.createElement("a");
+ 		 					    
+ 		 					    let resturl ="<c:url value='/userPage/'/>"+result[i].restaurantId;
+ 		 					    restAnchor.href=resturl;
+ 		 					    
+ 		 					    restAnchor.innerHTML=result[i].restaurantName;
+ 		 					    restAnchor.style.color="#0000C6";
+ 		 					    td2.appendChild(restAnchor);
+ 		 					    tr2.appendChild(td2);     			        
+ 		 					        
+ 		 					    let tr3 = document.createElement("tr");
+ 		 					    let td3=document.createElement("td");
+ 		 					    td3.innerHTML=result[i].restaurantAddress;
+ 		 					        tr3.appendChild(td3);
+ 		 					        
+ 		 					    //標籤列表
+ 		 					    let tr4 = document.createElement("tr");
+ 		 					    let td4=document.createElement("td");
+ 		 					    td4.innerHTML="Tags:&nbsp"
+ 		 					    td4.className="tdbot";
+ 		 					    
+ 		 					    for(let j = 0; j<result[i].foodTag.length;j++){
+ 		 					    	let tagAnchor = document.createElement("a");
+ 		 							tagAnchor.href="#";
+ 		 							
+ 		 							tagAnchor.innerHTML+=result[i].foodTag[j].foodTagName+"&nbsp&nbsp";
+ 		 							tagAnchor.style.color="#A23400";
+ 		 							td4.appendChild(tagAnchor);
+ 		 					    }
+ 		 					    
+ 		 					    
+ 		 					    //td4.innerHTML=loca[i].restaurantAddress;
+ 		 					    tr4.appendChild(td4);
+ 		 						
+ 		 					    let tr5= document.createElement("tr");
+ 		 					    tr5.style.height="5px";
+ 		 					    tr5.style.backgroundColor="#9D9D9D";
+ 		 					    tr5.appendChild(document.createElement("td"));
+ 		 					    tr5.appendChild(document.createElement("td"));
+ 		 					    tr5.appendChild(document.createElement("td"));
+ 		 					    
+ 		 					    memosheet.appendChild(tr1);
+ 		 					    memosheet.appendChild(tr2);
+ 		 					    memosheet.appendChild(tr3);
+ 		 					    memosheet.appendChild(tr4);    
+ 		 					    memosheet.appendChild(tr5); 
+ 		 					    }
+ 		 					memo.appendChild(memosheet);
+ 		 					memosheet.style.padding='5px';
+ 		 				}else{
+ 		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
+ 		 				}
+ 					},
+ 					error:function(result){
+ 						}
+ 					});
+ 				};
+ 				
+
  		
  	</script>
 

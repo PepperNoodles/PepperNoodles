@@ -168,7 +168,10 @@
 			</div>	
 			
 			<div class="tab-pane fade" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
-				<h2>collection</h2>
+										<h2>${viewUserAccount.userAccountDetail.nickName}的餐廳收藏</h2>
+			<div class="memoBoard" id="memoBoard"
+			>
+			</div>
 			</div>
 			</div>
 	</div>
@@ -186,6 +189,8 @@
 	<script>
  		$(window).on('load', function() {
 			showAllComments();
+ 			createOthersSideMemo();
+
 
  			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
@@ -641,6 +646,103 @@
 		});
 
 	});
+	
+		//建立隔壁memo的function
+		function createOthersSideMemo(){
+			//memo
+		var viewUserAccount = "${viewUserAccount.accountIndex}";
+		var urls = "/PepperNoodles/user/showOtherUserCollections?viewUserAccount="; 		
+		urls += viewUserAccount;
+			$.ajax({
+				method:'GET',
+				url: urls,
+				dataType:'json',
+				success:function(result){
+					console.log(JSON.stringify(result));
+				
+	 				var memo=document.getElementById("memoBoard");
+	 				var memosheet = document.createElement("table");
+	 				var HTMLtable="";
+				
+					if(result.length>0){
+	 					for(let i=0;i<result.length;i++){
+	 						
+	 						//建立td1和roleSpan
+	 					    let tr1 = document.createElement("tr");
+	 					    // td1.className="tdtop";
+	 					    let td1=document.createElement("td");
+	 					    td1.rowSpan="4";	   
+	 					    let img =document.createElement("img");	   
+	 					    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+result[i].restaurantId;
+	 					    img.src=url;
+	 					    img.name=result[i].restaurantName;
+	 					    img.style.height="80px";
+	 					    img.id=result[i].restaurantId;
+	 					    let imgframe =document.createElement("div");
+	 					    imgframe.className='frame2';
+	 					    imgframe.appendChild(img);
+	 					    
+	 					    td1.appendChild(imgframe);
+	 					    tr1.appendChild(td1);
+	 					    
+	 					    let tr2 = document.createElement("tr");
+	 					    let td2=document.createElement("td");
+	 					    let restAnchor = document.createElement("a");
+	 					    
+	 					    let resturl ="<c:url value='/userPage/'/>"+result[i].restaurantId;
+	 					    restAnchor.href=resturl;
+	 					    
+	 					    restAnchor.innerHTML=result[i].restaurantName;
+	 					    restAnchor.style.color="#0000C6";
+	 					    td2.appendChild(restAnchor);
+	 					    tr2.appendChild(td2);     			        
+	 					        
+	 					    let tr3 = document.createElement("tr");
+	 					    let td3=document.createElement("td");
+	 					    td3.innerHTML=result[i].restaurantAddress;
+	 					        tr3.appendChild(td3);
+	 					        
+	 					    //標籤列表
+	 					    let tr4 = document.createElement("tr");
+	 					    let td4=document.createElement("td");
+	 					    td4.innerHTML="Tags:&nbsp"
+	 					    td4.className="tdbot";
+	 					    
+	 					    for(let j = 0; j<result[i].foodTag.length;j++){
+	 					    	let tagAnchor = document.createElement("a");
+	 							tagAnchor.href="#";
+	 							
+	 							tagAnchor.innerHTML+=result[i].foodTag[j].foodTagName+"&nbsp&nbsp";
+	 							tagAnchor.style.color="#A23400";
+	 							td4.appendChild(tagAnchor);
+	 					    }
+	 					    
+	 					    
+	 					    //td4.innerHTML=loca[i].restaurantAddress;
+	 					    tr4.appendChild(td4);
+	 						
+	 					    let tr5= document.createElement("tr");
+	 					    tr5.style.height="5px";
+	 					    tr5.style.backgroundColor="#9D9D9D";
+	 					    tr5.appendChild(document.createElement("td"));
+	 					    tr5.appendChild(document.createElement("td"));
+	 					    tr5.appendChild(document.createElement("td"));
+	 					    
+	 					    memosheet.appendChild(tr1);
+	 					    memosheet.appendChild(tr2);
+	 					    memosheet.appendChild(tr3);
+	 					    memosheet.appendChild(tr4);    
+	 					    memosheet.appendChild(tr5); 
+	 					    }
+	 					memo.appendChild(memosheet);
+	 				}else{
+	 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
+	 				}
+				},
+				error:function(result){
+					}
+				});
+			};
 
  		</script>
 
