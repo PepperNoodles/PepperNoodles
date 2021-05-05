@@ -533,9 +533,7 @@ I've added a few comments on why we're using certain properties
 
 	<script>
 			$(document).ready(function () {			
-				
 
-				
 					var Table = $("#orderlist").DataTable({
 						 language: {
 						        "processing": "處理中...",
@@ -1578,23 +1576,119 @@ I've added a few comments on why we're using certain properties
 	<script>
  		$(window).on('load', function() {
  			createSideMemo();
-// 			let urlss="${pageContext.request.contextPath}/";
-// 			urlss+="<c:url value='userLoggin/getName'/>";
-// 			console.log(urlss);
+
 			
-// 			$.ajax({
-// 				type: "GET",
-// 				url: urlss,				
-// 				dataType: "text",
-// 				success: function (response) {
-// 					console.log(response);	
-// 				},
-// 				error: function (thrownError) {
-// 					console.log(thrownError);
-// 				}
-				
-// 			});
- 		
+			function positionShow(){
+					console.log(this.id);
+					let restId = this.id.slice(4,);
+					
+					let url = "<c:url value='/restSearch/userSingleRestPage/' />" + restId;
+					features = "width="+1200+",height="+600+",top="+50+",left="+50; 
+					window.open(url,"toolbar=no,location=no,directories=no",features);
+			}
+
+				function createSideMemo(){
+	 				//memo
+					urls = "/PepperNoodles/user/showUserCollections"; 				
+	 				$.ajax({
+	 					method:'GET',
+	 					url: urls,
+	 					dataType:'json',
+	 					success:function(result){
+	 						console.log(JSON.stringify(result));
+	 					
+	 		 				var memo=document.getElementById("memoBoard");
+	 		 				var memosheet = document.createElement("table");
+	 		 				var HTMLtable="";
+	 					
+	 						if(result.length>0){
+	 		 					for(let i=0;i<result.length;i++){
+	 		 						
+	 		 						//建立td1和roleSpan
+	 		 					    let tr1 = document.createElement("tr");
+	 		 					    // td1.className="tdtop";
+	 		 					    let td1=document.createElement("td");
+	 		 					    td1.rowSpan="4";	   
+	 		 					    let img =document.createElement("img");	   
+	 		 					    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+result[i].restaurantId;
+	 		 					    img.src=url;
+	 		 					    img.name=result[i].restaurantName;
+	 		 					    img.style.height="80px";
+	 		 					    img.id=result[i].restaurantId;
+	 		 					    let imgframe =document.createElement("div");
+	 		 					    imgframe.className='frame2';
+	 		 					    imgframe.appendChild(img);
+	 		 					    
+	 		 					    td1.appendChild(imgframe);
+	 		 					    tr1.appendChild(td1);
+	 		 					    
+	 		 					    let tr2 = document.createElement("tr");
+	 		 					    let td2=document.createElement("td");
+	 		 					    let restAnchor = document.createElement("a");
+	 		 					    
+	 		 					    let resturl ="<c:url value='/userPage/'/>"+result[i].restaurantId;
+	 		 					    restAnchor.href=resturl;
+	 		 					    
+	 		 					    restAnchor.innerHTML=result[i].restaurantName;
+	 		 					    restAnchor.style.color="#0000C6";
+	 		 					    td2.appendChild(restAnchor);
+	 		 					    tr2.appendChild(td2);
+	 		 					    //td2-1
+	 		 					    let td2_1 = document.createElement("td");
+	 		 					    td2_1.rowSpan="3";
+	 		 					    td2_1.innerHTML ='<button class="getPositionButton" style="background-color:#00008B;border-radius:15px;" id=rest'+result[i].restaurantId+'><i class="fas fa-map-marker-alt"></i></button>';
+	 		 					    
+	 		 					    tr2.appendChild(td2_1);
+	 		 					        
+	 		 					    let tr3 = document.createElement("tr");
+	 		 					    let td3=document.createElement("td");
+	 		 					    td3.innerHTML=result[i].restaurantAddress;
+	 		 					        tr3.appendChild(td3);
+	 		 					        
+	 		 					    //標籤列表
+	 		 					    let tr4 = document.createElement("tr");
+	 		 					    let td4=document.createElement("td");
+	 		 					    td4.innerHTML="Tags:&nbsp"
+	 		 					    td4.className="tdbot";
+	 		 					    
+	 		 					    for(let j = 0; j<result[i].foodTag.length;j++){
+	 		 					    	let tagAnchor = document.createElement("a");
+	 		 							tagAnchor.href="#";
+	 		 							
+	 		 							tagAnchor.innerHTML+=result[i].foodTag[j].foodTagName+"&nbsp&nbsp";
+	 		 							tagAnchor.style.color="#A23400";
+	 		 							td4.appendChild(tagAnchor);
+	 		 					    }
+	 		 					    
+	 		 					    
+	 		 					    //td4.innerHTML=loca[i].restaurantAddress;
+	 		 					    tr4.appendChild(td4);
+	 		 						
+	 		 					    let tr5= document.createElement("tr");
+	 		 					    tr5.style.height="5px";
+	 		 					    tr5.style.backgroundColor="#9D9D9D";
+	 		 					    tr5.appendChild(document.createElement("td"));
+	 		 					    tr5.appendChild(document.createElement("td"));
+	 		 					    tr5.appendChild(document.createElement("td"));
+	 		 					    
+	 		 					    memosheet.appendChild(tr1);
+	 		 					    memosheet.appendChild(tr2);
+	 		 					    memosheet.appendChild(tr3);
+	 		 					    memosheet.appendChild(tr4);    
+	 		 					    memosheet.appendChild(tr5); 
+	 		 					    }
+	 		 					memo.appendChild(memosheet);
+	 		 					memosheet.style.padding='5px';
+	 		 				}else{
+	 		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
+	 		 				}
+	 						
+	 						$(".getPositionButton").click(positionShow);
+	 					},
+	 					error:function(result){
+	 						}
+	 					});
+	 				};
 			
 // 			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
@@ -1706,8 +1800,6 @@ I've added a few comments on why we're using certain properties
  						}
  					});
  				};
- 				
-
  		
  	</script>
 

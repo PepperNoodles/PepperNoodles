@@ -148,7 +148,7 @@ $j(document).ready(function(){
 	//一鍵新增
 	$("#butAdd").click(function(){
 		$j("#eventName").val('開幕慶!!!');
-		$j("#eventStartDate").val('2021-05-18');
+		$j("#eventStartDate").val('2021-03-18');
 		$j("#eventEndDate").val('2021-06-18');
 		$j("#content").val('提前預訂，兩人同行即可享第二人半價優惠!');
 		eventNameError = true;
@@ -189,7 +189,7 @@ $j(document).ready(function(){
 			cache: false,  //不做快取
 			async : true,
 			success: function (result) {
-				alert("新增成功");
+// 				alert("新增成功");
 			location.href="http://localhost:433/PepperNoodles/event/"+restaurantId;
 			},
 	        error: function (result) {
