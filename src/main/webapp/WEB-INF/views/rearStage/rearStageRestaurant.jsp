@@ -84,6 +84,7 @@
 										<th>參考照片</th>
 										<th>標籤</th>
 										<th>修改</th>
+										<th>位置資訊<th>
 <!-- 										<th>編輯</th> -->
 <!-- 										<th>刪除</th> -->
 <!-- 										<th>accountdetail</th> -->
@@ -220,6 +221,9 @@
                         }},
                         { "render": function (data, type, JsonResultRow, meta) {
                             return '<button class="updateButton" style="background-color:#00008B;border-radius:15px;" id='+JsonResultRow.rest.restaurantId+'><i class="fas fa-edit"></i></button>';
+                        }},
+                        { "render": function (data, type, JsonResultRow, meta) {
+                            return '<button class="getPositionButton" style="background-color:#00008B;border-radius:15px;" id=rest'+JsonResultRow.rest.restaurantId+'><i class="fas fa-map-marker-alt"></i></button>';
                         }}
 		                  
 				    ],
@@ -255,7 +259,8 @@
 			        	Table.clear().draw();
 			            Table.rows.add(result).draw();
 			            
-			            $(".updateButton").click(updateRest)
+			            $(".updateButton").click(updateRest);
+			            $(".getPositionButton").click(positionShow);
 			        },
 			        error: function (result) {
 			        	console.log("有問題");
@@ -312,6 +317,17 @@
 				$("#file_input").change(function() {
 					 readURL(this);
 				});
+				
+				//顯示位址
+				function positionShow(){
+					console.log(this.id);
+					let restId = this.id.slice(4,);
+					
+					let url = "<c:url value='/restSearch/userSingleRestPage/' />" + restId;
+					features = "width="+1200+",height="+600+",top="+50+",left="+50; 
+					window.open(url,"toolbar=no,location=no,directories=no",features);
+				}
+				
 				
 				//更新
 				$("#singleRestUpdate").click(function(){

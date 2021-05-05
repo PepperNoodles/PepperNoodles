@@ -82,10 +82,10 @@ public class EventController {
 				System.out.println("結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
 			}
 			else if ( currentDate.before(startDate) ) {
-				System.out.println("未進行活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+				System.out.println("未進行活動:"+allEvent.get(i).getEventId()+" ,開始日期:"+allEvent.get(i).getEventStartDate());
 			}
 			else{
-				System.out.println("進行中:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+				System.out.println("進行中:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventStartDate()+"~"+allEvent.get(i).getEventEndDate());
 				notOverEvent.add(allEvent.get(i));
 			}
 		}

@@ -88,7 +88,7 @@
 												<h6><a class='updatelink'
 													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a></h6>
 													<br>
-													<div id="getrestHour${restaurant.restaurantId}" name="restHour" >test</div>
+													<div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div>
 													</td>
 												<td style="text-align: center; font-weight: bold">
 													<div id="${restaurant.restaurantId}" name="restid"></div>
@@ -103,14 +103,7 @@
 											</tr>
 											<script>
 											//抓餐廳營業時間
-											var x = $("div[name='restHour']");
-											        console.log($("input[name='restHour']"));
-											var getHourid=x[0].id.substring(11, 15);
-// 											        console.log(x.length);
-// 											        console.log(${restaurant.restaurantId});
-// 											        console.log(${restaurant.restaurantId});
 
-										
 												var urls = "${pageContext.request.contextPath}/";
 												urls += "<c:url value='getHours/'/>" +${restaurant.restaurantId};
 														console.log(urls);
@@ -261,9 +254,7 @@
 										// 				console.log(jsontxt.length);
 
 										for (i = 0; i < jsontxt.length; i++) {
-											$(divFoodTag).append(
-													jsontxt[i].foodTagName
-															+ '<br>');
+											$(divFoodTag).append("<i style='color:#EA0000;' class='fas fa-tag'> "+jsontxt[i].foodTagName+"</i>&emsp;");
 						
 										}
 									},

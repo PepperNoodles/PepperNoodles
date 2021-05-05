@@ -304,9 +304,9 @@ public class RestaurantCRUDController {
 		
 		//先去除掉關聯性再刪掉 不然會連同AccountUser+Role的comapny一同刪除== 幹!
 		Restaurant restToDelete = restaurantService.get(id);
-		restToDelete.setUserAccount(null);
 		restToDelete.setFoodTag(null);
 		restToDelete.setRestaurantBusinHour(null);
+		restToDelete.setUserAccount(null);
 		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
 		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
