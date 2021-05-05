@@ -15,7 +15,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -119,8 +118,12 @@ public class RestaurantCRUDController {
 	public  @ResponseBody List<RestaurantBusinHour> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,
 			@PathVariable("restIdForSettingHour") Integer id,Model model) {
 		Restaurant restForSettingHour = restaurantService.get(id);
+	
+		
+		
 		//設定營業時間與餐廳關聯性
 		restaurantBusinHour.setRestaurant(restForSettingHour);
+
 		//設定變數以方便整理前端傳來資料
 		Integer fk_restId = restaurantBusinHour.getRestaurant().getRestaurantId();
 //		System.out.println("fk_restId="+fk_restId);
@@ -128,7 +131,7 @@ public class RestaurantCRUDController {
 //		System.out.println("前端傳來day="+day);
 		
 		String openTime1 = restaurantBusinHour.getOpenTime();
-		System.out.println("前端傳來openTime1="+openTime1);
+//		System.out.println("前端傳來openTime1="+openTime1);
 		
 		String closeTime1 = restaurantBusinHour.getCloseTime();
 //		System.out.println("前端傳來closeTime1="+closeTime1);
@@ -166,7 +169,7 @@ public class RestaurantCRUDController {
 		
 	
 		List<RestaurantBusinHour> businessHourlist = businessHourServiceImpl.businHourSByRestID(id);
-		System.out.println("產生list");
+		
 
 
 		return businessHourlist;
@@ -301,9 +304,9 @@ public class RestaurantCRUDController {
 		
 		//先去除掉關聯性再刪掉 不然會連同AccountUser+Role的comapny一同刪除== 幹!
 		Restaurant restToDelete = restaurantService.get(id);
-		restToDelete.setRestaurantBusinHour(null);
-		restToDelete.setFoodTag(null);
 		restToDelete.setUserAccount(null);
+		restToDelete.setFoodTag(null);
+		restToDelete.setRestaurantBusinHour(null);
 		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
 		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
