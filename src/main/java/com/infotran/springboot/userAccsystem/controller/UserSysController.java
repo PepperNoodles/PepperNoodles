@@ -12,12 +12,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
+
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -43,6 +45,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.infotran.springboot.commonmodel.AuthUserDetails;
 import com.infotran.springboot.commonmodel.CompanyDetail;
 import com.infotran.springboot.commonmodel.FoodTag;
@@ -55,6 +58,7 @@ import com.infotran.springboot.commonmodel.Roles;
 import com.infotran.springboot.commonmodel.SendEmail;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.commonmodel.UserDetail;
+import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.loginsystem.dao.FoodTagUserRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
@@ -122,6 +126,9 @@ public class UserSysController {
 	
 	@Autowired
 	FoodTagUserRepository foodTagUserRepository;
+	
+	@Autowired
+	RestaurantService restaurantService;
 	
 	
 
@@ -806,6 +813,74 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		}
 		return preToSend;
 	}
+	
+	
+//餐廳收藏功能======================================================================================================================
+	
+	
+	//使用者確認餐廳收藏功能
+	@GetMapping(value="/user/checkRestaurantCollection" )
+	@ResponseBody
+	public String checkRestaurantCollection( @RequestParam(name = "resID") Integer resID) {
+		String message = null;
+		
+		Restaurant res = restaurantService.get(resID);
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		List<Restaurant> userCollections = user.getRestaurantCollections();
+		
+		if(userCollections.contains(res)) {
+			System.out.println("餐廳已經加過收藏不能再加囉!");
+			message = "true";
+		}else {
+			user.setRestaurantCollections(userCollections);
+			System.out.println("餐廳還沒加過唷~~");
+			message="還沒加過唷~~";
+		}
+
+		return message;
+	}
+	
+	
+	//使用者加入取消餐廳收藏功能
+	@GetMapping(value="/user/addRestaurantCollection" )
+	@ResponseBody
+	public String addRestaurantCollection( @RequestParam(name = "resID") Integer resID) {
+		String message = null;
+		
+		Restaurant res = restaurantService.get(resID);
+		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
+		List<Restaurant> userCollections = user.getRestaurantCollections();
+		
+
+		
+		if(userCollections.contains(res)) {
+			System.out.println("餐廳已經加過收藏不能再加囉!,為您取消收藏");
+			
+			for(int i=0; i<userCollections.size();i++) {
+				System.out.println(userCollections.get(i).getRestaurantId() + " " + userCollections.get(i).getRestaurantName());
+				if(userCollections.get(i).getRestaurantId()==res.getRestaurantId()) {
+					userCollections.remove(i);
+					user.setRestaurantCollections(userCollections);
+				}
+			}
+			uSysServiceImpl.update(user);
+			message = "取消收藏";
+			
+		}else {
+			userCollections.add(res);
+			user.setRestaurantCollections(userCollections);
+			service.update(user);
+			message="success";
+		}
+		
+
+
+		return message;
+	}
+	
+
+	
+	
 	
 //======================================================================================================================
 	

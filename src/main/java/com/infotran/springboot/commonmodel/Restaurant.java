@@ -114,7 +114,10 @@ public class Restaurant {
 	@JsonIgnore 
 	private List<Product> products =new ArrayList<Product>();
 
-
+	//Restaurant Collections
+	@JsonIgnore
+	@ManyToMany(mappedBy = "restaurantCollections")
+	private List<UserAccount> users = new ArrayList<>();
 
 
 	public Integer getRestaurantId() {
@@ -269,6 +272,14 @@ public class Restaurant {
 
 	public void setFoodTag(Set<FoodTag> foodTag) {
 		this.foodTag = foodTag;
+	}
+
+	public List<UserAccount> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserAccount> users) {
+		this.users = users;
 	}
 
 }
