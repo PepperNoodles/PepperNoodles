@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.RestaurantMessageBox;
+import com.infotran.springboot.commonmodel.UserAccount;
 
 public interface RestaurantMessageBoxService {
 	
@@ -13,4 +14,5 @@ public interface RestaurantMessageBoxService {
 	RestaurantMessageBox findById(Integer id);
 	
 	List<RestaurantMessageBox> getByRest(Restaurant rest);
+	List<RestaurantMessageBox> getByRestAndUser(Restaurant restaurant,UserAccount user);
 }
