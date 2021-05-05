@@ -15,4 +15,10 @@ public interface BusinessHourRepository extends JpaRepository<RestaurantBusinHou
 		
 		@Query(value="select * from restaurantBusinHour  where fk_restaurant_id=? order by day ",nativeQuery = true)
 		List<RestaurantBusinHour> businHourSByRestID(Integer id);
+		
+		@Query(value="delete  from restaurantBusinHour where fk_restaurant_id =? ",nativeQuery = true)
+		void deleteByRestID(Integer id);
+		
+		@Query(value="select *  from restaurantBusinHour where fk_restaurant_id =? ",nativeQuery = true)
+		List<RestaurantBusinHour> findRestaurantBusinHourIdByRestaurantId(Integer id);
 }

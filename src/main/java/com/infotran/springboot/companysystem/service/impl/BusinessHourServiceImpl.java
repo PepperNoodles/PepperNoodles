@@ -47,6 +47,30 @@ public class BusinessHourServiceImpl implements BusinessHourService {
 		return businessHourRepository.businHourSByRestID(id);
 	}
 
+	@Override
+	public void deleteByRestID(Integer id) {
+		businessHourRepository.deleteByRestID(id);
+		
+	}
+	
+
+	@Override
+	public void deleteByID(Integer id) {
+		businessHourRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public List<RestaurantBusinHour> findRestaurantBusinHourIdByRestaurantId(Integer restid) {
+		
+		return businessHourRepository.findRestaurantBusinHourIdByRestaurantId(restid);
+	}
+
+
+
+
+
+
 
 
 
