@@ -45,14 +45,20 @@ $.ajax({
 				
 				text +="		<div class='page col-md-4' style='width: 30rem;'>";
 				text +="			<div class='item'>";
-				text +="				<p> </p>";
-				text +="				<div class='eventImg'>";
-				text +="				<a href='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' >";
-				text +="				<img class'mh-10' width='260px' src='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' />";
-				text +="				</a>";
-				text +="				</div>";
+				text +="				<p></p>";
+				text +="				<figure>";
+				text +="					<div class='eventImg'>";
+				text +="						<a href='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' >";
+				text +="							<img class='img-thumbnail' src='<c:url value='/getEventPicture/"+notOverEvent[i].eventId+"'/>' />";
+				text +="						</a>";
+				text +="					</div>";
+				text +="					<figcaption class='mt-3 ml-5'>活動店家 : ";
+				text +="						<a href='<c:url value='/userPage/"+notOverEvent[i].restaurant.restaurantId+"'/>'>"+notOverEvent[i].restaurant.restaurantName+"</a>";
+				text +="					</figcaption>";
+				text +="				</figure>";
 				text +="				<p />";
-				text +="				<h4>"+notOverEvent[i].eventName+"</h4>";
+// 				text +=""+ notOverEvent[i].restaurant.restaurantName +"";
+				text +="				<h5>"+notOverEvent[i].eventName+"</h5>";
 				text +="				<p class='time'>"+notOverEvent[i].eventStartDate+"-"+notOverEvent[i].eventEndDate+"</p>";
 				text +="				<P>"+notOverEvent[i].content+"</P>";
 				text +="			</div>";
@@ -80,35 +86,46 @@ $.ajax({
 .time{
 	color: red;
 }
-.eventImg{
+.item div{
+	text-align:center;
 	height:250px;
+	line-height : 250px;
 	}
-
-
 .eventImg img{
-		object-fit: cover; 
+
+		vertical-align:middle;
 	    max-height: 100%;  
 	    max-width: 100%; 
 	    width: auto;
 	    height: auto;
-/* 	    position: absolute;   */
-	    top: 0;  
-	    bottom: 0;  
-	    left: 0;  
-	    right: 0;  
-	    margin: auto;   
-  		display: block;
+	    text-align: center;
+/*  	    position: absolute;    */
+ 	    top: 0;   
+ 	    bottom: 0;   
+ 	    left: 0;   
+ 	    right: 0;   
+	    margin: auto;    
+/*    		display: block; 有他在圖片無法垂直置中 */ 
 }
-
+.EventIngDiv{
+	text-align:center;
+}
+div .EventIngH2{
+ 	color: white;
+ 	font-weight:1000;
+ 	font-size:70px;
+ 	 
+}
 </style>
 </head>
 <body>
 <div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/event.jpg"/>)" >
-<br>
-<div class="section-tittle text-center mb-80">
-	<h2>活動進行中</h2>
+<p>&emsp;</p>
+
+<div class="section-tittle text-center mb-80 EventIngDiv">
+	<p class="EventIngH2">活 動 進 行 中 !!</p>
 </div>
-<div class="container mt-5" id="showNotOver">
+<div class="container " id="showNotOver">
 
 <!-- 	<div class="card"> -->
 <!-- 		<div class="row rowOdd"> -->
