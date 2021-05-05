@@ -73,6 +73,7 @@ td>img {
 }
 
 table {
+	padding:5px;
 	border-collapse: separate;
 	border: solid black 1px;
 	border-radius: 6px;
@@ -468,7 +469,7 @@ I've added a few comments on why we're using certain properties
 						<h2>我的餐廳收藏</h2>
 						<a href="<c:url value='/restSearch/map'/>"><button
 								type="button" class="genric-btn default circle arrow"
-								id="addNewComment">新增收藏</button></a><br>
+								id="addNewComment">新增收藏</button></a><br><br>
 
 			<div class="memoBoard" id="memoBoard"
 			>
@@ -1681,8 +1682,9 @@ I've added a few comments on why we're using certain properties
  		 					    memosheet.appendChild(tr5); 
  		 					    }
  		 					memo.appendChild(memosheet);
+ 		 					memosheet.style.padding='5px';
  		 				}else{
- 		 					memo.innerHTML="<h2>沒有符合的餐廳</h2>";
+ 		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
  		 				}
  					},
  					error:function(result){
