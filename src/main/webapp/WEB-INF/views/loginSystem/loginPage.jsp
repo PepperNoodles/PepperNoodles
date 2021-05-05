@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
@@ -7,31 +6,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Login Page</title>
-<link rel="Shortcut icon"
-	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
+<link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta
-	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
-	name='viewport' />
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <!--     Fonts and icons     -->
-<link
-	href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css"
-	rel="stylesheet">
-<script defer
-	src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css"	rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
 	integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
 	crossorigin="anonymous"></script>
 <!-- CSS Files -->
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/css/bootstrap.min.css' />" />
-<link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />"
-	rel="stylesheet" />
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+<link href="<c:url value='/css/gsdk-bootstrap-wizard.css' />" rel="stylesheet" />
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <style>
 .form-group input[type="checkbox"] {
@@ -538,6 +527,160 @@
 			hasError = true;
 			hasErrorpwd = true;
 		}
+		
+		//一鍵新增-企業
+		$("#addcompany").click(function() {
+			$("#UserEmail").val('ting0420a@gmail.com');
+			$("#userPwd").val('123!Q123');
+			$("#privacycheck").prop("checked", true);
+			$("#company").prop("checked", true);
+			hasError = true;
+			hasErrorpwd = true;
+			privacycheck = true;
+		});
+
+		$("#signinCompany").click(function() {
+			$("#comRealname").val('黯然消魂麵館');
+			$("#comPhonenumber").val('09123456789');
+			$("#comLocation").val('台北市中正路二段158號1樓');
+			hasErrorComRealname = true;
+			hasErrorComPhone = true;
+			hasErrorComLocation = true;
+		});
+		//輸入完成傳值到Conrtoller
+		$("#comNextSlide2")
+				.click(
+						function() {
+							if (!hasErrorComRealname
+									|| !hasErrorComPhone
+									|| !hasErrorComLocation) {
+								txt = "<span>請輸入正確資訊</span>";
+								$("#checkComStatus2").css({
+									"color" : "red",
+									"font-size" : "small"
+								});
+								$("#checkComStatus2").html(
+										txt);
+							} else {
+								txt = "&emsp;";
+								$("#checkComStatus2").html(
+										txt);
+								document.form1.method = "post";
+								document.form1.action = "/PepperNoodles/addCom";
+								document.form1.enctype = "multipart/form-data";
+								document.form1.submit();
+							}
+						});
+		//確認表格皆填完整
+		var hasErrorComRealname = false;
+		var hasErrorComPhone = false;
+		var hasErrorComLocation = false;
+		//前端判斷是否輸入正確
+		$("#comRealname").blur(
+				function() {
+					let value = $(this).val();
+					let txt = "";
+					if (value == "") {
+						$("#comRealnameResult").css({
+							"color" : "red",
+							"font-size" : "small"
+						});
+						$("#comRealname").css({
+							"border" : "2px solid red"
+						});
+						txt = "<span>企業名稱不可為空白</span>";
+						hasErrorComRealname = false;
+					}
+					if (value.length < 2) {
+						$("#comRealnameResult").css({
+							"color" : "red",
+							"font-size" : "small"
+						});
+						$("#comRealname").css({
+							"border" : "2px solid red"
+						});
+						txt = "<span>名稱需至少2個字</span>";
+						hasErrorComRealname = false;
+					} else {
+						$("#comRealname").css("border",
+								"2px solid green");
+						txt = "&emsp;";
+						hasErrorComRealname = true;
+					}
+					$("#comRealnameResult").html(txt);
+				});
+
+		$("#comPhonenumber")
+				.blur(
+						function() {
+							let value = $(this).val();
+							let txt = "";
+							if (value == "") {
+								$("#comPhotoResult").css({
+									"color" : "red",
+									"font-size" : "small"
+								});
+								$("#comPhonenumber")
+										.css(
+												{
+													"border" : "2px solid red"
+												});
+								txt = "<span>請輸入連絡電話</span>";
+								hasErrorComPhone = false;
+							} else {
+								for (let i = 0; i < value.length; i++) {
+									let ch = value
+											.charAt(i);
+									if (ch >= 0 && ch <= 9) {
+										txt = "&emsp;";
+										$("#comPhonenumber")
+												.css(
+														"border",
+														"2px solid green");
+										hasErrorComPhone = true;
+									} else {
+										$("#comPhotoResult")
+												.css(
+														{
+															"color" : "red",
+															"font-size" : "small"
+														});
+										$("#comPhonenumber")
+												.css(
+														{
+															"border" : "2px solid red"
+														});
+										txt = "<span>只能輸入數字</span>";
+										hasErrorComPhone = false;
+									}
+								}
+							}
+							$("#comPhotoResult").html(txt);
+						});
+
+		$("#comLocation").blur(
+				function() {
+					let value = $(this).val();
+					let txt = "";
+					if (value == "") {
+						$("#comLocationResult").css({
+							"color" : "red",
+							"font-size" : "small"
+						});
+						$("#comLocation").css({
+							"border" : "2px solid red"
+						});
+						txt = "<span>地址不可為空白</span>";
+						hasErrorComLocation = false;
+					} else {
+						$("#comLocation").css("border",
+								"2px solid green");
+						txt = "&emsp;";
+						hasErrorComLocation = true;
+					}
+					$("#comLocationResult").html(txt);
+				});
+
 
 		var addMemberDetail = document.getElementById("addMemberDetail");
 		addMemberDetail.onclick = function() {
@@ -607,166 +750,6 @@
 			
 		})
 
-		//下一頁-企業端
-		$(document)
-				.ready(
-						function() {
-							//確認表格皆填完整
-							var hasErrorComRealname = false;
-							var hasErrorComPhone = false;
-							var hasErrorComLocation = false;
-							//前端判斷是否輸入正確
-							$("#comRealname").blur(
-									function() {
-										let value = $(this).val();
-										let txt = "";
-										if (value == "") {
-											$("#comRealnameResult").css({
-												"color" : "red",
-												"font-size" : "small"
-											});
-											$("#comRealname").css({
-												"border" : "2px solid red"
-											});
-											txt = "<span>企業名稱不可為空白</span>";
-											hasErrorComRealname = false;
-										}
-										if (value.length < 2) {
-											$("#comRealnameResult").css({
-												"color" : "red",
-												"font-size" : "small"
-											});
-											$("#comRealname").css({
-												"border" : "2px solid red"
-											});
-											txt = "<span>名稱需至少2個字</span>";
-											hasErrorComRealname = false;
-										} else {
-											$("#comRealname").css("border",
-													"2px solid green");
-											txt = "&emsp;";
-											hasErrorComRealname = true;
-										}
-										$("#comRealnameResult").html(txt);
-									});
-
-							$("#comPhonenumber")
-									.blur(
-											function() {
-												let value = $(this).val();
-												let txt = "";
-												if (value == "") {
-													$("#comPhotoResult").css({
-														"color" : "red",
-														"font-size" : "small"
-													});
-													$("#comPhonenumber")
-															.css(
-																	{
-																		"border" : "2px solid red"
-																	});
-													txt = "<span>請輸入連絡電話</span>";
-													hasErrorComPhone = false;
-												} else {
-													for (let i = 0; i < value.length; i++) {
-														let ch = value
-																.charAt(i);
-														if (ch >= 0 && ch <= 9) {
-															txt = "&emsp;";
-															$("#comPhonenumber")
-																	.css(
-																			"border",
-																			"2px solid green");
-															hasErrorComPhone = true;
-														} else {
-															$("#comPhotoResult")
-																	.css(
-																			{
-																				"color" : "red",
-																				"font-size" : "small"
-																			});
-															$("#comPhonenumber")
-																	.css(
-																			{
-																				"border" : "2px solid red"
-																			});
-															txt = "<span>只能輸入數字</span>";
-															hasErrorComPhone = false;
-														}
-													}
-												}
-												$("#comPhotoResult").html(txt);
-											});
-
-							$("#comLocation").blur(
-									function() {
-										let value = $(this).val();
-										let txt = "";
-										if (value == "") {
-											$("#comLocationResult").css({
-												"color" : "red",
-												"font-size" : "small"
-											});
-											$("#comLocation").css({
-												"border" : "2px solid red"
-											});
-											txt = "<span>地址不可為空白</span>";
-											hasErrorComLocation = false;
-										} else {
-											$("#comLocation").css("border",
-													"2px solid green");
-											txt = "&emsp;";
-											hasErrorComLocation = true;
-										}
-										$("#comLocationResult").html(txt);
-									});
-
-							//一鍵新增
-							$("#addcompany").click(function() {
-								$("#UserEmail").val('ting0420a@gmail.com');
-								$("#userPwd").val('123!Q123');
-								$("#privacycheck").prop("checked", true);
-								$("#company").prop("checked", true);
-								hasError = true;
-								hasErrorpwd = true;
-								privacycheck = true;
-							});
-
-							$("#signinCompany").click(function() {
-								$("#comRealname").val('黯然消魂麵館');
-								$("#comPhonenumber").val('09123456789');
-								$("#comLocation").val('台北市中正路二段158號1樓');
-								hasErrorComRealname = true;
-								hasErrorComPhone = true;
-								hasErrorComLocation = true;
-							});
-
-							//輸入完成傳值到Conrtoller
-							$("#comNextSlide2")
-									.click(
-											function() {
-												if (!hasErrorComRealname
-														|| !hasErrorComPhone
-														|| !hasErrorComLocation) {
-													txt = "<span>請輸入正確資訊</span>";
-													$("#checkComStatus2").css({
-														"color" : "red",
-														"font-size" : "small"
-													});
-													$("#checkComStatus2").html(
-															txt);
-												} else {
-													txt = "&emsp;";
-													$("#checkComStatus2").html(
-															txt);
-													document.form1.method = "post";
-													document.form1.action = "/PepperNoodles/addCom";
-													document.form1.enctype = "multipart/form-data";
-													document.form1.submit();
-												}
-											});
-
-						});
 
 	}//end
 

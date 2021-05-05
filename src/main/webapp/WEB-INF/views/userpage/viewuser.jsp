@@ -60,14 +60,14 @@
 	#body{
 	height: 100vh;
     background-image: url(
-    "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80"
+    "https://images.unsplash.com/photo-1483137140003-ae073b395549?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
     );
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
 	}
 	#main{
-	background-color:#FFFFFF;
+	background-color:#FCFCFC		;
 	}
 	.butt{
 	height:60px;
