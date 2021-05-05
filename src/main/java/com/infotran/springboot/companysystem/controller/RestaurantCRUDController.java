@@ -104,14 +104,22 @@ public class RestaurantCRUDController {
 		model.addAttribute("restForSettingHour", restForSettingHour);
 		return "company/RestaurantBusinHour";
 	}
-
+	
+	//ajax get方法純拿餐廳資料
+	@GetMapping("/getHours/{restId}")
+	public @ResponseBody List<RestaurantBusinHour> getHours(Model model,@PathVariable("restId") Integer id) {
+		List<RestaurantBusinHour> businessHourlist = businessHourServiceImpl.businHourSByRestID(id);
+		return businessHourlist;
+	}
+	
+	
+	//ajax post方法存取餐廳資料
 	@PostMapping("/Hours/{restIdForSettingHour}")
-	public  @ResponseBody Map<String,String> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,@PathVariable("restIdForSettingHour") Integer id,Model model) {
+	public  @ResponseBody List<RestaurantBusinHour> addRestaurantBusinHour(@ModelAttribute("restaurantBusinHour") RestaurantBusinHour restaurantBusinHour, BindingResult result,
+			@PathVariable("restIdForSettingHour") Integer id,Model model) {
 		Restaurant restForSettingHour = restaurantService.get(id);
 	
 		
-		System.out.println("設定ID為"+id);
-
 		
 		//設定營業時間與餐廳關聯性
 		restaurantBusinHour.setRestaurant(restForSettingHour);
@@ -120,13 +128,13 @@ public class RestaurantCRUDController {
 		Integer fk_restId = restaurantBusinHour.getRestaurant().getRestaurantId();
 //		System.out.println("fk_restId="+fk_restId);
 		String day = restaurantBusinHour.getDay();
-		System.out.println("前端傳來day="+day);
+//		System.out.println("前端傳來day="+day);
 		
 		String openTime1 = restaurantBusinHour.getOpenTime();
-		System.out.println("前端傳來openTime1="+openTime1);
+//		System.out.println("前端傳來openTime1="+openTime1);
 		
 		String closeTime1 = restaurantBusinHour.getCloseTime();
-		System.out.println("前端傳來closeTime1="+closeTime1);
+//		System.out.println("前端傳來closeTime1="+closeTime1);
 		
 		String openTime2 = restaurantBusinHour.getOpenTime2nd();
 //		System.out.println("openTime2="+openTime2);
@@ -159,31 +167,12 @@ public class RestaurantCRUDController {
 			businessHourServiceImpl.update(restaurantBusinHour2);
 		}
 		
-		Map<String,String> map = new HashMap<String, String>();
-		if(openTime1==null) {
-			map.put("星期",day);
-			map.put("Close","Close");
-		}
-		else if(openTime1.length()!=0 & closeTime1.length()!=0 && openTime2.length()==0 ) {
-			map.put("星期",day);
-			map.put("營業時間",openTime1+"~"+closeTime1);
-		}
-		else if(openTime1.length()!=0 & closeTime1.length()!=0 & openTime2.length()!=0 & closeTime2.length()!=0 &openTime3.length()==0) {
-			map.put("星期",day);
-			map.put("營業時間一",openTime1+"~"+closeTime1);
-			map.put("營業時間二",openTime2+"~"+closeTime2);
-		}
-		else if(openTime1.length()!=0 & closeTime1.length()!=0 & openTime2.length()!=0 & closeTime2.length()!=0 & openTime3.length()!=0 & closeTime3.length()!=0 ) {
-			map.put("星期",day);
-			map.put("營業時間一",openTime1+"~"+closeTime1);
-			map.put("營業時間二",openTime2+"~"+closeTime2);
-			map.put("營業時間三",openTime3+"~"+closeTime3);
-		}
-		else {
-			System.out.println("sth wrong!");
-		}
 	
-		return map;
+		List<RestaurantBusinHour> businessHourlist = businessHourServiceImpl.businHourSByRestID(id);
+		
+
+
+		return businessHourlist;
 	}
 
 
@@ -317,6 +306,7 @@ public class RestaurantCRUDController {
 		Restaurant restToDelete = restaurantService.get(id);
 		restToDelete.setUserAccount(null);
 		restToDelete.setFoodTag(null);
+		restToDelete.setRestaurantBusinHour(null);
 		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
 		restaurantService.update(restToDelete);
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
