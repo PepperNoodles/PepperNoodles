@@ -254,9 +254,7 @@
 										// 				console.log(jsontxt.length);
 
 										for (i = 0; i < jsontxt.length; i++) {
-											$(divFoodTag).append(
-													jsontxt[i].foodTagName
-															+ '<br>');
+											$(divFoodTag).append("<i style='color:#EA0000;' class='fas fa-tag'> "+jsontxt[i].foodTagName+"</i>&emsp;");
 						
 										}
 									},
