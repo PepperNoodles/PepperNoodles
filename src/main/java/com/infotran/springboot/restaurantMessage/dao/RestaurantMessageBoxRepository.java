@@ -17,4 +17,12 @@ public interface RestaurantMessageBoxRepository extends JpaRepository<Restaurant
 	
 	@Query(value="from RestaurantMessageBox r where r.restaurant = :restaurant and userAccount= :user")
 	List<RestaurantMessageBox> getByRestAndUser(Restaurant restaurant,UserAccount user,Pageable page);
+	
+	@Query(value = "SELECT SUM(r.score) FROM RestaurantMessageBox r where r.restaurant = :restaurant")
+	Integer restMessageRankSum(Restaurant restaurant);
+	
+	//@Query("SELECT COUNT(u) FROM User u WHERE u.name=?1")
+	@Query(value = "SELECT COUNT(r) FROM RestaurantMessageBox r where r.restaurant = :restaurant and score != null")
+	Integer restMessageNotNull(Restaurant restaurant);
+	
 }
