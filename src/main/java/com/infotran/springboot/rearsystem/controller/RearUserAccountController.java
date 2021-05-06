@@ -55,7 +55,7 @@ public class RearUserAccountController {
 	public UserAccount processUserAccountQueryById(@RequestParam(name = "account_id") Integer id) {
 		System.out.println("1");
 		UserAccount enabledStatus = rearUserAccountService.finById(id);		
-		RearSendEmail rearSendEmail = new RearSendEmail(); //寄信
+		RearSendEmail rearSendEmail = new RearSendEmail(); //寄信請關信件防毒軟體
 		//判斷enable改變狀態並寄信通知
 		if(enabledStatus.isEnabled()) {
 			rearSendEmail.sendRightEmail(enabledStatus);
