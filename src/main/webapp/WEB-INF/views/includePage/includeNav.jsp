@@ -56,6 +56,13 @@
 	background-color: #000000;
 }
 </style>
+<script type="text/javascript">
+$("#indexSearch").on('click',function(){
+	let urls="<c:url value='/restSearch/mapWithCurrentLoca'/>";
+	window.location.href = urls;
+});
+</script>
+
 </head>
 
 <body>
@@ -133,7 +140,7 @@
 															page</a></li>
 
 												</ul></li>
-											<li><a href="about.html">發表食記</a></li>
+											<li><a href="<c:url value='/restSearch/mapWithCurrentLoca'/>" id = "indexSearch">探索地圖</a></li>
 											<li><a href="#exampleModal" id="" target="">聯絡我們</a></li>
 
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
