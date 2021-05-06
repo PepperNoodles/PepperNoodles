@@ -134,7 +134,7 @@
 
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
-											<li><a href="#exampleModal" id="" target="">聯絡我們</a></li>
+											<li><a href="<c:url value='/rearStage/rearContactMessage'/>">聯絡我們</a></li>
 
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
