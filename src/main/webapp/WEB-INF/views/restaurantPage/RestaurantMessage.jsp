@@ -521,7 +521,10 @@ hr {
 	padding:0;
 }
  .grayscale{
-                filter:grayscale(1);
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
            }
 
 </style>
@@ -546,6 +549,10 @@ hr {
 					    </tr>
 					</thead>
 					<tbody>
+						<tr>
+					    	<th scope="row">評分</th>
+					   	  	<td id="rankStar">${rest.rankAmount} &nbsp;</td>
+					    </tr>
 						<tr>
 					    	<th scope="row">地址</th>
 					   	  	<td>${rest.restaurantAddress}</td>
@@ -713,7 +720,54 @@ hr {
 		$("#toggleHour").click(function() {
 	      	  $( ".hourArea" ).slideToggle("slow")
 	 		});
- 			
+ 		
+		let postion = $("#rankStar");
+		let number = postion.html();
+		createStar(number,postion)
+		//createStar
+		function createStar(number,position){
+			let rank = parseFloat(number);
+			if (rank-Math.floor(rank)>0.1){
+				for(let j = 0; j < 5 ; j++){
+					if (j<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+						
+						
+						
+					}else if(j==Math.floor(rank)){
+						let img2 =  document.createElement("img");
+						img2.src = "<c:url value='/images/restaurantCRUD/halfcat.png'/>";
+						img2.className = "rankcat";
+						position.append(img2);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+				
+			}else{
+				for(let k = 0; k < 5 ; k++){
+					if (k<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+			}
+		}
+		
+		
 // 		//讓bar固定在上面以及設定高度
 		$(".header-sticky").addClass("sticky-bar");
  		$(".header-sticky").css("height", "90px");

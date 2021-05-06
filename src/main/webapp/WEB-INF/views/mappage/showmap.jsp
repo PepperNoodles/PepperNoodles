@@ -47,6 +47,20 @@ html, body {
 	width: 70%;
 	height: 70%;
 	}
+.rankcat{
+	height:25px;
+	margin:2px;
+	padding:0;
+}
+
+
+ .grayscale{
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
+    }
+
 
 tr a:hover{
 	color:#FFFFFF;
@@ -642,7 +656,7 @@ tr a:hover{
 				    let tr1 = document.createElement("tr");
 				    // td1.className="tdtop";
 				    let td1=document.createElement("td");
-				    td1.rowSpan="4";	   
+				    td1.rowSpan="5";	   
 				    let img =document.createElement("img");	   
 				    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
 				    img.src=url;
@@ -669,9 +683,21 @@ tr a:hover{
 				    
 				    restAnchor.innerHTML=loca[i].restaurantName;
 				    restAnchor.style.color="#0000C6";
-				    td2.appendChild(restAnchor);
+				    td2.appendChild(restAnchor);	    
 				    tr2.appendChild(td2);     			        
-				        
+				    
+					let tr2_5 =  document.createElement("tr");
+				    let td2_5 =  document.createElement("td");
+				    td2_5.innerHTML ="rank:"+ loca[i].rankAmount;
+				    //append 星星
+				    if(loca[i].rankAmount != null){
+				    	 let span = document.createElement("span");
+						 let number = loca[i].rankAmount;
+						 createStar(number,td2_5);						 
+						 tr2_5.append(td2_5);
+				    }
+				    
+				    
 				    let tr3 = document.createElement("tr");
 				    let td3=document.createElement("td");
 				    td3.innerHTML=loca[i].restaurantAddress;
@@ -705,6 +731,7 @@ tr a:hover{
 				    
 				    memosheet.appendChild(tr1);
 				    memosheet.appendChild(tr2);
+				    memosheet.appendChild(tr2_5);
 				    memosheet.appendChild(tr3);
 				    memosheet.appendChild(tr4);    
 				    memosheet.appendChild(tr5); 
@@ -755,9 +782,55 @@ tr a:hover{
 					}
 				})
 		}
-		 
+		function createStar(number,position){
+			let rank = parseFloat(number);
+			//<c:url value='/images/restaurantCRUD/cat.png'/>
+				//差距過大
+			if (rank-Math.floor(rank)>0.1){
+				for(let j = 0; j < 5 ; j++){
+					if (j<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+						
+						
+						
+					}else if(j==Math.floor(rank)){
+						let img2 =  document.createElement("img");
+						img2.src = "<c:url value='/images/restaurantCRUD/halfcat.png'/>";
+						img2.className = "rankcat";
+						position.append(img2);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+				
+			}else{
+				for(let k = 0; k < 5 ; k++){
+					if (k<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+			}
+			
+			
+		} 
 		
 		
+		
+		//end
 	});
 	
 	</script>
