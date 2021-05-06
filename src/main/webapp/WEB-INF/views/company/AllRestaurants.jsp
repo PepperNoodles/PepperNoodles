@@ -65,30 +65,34 @@ cellpadding:8px;
 				<div class="container">
 					<div class="row d-flex align-items-center justify-content-center">
 						<!-- 餐廳管理頁面 -->
-						<div>
+						<div class="container">
 							<h3 style="color: red">
 								<a href="<c:url value='/addrest'/> ">建立餐廳</a>
 							</h3>
+							<div class="row ml-3">
 							<c:choose>
 								<c:when test="${empty restaurants}">
 									<h5 style="color: #FF1493">沒有任何餐廳資料</h5>
 									<br>
 								</c:when>
 								<c:otherwise>
+										<c:forEach var='restaurant' items='${restaurants}'>
+										<div class="page  pl-3 ml-3">
+												${restaurant.restaurantName}
+												<img width='120' height='120'
+													src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
+													id='restpicture' />
+													<span id="${restaurant.restaurantId}" name="restid"></span>
 									<table border='1'>
 										<tr align="center">
-											<th width='100'>餐廳名稱</th>
-											<th width='auto'>餐廳地址</th>
-											<th width='80'>聯絡方式</th>
-											<th width='80'>餐廳網站</th>
-											<th width='auto'>營業時間</th>
-											<th width='80'>標籤</th>
-											<th width='80'>環境照片</th>
-											<th width='auto' colspan='1'>資料維護</th>
+										
+											<th width='150'>餐廳地址</th>
+											<th width='150'>聯絡方式</th>
+											<th width='150'>餐廳網站</th>
+											<th width='150'>營業時間</th>
+											<th width='150' colspan='1'>資料維護</th>
 										</tr>
-										<c:forEach var='restaurant' items='${restaurants}'>
 											<tr >
-												<td style="text-align: center; font-weight: bold">${restaurant.restaurantName}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
@@ -98,12 +102,8 @@ cellpadding:8px;
 												<a class='updatelink' style="color: blue"
 													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a>
 													</td>
-												<td style="text-align: center; font-weight: bold">
-													<div id="${restaurant.restaurantId}" name="restid"></div>
-												</td>
-												<td><img width='120' height='120'
-													src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
-													id='restpicture' /></td>
+												
+											
 												<td style="font-weight: bold"><h6><a class='updatelink'
 													href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯餐廳</a><br>
 													<a class='deletelink'
@@ -178,10 +178,11 @@ cellpadding:8px;
 											
 											
 											</script>
+									</table></div>
 										</c:forEach>
-									</table>
 								</c:otherwise>
 							</c:choose>
+							</div>
 						</div>
 						<!-- ↑餐廳管理頁面 -->
 					</div>
@@ -243,7 +244,7 @@ cellpadding:8px;
 									});
 
 							//抓餐廳tag
-							let n = $("div[name='restid']");
+							let n = $("span[name='restid']");
 							//         console.log($("input[name='restid']"));
 							//         console.log(n.length);
 							//         console.log(n[0].id);
@@ -264,12 +265,24 @@ cellpadding:8px;
 										var jsontxt = JSON.parse(response);
 										// 				console.log(response);
 										// 				console.log(jsontxt);
-										// 				console.log(jsontxt.length);
-
-										for (i = 0; i < jsontxt.length; i++) {
-											$(divFoodTag).append("<i style='color:#EA0000;' class='fas fa-tag'> "+jsontxt[i].foodTagName+"</i>&emsp;");
-						
-										}
+										
+									
+											
+											$(divFoodTag).append('<table><tr>')
+											for (i = 0; i < jsontxt.length; i++) {
+											
+													$(divFoodTag).append("<td><i style='color:#EA0000;' class='fas fa-tag'>"+jsontxt[i].foodTagName+"</i></tr>");
+											
+								
+							
+											}
+											$(divFoodTag).append('</td></table>')
+									
+										
+										
+										
+									
+									
 									},
 									error : function(thrownError) {
 										console.log(thrownError);
