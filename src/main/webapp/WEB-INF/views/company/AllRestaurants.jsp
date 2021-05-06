@@ -35,6 +35,15 @@
 	padding: 0 !important;
 	margin: 0 !important;
 }
+
+td{
+ padding:5px ;
+}
+
+
+table{
+cellpadding:8px;
+}
 </style>
 
 </head>
@@ -66,29 +75,28 @@
 									<br>
 								</c:when>
 								<c:otherwise>
-									<table border='1' cellpadding="3" cellspacing="1">
-										<tr>
+									<table border='1'>
+										<tr align="center">
 											<th width='100'>餐廳名稱</th>
-											<th width='120'>餐廳地址</th>
+											<th width='auto'>餐廳地址</th>
 											<th width='80'>聯絡方式</th>
 											<th width='80'>餐廳網站</th>
-											<th width='180'>營業時間</th>
+											<th width='auto'>營業時間</th>
 											<th width='80'>標籤</th>
 											<th width='80'>環境照片</th>
-											<th colspan='1' width='80'>資料維護</th>
+											<th width='auto' colspan='1'>資料維護</th>
 										</tr>
 										<c:forEach var='restaurant' items='${restaurants}'>
-											<tr>
+											<tr >
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantName}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
 												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
 												<td style="text-align: center; font-weight: bold">
-												
-												<h6><a class='updatelink'
-													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a></h6>
-													<br>
+													
 													<div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div>
+												<a class='updatelink' style="color: blue"
+													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a>
 													</td>
 												<td style="text-align: center; font-weight: bold">
 													<div id="${restaurant.restaurantId}" name="restid"></div>
@@ -127,7 +135,7 @@
 															'六',
 															'日' ];
 
-													txt = '<table ><h6>';
+													txt = '<table id="tablemenu" align="center"><h6>';
 													for (j = 0; j < result.length; j++) {
 														txt += '<tr><td>星期'
 																+ weekday[parseInt(result[j].day)]
@@ -211,6 +219,11 @@
 				'overflow' : 'visible'
 			});
 
+		});
+		
+		$("#restHourMenu").click(function(){
+			$("#tablemenu").slideUp("slow");
+			$("#tablemenu").slideToggle("slow");
 		});
 	</script>
 	<script>
