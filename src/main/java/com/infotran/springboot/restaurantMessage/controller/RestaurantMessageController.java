@@ -104,6 +104,11 @@ public class RestaurantMessageController {
 		restMessage.setUserAccount(netizenAccount);
 		restMessage.setRestaurant(restaurant);
 		RestaurantMessageBox newMessagaBox = restaurantMessageBoxService.insert(restMessage);
+		//新增餐廳分數
+		String avgRank = restaurantMessageBoxService.avgRank(restaurant);
+
+		restaurant.setRankAmount(avgRank);
+		restaurantService.update(restaurant);
 		return newMessagaBox;
 	}
 	
@@ -191,6 +196,16 @@ public class RestaurantMessageController {
 			}
 		System.out.println("no logging user currently!!");
 			return null;
+	}
+	
+	@GetMapping(value="/testScore")
+	@ResponseBody
+	public String getRestScore() {
+		Restaurant rest = restaurantService.findById(6);
+		
+		String avgRank = restaurantMessageBoxService.avgRank(rest);
+		
+		return avgRank;
 	}
 		
 	

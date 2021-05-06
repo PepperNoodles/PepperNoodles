@@ -63,4 +63,22 @@ public class RestaurantMessageBoxServiceImpl implements RestaurantMessageBoxServ
 		return restaurantMessageBox;
 	}
 
+	@Override
+	public String avgRank(Restaurant restaurant) {
+		Integer sum = restaurantMessageBoxDao.restMessageRankSum(restaurant);
+		Integer count = restaurantMessageBoxDao.restMessageNotNull(restaurant);
+		if(sum != null && count != null) {
+			Double sumdb = Double.valueOf(sum);	
+			Double countdb = Double.valueOf(count);
+			
+			Double avgRank =(sumdb/countdb);
+			String result = String.format("%2.1f" ,avgRank) ;		
+			return result;
+		}else {
+			return null;
+		}
+		
+	
+	}
+
 }
