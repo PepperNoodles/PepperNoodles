@@ -174,7 +174,8 @@ tr a:hover{
 
 	<br>
 
-	<h5 style="display:none" id="indexSearch">${rests}</h5>
+	<h5 style="display: none;" id="indexSearch">${mapRests}</h5>
+	<h5 style="display: none;" id="currentPosition">${current}</h5>
 	
 	
 	
@@ -197,6 +198,7 @@ tr a:hover{
 		}).addTo(map);
 		
 		var selectedMarker;
+		var circleMarker;
 		
 		//新增icon圖案 有用到可以呼叫
 		var restIcon= new L.Icon({
@@ -207,6 +209,10 @@ tr a:hover{
 		        iconUrl:"<c:url value='/images/restaurantCRUD/restmarker_blue.png' />",
 			   	iconSize:[33,33],iconAnchor:[12,41],popupAncher:[1,-34],shadowSize:[41,41]
 			});
+		var userIcon= new L.Icon({
+	        iconUrl:"<c:url value='/images/restaurantCRUD/ruserloca.png.png' />",
+		   	iconSize:[33,33],iconAnchor:[12,41],popupAncher:[1,-34],shadowSize:[41,41]
+		});
 		
 		
 		$('#toast').toast('show')
@@ -214,7 +220,7 @@ tr a:hover{
 		const popup = L.popup();
 		
 		//從首頁傳值
-		if ($("#indexSearch").html().length>2){
+		if ($("#indexSearch").html().length>5){
 			console.log($("#indexSearch").html().length);
 			let indexResult = $("#indexSearch").html();
 			indexResult=JSON.parse(indexResult);
@@ -230,6 +236,59 @@ tr a:hover{
 		}else{
 			loca=[];
 		}
+		//從首頁不傳值
+		if($("#currentPosition").html().length>2){			
+			
+			map.locate({setView: true, maxZoom: 20});
+
+			map.on('locationfound', onLocationFound);
+			
+			function onLocationFound(e) {
+			    var radius = e.accuracy;
+
+			    L.marker(e.latlng).addTo(map)
+			     .bindPopup("你現在的位置在這附近").openPopup();
+				
+			    console.log(e.latitude);
+			    console.log(e.longitude);
+			    circleMarker = L.circle(e.latlng, radius).addTo(map);
+			    
+			    setTimeout(cleanCircle, 2000);
+				
+			    let urls="Http://localhost:433";
+			      	urls+="<c:url value='/restSearch/centerLocation' />";
+				  	urls+="/"+e.latitude+"/"+e.longitude;
+				    console.log(urls);
+				    nearselect(urls);
+				    
+			    function cleanCircle() {
+			    	map.removeLayer(circleMarker);
+			    }
+			}
+
+		
+			
+			//失敗
+				function errorHandler() {
+					alert('無法取得位置,預設位置為大安森林公園');
+					let lat=25.0333;
+					let lng=121.5358;
+					var marker = L.marker([lat,lng]).addTo(map).openPopup();
+					map.panTo([lat,lng]);
+					
+					 let urls="Http://localhost:433";
+				         urls+="<c:url value='/restSearch/centerLocation' />";
+					  	 urls+="/"+lat+"/"+lng;
+					  	 nearselect(urls);
+					
+					setTimeout(function(){
+						map.removeLayer(marker);
+					}, 2000);
+					
+				}
+				map.on('locationerror', errorHandler);
+		}
+		
 		
 		
 		//createSideMemo(loca,1);
@@ -428,27 +487,35 @@ tr a:hover{
 		  //設定距離多遠在抓
 		  let disLat=Math.abs(lat-currentCenterLat);
 		  let disLong=Math.abs(lng-currentCenterLong);
-		  
-		  
-		  
 		  //console.log("distance: lat: "+disLat+" long: "+disLong);
 		  if(disLat > 0.0045 ||  disLong> 0.0055 || (disLat+disLong)>0.007){			 
-			  currentCenterLat=lat;
-			  currentCenterLong=lng;
+				  currentCenterLat=lat;
+				  currentCenterLong=lng;
+				  
+				  
+				  let bound = map.getBounds()
+	//	 		  popup
+	//	  		    .setLatLng(e.latlng)		    
+	//	  		    .setContent("緯度："+lat+"<br/>經度："+lng)
+	//	 		    .openOn(map);	  
+				  
+				  map.panTo(e.latlng); 		  
+				  //ajax取地圖		  
+				  let urls="Http://localhost:433";
+				      urls+="<c:url value='/restSearch/restNear' />";
+					  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
+					 // console.log(urls);
+				  nearselect(urls);
+				 
+		  	}else{
 			  
-			  
-			  let bound = map.getBounds()
-//	 		  popup
-//	  		    .setLatLng(e.latlng)		    
-//	  		    .setContent("緯度："+lat+"<br/>經度："+lng)
-//	 		    .openOn(map);	  
-			  
-			  map.panTo(e.latlng); 		  
-			  //ajax取地圖		  
-			  let urls="Http://localhost:433";
-			      urls+="<c:url value='/restSearch/restNear' />";
-				  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
-				 // console.log(urls);
+			  map.panTo([lat,lng]);
+		  }
+		  
+
+		}
+	
+		function nearselect(urls){
 			  $.ajax({
 					type: "GET",
 					url: urls,				
@@ -476,17 +543,8 @@ tr a:hover{
 						console.log(thrownError);
 					}
 				});
-			  
-			  
-			  
-			  
-		  }else{
-			  
-			  map.panTo([lat,lng]);
-		  }
-		  
-
 		}
+	
 		//將餐廳物件陣列丟進去,不要亂改位置
 		function addMapMarker(loca){			
 			

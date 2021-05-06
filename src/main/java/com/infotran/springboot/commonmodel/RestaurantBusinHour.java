@@ -54,6 +54,7 @@ public class RestaurantBusinHour {
 	
 
 	/** 一家餐廳有多個時間表 **/
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "fk_restaurant_id")
 	@JsonIgnore
