@@ -52,6 +52,19 @@ public class menuController {
 		return "company/addMenu";
 	}
 	
+	//修改菜單
+	@GetMapping("/update/{menuId}")
+	public String update(Model model , @PathVariable("menuId")Integer menuId) {
+		MenuDetail updateMenu = MenuDetailService.findById(menuId);
+		Integer restId = updateMenu.getRestaurant().getRestaurantId();
+		Restaurant restaurant = restaurantService.findById(restId);
+		List <MenuDetail> menus =  MenuDetailService.getByRest(restaurant);
+		model.addAttribute("menus", menus);
+		model.addAttribute("restId", restId);
+		model.addAttribute("updateMenu", updateMenu);
+		return "company/updateMenu";
+	}
+	
 	@PostMapping("/addMenu")
 	public @ResponseBody String addMenu(@RequestPart("restInfo")String toString,
 			              			   @RequestPart("file")MultipartFile file,
