@@ -38,4 +38,9 @@ public interface OrderListRepository extends JpaRepository<OrderList, Integer> {
 	@Query(value="select sum(totalCost) from OrderList orlist where convert(varchar,orlist.orderCreatedDate,111) = ?1 and orlist.status='已付款'")
 	public Integer sumBySameDateWithConvertTo111(String date);
 	
+	@Query(value="select orlist from OrderList orlist where convert(varchar,orlist.orderCreatedDate,111) >= ?1 and convert(varchar,orlist.orderCreatedDate,111) <= ?2 and orlist.status='已付款'")
+	public ArrayList<OrderList> findOrderListByPast7or3Days(String startDate,String endDate);
+	
+	@Query(value="select orlist from OrderList orlist where convert(varchar,orlist.orderCreatedDate,111) = ?1")
+	public ArrayList<OrderList> findOrderListArrayBySameDate(String Date);
 }

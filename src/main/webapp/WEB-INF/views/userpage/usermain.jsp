@@ -74,32 +74,17 @@
 	}
 	.display{
  		font-family: 'Noto Serif TC', serif;
- 		font-size: 15px; 
-
+ 		font-size: 10px; 
+	}
 	button{
 		color: black;
-	}
-	
-	.collumntogreen{
-		color:green;
-	}
-	.collumntored{
-		red;
 	}
 	table a{
 		color:#0000C6;
 	}
 	
->>>>>>> f878cce85bb579045dcfaa5b2d82255141f5d9a2
-.collumntogreen{
-	color:green;
-}
-.collumntored{
-	red;
-}
-table a{
-	color:#0000C6;
-}
+	
+
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
 */
@@ -420,7 +405,10 @@ I've added a few comments on why we're using certain properties
 			                       return time2.substr(0,4)+'/'+time2.substr(5,2)+'/'+time2.substr(8,2)+' '+time2.substr(11,5)}},
 				                { "data": "receiveName" },
 				                { "data": "receivePhone" },
-				                { "data": "totalCost" },
+				                { "data": "totalCost" ,
+				                  "render": function(data,type,row,meta){
+									return "$"+data;				                	  
+				                  }},
 				                { "data": "status"},
 				                { "data": "",
 				                  "render": function(data,type,row,meta){

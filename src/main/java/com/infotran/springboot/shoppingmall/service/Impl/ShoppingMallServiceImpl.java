@@ -309,4 +309,20 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 		return productrepository.findAll();
 	}
 	
+	@Override
+	public Set<Integer> findIdByProduct(){
+		return productrepository.findIdByProduct();
+	}
+	
+	
+	@Override
+	public List<Product> findUpdatedProductByDate(String startDate){
+		return productrepository.findUpdatedProductByDate(startDate);
+	}
+ 	
+	@Override
+	public List<Product> findNewProductByReleasedDate(String todayDate){
+		return productrepository.findNewProductByReleasedDate(todayDate);
+	}
+	
 }

@@ -40,7 +40,7 @@
 		<div class="header-area header ">
 			<!--  header-transparent -->
 			<div class="main-header sticky-top">
-				<div class="header-bottom header-sticky">
+				<div class="header-bottom ">
 					<div class="container-fluid">
 						<div class="row align-items-center">
 							<!-- Logo -->

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -15,22 +14,18 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.UserAccount;
+import com.infotran.springboot.commonmodel.UserDetail;
 import com.infotran.springboot.shoppingmall.model.OrderDetail;
 import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.model.Product;
@@ -42,7 +37,6 @@ import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
-import ecpay.payment.integration.ecpayOperator.EcpayFunction;
 
 @Controller
 public class checkOutController {
@@ -155,7 +149,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://d307f8a91ad8.ngrok.io/PepperNoodles/NewFile");
+		aiocheckoutall.setReturnURL("https://1169009306fe.ngrok.io/PepperNoodles/NewFile");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
@@ -228,7 +222,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://d307f8a91ad8.ngrok.io/PepperNoodles/recheqMonster");
+		aiocheckoutall.setReturnURL("https://1169009306fe.ngrok.io/PepperNoodles/recheqMonster");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
@@ -304,5 +298,17 @@ public class checkOutController {
 	}
 	
 	
+	@GetMapping(value="/getUserInfo")
+	public @ResponseBody Map<String,String> getUserInfo(HttpServletRequest request) {
+		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
+		Map<String,String> map = new HashMap<String,String>();
+		String username = user.getUserAccountDetail().getRealName();
+		String useraddress = user.getUserAccountDetail().getLocation();
+		String userphone = user.getUserAccountDetail().getPhoneNumber();
+		map.put("uname", username);
+		map.put("uaddress", useraddress);
+		map.put("uphone", userphone);
+		return map;
+	}
 	
 }

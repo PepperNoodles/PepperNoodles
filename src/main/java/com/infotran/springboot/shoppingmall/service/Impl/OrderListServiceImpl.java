@@ -79,4 +79,15 @@ public class OrderListServiceImpl implements OrderListService {
 		return ordao.sumBySameDateWithConvertTo111(date);
 	}
 	
+	@Override
+	public ArrayList<OrderList> findOrderListByPast7or3Days(String startDay,String endDate){
+		return ordao.findOrderListByPast7or3Days(startDay, endDate);
+	}
+	
+	@Override
+	public ArrayList<OrderList> findOrderListArrayBySameDate(String Date){
+		return ordao.findOrderListArrayBySameDate(Date);
+	}
+	
+	
 }

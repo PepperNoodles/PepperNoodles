@@ -1,8 +1,6 @@
 package com.infotran.springboot.rearsystem.controller;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Blob;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -14,16 +12,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
-import org.aspectj.apache.bcel.classfile.Module.Require;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.web.server.authorization.ServerWebExchangeDelegatingServerAccessDeniedHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.shoppingmall.model.OrderDetail;
@@ -172,7 +172,7 @@ public class RearStageSystem {
 	
 	@PostMapping(value="/editproduct",consumes={"multipart/form-data"})
 	public @ResponseBody String editProduct( @RequestPart("productinfo")String toString,
-			@RequestPart("file")MultipartFile file) throws Exception {
+			@RequestPart(value="file",required=false)MultipartFile file) throws Exception {
 		Map<String, String> dispatch = new ObjectMapper().readValue(toString, new TypeReference<HashMap<String, String>>() {});
 		Product product = shoppingmallservice.get(Integer.valueOf(dispatch.get("productid")));
 		product.setProductName(dispatch.get("productName"));
@@ -209,7 +209,6 @@ public class RearStageSystem {
 				@RequestParam("year") Integer year,
 				@RequestParam("month") Integer month,
 				@RequestParam(value="pid",required=false)Integer productid){
-		System.out.println("hi");
 		Date first = getFirstMonthDay(year,month);
 		Date lastdate = getLastMonthDay(year,month);
 		ArrayList<OrderList> olist = olistservice.findOrderListByDateBetween(first, lastdate);
@@ -266,6 +265,84 @@ public class RearStageSystem {
 		shoppingmallservice.delete(product);
 		return "ok";
 	}
+	
+	@GetMapping(value="/piechart")
+	public @ResponseBody Map<String,Object> genPieChart(
+		   @RequestParam("dayrange")Integer dayrange,
+		   @RequestParam(value="pieproduct",required=false)Integer productid){
+		Calendar calendar = new GregorianCalendar(); 
+		Date now = new Date();
+		calendar.setTime(now);
+		Date endDate = calendar.getTime();
+		Date startDate;
+		if (dayrange==7) {
+			calendar.add(Calendar.DATE, -7);
+			startDate = calendar.getTime();
+		}else {
+			calendar.add(Calendar.DATE, -3);
+			startDate = calendar.getTime();
+		}
+		SimpleDateFormat datestr = new SimpleDateFormat("yyyy/MM/dd");
+		String edate = datestr.format(endDate);
+		String sdate = datestr.format(startDate);
+		List<Product> plist = shoppingmallservice.findAll();
+		//找出7或3天內的區間的訂單
+		ArrayList<OrderList> orderarray = olistservice.findOrderListByPast7or3Days(sdate, edate);
+		Map<String, Object> piemap = new HashMap<>();
+		if (productid==0) {
+			List<Integer> eachProductSubTotal = new ArrayList<>();//每個產品的總價陣列
+			List<String> eachProductName = new ArrayList<>();//每個產品的品名
+			for (int i =0;i<plist.size();i++) {//遍歷所有商品
+				Integer prouductIdfromlist = plist.get(i).getProductId();//1號產品
+				System.out.println("id===>"+prouductIdfromlist);
+				int sum = 0;
+				for (OrderList ol : orderarray) {//1136-1147的1號產品
+					ArrayList<OrderDetail> orderdetailarray = olistservice.findOrderDetailByFkOrderId(ol.getOrderId());//1136
+					for (OrderDetail odetail: orderdetailarray) {//2個1136的orderdetail
+						if (prouductIdfromlist == odetail.getProduct().getProductId()) {//第一個產品炸雞有沒有在裡面 如果有
+							sum += odetail.getProduct().getProductPrice()*odetail.getAmount();//這個產品要去累加總銷售額
+						}else {//如果兩個1136沒有這個產品
+							sum +=0;
+						}
+					}
+				}
+				//第一個產品總結完了，放進陣列
+				eachProductSubTotal.add(sum);
+				eachProductName.add(plist.get(i).getProductName());
+			}
+			piemap.put("pcatagory", eachProductName);
+			piemap.put("psubtotal", eachProductSubTotal);
+		}else {
+			Calendar calendar2 = new GregorianCalendar(); 
+			Date now2 = new Date();
+			calendar2.setTime(now2);
+			List<Integer> eachProductSubTotalForLastDays = new ArrayList<>();//每一天的產品總業績
+			List<String> eachPastDays = new ArrayList<>();//過去的連續日期
+			for (int i =1 ; i<=dayrange;i++) {//遍歷七天或三天
+				Date eachday = calendar2.getTime();//第一天 今天
+				ArrayList<OrderList> sameDateList = olistservice.findOrderListArrayBySameDate(datestr.format(eachday));//找尋所有同為這天的orderlist 1136
+				int sum = 0;
+				for (OrderList or: sameDateList) {//遍歷每個orderlist
+					ArrayList<OrderDetail> orderdetailarray = olistservice.findOrderDetailByFkOrderId(or.getOrderId());//1136的orderdetail
+					for (OrderDetail od : orderdetailarray) {//兩個1136的od
+						if (productid==od.getProduct().getProductId()) {//
+							sum += od.getProduct().getProductPrice() * od.getAmount();
+						}else {
+							sum += 0 ; 
+						}
+					}
+				}
+				eachProductSubTotalForLastDays.add(sum);
+				eachPastDays.add(datestr.format(eachday));//陣列加入第一天
+				calendar2.add(Calendar.DATE, -1);//減一天
+			}
+			piemap.put("pcatagory", eachPastDays);
+			piemap.put("psubtotal", eachProductSubTotalForLastDays);
+		}
+		return piemap;
+	}
+	
+	
 	
 	
 }

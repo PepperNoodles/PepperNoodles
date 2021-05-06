@@ -1141,13 +1141,47 @@ $(document).ready(function() {
 	        cache: false,
 	        success: function (url) {
 // 	        	location.href = "";
-	        	window.open("http://localhost:433/PepperNoodles"+url, '_blank');
+				window.location.href="http://localhost:433/PepperNoodles"+url;
+// 	        	window.open("http://localhost:433/PepperNoodles"+url, '_blank');
 	        },
 	        error: function (url) {
 	        	console.log("Problems everywhere");
 	        }	
 		});    
 	});
+	
+	//通知表
+// 	$("body").on("click","#inform",function(){
+		$.ajax({
+			method:"GET",
+			url:"/PepperNoodles/informUserProductStatus",
+			async : true,
+			cache : false,
+			success : function(response) {
+				var pofflist = response.offlist;
+				var pnewlist = response.newlist;
+				var informMenu = $("#informMenu");
+				var count = 0;
+				count += (pofflist.length + pnewlist.length);
+				$('.toast-body p').text('您有 '+count+' 則新通知');
+				$('.toast').toast({delay: 3000});
+				$('.toast').toast('show');
+				$.each(pofflist,function(index,element){
+					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 商品: "+"<font color='blue'>"+element.productName+"</font>"+" 已經下架囉!</a></li>");
+					informMenu.append(li1);
+				});
+				$.each(pnewlist,function(index,element){
+					var li2 = $("<li><a href='javascript:void(0)'>新上架! 商品: "+"<font color='blue'>"+element.productName+"</font>"+" 全新上架!</a></li>");
+					informMenu.append(li2);
+				});
+			},error:function(response){
+				
+			}
+		});
+// 	});
+	
+	
+	
 	
 	//useless
 	function repeattimes(temp){
@@ -1293,6 +1327,14 @@ $(document).ready(function() {
 	box-shadow: 2px 5px 8px #888888;
  	overflow-y: scroll; 
 }
+
+/* .bigger{ */
+/* 	width: 250px; */
+/* } */
+
+.header-area .main-header .main-menu ul ul.submenu.bigger{
+	width: 350px;
+}
 </style>
 </head>
 <body>
@@ -1326,39 +1368,51 @@ $(document).ready(function() {
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">                                                                                                                                     
-                                            <li><a href="#">城市</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">台北</a></li>
-                                                    <li><a href="blog_details.html">新北</a></li>
-                                                    <li><a href="elements.html">基隆</a></li>
-                                                    <li><a href="listing_details.html">桃園</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">美食</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">美式</a></li>
-                                                    <li><a href="blog_details.html">日式燒烤</a></li>
-                                                    <li><a href="elements.html">韓式</a></li>
-                                                    <li><a href="listing_details.html">炸物</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">排行榜</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">免費排行</a></li>
-                                                    <li><a href="blog_details.html">付費排行</a></li>
-                                                    <li><a href="elements.html">周排行</a></li>
-                                                    <li><a href="listing_details.html">綜合排行</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="about.html">論壇</a></li>
+<!--                                             <li><a href="#">城市</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">台北</a></li> -->
+<!--                                                     <li><a href="blog_details.html">新北</a></li> -->
+<!--                                                     <li><a href="elements.html">基隆</a></li> -->
+<!--                                                     <li><a href="listing_details.html">桃園</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="#">美食</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">美式</a></li> -->
+<!--                                                     <li><a href="blog_details.html">日式燒烤</a></li> -->
+<!--                                                     <li><a href="elements.html">韓式</a></li> -->
+<!--                                                     <li><a href="listing_details.html">炸物</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="#">排行榜</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">免費排行</a></li> -->
+<!--                                                     <li><a href="blog_details.html">付費排行</a></li> -->
+<!--                                                     <li><a href="elements.html">周排行</a></li> -->
+<!--                                                     <li><a href="listing_details.html">綜合排行</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="about.html">論壇</a></li> -->
                                             <li><a href="#">最新消息</a>
                                                 <ul class="submenu">
                                                     <li><a href="blog.html">菜色新聞</a></li>
                                                     <li><a href="blog_details.html">最新優惠</a></li>
-                                                    <li><a href="elements.html">新開幕</a></li>                                                   
+                                                    <li><a href="elements.html">新開幕</a></li> 
+                                                    <li><a href="<c:url value='/loginSystem/normaluser'/>">normal
+															user page</a></li>
+													<li><a
+														href="<c:url value='/loginSystem/companyuser'/>">company
+															page</a></li>
+													<li><a href="<c:url value='/loginSystem/admin'/>">admin
+															page</a></li>                                                  
                                                 </ul>
                                             </li>
                                             <li><a href="about.html">發表食記</a></li>
+                                            <li><a href="javascript:void(0)" id="inform">通知</a>
+                                            	<ul class="submenu bigger" id="informMenu">
+<!--                                             		<li><a href="javascript:void(0)">hi</a></li> -->
+                                            	</ul>
+                                            </li>
                                             <!-- <li><a href="contact.html">Contact</a></li> -->
                                             <!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
                                             <li><a href="/PepperNoodles/shoppingSystem/ShoppingMall" id="shoppingMall">商城</a></li>

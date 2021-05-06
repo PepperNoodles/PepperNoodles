@@ -216,7 +216,7 @@ tbody tr td{
 					<div class="col-12">
 						<h2><strong>您的訂單</strong></h2>
 						<div class="table-responsive-sm">
-								<table class="table table-hover text-info text-justify ">
+								<table class="table table-hover text-info text-justify " style="font-size: 18px;">
 									<thead>
 										<tr class=" Active">
 											<th>#編號</th>

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@include file="../includePage/includeRearTop.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +28,7 @@
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <script type="text/javascript" src="<c:url value='https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js'/>"></script>
+
 
 <script>
 $(document).ready(function() {
@@ -64,12 +66,10 @@ $(document).ready(function() {
 			cache: false,  //不做快取
 	        async : true,
 	        success: function (result) {
-	            $("#checkStatus").text(result.success);
-	            pname='';
-	            pprice='';
-	            pdes='';
-	            pquantity='';
-	            detailclassval='';
+	        	setTimeout(function(){  
+	        		location.reload();//页面刷新
+	        		},2000);
+	             $("#checkStatus").text(result.success).css({"color":"blue"});
 	        },
 	        error: function (result) {
 	            $("#checkStatus").text(result.fail);
@@ -109,7 +109,10 @@ $(document).ready(function() {
            	     "render": function (data, type, row, meta) {
            	     var time2 = new Date(data).format("yyyy-MM-dd hh:mm:ss");
                  return time2.substr(0,4)+'/'+time2.substr(5,2)+'/'+time2.substr(8,2)+' '+time2.substr(11,5)}},
-               { "data": "productPrice" },
+               { "data": "productPrice" ,
+                 "render": function(data,type,row,meta){
+                	 return "$"+data;
+                 }},
                { "data": "quantity" },
                { "data": "productDetailClassName" },
                { "data": "salesamount"},
@@ -289,6 +292,67 @@ $(document).ready(function() {
 		    $("#mydownload").attr("href",url_base64jp).attr("download","PPNChart.jpg");
 		})
 			 
+		//圓餅圖
+		var myChart2,ctx2;
+		$("body").on("click","#firePiesearch",function(e){
+			var minusday =parseInt($("#pastday :selected").val().substring(2),10)
+			var pieprouctid = parseInt($('#mypieproductname :selected').val(),10);
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/piechart?dayrange="+minusday+"&pieproduct="+pieprouctid+"",
+				contentType: 'application/json; charset=utf-8',
+				dataType:'json',
+		        async : true,
+		        cache: false,
+		        success:function(result){
+		        	var labellist = result.pcatagory;
+		        	var totallist = result.psubtotal;
+		        	if (myChart){
+						myChart.destroy();
+					}
+		        	ctx2 = $('#myPieChart');
+					myChart2 = new Chart(ctx2, {
+					  type: 'pie',
+					  data: {
+					    labels: labellist,//幾個餅
+					    datasets: [{
+				    	  backgroundColor: getRandomColorEachEmployee(labellist.length),
+					      label: '銷售業績(萬)',
+					      data: totallist//欄值
+					    }]
+					  },
+					  options: {
+						  responsive: true,
+					  },
+					  plugins: {
+					      datalabels: {
+					        color: 'blue',
+					        labels: {
+					          title: {
+					            font: {
+					              weight: 'bold'
+					            }
+					          },
+					          value: {
+					            color: 'green'
+					          }
+					        }
+					      }
+					    }
+					});//end of chart
+		        },
+		        error:function(result){
+		        	console.log("有問題")
+		        }
+			});
+		});
+		
+		
+		$("body").on("click","#piedownload",function(e){
+			var url_base64jp = myChart2.toBase64Image('image/jpeg', 1);
+		    $("#piedownload").attr("href",url_base64jp).attr("download","PPNPieChart.jpg");
+		})
+		
 		
 		
 		function getRandomColor() {
@@ -312,7 +376,7 @@ $(document).ready(function() {
 		
 	//////////////////////////斷//////////////////////////////////	
 		$('body').on('click','#addP',function(){
-			$("#productname").val('Demo產品');
+			$("#productname").val('美式炸大雞');
 			$("#productprice").val('50');
 			$("#productdescription").val('DemoDemoDemoDemoDemo');
 			$("#productquantity").val('20');
@@ -322,18 +386,24 @@ $(document).ready(function() {
 		$('body').on('click','#queryproduct',function(){
 			$('#insertProduct').hide();
 			$('#chartjs').hide();
+			$('#chartheader').hide();
+			$("#piechart").hide();
 			$('#datatableforproducts').show();
 		});
 	
 		$('body').on("click","#newproduct",function(){
 			$('#datatableforproducts').hide();
 			$('#chartjs').hide();
+			$('#chartheader').hide();
+			$("#piechart").hide();
 			$('#insertProduct').show();
 		});
 		$('body').on("click","#chart",function(){
 			$('#datatableforproducts').hide();
 			$('#insertProduct').hide();
+			$('#chartheader').show();
 			$('#chartjs').show();
+			$("#piechart").show();
 // 			$.ajax({
 // 				method:"GET",
 // 				url:"/PepperNoodles/getoptionproductname",
@@ -440,135 +510,132 @@ option{
         </div>
     </div>
 	<!-- Preloader Start -->
-	 <header>
-	<!-- Header Start -->
-       <div class="header-area header-transparent">
-            <div class="main-header">
-               <div class="header-bottom  ">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <!-- Logo -->
-                            <div class="col-xl-2 col-lg-2 col-md-1">
-                                <div class="logo">
-                                  <a href="/PepperNoodles"><img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""></a>
-                                </div>                      
-                            </div>
-                            <div class="col-xl-10 col-lg-10 col-md-8">
-                                <!-- Main-menu -->
-                                <div class="main-menu f-right d-none d-lg-block">
-                                    <nav>
-                                        <ul id="navigation">                                                                                                                                     
-                                            <li><a href="#">城市</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">台北</a></li>
-                                                    <li><a href="blog_details.html">新北</a></li>
-                                                    <li><a href="elements.html">基隆</a></li>
-                                                    <li><a href="listing_details.html">桃園</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">美食</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">美式</a></li>
-                                                    <li><a href="blog_details.html">日式燒烤</a></li>
-                                                    <li><a href="elements.html">韓式</a></li>
-                                                    <li><a href="listing_details.html">炸物</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">排行榜</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">免費排行</a></li>
-                                                    <li><a href="blog_details.html">付費排行</a></li>
-                                                    <li><a href="elements.html">周排行</a></li>
-                                                    <li><a href="listing_details.html">綜合排行</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="about.html">論壇</a></li>
-                                            <li><a href="#">最新消息</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">菜色新聞</a></li>
-                                                    <li><a href="blog_details.html">最新優惠</a></li>
-                                                    <li><a href="elements.html">新開幕</a></li>                                                   
-                                                </ul>
-                                            </li>
-                                            <li><a href="about.html">發表食記</a></li>
-                                            <!-- <li><a href="contact.html">Contact</a></li> -->
-                                            <!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
-                                            <li><a href="/PepperNoodles/shoppingSystem/ShoppingMall" id="shoppingMall">商城</a></li>
-                                            <li class="login"><a href="loginSystem/loginPage">
-                                                <i class="ti-user"></i> Sign in or Register</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <!-- Mobile Menu -->
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-lg-none"></div>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-            </div>
-       </div>
-        <!-- Header End -->
-	  </header>
+<!-- 	 <header> -->
+<!-- 	<!-- Header Start --> 
+<!--        <div class="header-area header-transparent"> -->
+<!--             <div class="main-header"> -->
+<!--                <div class="header-bottom  "> -->
+<!--                     <div class="container-fluid"> -->
+<!--                         <div class="row align-items-center"> -->
+<!--                             Logo -->
+<!--                             <div class="col-xl-2 col-lg-2 col-md-1"> -->
+<!--                                 <div class="logo"> -->
+<!--                                   <a href="/PepperNoodles"><img src="<c:url value="/images/logo/peppernoodle.png"/>" alt=""></a> --%>
+<!--                                 </div>                       -->
+<!--                             </div> -->
+<!--                             <div class="col-xl-10 col-lg-10 col-md-8"> -->
+<!--                                 Main-menu -->
+<!--                                 <div class="main-menu f-right d-none d-lg-block"> -->
+<!--                                     <nav> -->
+<!--                                         <ul id="navigation">                                                                                                                                      -->
+<!--                                             <li><a href="#">城市</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">台北</a></li> -->
+<!--                                                     <li><a href="blog_details.html">新北</a></li> -->
+<!--                                                     <li><a href="elements.html">基隆</a></li> -->
+<!--                                                     <li><a href="listing_details.html">桃園</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="#">美食</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">美式</a></li> -->
+<!--                                                     <li><a href="blog_details.html">日式燒烤</a></li> -->
+<!--                                                     <li><a href="elements.html">韓式</a></li> -->
+<!--                                                     <li><a href="listing_details.html">炸物</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="#">排行榜</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">免費排行</a></li> -->
+<!--                                                     <li><a href="blog_details.html">付費排行</a></li> -->
+<!--                                                     <li><a href="elements.html">周排行</a></li> -->
+<!--                                                     <li><a href="listing_details.html">綜合排行</a></li> -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="about.html">論壇</a></li> -->
+<!--                                             <li><a href="#">最新消息</a> -->
+<!--                                                 <ul class="submenu"> -->
+<!--                                                     <li><a href="blog.html">菜色新聞</a></li> -->
+<!--                                                     <li><a href="blog_details.html">最新優惠</a></li> -->
+<!--                                                     <li><a href="elements.html">新開幕</a></li>                                                    -->
+<!--                                                 </ul> -->
+<!--                                             </li> -->
+<!--                                             <li><a href="about.html">發表食記</a></li> -->
+<!--                                             <li><a href="contact.html">Contact</a></li> -->
+<!--                                             <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
+<!--                                             <li><a href="/PepperNoodles/shoppingSystem/ShoppingMall" id="shoppingMall">商城</a></li> -->
+<!--                                             
+<!--                                         </ul> -->
+<!--                                     </nav> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             Mobile Menu -->
+<!--                             <div class="col-12"> -->
+<!--                                 <div class="mobile_menu d-block d-lg-none"></div> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                </div> -->
+<!--             </div> -->
+<!--        </div> -->
+<!--         Header End -->
+<!-- 	  </header> -->
 	  <main>
 
         <!-- Hero Start-->
-        <div class="hero-area3 hero-overly2 d-flex align-items-center " style="background-image:url(<c:url value="/images/hero/frechfries.jpg"/>);">
-            <div class="container">
-                <div class="row justify-content-center">
-<!--                 new section here -->
-					<div class="col-xl-8 col-lg-9">
-						<div class="hero-cap text-center pt-50 pb-20 ">
-                        </div>
-					</div>
-                </div>
-            </div>
-        </div>
+<!--         <div class="hero-area3 hero-overly2 d-flex align-items-center " style="background-image:url(<c:url value="/images/hero/frechfries.jpg"/>);"> --%>
+<!--             <div class="container"> -->
+<!--                 <div class="row justify-content-center"> -->
+<!-- 					<div class="col-xl-8 col-lg-9"> -->
+<!-- 						<div class="hero-cap text-center pt-50 pb-20 "> -->
+<!--                         </div> -->
+<!-- 					</div> -->
+<!--                 </div> -->
+<!--             </div> -->
+<!--         </div> -->
         <!--Hero End -->
         <!-- listing Area Start -->
-        <div class="listing-area pt-120 pb-120" style="height:1200px;">
+        <div class="listing-area pt-120 pb-120" style="height:1500px;">
             <div class="container" style="padding: 0px;">
                 <div class="row" >
                     <!-- Left content -->
-                    <div class="col-xl-4 col-lg-4 col-md-6" style="border:1px solid red;color:black;background-color:#DCDCDC">
-                        <div class="row" style="border:1px solid red;padding:5px;">
+                    <div class="col-xl-4 col-lg-4 col-md-6" style="color:black;background-color:#DCDCDC;">
+                        <div class="row" style="padding:5px;">
                         	<div class="left-column-div" >
                         	<!-- left bar write here -->
                         	<div class="just-padding" style="">
 							<div class="list-group list-group-root well">
-							  <a href="#item-1" class="list-group-item" data-toggle="collapse">
-							    <i class="glyphicon glyphicon-chevron-right"></i>使用者
-							  </a>
-							  <div class="list-group collapse" id="item-1">
-								    <a href="#item-1-1" class="list-group-item" data-toggle="collapse">
-								      <i class="glyphicon glyphicon-chevron-right"></i>Item 1.1
-								    </a>
-								  <div class="list-group collapse" id="item-1-1">
-								    <a href="#" class="list-group-item">Item 1.1.1</a>
-								    <a href="#" class="list-group-item">Item 1.1.2</a>
-								    <a href="#" class="list-group-item">Item 1.1.3</a>
-								  </div>
-								    <a href="#item-1-2" class="list-group-item" data-toggle="collapse">
-								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.2
-								    </a>
-								  <div class="list-group collapse" id="item-1-2">
-								    <a href="#" class="list-group-item">Item 1.2.1</a>
-								    <a href="#" class="list-group-item">Item 1.2.2</a>
-								    <a href="#" class="list-group-item">Item 1.2.3</a>
-								  </div>
-								    <a href="#item-1-3" class="list-group-item" data-toggle="collapse">
-								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.3
-								    </a>
-								  <div class="list-group collapse" id="item-1-3">
-								    <a href="#" class="list-group-item">Item 1.3.1</a>
-								    <a href="#" class="list-group-item">Item 1.3.2</a>
-								    <a href="#" class="list-group-item">Item 1.3.3</a>
-								  </div>
-							  </div>
+<!-- 							  <a href="#item-1" class="list-group-item" data-toggle="collapse"> -->
+<!-- 							    <i class="glyphicon glyphicon-chevron-right"></i>使用者 -->
+<!-- 							  </a> -->
+<!-- 							  <div class="list-group collapse" id="item-1"> -->
+<!-- 								    <a href="#item-1-1" class="list-group-item" data-toggle="collapse"> -->
+<!-- 								      <i class="glyphicon glyphicon-chevron-right"></i>Item 1.1 -->
+<!-- 								    </a> -->
+<!-- 								  <div class="list-group collapse" id="item-1-1"> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.1.1</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.1.2</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.1.3</a> -->
+<!-- 								  </div> -->
+<!-- 								    <a href="#item-1-2" class="list-group-item" data-toggle="collapse"> -->
+<!-- 								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.2 -->
+<!-- 								    </a> -->
+<!-- 								  <div class="list-group collapse" id="item-1-2"> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.2.1</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.2.2</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.2.3</a> -->
+<!-- 								  </div> -->
+<!-- 								    <a href="#item-1-3" class="list-group-item" data-toggle="collapse"> -->
+<!-- 								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.3 -->
+<!-- 								    </a> -->
+<!-- 								  <div class="list-group collapse" id="item-1-3"> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.3.1</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.3.2</a> -->
+<!-- 								    <a href="#" class="list-group-item">Item 1.3.3</a> -->
+<!-- 								  </div> -->
+<!-- 							  </div> -->
 							  
-							  <a href="#item-2" class="list-group-item" data-toggle="collapse">
+							  <a href="#item-2" class="list-group-item" data-toggle="collapse" style="border: 1px solid #A9A9A9;border-radius: 15px;">
 							    <i class="glyphicon glyphicon-chevron-right"></i>產品
 							  </a>
 							  <div class="list-group collapse" id="item-2">
@@ -591,32 +658,32 @@ option{
 							    <a href="#item-2-3" class="list-group-item" data-toggle="collapse" id="chart">
 							      <i class="glyphicon glyphicon-chevron-right"></i>報表
 							    </a>
-							    <a href="#item-2-4" class="list-group-item" data-toggle="collapse" id="createEvent">
-							      <i class="glyphicon glyphicon-chevron-right"></i>建立活動
-							    </a>
+<!-- 							    <a href="#item-2-4" class="list-group-item" data-toggle="collapse" id="createEvent"> -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>建立活動 -->
+<!-- 							    </a> -->
 <!-- 							  <div class="list-group collapse" id="item-2-3"> -->
 <!-- 							    <a href="#" class="list-group-item">Item 2.3.1</a> -->
 <!-- 							    <a href="#" class="list-group-item">Item 2.3.2</a> -->
 <!-- 							    <a href="#" class="list-group-item">Item 2.3.3</a> -->
 <!-- 							  </div> -->
 							  </div>
-							  	<a href="#item-3" class="list-group-item" data-toggle="collapse">
-							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3
-							    </a>
-							  <div class="list-group collapse" id="item-3">
-							    <a href="#item-3-1" class="list-group-item">
-							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.1
-							    </a>
-							    <a href="#item-3-2" class="list-group-item">
-							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.2
-							    </a>
-							    <a href="#item-3-3" class="list-group-item" >
-							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.3
-							    </a>
-							  </div>
-							   	<a href="#item-4" class="list-group-item" >
-							      <i class="glyphicon glyphicon-chevron-right"></i>Item 4
-							  	</a>
+<!-- 							  	<a href="#item-3" class="list-group-item" data-toggle="collapse"> -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3 -->
+<!-- 							    </a> -->
+<!-- 							  <div class="list-group collapse" id="item-3"> -->
+<!-- 							    <a href="#item-3-1" class="list-group-item"> -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.1 -->
+<!-- 							    </a> -->
+<!-- 							    <a href="#item-3-2" class="list-group-item"> -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.2 -->
+<!-- 							    </a> -->
+<!-- 							    <a href="#item-3-3" class="list-group-item" > -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.3 -->
+<!-- 							    </a> -->
+<!-- 							  </div> -->
+<!-- 							   	<a href="#item-4" class="list-group-item" > -->
+<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 4 -->
+<!-- 							  	</a> -->
 							</div>
 							</div>
                         	<!-- left bar ends here -->
@@ -624,11 +691,11 @@ option{
                         </div>
                     </div>
                     <!-- Right content -->
-                    <div class="col-xl-8 col-lg-8 col-md-6" style="height:1000px;border:1px solid red;padding:20px;">
+                    <div class="col-xl-8 col-lg-8 col-md-6" style="height:1250px;padding:20px;">
                         <!-- listing Details Start-->
                         <div class="listing-details-area" style=""> 
                         	<!-- 新增產品start -->
-	                        <div class="row" id="insertProduct" >
+	                        <div class="row" id="insertProduct"  style="display: none">
 	                            <div class=" col-lg-12">
 	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">新增商品</h3> 
 	                                <!-- product frame start -->
@@ -687,7 +754,7 @@ option{
 	                        <!-- 新增產品end -->
 	                        
 	                        <!-- 查詢產品 -->
-	                        <div class="row" id="datatableforproducts" style="display: none">
+	                        <div class="row" id="datatableforproducts" >
 	                        	<!-- 商品表 -->
 	                        	<div class="col-12" >
 									<h2>商品表</h2>
@@ -716,10 +783,12 @@ option{
 	                        <!-- 查詢產品 -->
 	                        
 	                        <!-- chart.js -->
-	                        <div class="row" id="chartjs" style="display: none">
+	                        <div class="row" id="chartheader" style="display:none">
 	                        	<div class="col-12">
 	                        		<h3 style="border-bottom: 1px solid #D3D3D3;float:left;">報表</h3>
 	                        	</div>
+	                        </div>
+	                        <div class="row" id="chartjs" style="display: none">
 	                        	<div style="float: left;display: flex;margin-left: 20px;align-items: center;font-size: 20px;">
 	                        		選擇時間: 
 	                        	</div>
@@ -773,6 +842,45 @@ option{
 	                        	<div class="col-12" id="chartframe">
 									<canvas id="myChart" width="350" height="200"></canvas>	                        	
 	                        	</div>
+	                        </div>
+	                        <!-- pie chart starts -->
+	                        <div class="row" id="piechart" style="display:none;margin-top: 80px;">
+	                        	<div style="float: left;display: flex;margin-left: 20px;align-items: center;font-size: 20px;">
+	                        		圓餅圖: 
+	                        	</div>
+	                        	<div  style="float: left;display: inline-block;margin-left:10px;">
+	                        		<select id="pastday"> 
+										<option value="pd7">過去七天</option>
+										<option value="pd3">過去三天</option>
+									</select>
+	                        	</div>
+	                        	<div style="float: left;display: flex;margin-left: 20px;align-items: center;font-size: 20px;">
+	                        		選擇品名: 
+	                        	</div>
+	                        	<select id="mypieproductname"> 
+	                        		<!-- 動態品名 -->
+	                        			<option value="0">無</option>
+	                        			<option value="1">炸機折價券</option>
+	                        			<option value="2">小美冰淇淋折價券</option>
+	                        			<option value="3">蛋沙拉</option>
+	                        			<option value="6">橘子</option>
+	                        			<option value="7">大牛排</option>
+	                        			<option value="8">馬卡龍</option>
+	                        			<option value="9">好吃大冰球</option>
+	                        			<option value="10">超硬大麵包</option>
+	                        			<option value="11">火鍋料理包</option>
+	                        			<option value="12">羊肉爐湯包</option>
+									</select>
+	                        	<div style="float: left;display: flex;margin-left: 20px;align-items: center;font-size: 20px;">
+	                        		<button style='background-color:#00008B;border-radius:20px;' id='firePiesearch'><i class="fas fa-search"></i></button>
+	                        	</div>
+	                        	<div style="float: left;margin-left: 20px;display: flex;align-items: center;font-size: 10px;width: 30px;">
+	                        		<a id='piedownload'><button  style='background-color:#A9A9A9;' ><i class="fas fa-download"></i></button></a>
+	                        	</div>
+	                        	<div class="col-12" id="chartframe">
+									<canvas id="myPieChart" width="350" height="200"></canvas>	                        	
+	                        	</div>
+	                        
 	                        </div>
 	                        <!-- chart.js -->
 	                        

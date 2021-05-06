@@ -28,4 +28,8 @@ public interface OrderListService {
 
 	Integer sumBySameDateWithConvertTo111(String date);
 
+	ArrayList<OrderList> findOrderListByPast7or3Days(String startDay, String endDate);
+
+	ArrayList<OrderList> findOrderListArrayBySameDate(String Date);
+
 }
