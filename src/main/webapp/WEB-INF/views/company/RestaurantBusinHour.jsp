@@ -283,7 +283,7 @@ $(document).ready(function () {
 					& $('#open3').val() != ""
 					& $('#close3').val() != "") {
 
-				console.log('檢查3段時間');
+// 				console.log('檢查3段時間');
 				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
 				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
 				var time3 = (parseInt(open2_hr) * 60 + parseInt(open2_min));
@@ -295,7 +295,7 @@ $(document).ready(function () {
 						& time4 > time3 & time3 > time2
 						& time2 > time1) {
 					day1checktime = "true";
-					console.log('檢查結果:時間正確');
+// 					console.log('檢查結果:時間正確');
 					$(".checkinput").css({
 						"border" : "2px solid green",
 						"background-color" : "#BBFFBB"
