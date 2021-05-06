@@ -11,7 +11,7 @@
 <title>Welcome to PepperNoodles</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
+<!-- <link rel="manifest" href="site.webmanifest"> -->
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
@@ -96,9 +96,10 @@ $(document).ready(function(){
 
 </script>
 <style>
-.form-control{
-	height:60px
+select.form-control{
+	height:60px;
 }
+
 </style>
 </head>
 <body>
@@ -198,8 +199,17 @@ $(document).ready(function(){
 
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
-											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>
-                                            <li><a href="rearStage/indexRearStage1">後台</a></li>
+											<li><a href="#">聯絡我們</a></li>
+											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>											
+                                     <sec:authorize access="hasAnyAuthority('admin')" var="isAuthenticated">
+										<c:choose>
+											<c:when test="${isAuthenticated == true}">
+                                           		 <li><a href="rearStage/indexRearStage1">後台</a></li>
+											</c:when>
+											<c:otherwise>
+												</c:otherwise>
+											</c:choose>
+								      </sec:authorize>
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
 
@@ -209,8 +219,8 @@ $(document).ready(function(){
 												</i> Sign in or Register</a>
 												<ul class="submenu">
 													<li><a href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li>
-													<li><a href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li>
-													<li><a href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
+													<li><a href="<c:url value='/user/login'/>">使用者登入</a></li>
+													<li><a href="<c:url value='/Company/company'/>">企業登入</a></li>
 												</ul>	
 												</li></c:when>
 												<c:when test="${userAccount != null}">
@@ -271,13 +281,8 @@ $(document).ready(function(){
 								</div>
 								<div class="select-form">
 									<div class="select-itms" id="tagSelect">
-<!-- 										<select name="select" id="select1"> -->
-<!-- 											<option value="">全部</option> -->
-<!-- 											<option value="">胡椒麵</option> -->
-<!-- 											<option value="">日式炸雞</option> -->
-<!-- 											<option value="">泰式料理</option> -->
-<!-- 											<option value="">燒仙草</option> -->
-<!-- 										</select> -->
+									<!--JS給資料  -->
+
 									</div>
 								</div>
 								<div class="search-form">
@@ -876,8 +881,6 @@ $(document).ready(function(){
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 	<script src="<c:url value='/scripts/main.js' />"></script>
-
-
 
 </body>
 </html>

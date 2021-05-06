@@ -228,6 +228,16 @@ public class UserAccount implements Serializable{
 	private List<Like> Likes = new ArrayList<Like>();
 
 	
+	// Restaurants Collections=============================================================
+	
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinTable(name = "userAccount_Restaurant",
+		joinColumns= {@JoinColumn(name="fk_account_id", referencedColumnName = "account_id")}, 
+			inverseJoinColumns = {@JoinColumn(name="fk_restaurant_id", referencedColumnName = "restaurant_id")}
+		)
+	private List<Restaurant> restaurantCollections = new ArrayList<Restaurant>();
+
+	
 	// =============================================================
 	
 	@Transient
@@ -441,6 +451,18 @@ public class UserAccount implements Serializable{
 
 	public void setBeMessage(List<SocketMessage> beMessage) {
 		this.beMessage = beMessage;
+	}
+
+
+
+	public List<Restaurant> getRestaurantCollections() {
+		return restaurantCollections;
+	}
+
+
+
+	public void setRestaurantCollections(List<Restaurant> restaurantCollections) {
+		this.restaurantCollections = restaurantCollections;
 	}
 	
 	

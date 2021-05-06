@@ -67,8 +67,7 @@
 						<img src="<c:url value="/images/rear/restaurantTable.jpg"/>" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h4 class="card-title">餐廳資料</h4>
-							<p class="card-text">Some quick example text to build on the
-								card title and make up the bulk of the card's content.</p>
+							<p class="card-text">查看餐廳資料</p>
 							<a href="<c:url value='/rearStage/rest' />" class="btn btn-primary">Go somewhere</a>
 						</div>
 					</div>

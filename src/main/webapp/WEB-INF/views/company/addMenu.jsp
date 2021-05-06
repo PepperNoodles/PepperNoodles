@@ -49,7 +49,7 @@ $(document).ready(function(){
 			cache: false,  //不做快取
 	        async : true,
 	        success: function (result) {
-				alert("新增成功");
+// 				alert("新增成功");
 // 	            $("#menuList").text(result);
 // 	            console.log(result);
 	            location.href="http://localhost:433/PepperNoodles"+result+restaurantId;
