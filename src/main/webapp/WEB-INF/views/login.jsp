@@ -61,8 +61,9 @@
 	<%@include file="includePage/includeNav.jsp" %>
 <div>
 	<div id="main" class="container"> <!-- style="border: 1px solid red"> -->
+<!-- 	<script src="https://www.google.com/recaptcha/api.js" ></script> -->
 		<div class="row justify-content-center align-items-center pt-100">
-			<form action="<c:url value='/login/page'/>" method="post"
+			<form id="loginForm" action="<c:url value='/login/page'/>" method="post"
 				class="search-box align-items-center">
 				<div class="mt-10 col-36 ">
 					<input id="username" type="text" name="username" placeholder="E-mail:" required
@@ -80,6 +81,12 @@
 				<div class="mt-10 ">
 					<button type="submit" id="loginButton" value="login"
 						class="genric-btn danger radius">Login</button>
+
+<!-- 					<button type="submit" id="loginButton" value="login" -->
+<!-- 						class="g-recaptcha genric-btn danger radius" -->
+<!-- 						 data-sitekey="6LeiSMcaAAAAAEC4fWA0-CNm2mxSqJxKpfg6A0KP" -->
+<!-- 						 data-callback="onSubmit" -->
+<!-- 						 data-action="submit">Login</button> -->
 					<br><br><br>
 					<div class="pull-right">
 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp;
@@ -95,6 +102,11 @@
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
 </div>
+<script type="text/javascript">
+function onSubmit(token){
+	document.getElementById("loginForm").submit();
+}
+</script>
 	<script>
 		$(window).on('load', function() {
 
