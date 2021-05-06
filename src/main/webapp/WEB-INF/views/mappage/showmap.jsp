@@ -179,7 +179,6 @@ tr a:hover{
 	
 	
 	
-	
 	<script>
 	
 	$(document).ready(function() {
@@ -546,7 +545,7 @@ tr a:hover{
 		}
 	
 		//將餐廳物件陣列丟進去,不要亂改位置
-		function addMapMarker(loca){			
+		function addMapMarker(loca){	
 			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
@@ -555,9 +554,14 @@ tr a:hover{
 			 	long+=0.000356;
 			    
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
-			    
+			    markerArray.push(marker);
 			    let name=loca[i].restaurantName;
+			    let imgUrl ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
+			    let resturl ="<c:url value='/userPage/'/>"+loca[i].restaurantId;
 			    marker.addTo(map).openPopup();
+			    
+			    marker.bindPopup("<a href = "+resturl+">"+name+"</a>"+"<div class='frame2'><img src='"+imgUrl+"'></div>")
+			    
 			    
 			    marker.bindTooltip(name, {
 			    	  direction: 'bottom', // right、left、top、bottom、center。default: auto
@@ -574,6 +578,7 @@ tr a:hover{
 			let alat=0;
 			let along=0;
 			
+			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
 			    	lat-=0.0001360;
@@ -583,7 +588,15 @@ tr a:hover{
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
 			    
 			    let name=loca[i].restaurantName;
-			    marker.addTo(map).openPopup();
+			    let imgUrl ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
+			    let resturl ="<c:url value='/userPage/'/>"+loca[i].restaurantId;
+			   // marker.addTo(map).openPopup();
+			    
+			    marker.bindPopup("<a href = "+resturl+">"+name+"</a>"+"<div class='frame2'><img src='"+imgUrl+"'></div>")
+			    
+			    
+			   // let name=loca[i].restaurantName;
+			  // marker.addTo(map).openPopup();
 			    markerArray.push(marker); //add each markers to array
 			
 			    marker.bindTooltip(name, {
