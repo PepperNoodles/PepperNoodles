@@ -202,8 +202,13 @@ select.form-control{
 															page</a></li>
 
 												</ul></li>
+
 											<li><a href="<c:url value='/restSearch/mapWithCurrentLoca'/>">探索地圖</a></li>
-											<li><a href="#">聯絡我們</a></li>
+											<li><a href="#">聯絡我們1</a></li> 
+
+											<li><a href="about.html">發表食記</a></li>
+											<li><a href="<c:url value='/rearStage/rearContactMessage'/>">聯絡我們</a></li>
+
 											<li><a href="shoppingSystem/ShoppingMall">商城</a></li>											
                                      <sec:authorize access="hasAnyAuthority('admin')" var="isAuthenticated">
 										<c:choose>
