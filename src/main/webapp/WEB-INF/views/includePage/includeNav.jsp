@@ -17,6 +17,19 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 <!-- bloodHound ↑ -->
 <script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
+
+<!-- 營業時間 -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/locale/ja.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/zh-tw.min.js"></script>
+	
+	<!-- 營業時間 -->
+	
 <link rel='stylesheet'
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.css' />" />
 <link rel="stylesheet"
@@ -121,10 +134,20 @@
 
 												</ul></li>
 											<li><a href="about.html">發表食記</a></li>
+											<li><a href="#exampleModal" id="" target="">聯絡我們</a></li>
 
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
-                                            <li><a href="rearStage/indexRearStage1">後台</a></li>
+		<!-- 												管理者權限 -->									
+                                     <sec:authorize access="hasAnyAuthority('admin')" var="isAuthenticated">
+										<c:choose>
+											<c:when test="${isAuthenticated == true}">
+                                           		 <li><a href="rearStage/indexRearStage1">後台</a></li>
+											</c:when>
+											<c:otherwise>
+												</c:otherwise>
+											</c:choose>
+								      </sec:authorize>
 
 											<!-- <li><a href="contact.html">Contact</a></li> -->
 											<!-- <li class="add-list"><a href="listing_details.html"><i class="ti-plus"></i> add Listing</a></li> -->
@@ -158,9 +181,9 @@
 															<li><a
 																href="<c:url value='/loginSystem/loginPage'/>">註冊</a></li>
 															<li><a
-																href="<c:url value='/loginSystem/normaluser'/>">使用者登入</a></li>
+																href="<c:url value='/user/login'/>">使用者登入</a></li>
 															<li><a
-																href="<c:url value='/loginSystem/companyuser'/>">企業登入</a></li>
+																href="<c:url value='/Company/company'/>">企業登入</a></li>
 														</ul></li>
 												</c:when>
 												<c:when test="${userAccount != null}">
@@ -241,6 +264,9 @@
 	<!-- DataTables v1.10.16 -->
 	<script
 		src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
+			<script>
+		console.log(isAuthenticated)
+		console.log(${isAuthenticated})</script>
 
 </body>
 </html>

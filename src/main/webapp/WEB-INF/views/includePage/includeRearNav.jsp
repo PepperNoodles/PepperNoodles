@@ -69,6 +69,7 @@
 <div class="list-group list-group-root well">
   
   <a href="#item-1" class="list-group-item" data-toggle="collapse">
+    <img src="../images/rear/file-earmark-text.svg" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>會員管理
   </a>
   <div class="list-group collapse" id="item-1">
@@ -98,7 +99,10 @@
     
   </div>
   
+  
+  
   <a href="<c:url value='/rearStage/rest'/>" class="list-group-item" >
+	<img src="../images/rear/shop.svg" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>餐廳
   </a>
   <div class="list-group collapse" id="item-2">
@@ -134,6 +138,7 @@
   
   
   <a href="#item-3" class="list-group-item" data-toggle="collapse">
+    <img src="../images/rear/cart3.svg" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>產品
   </a>
   <div class="list-group collapse" id="item-3">

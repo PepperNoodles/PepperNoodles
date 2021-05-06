@@ -6,6 +6,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,26 +67,26 @@ public class EventController {
 	
 	@GetMapping("/notOverEvent")
 	@ResponseBody
-	public List<EventList> notOverEvent() {
+	public List<EventList> notOverEvent() throws ParseException {
 		List<EventList> allEvent = eventListService.getAllEvents();
 		List<EventList> notOverEvent = new ArrayList<EventList>();
 		for(int i =0; i<allEvent.size(); i++) {
-			Date endTime = allEvent.get(i).getEventEndDate();
+			Date startDate = allEvent.get(i).getEventStartDate();
+			Date endDate = allEvent.get(i).getEventEndDate();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String endTimeS = sdf.format(endTime);
-			String currentDate = sdf.format(new Date());
-			System.out.println("活動結束日期:"+endTimeS);
-			System.out.println("現在日期:"+currentDate);
-			
-			String[] evenEndTimeS = endTimeS.split("-");
-			String[] currentDateS = currentDate.split("-");
-			
-			for(int j=0;j<1;j++) {
-				if(Integer.parseInt(evenEndTimeS[0]) >= Integer.parseInt(currentDateS[0]) && 
-				   Integer.parseInt(evenEndTimeS[1]) >= Integer.parseInt(currentDateS[1]) &&
-				   Integer.parseInt(evenEndTimeS[2]) >= Integer.parseInt(currentDateS[2])) {
-					notOverEvent.add(allEvent.get(i));
-				}
+			Date currentDate = java.sql.Date.valueOf(sdf.format(new Date()));
+//			System.out.println("活動開始時間:"+startDate);
+//			System.out.println("活動結束時間:"+endDate);
+//			System.out.println("現在時間時間:"+currentDate);
+			if (currentDate.after(endDate)) {
+				System.out.println("結束的活動:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventEndDate());
+			}
+			else if ( currentDate.before(startDate) ) {
+				System.out.println("未進行活動:"+allEvent.get(i).getEventId()+" ,開始日期:"+allEvent.get(i).getEventStartDate());
+			}
+			else{
+				System.out.println("進行中:"+allEvent.get(i).getEventId()+" ,結束日期:"+allEvent.get(i).getEventStartDate()+"~"+allEvent.get(i).getEventEndDate());
+				notOverEvent.add(allEvent.get(i));
 			}
 		}
 		return notOverEvent;

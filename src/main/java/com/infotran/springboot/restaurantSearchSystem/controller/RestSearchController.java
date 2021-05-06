@@ -48,6 +48,15 @@ public class RestSearchController {
 	@Autowired
 	ServletContext servletContext;
 	
+	//一般會員連的評論區
+	@GetMapping("/userSingleRestPage/{restId}")
+	public String userMessage(@PathVariable("restId") Integer restId , Model model) {
+		Restaurant rest =  restSearchService.getById(restId);
+		model.addAttribute("rest", rest);
+		return "mappage/singleRest";
+	}
+	
+	
 	@GetMapping(path="/map",produces = "application/json;charset=UTF-8" )
 	public String indexSearch(@RequestParam(name="restName",defaultValue = "") String searchName,
 			 				@RequestParam(name="searchTag",defaultValue = "") String searchTag,

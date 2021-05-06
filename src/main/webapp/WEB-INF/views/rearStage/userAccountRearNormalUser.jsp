@@ -47,8 +47,8 @@
 										<th>編號</th>
 										<th>帳號</th>
 										<th>密碼</th>
-										<th>enable</th>
-										<th>編輯</th>
+										<th>權限</th>
+										<th>停權</th>
 <!-- 										<th>刪除</th> -->
 <!-- 										<th>accountdetail</th> -->
 <!-- 										<th>roles</th> -->

@@ -97,7 +97,8 @@ public class Restaurant {
 	Set<EventList> eventList = new LinkedHashSet<EventList>();
 
 	/** 一家餐廳有多個營業時間 **/
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurantBusinHourId", cascade = CascadeType.ALL)
 	Set<RestaurantBusinHour> RestaurantBusinHour = new LinkedHashSet<RestaurantBusinHour>();
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -114,7 +115,10 @@ public class Restaurant {
 	@JsonIgnore 
 	private List<Product> products =new ArrayList<Product>();
 
-
+	//Restaurant Collections
+	@JsonIgnore
+	@ManyToMany(mappedBy = "restaurantCollections")
+	private List<UserAccount> users = new ArrayList<>();
 
 
 	public Integer getRestaurantId() {
@@ -269,6 +273,14 @@ public class Restaurant {
 
 	public void setFoodTag(Set<FoodTag> foodTag) {
 		this.foodTag = foodTag;
+	}
+
+	public List<UserAccount> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserAccount> users) {
+		this.users = users;
 	}
 
 }

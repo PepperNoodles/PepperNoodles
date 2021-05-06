@@ -23,6 +23,7 @@
 $(document).ready(function(){
 	findMenus();
 	findAllMessage();
+	rank();
 	$("#add").click(function(){
 		$("#comMessage").val('歡迎大家來我們店用餐，10人以上建議提前一天預約呦!!!');
 		$("#userMessage").val('老闆人超好，東西又好吃，直接列入口袋名單!!');
@@ -36,10 +37,43 @@ $(document).ready(function(){
 			$("#messageResult").css({"color":"red","font-size":"small"});
 		}
 		else{
-			addUserMessageBox();
-			findAllMessage();
-			$("#userMessage").val('');
-			text="";
+			
+		//判斷可丟否
+		let urlss="Http://localhost:433";
+		urlss+="<c:url value='/judgeCanLeaveMessage' />";
+		restId= ${rest.restaurantId};
+		userIndex="${userAccount.accountIndex}";
+		let judgeData = {
+				"userIndex":userIndex,
+				"restId":restId	
+		};
+		//console.log(urls);
+			$.ajax({
+					method:"POST",
+					url:urlss,
+					data:judgeData,	
+					dataType: "text",
+					contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+					success: function (response) {
+						console.log("judgeCanLeave=="+response);
+						if (response == 'true'){
+							addUserMessageBox();
+							findAllMessage();
+							$("#userMessage").val('');
+							text="";
+						}else{
+							alert ('你留太多言惹');
+						}
+						},
+					error: function (thrownError) {
+						console.log(thrownError);
+					}
+				});
+			//
+// 			addUserMessageBox();
+// 			findAllMessage();
+// 			$("#userMessage").val('');
+// 			text="";
 		}
 		$("#messageResult").html(text);
 	});
@@ -143,6 +177,59 @@ $(document).ready(function(){
     	return false;
 	});
 
+	
+	function rank(){
+	     let s=document.querySelectorAll(".rankcat");
+	     let count;
+	     $('body').dblclick(start)
+         for (s1 of s){ 
+                 s1.addEventListener("mouseover",catselect)
+                 s1.addEventListener("mouseout",catdiselect)   
+                 s1.addEventListener("click",catCheck)                    
+             }
+       
+         function catdiselect(){
+             this.style.filter="grayscale(1)";
+             count=parseInt(this.id.charAt(3));
+             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"隻貓";
+         }
+
+         function catselect(){
+             let count=parseInt(this.id.charAt(3));
+             for(let i =0;i<count;i++){                   
+                 s[i].style.filter="grayscale(0)";                    
+             }
+             document.getElementById("rankResult").innerHTML="評分中..."+count+"隻貓";
+         }
+
+         function catCheck(){
+             let count=parseInt(this.id.charAt(3));
+             document.getElementById("rankResult").innerHTML="rank"+count+'隻貓';
+             document.getElementById("hiddenScore").innerHTML=count;
+              for (s1 of s){
+                 s1.removeEventListener("mouseover",catselect);
+                 s1.removeEventListener("mouseout",catdiselect);
+                 s1.removeEventListener("click",catCheck);
+              }
+         }
+
+         function start(){
+             for(let i =0;i<5;i++){                   
+                 s[i].style.filter="grayscale(1)";                    
+             }
+             for (s1 of s){ 
+                 s1.addEventListener("mouseover",catselect)
+                 s1.addEventListener("mouseout",catdiselect)   
+                 s1.addEventListener("click",catCheck)                    
+             }
+             document.getElementById("rankResult").innerHTML="評分中";
+             document.getElementById("hiddenScore").innerHTML=0;
+             let count=parseInt(this.id.charAt(3));                
+           }
+	}
+	
+	
+	//onload結束
 });
 	
 //新增訊息-使用者
@@ -150,9 +237,16 @@ function addUserMessageBox(){
 	urls  = "/PepperNoodles/addRestaurantMessage";
 	console.log(urls);
 	console.log("新增使用者留言的function");
+	console.log($("#hiddenScore").html());
+	let rankStar = $("#hiddenScore").html();
+	console.log("===="+rankStar);
+	if(rankStar == 0){
+		rankStar = null;
+	}
 	data = new FormData();
 	data.append('restMessageInfo',new Blob([JSON.stringify( {"netizenAccount":"${userAccount.accountIndex}",
 															 "restaurantId": ${rest.restaurantId},
+															 "score":rankStar,
 		   											   		 "text": $("#userMessage").val()
 		   											   		 } )],{type: "application/json"}));
 	$.ajax({
@@ -203,7 +297,7 @@ function addComMessageBox(){
 
 //ajax取Menus
 function findMenus() {
-let urls="Http://localhost:433";
+	let urls="Http://localhost:433";
     urls+="<c:url value='/restauranMenu/' />";
     urls+=${rest.restaurantId};
 	console.log(urls);
@@ -212,7 +306,7 @@ $.ajax({
 		url: urls,				
 		dataType: "text",
 		success: function (response) {
-			console.log(response);
+//			console.log(response);
 			menu = JSON.parse(response);
 // 			console.log(menu[0].menuDetailId);
 			console.log(menu.length);
@@ -238,17 +332,17 @@ $.ajax({
 }
 
 //ajax取留言
-function findAllMessage(){
-	let urls="Http://localhost:433";
-    urls+="<c:url value='/allRestaurantMessage/' />";
-    urls+=${rest.restaurantId};
-	console.log(urls);
-$.ajax({
+	function findAllMessage(){
+		let urls="Http://localhost:433";
+	    urls+="<c:url value='/allRestaurantMessage/' />";
+	    urls+=${rest.restaurantId};
+		console.log(urls);
+	$.ajax({
 		type: "GET",
 		url: urls,				
 		dataType: "text",
 		success: function (response) {
-			console.log(response);
+			//console.log(response);
 			allMessage = JSON.parse(response);
 			console.log(allMessage.length);
 			var text="";
@@ -261,7 +355,7 @@ $.ajax({
 					var formatDate   =(new Date(allMessage[i].time)).toString().substring( 4 , 21 );
 	        		var formatString = formatDate.split(' ');
 	        		var formatPrint  = formatString[0]+ '/' + formatString[1] + '/'+ formatString[2] + '&emsp;' +formatString[3];
-	        		
+	        		//console.log(allMessage[i]);
 	        		text +="<div class='row d-flex align-items-center justify-content-center mx-5'>";
 					text +="	<div class='container border-left border-info mr-3' >";
 					text +="		<div class='media'>";
@@ -287,6 +381,15 @@ $.ajax({
 					text +="			<img class='rounded border mr-3' src=' <c:url value='/userProtrait/"+allMessage[i].userAccount.userAccountDetail.useretailId+"'/> ' width='125px' height=125px>";
 					text +="			<div class='media-body'>";
 					text +="				<h5 class='mt-0' style='color:#005AB5;'><i class='fas fa-user'></i> "+allMessage[i].userAccount.userAccountDetail.nickName;
+						for(let l = 0 ; l<5;l++){		
+							if (l < allMessage[i].score){
+								text +="<img class='rankcat' src='<c:url value='/images/restaurantCRUD/cat.png'/>'>"	
+							}else{
+								text +="<img class='rankcat grayscale' src='<c:url value='/images/restaurantCRUD/cat.png'/>'>"
+							}			
+						}
+					
+					
 							if("${userAccount.userAccountDetail.useretailId}" == allMessage[i].userAccount.userAccountDetail.useretailId){
 					text +="					<button class='ml-2 mb-1 close' data-dismiss='modal' aria-label='Close' name='deleteMessage"+allMessage[i].restaurantMessageId+"'>&times;</button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
 							}
@@ -297,7 +400,8 @@ $.ajax({
 					text +="				</span>";
 					text +="				<br>";
 					text +="				<div class='ml-5'>"+allMessage[i].text+"</div>";
-					text +="			</div>";
+
+					text +="		</div>";
 					text +="		</div>";
 						}
 					//回覆留言的div
@@ -341,16 +445,48 @@ $.ajax({
 					}
 					text +="	<hr>";
 					text +="</div>";
+					}
 				}
+	// 			console.log(text);
+				$("#allMessageDiv").html(text);
+			},
+			error: function (thrownError) {
+				console.log(thrownError);
 			}
-// 			console.log(text);
-			$("#allMessageDiv").html(text);
-		},
-		error: function (thrownError) {
-			console.log(thrownError);
-		}
-	});
-}
+		});
+	}
+	//判斷是否有留過言
+	function judgeCanLeave(){
+		let urlss="Http://localhost:433";
+		urlss+="<c:url value='/judgeCanLeaveMessage' />";
+		restId= ${rest.restaurantId};
+		userIndex="${userAccount.accountIndex}";
+		let judgeData = {
+				"userIndex":userIndex,
+				"restId":restId	
+		};
+		//console.log(urls);
+	$.ajax({
+			method:"POST",
+			url:urlss,
+			data:judgeData,	
+			dataType: "text",
+			contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			success: function (response) {
+				console.log("judgeCanLeave=="+response);
+				if (response == 'true'){
+					return true;
+				}else{
+					return false;
+				}
+				},
+			error: function (thrownError) {
+				console.log(thrownError);
+			}
+		});
+	}
+	
+	
 </script>
 
 <style>
@@ -378,6 +514,15 @@ hr {
 	 background-color:#f7f7f7;
 	 height: 1px;
 }
+.rankcat{
+	height:25px;
+	margin:2px;
+	padding:0;
+}
+ .grayscale{
+                filter:grayscale(1);
+           }
+
 </style>
 </head>
 <body>
@@ -411,7 +556,8 @@ hr {
 					    <tr>
 					    	<th scope="row">營業時間</th>
 					      	<td>
-						    	到時候要從資料庫抓
+					      		<div id="getrestHour${rest.restaurantId}" name="restHour" >到時候要從資料庫抓</div>
+						    	
 					      	</td>
 					    </tr>
 					    <tr>
@@ -420,6 +566,16 @@ hr {
 					      		<div id="${rest.restaurantId}" name="restid"></div>
 					        </td>
 					    </tr>
+					<c:choose>
+						<c:when test="${userAccount!=null}">
+					    <tr>
+					    	<th scope="row">收藏</th>
+					      	<td id="collect">
+					      		<button type="button" id="collectbutton" class="text-primary" >新增收藏</button> <button type="button" id="collectbuttonCancel" class="text-primary" >取消收藏</button>
+					        </td>
+					    </tr>
+						</c:when>
+					</c:choose>
 					  </tbody>
 				</table>
 	  		</div>		  
@@ -438,23 +594,38 @@ hr {
 	  		<br>
 	    </div>	
 		<c:choose>
- 			<c:when test="${userAccount==null}">
-				<div class="row">
+			<c:when test="${comDetail!=null}">
+					<div class="row">
 	  		 		<div class="container  p-8">
-	  	 				<div class="media mx-5">
+	  	 				<div class="media mx-5 userMessageArea">
 		  	 				<img class="rounded border" src=" <c:url value="/getComPicture/${comDetail.companyDetailId}"/> "style="margin-top: 3px" width="125px" height=125px>
 	  	 					<textarea class="form-control" rows="5" cols="60" id="comMessage" placeholder='發表您的評論吧....' ></textarea>
 	  	 					<button class="bg-secondary" id="addComMessage" style="height:134px">送出</button>
+	  	 		
 	  	 				</div>
 	  	 				<div>
 	  	 				</div>
 	  	 			</div>
 				</div>
- 			</c:when>
- 			<c:otherwise>
-	  	 		<div class="row">
+<!-- 							<div class="container row rankSystem"> -->
+<!-- 									<div class="col-2"><span class="mt-2 ml-5">評分: </span> -->
+<!-- 									</div> -->
+									
+<!-- 									<div class="col-8"> -->
+<%-- 			  	 						<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat1" > --%>
+<%-- 		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat2" > --%>
+<%-- 		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat3" > --%>
+<%-- 		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat4" > --%>
+<%-- 		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat5" > --%>
+<!-- 		                        	</div>	 -->
+<!-- 		                        	<div class="col-2"><span class="mt-2" id="rankResult"> </span>	 -->
+<!-- 		                        	</div> -->
+<!--                         	</div> -->
+			</c:when>
+ 			<c:when test="${userAccount!=null}">
+					<div class="row">
 	  	 			<div class="container  p-8">
-	  	 				<div class="media mx-5">
+	  	 				<div class="media mx-5 userMessageArea">
 		  	 				<img class="rounded border" src=" <c:url value="/userProtrait/${userAccount.userAccountDetail.useretailId}"/> "style="margin-top: 3px" width="125px" height=125px>
 	  	 					<textarea class="form-control" rows="5" cols="60" id="userMessage" placeholder='分享你的用餐經驗吧....' ></textarea>
 	  	 					<button class="bg-secondary" id="addUserMessage" style="height:134px">送出</button>
@@ -463,8 +634,28 @@ hr {
 	  	 				</div>
 	  	 			</div>
 	  	 		</div>
+	  	 		<div class="container row rankSystem">
+									<div class="col-2"><span class="mt-2 ml-5">評分: </span>
+									</div>
+									
+									<div class="col-8">
+			  	 						<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat1" >
+		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat2" >
+		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat3" >
+		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat4" >
+		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat5" >
+		                        	</div>	
+		                        	<div class="col-2"><span class="mt-2" id="rankResult"> </span>	
+		                        	</div>
+                        	</div>
+ 			</c:when>
+ 			<c:otherwise>
+	  	 		<div class="container row rankSystem">
+	  	 			<h5 class="ml-5">登入後即可留言喔</h5>
+	  	 		</div>
  			</c:otherwise>
  		</c:choose>
+ 		<div id="hiddenScore" style="display: none;">0</div>
  		<div class="ml-5" style="padding-left: 150px;" id="messageResult"></div>
 	  	<hr>
 			<div  id="allMessageDiv">
@@ -510,6 +701,9 @@ hr {
 	</div>
 <script>
 	$(window).on('load', function() {
+		checkCollectionButton();
+
+		
 		$("#toggleMenu").click(function() {
       	  $( "#menuArea" ).slideToggle("slow")
  		});
@@ -549,9 +743,142 @@ hr {
 					console.log(thrownError);
 				}
 			});
-// 		}
+		
+		//抓餐廳營業時間
+		var x = $("div[name='restHour']");
+		        console.log($("input[name='restHour']"));
+		var getHourid=x[0].id.substring(11, 15);
+//			        console.log(x.length);
+//			        console.log(${restaurant.restaurantId});
+//			        console.log(${restaurant.restaurantId});
+
+	
+			var urls = "${pageContext.request.contextPath}/";
+			urls += "<c:url value='getHours/'/>" +${rest.restaurantId};
+					console.log(urls);
+
+			$.ajax({
+				type : "GET",
+				url : urls,
+				dataType : "text",
+				success : function(response) {
+					var divrestHour = document
+							.getElementById("getrestHour"+${rest.restaurantId});
+
+					var result = JSON.parse(response);
+			
+					var weekday = [
+						'一',
+						'二',
+						'三',
+						'四',
+						'五',
+						'六',
+						'日' ];
+
+				txt = '<table ><h6>';
+				for (k = 0; k < result.length; k++) {
+					txt += '<tr><td>星期'
+							+ weekday[parseInt(result[k].day)]
+							+ '</td>';
+					if (result[k].openTime == null) {
+						txt += '<td>不營業</td></tr>';
+					} else {
+						txt += '<td>'
+								+ result[k].openTime
+								+ '~'
+								+ result[k].closeTime
+								+ '</td></tr>';
+
+					}
+
+					if (result[k].openTime2nd != null
+							&& result[k].openTime2nd.length != 0) {
+						txt += '<td></td><td>'
+								+ result[k].openTime2nd
+								+ '~'
+								+ result[k].closeTime2nd
+								+ '</td></tr>';
+					}
+					if (result[k].openTime3rd != null
+							&& result[k].openTime3rd.length != 0) {
+						txt += '<td></td><td>'+ result[k].openTime3rd
+								+ '~'+ result[k].closeTime3rd+ '</td></tr>';
+					}
+
+				}
+
+				txt += "</h6></table>";
+				divrestHour.innerHTML = txt;
+				},
+				error : function(thrownError) {
+					console.log(thrownError);
+				}
+
+			});
+			
+			
+		//	
 			
 	});
+	
+	
+	$('body').on('click','button[id^="collectbutton"]' ,function(e){
+		e.preventDefault;
+		var urls = '/PepperNoodles/user/addRestaurantCollection?resID=';
+		var resID = '${rest.restaurantId}' ;
+		urls += resID;
+		$.ajax({
+			
+			method:'GET',
+			url:urls,
+			dataType:'text',
+			success:function(result){
+// 				alert(result);
+				$('#collectbutton').toggle();
+				$('#collectbuttonCancel').toggle();
+			},
+			error:function(result){
+// 				alert(result);
+
+			}
+			
+		});
+		
+	});
+	
+	function checkCollectionButton() {
+		var collectionButton = $('#collectbutton');
+		var collectionButtonCancel = $('#collectbuttonCancel');
+		var urls = '/PepperNoodles/user/checkRestaurantCollection?resID=';
+		var resID = '${rest.restaurantId}' ;
+		urls += resID;
+
+	$.ajax({
+		method:'GET',
+		url: urls,
+		dataType: 'text',
+		success:function(result){
+			if(result=='true'){
+				alert('已經有收藏了!! ');
+
+				$('#collectbutton').hide();
+				$('#collectbuttonCancel').show();
+			}else{
+// 				alert('沒有收藏!! ');
+
+				$('#collectbutton').show();
+				$('#collectbuttonCancel').hide();
+				
+			}
+		},
+		error:function(result){
+// 		alert(result);
+		}
+	});
+
+};
+	
 </script>
 </body>
 </html>

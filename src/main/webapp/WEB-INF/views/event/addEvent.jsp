@@ -148,7 +148,7 @@ $j(document).ready(function(){
 	//一鍵新增
 	$("#butAdd").click(function(){
 		$j("#eventName").val('開幕慶!!!');
-		$j("#eventStartDate").val('2021-05-18');
+		$j("#eventStartDate").val('2021-03-18');
 		$j("#eventEndDate").val('2021-06-18');
 		$j("#content").val('提前預訂，兩人同行即可享第二人半價優惠!');
 		eventNameError = true;
@@ -189,7 +189,7 @@ $j(document).ready(function(){
 			cache: false,  //不做快取
 			async : true,
 			success: function (result) {
-				alert("新增成功");
+// 				alert("新增成功");
 			location.href="http://localhost:433/PepperNoodles/event/"+restaurantId;
 			},
 	        error: function (result) {
@@ -250,6 +250,23 @@ buttonImage{
 }
 body {
 　background-image: url(<c:url value="/images/company/event.jpeg"/>);
+}
+.eventImg{
+	height: 250px;
+}
+.eventImg img{
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+/* 	    position: absolute;   */
+	    top: 0;  
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
 }
 
 </style>
@@ -339,9 +356,11 @@ body {
 								<div class="page col-3 pl-3 ml-3">
 									<div class="item">
 										<P></P>
-										<a href="<c:url value='/getEventPicture/${events.eventId}'/>" >
-											<img width="100%" src="<c:url value="/getEventPicture/${events.eventId}"/>" />
-										</a>
+										<div class="eventImg">
+											<a href="<c:url value='/getEventPicture/${events.eventId}'/>" >
+												<img width="100%" src="<c:url value="/getEventPicture/${events.eventId}"/>" />
+											</a>
+										</div>
 										<p />
 										<h4>${events.eventName}</h4>
 										<p class="time">${events.eventStartDate} - ${events.eventEndDate}</p>
@@ -353,13 +372,6 @@ body {
 									</div>
 								</div>
 								<br><br><br><br><br>
-						
-						
-						
-						
-						
-						
-						
 						</c:forEach>
       					</div>
       					<!-- row 結束 -->
@@ -368,14 +380,6 @@ body {
 					</c:otherwise>
 				</c:choose>
 				</div>
-			
-			
-			
-			
-			
-			
-			
-				
 			</div>
 		<!--  big container -->
 		</div>
