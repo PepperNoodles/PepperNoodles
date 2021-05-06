@@ -15,9 +15,9 @@
 <link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
 
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+<%-- <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script> --%>
 
 <script>
 $(document).ready(function(){
@@ -871,7 +871,7 @@ hr {
 		dataType: 'text',
 		success:function(result){
 			if(result=='true'){
-				alert('已經有收藏了!! ');
+// 				alert('已經有收藏了!! ');
 
 				$('#collectbutton').hide();
 				$('#collectbuttonCancel').show();
