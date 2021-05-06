@@ -15,4 +15,6 @@ public interface RestaurantMessageBoxService {
 	
 	List<RestaurantMessageBox> getByRest(Restaurant rest);
 	List<RestaurantMessageBox> getByRestAndUser(Restaurant restaurant,UserAccount user);
+	
+	String avgRank(Restaurant restaurant);
 }
