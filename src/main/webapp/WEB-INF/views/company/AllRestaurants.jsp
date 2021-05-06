@@ -13,16 +13,7 @@
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
-<!-- <!-- site.webmanifest run offline -->
-<!-- <link rel="manifest" href="site.webmanifest"> -->
 
-<!-- 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  -->
-<!-- <script type="text/javascript" -->
-<%-- <script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script> --%>
-<!-- <link rel='stylesheet' -->
-<%-- 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" /> --%>
-<!-- <script type="text/javascript" -->
-<%-- 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
 
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
@@ -32,8 +23,8 @@
 
 <style>
 .nopadding {
-	padding: 0 !important;
-	margin: 0 !important;
+	padding: 0px ;
+	margin: 0px ;
 }
 
 td{
@@ -44,11 +35,70 @@ td{
 table{
 cellpadding:8px;
 }
+
+#showtimelist{
+
+width:120px;
+float:left;
+}
+
+#settingtime{
+width:auto;
+/* border:2px green solid; */
+float:left;
+padding:8px 16px;
+}
+
+#resthead{
+
+padding:16px 16px;
+
+}
+ .figure1 {
+          
+            width: 350px;
+            height: 400px;
+            border: solid 1px blue;
+            border-radius: 15px;
+            margin-top: 10px;
+            margin-left: 10px;
+            float: left;
+        }
+ img {
+            margin-left: 20px;
+            margin-top: 20px;
+
+        }
+  .restcard{
+      background-color: white(0, 255, 64);
+            border: solid 5px white;
+ 
+ }     
+ .restinfo{
+    width: 480px;
+            height: 400px;
+            border: solid 1px blue;
+            border-radius: 15px;
+            margin-top: 10px;
+            margin-left: 10px;
+            float: left;
+ }  
+ 
+.modifydiv1{
+
+margin-left: 30px;
+ }  
+.modifydiv2{
+float: right;
+padding-right: 40px;
+ }  
+ 
+
 </style>
 
 </head>
 <body>
-	<%@include file="../includePage/includeNav.jsp"%>
+	<%@include file="../includePage/includeNavforAllrest.jsp"%>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -61,60 +111,74 @@ cellpadding:8px;
 				</div>
 			</div>
 			<!-- 右邊顯示的資料 背景圖片+自動填滿-->
-			<div class="col-lg-10 nopadding image-container set-full-height">
+			<div class="col-lg-10 nopadding image-container set-full-height" style="background-image: url(<c:url value="/images/restaurantCRUD/restaurant-opening-hours.png"/>);background-size:cover;">
 				<div class="container">
 					<div class="row d-flex align-items-center justify-content-center">
-						<!-- 餐廳管理頁面 -->
-						<div class="container">
-							<h3 style="color: red">
-								<a href="<c:url value='/addrest'/> ">建立餐廳</a>
-							</h3>
-							<div class="row ml-3">
-							<c:choose>
-								<c:when test="${empty restaurants}">
-									<h5 style="color: #FF1493">沒有任何餐廳資料</h5>
-									<br>
-								</c:when>
-								<c:otherwise>
-										<c:forEach var='restaurant' items='${restaurants}'>
-										<div class="page  pl-3 ml-3">
-												${restaurant.restaurantName}
-												<img width='120' height='120'
-													src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
-													id='restpicture' />
-													<span id="${restaurant.restaurantId}" name="restid"></span>
-									<table border='1'>
-										<tr align="center">
-										
-											<th width='150'>餐廳地址</th>
-											<th width='150'>聯絡方式</th>
-											<th width='150'>餐廳網站</th>
-											<th width='150'>營業時間</th>
-											<th width='150' colspan='1'>資料維護</th>
-										</tr>
-											<tr >
-												<td style="text-align: center; font-weight: bold">${restaurant.restaurantAddress}</td>
-												<td style="text-align: center; font-weight: bold">${restaurant.restaurantContact}</td>
-												<td style="text-align: center; font-weight: bold">${restaurant.restaurantWebsite}</td>
-												<td style="text-align: center; font-weight: bold">
-													
-													<div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div>
-												<a class='updatelink' style="color: blue"
-													href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}">設定營業時間</a>
-													</td>
-												
-											
-												<td style="font-weight: bold"><h6><a class='updatelink'
-													href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}">編輯餐廳</a><br>
-													<a class='deletelink'
-													href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}">刪除餐廳</a></h6></td>
-											</tr>
-											<script>
+			
+					
+<!-- 餐廳管理頁面 -->
+<div class="container">
+	<br>
+		<h3 style="color: red">
+			 <a href="<c:url value='/addrest'/>"><i class="fas fa-registered"></i> 建立餐廳</a>
+		</h3>
+		<div class="row ml-3">
+		<c:choose>
+			<c:when test="${empty restaurants}">
+				<h5 style="color: #FF1493">沒有任何餐廳資料</h5>
+				<br>
+			</c:when>
+			<c:otherwise>
+		<c:forEach var='restaurant' items='${restaurants}'>
+			<div  class="page  pl-3 ml-3 col-10 restcard">
+					<br>
+				
+		<figure class="figure1">
+		<div id="resthead"><h2> ${restaurant.restaurantName}</h2></div>	
+           <span  style="padding:16px 16px;color:green;" id="${restaurant.restaurantId}" name="restid"></span><br>
+            <img width='200' height='200'
+						src='${pageContext.request.contextPath}/restpicture/${restaurant.restaurantId}'
+						id='restpicture' />
+            <figcaption style="text-align:left;margin: 20px;clear:both;">
+          <div id ="timezone">
+
+
+	<div id="showtimelist">
+		<ul class="nav nav-tabs " >
+		        <li class="nav-item dropdown" >
+		            <span  class="nav-link dropdown-toggle .nopadding" data-bs-toggle="dropdown" href="#" role="button"aria-expanded="false">營業時間</span>	
+		            <ul class="dropdown-menu">
+					<li><div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div></li>
+		            </ul>
+		        </li>
+		</ul>
+	</div>
+	<div id="settingtime"><a class='updatelink' style="color: black" onMouseOver="this.style.color='blue'"
+   onMouseOut="this.style.color='black'" href="${pageContext.request.contextPath}/Hours/${restaurant.restaurantId}"><i class="fas fa-wrench"></i> 設定營業時間</a></div>
+</div>
+            </figcaption>
+        </figure>
+
+
+			
+						
+														
+<!-- 		營業時間測試 -->
+
+
+    <script>
+  
+        
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl)
+        })
+
 											//抓餐廳營業時間
 
 												var urls = "${pageContext.request.contextPath}/";
 												urls += "<c:url value='getHours/'/>" +${restaurant.restaurantId};
-														console.log(urls);
+// 														console.log(urls);
 
 												$.ajax({
 													type : "GET",
@@ -135,7 +199,7 @@ cellpadding:8px;
 															'六',
 															'日' ];
 
-													txt = '<table id="tablemenu" align="center"><h6>';
+													txt = '<table id="tablemenu" align="center" ><h6>';
 													for (j = 0; j < result.length; j++) {
 														txt += '<tr><td>星期'
 																+ weekday[parseInt(result[j].day)]
@@ -178,7 +242,35 @@ cellpadding:8px;
 											
 											
 											</script>
-									</table></div>
+
+
+
+	<!-- 		營業時間測試 -->	
+						<div class="restinfo">
+						
+								<br>
+								<div class="modifydiv1">
+								<h2>  餐廳地址: </h2><h5>${restaurant.restaurantAddress}</h5><br>
+								<h2>  聯絡方式: </h2><h5>${restaurant.restaurantContact}</h5><br>
+								<h2>  餐廳網站: </h2><h5>${restaurant.restaurantWebsite}</h5>
+								</div>
+								<div class="modifydiv2">
+								<h3><a class='updatelink'href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}"><i class="fas fa-edit"></i></a>
+								<a class='deletelink' href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}"><i class="fas fa-trash-alt"></i></a></h3>
+								</div>
+								
+						
+						</div>
+								
+
+					<br>				
+			</div>
+									
+										
+									
+									
+									
+									
 										</c:forEach>
 								</c:otherwise>
 							</c:choose>
@@ -204,6 +296,7 @@ cellpadding:8px;
 
 
 	<!-- JS here -->
+ 
 
 	<!-- Scroll Up -->
 	<script>
@@ -268,21 +361,15 @@ cellpadding:8px;
 										
 									
 											
-											$(divFoodTag).append('<table><tr>')
+											$(divFoodTag).append('Tags: ')
 											for (i = 0; i < jsontxt.length; i++) {
 											
-													$(divFoodTag).append("<td><i style='color:#EA0000;' class='fas fa-tag'>"+jsontxt[i].foodTagName+"</i></tr>");
+													$(divFoodTag).append("<i class='fas fa-tag'></i>"+jsontxt[i].foodTagName+" ");
 											
 								
 							
 											}
-											$(divFoodTag).append('</td></table>')
-									
-										
-										
-										
-									
-									
+						
 									},
 									error : function(thrownError) {
 										console.log(thrownError);
@@ -297,6 +384,6 @@ cellpadding:8px;
 
 						})
 	</script>
-
+	
 </body>
 </html>

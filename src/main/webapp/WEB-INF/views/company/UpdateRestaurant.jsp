@@ -30,6 +30,7 @@
 }
 
 .rest-infobox {
+	margin-left: 30px;
 	float: left;
 	width: 50%;
 	margin: auto;
@@ -37,17 +38,18 @@
 }
 
 .rest-picbox {
-	float: right;
+	float: left;
 	margin: 10px;
-	width: 400px;
-	border: 3px solid red;
-	border: 3px solid red;
-	height: auto;
+	width: 450px;
+	border: 1px solid pink;
+	height: 450px;
+	border-radius: 15px;
 }
 
 #restaurantPicturePreview {
-	width: 100%;
-	height: auto;
+      margin-left: 20px;
+            margin-top: 20px;
+
 }
 
 #tagdiv {
@@ -271,33 +273,35 @@ p {
 			</div>
 			<!-- 右邊顯示的資料 背景圖片+自動填滿 -->
 			<div class="col-lg-10 nopadding image-container set-full-height"
-				style="background-image: url(<c:url value="/images/restaurantCRUD/background_1.jpg"/>) ;background-size:cover">
+				style="background-image: url(<c:url value="/images/restaurantCRUD/background_2.jpg"/>) ;background-size:cover">
 
 				<div class=" align-items-center justify-content-center">
 					<form:form method="POST" modelAttribute="updateRestaurant"
 						enctype='multipart/form-data' id="updatefrom">
 						<!-- 餐廳管理頁面 -->
 						<div class="rest-infobox ">
-							<h1 style="color: red">更新餐廳</h1>
+							<h1 style="color: red"><i class="fas fa-edit"></i> 更新餐廳</h1>
 							<h5 style="color: #FF1493">餐廳名稱：</h5>
 							<form:input path='restaurantName' />
 							<form:errors path="restaurantName" cssClass="error" />
-							<br>
+							<br><br>
 							<h5 style="color: #FF1493">餐廳地址：</h5>
 							<form:input path='restaurantAddress' id="RAdd" disabled="true" />
 							<span id="RAddError"></span>
 							<form:errors path="restaurantAddress" cssClass="error" />
-							<br> <span style="color: #FF1493">經度<form:input
+							<br><br> <div style="color: #FF1493">經度<form:input
 									path='longitude' id="RLong" size="10" disabled="true" />
-							</span><br> <span style="color: #FF1493">緯度<form:input
-									path='latitude' id="RLati" size="10" disabled="true" /></span>
+							</div><br> <div style="color: #FF1493">緯度<form:input
+									path='latitude' id="RLati" size="10" disabled="true" /></div>
+									<br>
 							<h5 style="color: #FF1493">聯絡方式：</h5>
 							<form:input path='restaurantContact' />
 							<form:errors path="restaurantContact" cssClass="error" />
-							<br>
+							<br><br>
 							<h5 style="color: #FF1493">餐廳網站：</h5>
 							<form:input path='restaurantWebsite' />
 							<form:errors path="restaurantWebsite" cssClass="error" />
+							<br><br>
 							<div id="tagdiv">
 								<h5 style="color: #FF1493">標籤：</h5>
 								<form:input class="typeahead" type="text" placeholder="Tags e.g., 炸雞"
@@ -318,7 +322,7 @@ p {
 							<!--秀圖區 -->
 							
 								<label for="restaurant-picture" style="cursor: pointer">
-								<img
+								<img width='400' height='400'
 									src=<c:url value='/restpicture/${updateRestaurant.restaurantId}'/>
 									class="picture-src" id="restaurantPicturePreview" />
 								</label>
