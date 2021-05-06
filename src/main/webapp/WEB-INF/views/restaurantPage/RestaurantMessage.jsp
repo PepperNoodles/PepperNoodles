@@ -503,9 +503,10 @@ img{
 #body{
 	background-color:#FFFFFF; 
 }
-#menuArea{
+#menuArea,.hourArea{
 	display: none;
 }
+
 hr {
 	 border: 0;
 	 clear:both;
@@ -556,7 +557,8 @@ hr {
 					    <tr>
 					    	<th scope="row">營業時間</th>
 					      	<td>
-					      		<div id="getrestHour${rest.restaurantId}" name="restHour" >到時候要從資料庫抓</div>
+					      		<a class="text-info" href="#" id="toggleHour">營業時間</a>
+					      		<div id="getrestHour${rest.restaurantId}" class="hourArea" id="hourArea" name="restHour" ></div>
 						    	
 					      	</td>
 					    </tr>
@@ -707,6 +709,10 @@ hr {
 		$("#toggleMenu").click(function() {
       	  $( "#menuArea" ).slideToggle("slow")
  		});
+		
+		$("#toggleHour").click(function() {
+	      	  $( ".hourArea" ).slideToggle("slow")
+	 		});
  			
 // 		//讓bar固定在上面以及設定高度
 		$(".header-sticky").addClass("sticky-bar");
@@ -762,10 +768,14 @@ hr {
 				url : urls,
 				dataType : "text",
 				success : function(response) {
-					var divrestHour = document
-							.getElementById("getrestHour"+${rest.restaurantId});
+					
+					var divrestHour = document.getElementById("getrestHour"+${rest.restaurantId});
 
 					var result = JSON.parse(response);
+					if(result.length == 0){
+						txt="目前沒有營業時間";
+					}else{
+						
 			
 					var weekday = [
 						'一',
@@ -809,6 +819,7 @@ hr {
 				}
 
 				txt += "</h6></table>";
+					}
 				divrestHour.innerHTML = txt;
 				},
 				error : function(thrownError) {
