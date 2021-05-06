@@ -272,12 +272,24 @@ $(document).ready(function () {
 
 });
 
-			//確認日期正確
+			//鎖定時間確認日期正確
 
 		$('#checktime').click(function() {
-
+			var open1_hr =$('#open1').val().split(":",2)[0];
+			var open1_min =$('#open1').val().split(":",2)[0];
+			var close1_hr =$('#close1').val().split(":",2)[0];
+			var close1_min =$('#close1').val().split(":",2)[0];
+			var open2_hr =$('#open2').val().split(":",2)[0];
+			var open2_min =$('#open2').val().split(":",2)[0];
+			var close2_hr =$('#close2').val().split(":",2)[0];
+			var close2_min =$('#close2').val().split(":",2)[0];
+			var open3_hr =$('#open3').val().split(":",2)[0];
+			var open3_min =$('#open3').val().split(":",2)[0];
+			var close3_hr =$('#close3').val().split(":",2)[0];
+			var close3_min =$('#close3').val().split(":",2)[0];
+			
 			//都沒填時間
-			if (hr1_open1 == null & hr2_open1 == null) {
+			if ($('#open1').val() == "" & $('#close1').val() == "") {
 
 				$(".checkinput").css({
 					"border" : "2px solid red"
@@ -287,10 +299,13 @@ $(document).ready(function () {
 				alert('至少填一段時間');
 			}
 			//只填一段時間
-			else if (hr1_open1 != null & hr2_open1 != null& hr1_open2 == undefined& hr2_open2 == null) {
+			else if ($('#open1').val() != "" & $('#close1').val() != ""& $('#open2').val() == ""& $('#close2').val() == "") {
 				console.log('檢查1段時間');
-				var time1 = (parseInt(hr1_open1) * 60 + parseInt(min1_open1));
-				var time2 = (parseInt(hr2_open1) * 60 + parseInt(min2_open1));
+
+				
+				
+				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
+				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
 
 				if (time2 > time1) {
 					day1checktime = "true";
@@ -306,15 +321,15 @@ $(document).ready(function () {
 			}
 
 			//填兩段時間
-			else if (hr1_open1 != null & hr2_open1 != null
-					& hr1_open2 != null & hr2_open2 != null
-					& hr1_open3 == undefined
-					& hr2_open3 == null) {
+			else if ($('#open1').val()  != "" & $('#close1').val()  != ""
+					& $('#open2').val() != "" & $('#close2').val() != ""
+					& $('#open3').val() == ""
+					& $('#close3').val() == "") {
 				console.log('檢查2段時間');
-				var time1 = (parseInt(hr1_open1) * 60 + parseInt(min1_open1));
-				var time2 = (parseInt(hr2_open1) * 60 + parseInt(min2_open1));
-				var time3 = (parseInt(hr1_open2) * 60 + parseInt(min1_open2));
-				var time4 = (parseInt(hr2_open2) * 60 + parseInt(min2_open2));
+				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
+				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
+				var time3 = (parseInt(open2_hr) * 60 + parseInt(open2_min));
+				var time4 = (parseInt(close2_hr) * 60 + parseInt(close2_min));
 
 				if (time4 > time3 & time3 > time2
 						& time2 > time1) {
@@ -330,17 +345,19 @@ $(document).ready(function () {
 			}
 
 			//填三段時間
-			else if (hr1_open1 != null & hr2_open1 != null
-					& hr1_open2 != null & hr2_open2 != null
-					& hr1_open3 != null & hr2_open3 != null) {
+			else if ($('#open1').val()  != "" & $('#close1').val()  != ""
+					& $('#open2').val() != "" & $('#close2').val() != ""
+					& $('#open3').val() != ""
+					& $('#close3').val() != "") {
 
 				console.log('檢查3段時間');
-				var time1 = (parseInt(hr1_open1) * 60 + parseInt(min1_open1));
-				var time2 = (parseInt(hr2_open1) * 60 + parseInt(min2_open1));
-				var time3 = (parseInt(hr1_open2) * 60 + parseInt(min1_open2));
-				var time4 = (parseInt(hr2_open2) * 60 + parseInt(min2_open2));
-				var time5 = (parseInt(hr1_open3) * 60 + parseInt(min1_open3));
-				var time6 = (parseInt(hr2_open3) * 60 + parseInt(min2_open3));
+				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
+				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
+				var time3 = (parseInt(open2_hr) * 60 + parseInt(open2_min));
+				var time4 = (parseInt(close2_hr) * 60 + parseInt(close2_min));
+				var time5 = (parseInt(open3_hr) * 60 + parseInt(open3_min));
+				var time6 = (parseInt(close3_hr) * 60 + parseInt(close3_min));
+				
 				if (time6 > time5 & time5 > time4
 						& time4 > time3 & time3 > time2
 						& time2 > time1) {
@@ -375,10 +392,14 @@ $(document).ready(function () {
 	$('#flashinput').click(function() {
 		
 		$('#open1').val('07:30');
+		
 		$('#close1').val('11:30');
 		
 		$('#open2').val('13:30');
 		$('#close2').val('17:30');
+		
+		$('#open3').val('18:30');
+		$('#close3').val('21:30');
 
 		
 		$(".checkinput").css({
