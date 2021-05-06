@@ -816,7 +816,7 @@
 </style>
 </head>
 <body>
-	<script src="https://www.google.com/recaptcha/api.js" async defer ></script>
+<!-- 	<script src="https://www.google.com/recaptcha/api.js" async defer ></script> -->
 
 	<form name="form1" onsubmit="return validateForm()" >
 		<div class="image-container set-full-height"
