@@ -81,9 +81,8 @@
 						<img src="<c:url value="/images/rear/restaurantTable.jpg"/>" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h4 class="card-title">產品資料</h4>
-							<p class="card-text">Some quick example text to build on the
-								card title and make up the bulk of the card's content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
+							<p class="card-text">產品後台</p>
+							<a href="http://localhost:433/PepperNoodles/user/rearStage/rearStage" class="btn btn-primary">前往企業後台</a>
 						</div>
 					</div>
 			 	</div>

@@ -2,11 +2,13 @@ package com.infotran.springboot.shoppingmall.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import com.infotran.springboot.shoppingmall.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
@@ -109,4 +111,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	
 	Optional<Product> findById(Integer product);
+	
+	@Query(value="select p.productId from Product p")
+	public Set<Integer> findIdByProduct();
+	
+	@Query(value="select p from Product p where convert(varchar,p.updateDate,111) >= ?1 and p.status ='下架中'")
+	public List<Product> findUpdatedProductByDate(String startDate);
+	
+	@Query(value="select p from Product p where convert(nvarchar,p.realeasedDate,111) =?1 and p.status = '上架中'")
+	public List<Product> findNewProductByReleasedDate(String todayDate);
+	
+	
 }

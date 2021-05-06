@@ -2540,7 +2540,8 @@ transition:.6s}
 
 .header-area .main-header .main-menu ul ul.submenu>li {
 	margin-left: 7px;
-	display: block
+	display: block;
+	
 }
 
 .header-area .main-header .main-menu ul ul.submenu>li>a {

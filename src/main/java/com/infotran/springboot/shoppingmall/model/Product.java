@@ -76,6 +76,10 @@ public class Product {
 	@Column(name="RealeasedDate")
 	private Date realeasedDate;
 	
+	
+	@Column(name="UpdateDate")
+	private Date updateDate;
+	
 	/* 所屬的tag */
 
 	@OneToMany(mappedBy = "fkproductid",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -107,13 +111,19 @@ public class Product {
 	}
 	@PreUpdate
 	protected void updateProductReleasedDate() {
-		realeasedDate = new Date();
+		updateDate = new Date();
 	}
 	
 	
 	public Product() {
 	}
 	
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 	public Integer getTotalpage() {
 		return totalpage;
 	}

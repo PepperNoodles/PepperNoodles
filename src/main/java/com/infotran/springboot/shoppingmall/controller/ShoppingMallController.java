@@ -3,6 +3,10 @@ package com.infotran.springboot.shoppingmall.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.shoppingmall.model.Product;
@@ -394,4 +399,25 @@ public class ShoppingMallController {
 		}
 		return tagname;
 	}
+	
+	@GetMapping(value="/informUserProductStatus")
+	public @ResponseBody Map<String,List<Product>> informUserProductStatus() {
+		Calendar calendar = new GregorianCalendar(); 
+		Date now = new Date();
+		calendar.setTime(now);
+		Date todayDate = calendar.getTime();
+		calendar.add(Calendar.DATE, -3);
+		Date startdate = calendar.getTime();
+		SimpleDateFormat datestr = new SimpleDateFormat("yyyy/MM/dd");
+		String sDate = datestr.format(startdate);
+		String tDate = datestr.format(todayDate);
+		List<Product> pofflist = shopservice.findUpdatedProductByDate(sDate);
+		List<Product> pnewlist = shopservice.findNewProductByReleasedDate(tDate);
+		Map<String,List<Product>> pmap = new HashMap<>();
+		pmap.put("offlist", pofflist);
+		pmap.put("newlist", pnewlist);
+		return pmap;
+	}
+	
+	
 }

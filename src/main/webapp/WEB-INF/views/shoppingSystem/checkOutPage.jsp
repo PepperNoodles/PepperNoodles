@@ -134,25 +134,24 @@
 			
 			
 			//打開地址事件
-			$('#address').hide();
-			$('#inputReciever').hide();
-			$('#inputPhone').hide();
-			$('body').on('change','#inlineRadio1,#inlineRadio2',function(e){
-				e.preventDefault();
-				 var watid = $(this).attr('id');
-				 if (watid=='inlineRadio1'){
-					 $('#address').show();
-					 $('#inputReciever').show();
-					 $('#inputPhone').show();
-				 }else {
-					 $('#address').hide();
-					 $('#inputReciever').hide();
-					 $('#inputPhone').hide();
-				 }
-			});
+// 			$('#address').hide();
+// 			$('#inputReciever').hide();
+// 			$('#inputPhone').hide();
+// 			$('body').on('change','#inlineRadio1,#inlineRadio2',function(e){
+// 				e.preventDefault();
+// 				 var watid = $(this).attr('id');
+// 				 if (watid=='inlineRadio1'){
+// 					 $('#address').show();
+// 					 $('#inputReciever').show();
+// 					 $('#inputPhone').show();
+// 				 }else {
+// 					 $('#address').hide();
+// 					 $('#inputReciever').hide();
+// 					 $('#inputPhone').hide();
+// 				 }
+// 			});
 			
 			//請求興趣商品事件
-			
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/tagproducts",
@@ -218,6 +217,7 @@
 					idlist.push(pid);
 					amountlist.push(amount);
 				}
+				
 				var address  = $('#inputAddress2').val();
 				var reciever = $('#inputReciever4').val();
 				var rphone   = $('#inputPhone4').val();
@@ -227,6 +227,9 @@
 				data.append('idlist',JSON.stringify(idlist));
 				data.append('amountlist',JSON.stringify(amountlist));
 				data.append('robject',JSON.stringify(robject));
+				if (idlist.length != 0){
+					alert("hi")
+				}
 				$.ajax({
 					method:"POST",
 					url:"/PepperNoodles/cheqInvoicecheckOutController",
@@ -237,8 +240,8 @@
 			        async : true,
 			        success: function (response) {
 			        	myStorage.clear();
-// 			        	localStorage.setItem("uuid",response.uuid);
 						localStorage.setItem("ecpayform",response.ecpayform);
+// 						$("#ecpayform").append(response.ecpayform);
 			        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/OrderFormECpay", '_blank');
 			        },
 			        error: function (url) {
@@ -292,12 +295,31 @@
 			});			
 			
 			
+			$.ajax({
+				method:"GET",
+				url:"/PepperNoodles/getUserInfo",
+				contentType: 'application/json; charset=utf-8',
+				dataType:'json',
+		        async : true,
+		        cache: false,
+		        success:function(result){
+		        	$('#inputAddress2').val(result.uname) ;
+					$('#inputReciever4').val(result.uaddress);
+					$('#inputPhone4').val(result.uphone);
+		        },
+		        error: function (result) {
+		        	console.log("有問題");
+		        }
+			})
+			
+			
+			
 		
 			//一件新增
 			$('body').on('click','#oneclick',function(e){
 				e.preventDefault();
 				$('#inputAddress2').val("106台北市大安區復興南路一段390號2樓") ;
-				$('#inputReciever4').val("天真妹");
+				$('#inputReciever4').val("Demo");
 				$('#inputPhone4').val("0512789456");
 			});
 			
@@ -469,16 +491,16 @@
 		<!--Hero End -->
 		<div class="listing-area pt-120 pb-120">
 			<div class="container">
-				<div class="row">
+<!-- 				<div class="row"> -->
 					<h2 style="border-bottom: 1px solid #D3D3D3;">
 						<strong>訂單明細</strong>
 					</h2>
-				</div>
-				<div class="row">
-					<div class="col-xl-12 col-sm-offset-2">
+<!-- 				</div> -->
+<!-- 				<div class="row"> -->
+					<div class="col-xl-12 col-sm-offset-2" style="margin-top: 5%;">
 						<div class="cartmenu">
 							<div class="table-responsive-sm">
-								<table class="table table-hover text-info text-justify ">
+								<table class="table table-hover text-info text-justify " style="font-size: 18px;">
 									<thead>
 										<tr class=" Active">
 											<th>編號</th>
@@ -495,48 +517,41 @@
 							</div>
 						</div>
 					</div>
-				</div>
+<!-- 				</div> -->
+			
 				<!-- table row ends -->
 				<!-- 配送方式 -->
-				<div class="row">
-					<div class="col-12" style="text-align: left;" id="myform">
-					<h4 style="text-decoration: underline;">配送方式：</h4>
-						<div class="form-check form-check-inline ">
-						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" >
-						  <label class="form-check-label" for="inlineRadio1">宅配取貨</label>
-						</div>
-						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-						  <label class="form-check-label" for="inlineRadio2">超商取貨</label>
-						</div>
-					</div>
-				</div>
+				<h4 style="text-decoration: underline;font-weight: bold;margin-top: 20%;">配送方式：</h4>
 				<!-- 大空白 -->
 				<div class="row g-3" style="height: 300px;">
+				
 				 	<div class="col-6" id="inputReciever">
-				    	<label for="inputEmail4" class="form-label">收件人:</label>
+				    	<label for="inputEmail4" class="form-label" style="font-size: 18px;">收件人:</label>
 				    	<input type="email" class="form-control" id="inputReciever4">
 				  	</div>
 				  	<div class="col-6" id="inputPhone">
-				    	<label for="inputPassword4" class="form-label">收件人電話:</label>
+				    	<label for="inputPassword4" class="form-label" style="font-size: 18px;">收件人電話:</label>
 				    	<input type="text" class="form-control" id="inputPhone4">
 				  	</div>
 					 <div class="col-12" id="address">
-					    <label for="inputAddress2" class="form-label">地址:</label>
+					    <label for="inputAddress2" class="form-label" style="font-size: 18px;">地址:</label>
 					    <input type="text" class="form-control" id="inputAddress2" placeholder="XX市, XX區, XX路...">
 					  </div>
 				</div>
 				<!-- 付款方式 -->
-				<div class="row">
-					<div class="col-3" id="linepay">
-					<h4 style="text-decoration: underline;">付款方式：</h4>
-						<img src="<c:url value='../images/Product/linepay.png'/>" style="border:1px solid #DCDCDC;border-radius:20px;width: 130px;height: 50px;object-fit:cover;display: block;">
-						<a style="margin-left: 30px;">LinePay</a>
+				<h4 style="text-decoration: underline;font-weight: bold">付款方式：</h4>
+					<div class="row">
+						<div class="col-3" id="linepay">
+							<img src="<c:url value='../images/Product/ecpay.png'/>" style="border:1px solid #DCDCDC;border-radius:20px;width: 130px;height: 50px;object-fit:cover;display: block;">
+							<a style="margin-left: 30px;">ECPay</a>
+						</div>
+						<div class="col-3">
+<%-- 							<img src="<c:url value='../images/Product/linepay.png'/>" style="border:1px solid #DCDCDC;border-radius:20px;width: 130px;height: 50px;object-fit:cover;display: block;"> --%>
+<!-- 							<a style="margin-left: 30px;">LinePay</a> -->
+						</div>
+						<div class="col-3"></div>
+						<div class="col-3"></div>
 					</div>
-					<div class="col-3"></div>
-					<div class="col-3"></div>
-					<div class="col-3"></div>
-				</div>
 				<div class="row">
 					<div class="col-12">
 						<div style="text-align: right;" id="pricetag"></div>
@@ -555,14 +570,14 @@
 				</div>
 				
 				
-				<div class="row justify-content-xl-center"> 
-					<div class="col-xl-12 ">
+				<div class="row justify-content-xl-center" style="margin-top: 10%;"> 
+<!-- 					<div class="col-xl-12 "> -->
 						<div class="listing-details-area">
 							<div class="row" id="Page1" >
 								<div class=" col-lg-12">
 			                        <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">猜您可能有興趣的商品</h3> 
 			                        <span class="seeMore" id="seeMoreTagProducts" >
-			                        <a>查看更多</a>
+			                        <a href="javascript:void(0);">查看更多</a>
 			                        </span>
 			                        <!-- product frame start -->
 			                        <div class="row productFrame"  ></div>
@@ -571,7 +586,10 @@
 							</div>
 						</div>
 					</div>
-				</div>	
+				<div id="">
+				
+				</div>
+<!-- 				</div>	 -->
 			</div>
 			<!-- container ends -->
 		</div>

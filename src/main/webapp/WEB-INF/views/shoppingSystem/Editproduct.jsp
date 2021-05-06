@@ -68,9 +68,12 @@ $(document).ready(function() {
 			var pquantity = $("#productquantity").val();
 			var detailclass = $('#detailclass :selected').val();
 			var editshelfval2 = $("input[name='editshelf']:checked").val();
-			alert(editshelf);
 			data = new FormData();
-			data.append('file', $('#wizard-picture')[0].files[0]);
+			if ($('#wizardPicturePreview').css("display")=="block"){
+				console.log('yee')
+			}else{
+				data.append('file', $('#wizard-picture')[0].files[0]);
+			}
 			data.append('productinfo', new Blob([ JSON.stringify({
 				"productid" : productid,
 				"productName" : pname,
@@ -78,7 +81,7 @@ $(document).ready(function() {
 				"description" : pdescription,
 				"quantity" : pquantity,
 				"productDetailClass" : detailclass,
-				"status":editshelf
+				"status":editshelfval2
 			}) ], {type : "application/json"}));
 			$.ajax({
 				method : "POST",
@@ -101,6 +104,18 @@ $(document).ready(function() {
 		}
 	});
 	
+	
+// 	$("input[name='editshelf']").on("click",function(e){
+// 		var isoff = $(this).attr("id");
+// 		if (isoff == "offshelf"){
+// 			$("#informMessage").show();
+// 			var parray = new Array();
+// 			var pname = $("#productname").val();
+// 		}else{
+// 			$("#informMessage").hide();
+// 		}
+		
+// 	});
 	
 });
 </script>
@@ -158,6 +173,7 @@ body {
 				<input type="radio" id="upshelf" name="editshelf" value="上架中">
 				<span style="font-size:18px;">下架</span>
 				<input type="radio" id="offshelf" name="editshelf" value="下架中">
+				<small style="color: red;display: none" id="informMessage"><strong>提醒: 下架商品將發送通知給消費者</strong></small>
 			</div>
 			<div class="col-12" style="margin-top: 20px; text-align: center;">
 				<input type="submit" id="editproduct" value="修改"> <span
