@@ -13,6 +13,8 @@ import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /*營業時間*/
 
 @Entity
@@ -52,6 +54,7 @@ public class RestaurantBusinHour {
 	
 
 	/** 一家餐廳有多個時間表 **/
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "fk_restaurant_id")
 	private Restaurant restaurant;
