@@ -113,164 +113,95 @@ $(document).ready(function () {
 				
 	$(function() {
 
-				//open1
-				var hr1_open1 = null;
-				var min1_open1 = null;
-				var hr2_open1 = null;
-				var min2_open1 = null;
 
-				var date1_open1 = null;
-				var date2_open1 = null;
-				var date3_open1 = null;
-				//open2
-				var hr1_open2 = null;
-				var min1_open2 = null;
-				var hr2_open2 = null;
-				var min2_open2 = null;
-				//open3
-				var hr1_open3 = null;
-				var min1_open3 = null;
-				var hr2_open3 = null;
-				var min2_open3 = null;
 
+				
 		$('#open1').bootstrapMaterialDatePicker({
 			lang : 'zh-tw',
 			format : 'HH:mm',
 			date : false,
 			cancelText : '回上一步',
 			switchOnClick : true,
-			shortTime : true
+// 			shortTime : true
 
 		});
+		
+		
+// 		$('#open1').change(function() {
 
-				$('#open1').change(
-						function() {
-
-							var timestr1_open1 = $('#open1')[0].value.split(":", 2);
-							hr1_open1 = timestr1_open1[0];
-							min1_open1 = timestr1_open1[1];
-							date1_open1 = moment("20210501", "YYYYMMDD").add(hr1_open1,'hours').add(min1_open1, 'minutes');
-							date2_open1 = moment("20210501", "YYYYMMDD").add(hr1_open1,'hours').add(min1_open1, 'minutes').add(1,'minutes');
-							date3_open1 = moment("202105012359", "YYYYMMDDHHmm");
-
-							$('#close1').bootstrapMaterialDatePicker({
-								lang : 'zh-tw',
-								currentDate : date1_open1,
-								minDate : date2_open1,
-								maxDate : date3_open1,
-								switchOnClick : true,
-								format : 'HH:mm',
-								date : false,
-								cancelText : '回上一步',
-								shortTime : true
-
-							});
-
-						});
-
-	$('#close1').change(function() {
-
-							var timestr2_open1 = $('#close1')[0].value.split(":", 2);
-							hr2_open1 = timestr2_open1[0];
-							min2_open1 = timestr2_open1[1];
-
-							//open2
-
-							var date1_open2 = moment("20210501", "YYYYMMDD").add(hr2_open1, 'hours').add(min2_open1,'minutes');
-							var date2_open2 = moment("20210501", "YYYYMMDD").add(hr2_open1, 'hours').add(min2_open1,'minutes').add(1, 'minutes');
-							var date3_open2 = moment("202105012359","YYYYMMDDHHmm");
-
-							$('#open2').bootstrapMaterialDatePicker({
-								lang : 'zh-tw',
-								format : 'HH:mm',
-								date : false,
-								// currentDate : date1_open2,
-								minDate : date2_open2,
-								maxDate : date3_open2,
-								cancelText : '回上一步',
-								switchOnClick : true,
-								shortTime : true
-							});
-
-						$('#open2').change(function() {
-
-								// console.log($('#lang1')[0].value);
-
-								var timestr1_open2 = $('#open2')[0].value.split(":", 2);
-								hr1_open2 = timestr1_open2[0];
-								min1_open2 = timestr1_open2[1];
-
-								var date1 = moment("20210501","YYYYMMDD").add(hr1_open2, 'hours').add(min1_open2,'minutes');
-								var date2 = moment("20210501","YYYYMMDD").add(hr1_open2, 'hours').add(min1_open2,'minutes').add(1, 'minutes');
-								var date3 = moment("202105012359","YYYYMMDDHHmm");
-
-								$('#close2').bootstrapMaterialDatePicker(
-																			{
-																				lang : 'zh-tw',
-																				currentDate : date1,
-																				minDate : date2,
-																				maxDate : date3,
-																				switchOnClick : true,
-																				format : 'HH:mm',
-																				date : false,
-																				cancelText : '回上一步',
-																				shortTime : true
-
-																			});
-
-								});
-
-		$('#close2').change(function() {
-								var timestr2_open2 = $('#close2')[0].value.split(":", 2);
-								hr2_open2 = timestr2_open2[0];
-								min2_open2 = timestr2_open2[1];
-								var date1_open3 = moment("20210501", "YYYYMMDD").add(hr2_open2, 'hours').add(min2_open2,'minutes');
-								var date2_open3 = moment("20210501", "YYYYMMDD").add(hr2_open2, 'hours').add(min2_open2,'minutes').add(1, 'minutes');
-								var date3_open3 = moment("202105012359","YYYYMMDDHHmm");
-
-							$('#open3').bootstrapMaterialDatePicker({
-																			lang : 'zh-tw',
-																			format : 'HH:mm',
-																			date : false,
-																			// 							currentDate : date1_open3,
-																			minDate : date2_open3,
-																			maxDate : date3_open3,
-																			cancelText : '回上一步',
-																			switchOnClick : true,
-																			shortTime : true
-
-																			});
-
-	$('#open3').change(function() {	var timestr1_open3 = $('#open3')[0].value.split(":",2);
-											hr1_open3 = timestr1_open3[0];
-											min1_open3 = timestr1_open3[1];
-											var date1 = moment("20210501","YYYYMMDD").add(hr1_open3,'hours').add(min1_open3,'minutes');
-											var date2 = moment("20210501","YYYYMMDD").add(hr1_open3,'hours').add(min1_open3,'minutes').add(1,'minutes');
-											var date3 = moment("202105012359","YYYYMMDDHHmm");
+// 			var open1C_hr =$('#open1').val().split(":",2)[0];
+// 			var open1C_min =$('#open1').val().split(":",2)[0];
 			
-						$('#close3').bootstrapMaterialDatePicker({
-										lang : 'zh-tw',
-										currentDate : date1,
-										minDate : date2,
-										maxDate : date3,
-										switchOnClick : true,
-										format : 'HH:mm',
-										date : false,
-										cancelText : '回上一步',
-										shortTime : true
-						});
-	});
+// 			date1_open1 = moment("20210501", "YYYYMMDD").add(open1C_hr,'hours').add(open1C_min, 'minutes');
+// 			date2_open1 = moment("20210501", "YYYYMMDD").add(open1C_hr,'hours').add(open1C_min, 'minutes').add(1,'minutes');
+// 			date3_open1 = moment("202105012359", "YYYYMMDDHHmm");
 
-		$('#close3').change(function() {
-					var timestr2_open3 = $('#close3')[0].value.split(":",2);
-					hr2_open3 = timestr2_open3[0];
-					min2_open3 = timestr2_open3[1];
-					
+// 				});
+		
+		$('#close1').bootstrapMaterialDatePicker({
+			lang : 'zh-tw',
+// 			currentDate : date1_open1,
+// 			minDate : date2_open1,
+// 			maxDate : date3_open1,
+			switchOnClick : true,
+			format : 'HH:mm',
+			date : false,
+			cancelText : '回上一步',
+// 			shortTime : true
+
 		});
+		
+		$('#open2').bootstrapMaterialDatePicker({
+			lang : 'zh-tw',
+			format : 'HH:mm',
+			date : false,
+// 			currentDate : date1_open2,
+// 			minDate : date2_open2,
+// 			maxDate : date3_open2,
+			cancelText : '回上一步',
+			switchOnClick : true,
+// 			shortTime : true
+		});
+		
+		$('#close2').bootstrapMaterialDatePicker({
+			lang : 'zh-tw',
+// 			currentDate : date1,
+// 			minDate : date2,
+// 			maxDate : date3,
+			switchOnClick : true,
+			format : 'HH:mm',
+			date : false,
+			cancelText : '回上一步',
+// 			shortTime : true
 
-	});
+		});
+		
+		$('#open3').bootstrapMaterialDatePicker({
+			lang : 'zh-tw',
+			format : 'HH:mm',
+			date : false,
+//			currentDate : date1_open3,
+// 			minDate : date2_open3,
+// 			maxDate : date3_open3,
+			cancelText : '回上一步',
+			switchOnClick : true,
+// 			shortTime : true
 
-});
+		});
+		$('#close3').bootstrapMaterialDatePicker({
+			lang : 'zh-tw',
+// 			currentDate : date1,
+// 			minDate : date2,
+// 			maxDate : date3,
+			switchOnClick : true,
+			format : 'HH:mm',
+			date : false,
+			cancelText : '回上一步',
+// 			shortTime : true
+		});
+		
+
+
 
 			//鎖定時間確認日期正確
 
@@ -292,11 +223,11 @@ $(document).ready(function () {
 			if ($('#open1').val() == "" & $('#close1').val() == "") {
 
 				$(".checkinput").css({
-					"border" : "2px solid red"
+					"border" : "2px solid red","background-color" : "white"
 				});
 				day1checktime = "false";
 
-				alert('至少填一段時間');
+				alert('請填入時段一');
 			}
 			//只填一段時間
 			else if ($('#open1').val() != "" & $('#close1').val() != ""& $('#open2').val() == ""& $('#close2').val() == "") {
@@ -306,7 +237,9 @@ $(document).ready(function () {
 				
 				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
 				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
-
+				
+				console.log('time1'+time1);
+				console.log('time2'+time2);
 				if (time2 > time1) {
 					day1checktime = "true";
 					console.log('檢查結果:時間正確');
@@ -315,7 +248,7 @@ $(document).ready(function () {
 				} else {
 					day1checktime = "false";
 					console.log('檢查結果:時間錯誤');
-					$(".checkinput").css({"border" : "2px solid red"});
+					$(".checkinput").css({"border" : "2px solid red","background-color" : "white"});
 				}
 
 			}
@@ -340,7 +273,7 @@ $(document).ready(function () {
 				} else {
 					day1checktime = "false";
 					console.log('檢查結果:時間錯誤');
-					$(".checkinput").css({"border" : "2px solid red"});
+					$(".checkinput").css({"border" : "2px solid red","background-color" : "white"});
 				}
 			}
 
@@ -372,7 +305,7 @@ $(document).ready(function () {
 					day1checktime = "false";
 					console.log('檢查結果:時間錯誤');
 					$(".checkinput").css({
-						"border" : "2px solid red"
+						"border" : "2px solid red","background-color" : "white"
 					});
 				}
 			} else {
@@ -400,13 +333,6 @@ $(document).ready(function () {
 		
 		$('#open3').val('18:30');
 		$('#close3').val('21:30');
-
-		
-		$(".checkinput").css({
-			"border" : "2px solid green",
-			"background-color" : "#BBFFBB"
-		});
-		day1checktime='true';
 
 	});
 										
