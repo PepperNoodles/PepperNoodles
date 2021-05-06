@@ -62,7 +62,7 @@
 <div>
 	<div id="main" class="container"> <!-- style="border: 1px solid red"> -->
 		<div class="row justify-content-center align-items-center pt-100">
-			<form action="<c:url value=''/>" method="post"
+			<form id="messageForm" action="<c:url value=''/>" method="post"
 				class="search-box align-items-center" >
 				
 				<div class="mt-10 col-36 ">
@@ -91,7 +91,7 @@
 <%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
 <!-- 				</div> -->
 				<div class="mt-10 ">
-					<button type="submit" id="loginButton" value="submit"
+					<button type="submit" id="messageButton" value="submit"
 						class="genric-btn danger radius">送出</button>
 					<br><br><br>
 <!-- 					<div class="pull-right"> -->
@@ -159,6 +159,30 @@
 			
 			
 		});
+		 
+// 		$(document).ready(function(){
+// 			$("messageButton").click(function(){
+// 				$.ajax({
+// 					type:"POST",
+// 					url:"",
+// 					dataType:"json"
+// 					data:{
+// 						nickname:$("#nickname").val(),
+// 						username:$("#username").val(),
+// 						message-text:$("#message-text").val()
+// 					},
+// 					success:function(result){
+// 						console.log(result);
+// 						if(result.resultCode == 200){
+// 							alert("成功");
+// 						}
+// 					},
+// 					error:function(){
+// 						alert("失敗!");
+// 					}
+// 				});
+// 			});
+// 		});
 	</script>
 
 </body>
