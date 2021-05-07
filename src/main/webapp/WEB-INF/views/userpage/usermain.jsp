@@ -221,7 +221,7 @@ I've added a few comments on why we're using certain properties
 			</div>
 		</div>
 	</div>
-	<div id="main" class="container mt-5" style="width: 80%; height: 100vh">
+	<div id="main" class="container mt-5 pb-5" style="width: 80%; min-height: 100vh">
 
 	<div class="listing-area pt-30 pb-30"></div>
 
