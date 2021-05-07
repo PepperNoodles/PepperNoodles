@@ -41,6 +41,11 @@ $.ajax({
 			var text="";
 // 				text +="<div class='container'>";
 // 				text +="	<div class='row ml-2'>";
+			if(notOverEvent.length == 0){
+				text="<h2 class='noEvent'>目前沒有活動...</h2>";
+			}
+			else{
+				
 			for(i=0;i<notOverEvent.length;i++){
 				
 				text +="		<div class='page col-md-4' style='width: 30rem;'>";
@@ -66,6 +71,7 @@ $.ajax({
 			}
 // 				text +="	</div>";
 // 				text +="</div>";
+			}
 			
 			$("#showNotOver").html(text);
 		},
@@ -76,6 +82,10 @@ $.ajax({
 }
 </script>
 <style>
+.noEvent{
+	margin:auto;
+	text-align: center;
+}
 .page{
 	height:450px;
 	background-color:#FFFAF4;
@@ -111,7 +121,7 @@ $.ajax({
 	text-align:center;
 }
 div .EventIngH2{
- 	color: white;
+ 	color: 	#F00078;
  	font-weight:1000;
  	font-size:70px;
  	 
@@ -119,7 +129,7 @@ div .EventIngH2{
 </style>
 </head>
 <body>
-<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/event.jpg"/>)" >
+<div class="image-container set-full-height" style="background-image: url(<c:url value="/images/company/event.png"/>)" >
 <p>&emsp;</p>
 
 <div class="section-tittle text-center mb-80 EventIngDiv">
