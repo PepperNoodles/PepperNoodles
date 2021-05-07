@@ -39,14 +39,12 @@ public class RearMessageBox {
 	@Column(name = "condition")
 	private String condition;
 	
-	@Transient
-	@Column(name = "fk_userAccount_id")
+	@Column(name = "fk_userAccount_id", insertable=false, updatable=false)
 	private Integer userAccountId;
 
 	/** 1個User可以有多個訊息 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
-	@JsonIgnore
 	private UserAccount userAccount;
 	
 		

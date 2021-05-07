@@ -27,6 +27,7 @@ public interface RearUserAccountRepository extends JpaRepository<UserAccount, St
 	@Query(value="select user from UserAccount user where user.companyDetail != null")
 	public ArrayList<UserAccount> findCompanyUserList ();
 	
+	
 	//模糊搜尋帳號
 	@Query(value="from UserAccount where accountIndex like concat('%', ?1, '%')")
 	public List<UserAccount> findAccountLike(String accountIndex);
