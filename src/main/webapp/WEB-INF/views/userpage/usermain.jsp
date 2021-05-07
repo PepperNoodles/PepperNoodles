@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template For inClude</title>
+<title>UserMain</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
@@ -924,7 +924,13 @@ I've added a few comments on why we're using certain properties
 							});
 						 }
 						
-
+						//顯示餐廳按鈕啟動的funciton
+						//顯示位址
+						 
+		
+						
+						
+						
 
 							
 						});//onload end
@@ -1629,6 +1635,17 @@ I've added a few comments on why we're using certain properties
  		});
  		
  		
+			function positionShow(){
+				console.log(this.id);
+				let restId = this.id.slice(4,);
+				
+				let url = "<c:url value='/restSearch/userSingleRestPage/' />" + restId;
+				features = "width="+1200+",height="+600+",top="+50+",left="+50; 
+				window.open(url,"toolbar=no,location=no,directories=no",features);
+			}
+		
+ 		
+ 		
  			//建立隔壁memo的function
  			function createSideMemo(){
  				//memo
@@ -1678,7 +1695,14 @@ I've added a few comments on why we're using certain properties
  		 					    restAnchor.innerHTML=result[i].restaurantName;
  		 					    restAnchor.style.color="#0000C6";
  		 					    td2.appendChild(restAnchor);
- 		 					    tr2.appendChild(td2);     			        
+ 		 					    tr2.appendChild(td2);     		
+ 		 					    
+ 		 					  	
+		 					    let td2_2=document.createElement("td");
+		 					    td2_2.rowSpan="3";	   
+		 					    td2_2.innerHTML = '<button class="getPositionButton" style="background-color:#00008B;border-radius:15px;" id=rest'+result[i].restaurantId+'><i class="fas fa-map-marker-alt"></i></button>'
+		 					   	tr2.appendChild(td2_2);     	
+		 					    $(".getPositionButton").click(positionShow);
  		 					        
  		 					    let tr3 = document.createElement("tr");
  		 					    let td3=document.createElement("td");
@@ -1716,10 +1740,13 @@ I've added a few comments on why we're using certain properties
  		 					    memosheet.appendChild(tr3);
  		 					    memosheet.appendChild(tr4);    
  		 					    memosheet.appendChild(tr5); 
+ 		 					  	
  		 					    }
  		 					memo.appendChild(memosheet);
 
  		 					memosheet.style.padding='5px';
+ 		 					$(".getPositionButton").click(positionShow);
+ 		 					
  		 				}else{
  		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
  		 				}
