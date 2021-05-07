@@ -157,7 +157,7 @@
     </a>
   </div>
  
-   <a href="#item-4" class="list-group-item" >
+   <a href="<c:url value='/rearStage/rearMessage'/>" class="list-group-item" >
     <i class="glyphicon glyphicon-chevron-right"></i>訊息
   </a>
     
