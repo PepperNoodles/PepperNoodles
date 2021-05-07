@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.controller.CompanyDetailController;
 import com.infotran.springboot.companysystem.service.CompanyDetailService;
