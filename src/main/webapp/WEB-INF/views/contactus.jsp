@@ -218,12 +218,21 @@ I've added a few comments on why we're using certain properties
 							rows="3"></textarea>
 					</div>
 					
-					<div class=" g-recaptcha m-3 row justify-content-center"
-						data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"></div>
+<!-- 					<div class=" g-recaptcha m-3 row justify-content-center" -->
+<!-- 						data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"></div> -->
+						
+						<div
+						    class="g-recaptcha  m-3 row justify-content-center"
+						    data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"
+						    data-theme="light" data-size="normal"
+						    data-callback="validateAjax"
+						    data-expired-callback="expired"
+						    data-error-callback="error">
+						</div>
 						
 					<div class="wizard-footer height-wizard col-sm-10 col-sm-offset-1">
 						<div class="m-3 row justify-content-center">
-							<input type="submit"  class='genric-btn default-border circle' style='color: black' value="送出訊息" >
+							<input type="submit" id="submitMessage" disabled="disabled" class='genric-btn default-border circle' style='color: black' value="送出訊息" >
 							<input type="reset"  class='genric-btn default-border circle' style='color: black' value="重填" >
 							
 
@@ -243,24 +252,47 @@ I've added a few comments on why we're using certain properties
 	</div>
 
 <script type="text/javascript"> 
-function validateForm(){
- 	if(grecaptcha.getResponse()){
- 		return true;
- 	}else{
- 		alert("Please prove that you're not robot!!!");
- 		return false;
- 	}
+
+// function validateForm(){
+//  	if(grecaptcha.getResponse()){
+//  		return true;
+//  	}else{
+//  		alert("Please prove that you're not robot!!!");
+//  		return false;
+//  	}
+// }
+
+ function  validateAjax (reponse){
+	 alert("1")
+	 console.log(reponse)
+	 urls= "/PepperNoodles/recaptchaajaxcheck/?token=";
+	 urls += reponse;
+	 $.ajax({
+		 method:"get",
+		 url: urls,
+		 dataType: "text",
+		 success:function(result){
+			 alert(result)
+			 $("#submitMessage").prop("disabled",false);
+		 },
+		 error:function(result){
+			 alert(result)
+			 $("#submitMessage").prop("disabled",true);
+		 }
+	 
+	 });
+	 
+		 
+	 
+	
 }
+
 </script>
 	<script>
-	
 
 			$(document).ready(function () {			
 				
-			}
-				
-			
-			
+			});			
 
  	</script>
 
