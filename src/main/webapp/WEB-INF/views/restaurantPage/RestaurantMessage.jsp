@@ -191,7 +191,7 @@ $(document).ready(function(){
          function catdiselect(){
              this.style.filter="grayscale(1)";
              count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"顆星";
          }
 
          function catselect(){
@@ -199,12 +199,12 @@ $(document).ready(function(){
              for(let i =0;i<count;i++){                   
                  s[i].style.filter="grayscale(0)";                    
              }
-             document.getElementById("rankResult").innerHTML="評分中..."+count+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+count+"顆星";
          }
 
          function catCheck(){
              let count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="rank"+count+'隻貓';
+             document.getElementById("rankResult").innerHTML="rank"+count+'顆星';
              document.getElementById("hiddenScore").innerHTML=count;
               for (s1 of s){
                  s1.removeEventListener("mouseover",catselect);
@@ -520,12 +520,25 @@ hr {
 	margin:2px;
 	padding:0;
 }
+
+.alreadyrankcat{
+	height:25px;
+	margin:2px;
+	padding:0;
+}
+ .alreadygrayscale{
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
+    }
+
  .grayscale{
  	height:25px;
 	margin:2px;
 	padding:0;
     filter:grayscale(1);
-           }
+    }
 
 </style>
 </head>
@@ -732,7 +745,7 @@ hr {
 					if (j<Math.floor(rank)){
 						let img  =  document.createElement("img");
 						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
-						img.className = "rankcat";
+						img.className = "alreadyrankcat";
 						position.append(img);
 						
 						
@@ -740,12 +753,12 @@ hr {
 					}else if(j==Math.floor(rank)){
 						let img2 =  document.createElement("img");
 						img2.src = "<c:url value='/images/restaurantCRUD/halfcat.png'/>";
-						img2.className = "rankcat";
+						img2.className = "alreadyrankcat";
 						position.append(img2);
 					}else{
 						let img3 = document.createElement("img");
 						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
-						img3.className = "grayscale";
+						img3.className = "alreadygrayscale";
 						position.append(img3);
 					}
 				}
@@ -755,12 +768,12 @@ hr {
 					if (k<Math.floor(rank)){
 						let img  =  document.createElement("img");
 						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
-						img.className = "rankcat";
+						img.className = "alreadyrankcat";
 						position.append(img);
 					}else{
 						let img3 = document.createElement("img");
 						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
-						img3.className = "grayscale";
+						img3.className = "alreadygrayscale";
 						position.append(img3);
 					}
 				}
