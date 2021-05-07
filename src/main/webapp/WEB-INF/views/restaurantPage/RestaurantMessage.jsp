@@ -15,9 +15,9 @@
 <link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />" />
 
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script> --%>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+<%-- <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script> --%>
 
 <script>
 $(document).ready(function(){
@@ -191,7 +191,7 @@ $(document).ready(function(){
          function catdiselect(){
              this.style.filter="grayscale(1)";
              count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+(count-1)+"顆星";
          }
 
          function catselect(){
@@ -199,12 +199,12 @@ $(document).ready(function(){
              for(let i =0;i<count;i++){                   
                  s[i].style.filter="grayscale(0)";                    
              }
-             document.getElementById("rankResult").innerHTML="評分中..."+count+"隻貓";
+             document.getElementById("rankResult").innerHTML="評分中..."+count+"顆星";
          }
 
          function catCheck(){
              let count=parseInt(this.id.charAt(3));
-             document.getElementById("rankResult").innerHTML="rank"+count+'隻貓';
+             document.getElementById("rankResult").innerHTML="rank"+count+'顆星';
              document.getElementById("hiddenScore").innerHTML=count;
               for (s1 of s){
                  s1.removeEventListener("mouseover",catselect);
@@ -503,9 +503,10 @@ img{
 #body{
 	background-color:#FFFFFF; 
 }
-#menuArea{
+#menuArea,.hourArea{
 	display: none;
 }
+
 hr {
 	 border: 0;
 	 clear:both;
@@ -519,9 +520,25 @@ hr {
 	margin:2px;
 	padding:0;
 }
+
+.alreadyrankcat{
+	height:25px;
+	margin:2px;
+	padding:0;
+}
+ .alreadygrayscale{
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
+    }
+
  .grayscale{
-                filter:grayscale(1);
-           }
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
+    }
 
 </style>
 </head>
@@ -546,6 +563,10 @@ hr {
 					</thead>
 					<tbody>
 						<tr>
+					    	<th scope="row">評分</th>
+					   	  	<td id="rankStar">${rest.rankAmount} &nbsp;</td>
+					    </tr>
+						<tr>
 					    	<th scope="row">地址</th>
 					   	  	<td>${rest.restaurantAddress}</td>
 					    </tr>
@@ -556,7 +577,8 @@ hr {
 					    <tr>
 					    	<th scope="row">營業時間</th>
 					      	<td>
-					      		<div id="getrestHour${rest.restaurantId}" name="restHour" >到時候要從資料庫抓</div>
+					      		<a class="text-info" href="#" id="toggleHour">營業時間</a>
+					      		<div id="getrestHour${rest.restaurantId}" class="hourArea" id="hourArea" name="restHour" ></div>
 						    	
 					      	</td>
 					    </tr>
@@ -707,7 +729,58 @@ hr {
 		$("#toggleMenu").click(function() {
       	  $( "#menuArea" ).slideToggle("slow")
  		});
- 			
+		
+		$("#toggleHour").click(function() {
+	      	  $( ".hourArea" ).slideToggle("slow")
+	 		});
+ 		
+		let postion = $("#rankStar");
+		let number = postion.html();
+		createStar(number,postion)
+		//createStar
+		function createStar(number,position){
+			let rank = parseFloat(number);
+			if (rank-Math.floor(rank)>0.1){
+				for(let j = 0; j < 5 ; j++){
+					if (j<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "alreadyrankcat";
+						position.append(img);
+						
+						
+						
+					}else if(j==Math.floor(rank)){
+						let img2 =  document.createElement("img");
+						img2.src = "<c:url value='/images/restaurantCRUD/halfcat.png'/>";
+						img2.className = "alreadyrankcat";
+						position.append(img2);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "alreadygrayscale";
+						position.append(img3);
+					}
+				}
+				
+			}else{
+				for(let k = 0; k < 5 ; k++){
+					if (k<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "alreadyrankcat";
+						position.append(img);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "alreadygrayscale";
+						position.append(img3);
+					}
+				}
+			}
+		}
+		
+		
 // 		//讓bar固定在上面以及設定高度
 		$(".header-sticky").addClass("sticky-bar");
  		$(".header-sticky").css("height", "90px");
@@ -762,10 +835,14 @@ hr {
 				url : urls,
 				dataType : "text",
 				success : function(response) {
-					var divrestHour = document
-							.getElementById("getrestHour"+${rest.restaurantId});
+					
+					var divrestHour = document.getElementById("getrestHour"+${rest.restaurantId});
 
 					var result = JSON.parse(response);
+					if(result.length == 0){
+						txt="目前沒有營業時間";
+					}else{
+						
 			
 					var weekday = [
 						'一',
@@ -809,6 +886,7 @@ hr {
 				}
 
 				txt += "</h6></table>";
+					}
 				divrestHour.innerHTML = txt;
 				},
 				error : function(thrownError) {
@@ -860,7 +938,7 @@ hr {
 		dataType: 'text',
 		success:function(result){
 			if(result=='true'){
-				alert('已經有收藏了!! ');
+// 				alert('已經有收藏了!! ');
 
 				$('#collectbutton').hide();
 				$('#collectbuttonCancel').show();

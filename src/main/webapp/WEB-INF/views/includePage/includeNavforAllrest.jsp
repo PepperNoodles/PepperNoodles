@@ -17,7 +17,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 <!-- bloodHound ↑ -->
 <script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
-
+   
 <!-- 營業時間 -->
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
@@ -27,7 +27,6 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/locale/ja.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/zh-tw.min.js"></script>
-	
 	<!-- 營業時間 -->
 	
 <link rel='stylesheet'
@@ -47,8 +46,10 @@
 <link rel="Shortcut icon"
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 
-<!-- <!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
 
 
 <style>
@@ -142,11 +143,7 @@ $("#indexSearch").on('click',function(){
 												</ul></li>
 											<li><a href="<c:url value='/restSearch/mapWithCurrentLoca'/>" id = "indexSearch">探索地圖</a></li>
 											<li><a href="about.html">發表食記</a></li>
-
-											<li><a href="<c:url value='/contactUs'/>" >聯絡我們1</a></li>
-
-											<li><a href="<c:url value='/rearStage/rearContactMessage'/>">聯絡我們</a></li>
-
+											<li><a href="<c:url value='/contactUs'/>" >聯絡我們</a></li>
 
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
@@ -253,7 +250,7 @@ $("#indexSearch").on('click',function(){
 	<!-- 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script> -->
 
 	<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
-	<script src="<c:url value='/scripts/popper.min.js' />"></script>
+
 	<!-- Jquery Mobile Menu -->
 	<script src="<c:url value='/scripts/jquery.slicknav.min.js' />"></script>
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
@@ -273,12 +270,8 @@ $("#indexSearch").on('click',function(){
 	<!-- Jquery Plugins, main Jquery -->
 	<script src="<c:url value='/scripts/plugins.js' />"></script>
 	<script src="<c:url value='/scripts/main.js' />"></script>
-	<!-- DataTables v1.10.16 -->
-	<script
-		src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
-			<script>
-		console.log(isAuthenticated)
-		console.log(${isAuthenticated})</script>
+
+
 
 </body>
 </html>

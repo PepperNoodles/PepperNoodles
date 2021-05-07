@@ -158,7 +158,7 @@
   </div>
  
    <a href="#item-4" class="list-group-item" >
-    <i class="glyphicon glyphicon-chevron-right"></i>Item 4
+    <i class="glyphicon glyphicon-chevron-right"></i>訊息
   </a>
     
 

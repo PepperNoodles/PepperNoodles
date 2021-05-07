@@ -114,7 +114,7 @@ $(document).ready(function(){
 .delete{
 	color: #842B00;
 }
-.modal-footer a:hover{
+td a:hover{
 	color:	#F75000;
 }
 </style>
@@ -189,7 +189,6 @@ $(document).ready(function(){
 											</a>
 										</div>
 										<div class="modal-footer">
-											<a class="update" href="<c:url value='/rest/updateMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
 											<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
 										</div>
 									</div>

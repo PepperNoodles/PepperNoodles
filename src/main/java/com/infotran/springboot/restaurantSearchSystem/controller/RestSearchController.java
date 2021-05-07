@@ -74,13 +74,13 @@ public class RestSearchController {
 				e.printStackTrace();
 			}
 		}else {
-			System.out.println(searchName+searchTag);
+			//System.out.println(searchName+searchTag);
 			List<Restaurant> rests = restSearchService.findSearchNameAndTag(searchName, searchTag);
-			System.out.println("======="+rests.size());
+			//System.out.println("======="+rests.size());
 			try {
 				String jsonString = mapper.writeValueAsString(rests);
-				System.out.println(jsonString);
-				model.addAttribute("rests",jsonString);
+				//System.out.println(jsonString);
+				model.addAttribute("mapRests",jsonString);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
@@ -91,6 +91,12 @@ public class RestSearchController {
 		return "mappage/showmap";
 	}
 	
+	@GetMapping(path="/mapWithCurrentLoca",produces = "application/json;charset=UTF-8" )
+	public String indexSearchCurrentLoca(Model model) {
+		model.addAttribute("current","currentLocation");
+		
+		return "mappage/showmap";
+	}
 	
 	@GetMapping(path="/restId/{id}",produces = "application/json;charset=UTF-8" )
 	@ResponseBody
@@ -146,12 +152,36 @@ public class RestSearchController {
 		BigDecimal smallLatD=new BigDecimal(smallLat);
 		BigDecimal bigLongD=new BigDecimal(bigLong);
 		BigDecimal smallLongD=new BigDecimal(smallLong);
-		System.out.println(bigLatD);
-		System.out.println(smallLatD);
+		//System.out.println(bigLatD);
+		//System.out.println(smallLatD);
 		List<Restaurant> rests = restSearchService.findNearMap(smallLatD,bigLatD,smallLongD,bigLongD);
 		//List<Restaurant> restss = restSearchService.findNearMapLat(bigLatD, smallLatD);
 		return rests;
 	}
+	
+	@GetMapping(path="/centerLocation/{lat}/{lng}",produces = "application/json;charset=UTF-8" )
+	@ResponseBody
+	public List<Restaurant> RestNearMap(@PathVariable String lat,@PathVariable String lng){
+		BigDecimal latdiff = new BigDecimal("0.08"); //0.003
+		BigDecimal lngdiff = new BigDecimal("0.01"); //0.006
+		BigDecimal currlat = new BigDecimal(lat);
+		BigDecimal currlng = new BigDecimal(lng);
+		
+		
+		BigDecimal bigLatD= currlat.add(latdiff);
+		BigDecimal smallLatD= currlat.subtract(latdiff);
+		BigDecimal bigLongD= currlng.add(lngdiff);
+		BigDecimal smallLongD= currlng.subtract(lngdiff);
+		System.out.println(bigLatD);
+		System.out.println(smallLatD);
+		System.out.println(bigLongD);
+		System.out.println(smallLongD);
+		
+		List<Restaurant> rests = restSearchService.findNearMap(smallLatD,bigLatD,smallLongD,bigLongD);
+		return rests;
+	}
+	
+	
 	
 	@GetMapping(path="/tagAll",produces = "application/json;charset=UTF-8" )
 	@ResponseBody
