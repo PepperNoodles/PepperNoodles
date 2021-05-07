@@ -39,9 +39,11 @@ public class RearMessageBox {
 	@Column(name = "condition")
 	private String condition;
 	
+
 //	@Transient
 	@Column(name = "fk_userAccount_id",insertable=false,updatable=false)
 	private Integer userAccountId;//transient對應不到資料表 //// ↑上面是指可以查詢 但是不能新增跟修改
+	
 
 	/** 1個User可以有多個訊息 **/
 	@ManyToOne(cascade = CascadeType.ALL)

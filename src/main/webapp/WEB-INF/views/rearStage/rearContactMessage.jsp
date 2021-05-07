@@ -91,15 +91,21 @@
 <%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
 <!-- 				</div> -->
 				<div class="mt-10 ">
-					<button type="submit" id="messageButton" value="submit"
-						class="genric-btn danger radius">送出</button>
+<!-- 					<button type="submit" id="messageButton" value="submit" -->
+<!-- 						class="genric-btn danger radius">送出</button> -->
+								<input id="messageButton" type="button" value="送出" 
+						class="genric-btn danger radius"/>
+
 					<br><br><br>
 <!-- 					<div class="pull-right"> -->
 <!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
 <!-- 						<a href="#"  id="company">企業一鍵登入</a> -->
 <!-- 					</div> -->
+                    
+     
 				</div>
 			</form>
+
 		</div>
 	</div>
 	<%@include file="../includePage/includeFooter.jsp" %>
@@ -109,14 +115,14 @@
 	</div>
 </div>
 	<script>
-		$(window).on('load', function() {
+// 		$(window).on('load', function() {
 
-			$(".header-sticky").css("height", "90px");
+// 			$(".header-sticky").css("height", "90px");
 
-			$('#preloader-active').delay(450).fadeOut('slow');
-			$('body').delay(450).css({
-				'overflow' : 'visible'
-			});
+// 			$('#preloader-active').delay(450).fadeOut('slow');
+// 			$('body').delay(450).css({
+// 				'overflow' : 'visible'
+// 			});
 			
 // 			//一鍵新增-企業
 // 			$("#company").click(function(){
@@ -129,60 +135,76 @@
 // 				$("#username").val('chrislo5311@gmail.com');
 // 			});
 			
-			$('form').submit(function(ev){
-				 ev.preventDefault();
-				 let username = $("#username").val();
-				// console.log(username);
-				 let urls = "<c:url value='/userPreLoggin/getName'/>";
-				 urls +="?username="+username;
+// 			$('form').submit(function(ev){
+// 				 ev.preventDefault();
+// 				 let username = $("#username").val();
+// 				// console.log(username);
+// 				 let urls = "<c:url value='/userPreLoggin/getName'/>";
+// 				 urls +="?username="+username;
 				 
-				 $.ajax({
-						type: "GET",
-						url: urls,				
-						dataType: "text",
-						success: function (response) {
-							console.log(response);	
-							if (response == 'true'){
-								//console.log('ok');	
-								$('form').unbind('submit').submit()
-							}
-							$('form').unbind('submit').submit()
-						},
-						error: function (thrownError) {
-							console.log(thrownError);
-						}
-					});
+// 				 $.ajax({
+// 						type: "GET",
+// 						url: urls,				
+// 						dataType: "text",
+// 						success: function (response) {
+// 							console.log(response);	
+// 							if (response == 'true'){
+// 								//console.log('ok');	
+// 								$('form').unbind('submit').submit()
+// 							}
+// 							$('form').unbind('submit').submit()
+// 						},
+// 						error: function (thrownError) {
+// 							console.log(thrownError);
+// 						}
+// 					});
 				 
-		         //later you decide you want to submit
-		         //			
-			})
+// 		         //later you decide you want to submit
+// 		         //			
+// 			})
 			
 			
-		});
+// 		});
 		 
-// 		$(document).ready(function(){
-// 			$("messageButton").click(function(){
-// 				$.ajax({
-// 					type:"POST",
-// 					url:"",
-// 					dataType:"json"
+		$(document).ready(function(){
+			$("#messageButton").click(function(){
+				alert("here");
+				let formdata = new FormData();
+				let blob = new Blob([ JSON.stringify({
+					"userRealName":$("#nickname:text").val(),
+					"userAccountIndex": $("#username:text").val(),
+					"messageText": $("#message-text").val()
+				
+				})]);
+				
+				
+				formdata.append('rearMessageInfo',blob);
+				
+				let url="<c:url value='/addRearMessage'/>"; //要傳送的controller方法路徑
+				$.ajax({
+					type:"POST",
+					url:url,
+					dataType:"json",
+					data:formdata,
+					contentType:false,
+					processData: false, 
 // 					data:{
 // 						nickname:$("#nickname").val(),
 // 						username:$("#username").val(),
 // 						message-text:$("#message-text").val()
 // 					},
-// 					success:function(result){
-// 						console.log(result);
-// 						if(result.resultCode == 200){
-// 							alert("成功");
-// 						}
-// 					},
-// 					error:function(){
-// 						alert("失敗!");
-// 					}
-// 				});
-// 			});
-// 		});
+					success:function(result){
+						console.log(result);
+						if(result.resultCode == 200){
+							alert("成功");
+						}
+					},
+					error:function(){
+						alert("失敗!");
+					}
+				});
+			});
+		});
 	</script>
 
 </body>
