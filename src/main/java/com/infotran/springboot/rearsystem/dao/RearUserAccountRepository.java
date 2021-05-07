@@ -16,7 +16,7 @@ public interface RearUserAccountRepository extends JpaRepository<UserAccount, St
 	public ArrayList<UserAccount> findUserAccountList ();
 	
 	//取得UserAccount的fk_companyDetailId = null 只抓一般使用者
-	@Query(value="select user from UserAccount user where user.companyDetail = null")
+	@Query(value="select user from UserAccount user where user.userAccountDetail != null")
 	public ArrayList<UserAccount> findAccountUserList ();
 	
 //	//取得UserAccount的fk_companyDetailId
