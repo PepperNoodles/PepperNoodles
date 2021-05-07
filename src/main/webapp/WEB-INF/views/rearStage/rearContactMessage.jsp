@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>UserLogin</title>
+<title>聯絡我們</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- site.webmanifest run offline -->
 <link rel="manifest" href="site.webmanifest">
@@ -58,55 +58,56 @@
 		</div>
 	</div>
 
-	<%@include file="includePage/includeNav.jsp" %>
+	<%@include file="../includePage/includeNav.jsp" %>
 <div>
 	<div id="main" class="container"> <!-- style="border: 1px solid red"> -->
-<!-- 	<script src="https://www.google.com/recaptcha/api.js" ></script> -->
 		<div class="row justify-content-center align-items-center pt-100">
-			<form id="loginForm" action="<c:url value='/login/page'/>" method="post"
-				class="search-box align-items-center">
+			<form id="messageForm" action="<c:url value=''/>" method="post"
+				class="search-box align-items-center" >
+				
 				<div class="mt-10 col-36 ">
-					<input id="username" type="text" name="username" placeholder="E-mail:" required
+					<label for="nickname" >姓名:</label>
+					<input id="nickname" type="text" name="nickname" placeholder="請輸入姓名" required
 						class="single-input">
 				</div>
-				<div class="mt-10 col-24">
-					<input id="password" type="password" name="password" placeholder="Password:" required
-						class="single-input ">
+				
+				<div class="mt-10 col-36 ">
+					<label for="username" >信箱:</label>
+					<input id="username" type="text" name="username" placeholder="請輸入信箱" required
+						class="single-input">
 				</div>
+<!-- 				<div class="mt-10 col-24"> -->
+<!-- 					<input id="password" type="password" name="password" placeholder="Password:" required -->
+<!-- 						class="single-input "> -->
+<!-- 				</div> -->
+				
+				<div class="form-group">
+		            <label for="message-text" class="col-form-label">Message:</label>
+		            <textarea class="form-control" id="message-text"  cols="40" rows="6"></textarea>
+	          	</div>
 
-				<div class="mt-10 col-24">
-					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me">
-					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a>
-				</div>
+<!-- 				<div class="mt-10 col-24"> -->
+<!-- 					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me"> -->
+<%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
+<!-- 				</div> -->
 				<div class="mt-10 ">
-					<button type="submit" id="loginButton" value="login"
-						class="genric-btn danger radius">Login</button>
-
-<!-- 					<button type="submit" id="loginButton" value="login" -->
-<!-- 						class="g-recaptcha genric-btn danger radius" -->
-<!-- 						 data-sitekey="6LeiSMcaAAAAAEC4fWA0-CNm2mxSqJxKpfg6A0KP" -->
-<!-- 						 data-callback="onSubmit" -->
-<!-- 						 data-action="submit">Login</button> -->
+					<button type="submit" id="messageButton" value="submit"
+						class="genric-btn danger radius">送出</button>
 					<br><br><br>
-					<div class="pull-right">
-						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp;
-						<a href="#"  id="company">企業一鍵登入</a>
-					</div>
+<!-- 					<div class="pull-right"> -->
+<!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
+<!-- 						<a href="#"  id="company">企業一鍵登入</a> -->
+<!-- 					</div> -->
 				</div>
 			</form>
 		</div>
 	</div>
-	<%@include file="includePage/includeFooter.jsp" %>
+	<%@include file="../includePage/includeFooter.jsp" %>
 	<!-- Scroll Up -->
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
 </div>
-<script type="text/javascript">
-function onSubmit(token){
-	document.getElementById("loginForm").submit();
-}
-</script>
 	<script>
 		$(window).on('load', function() {
 
@@ -117,16 +118,16 @@ function onSubmit(token){
 				'overflow' : 'visible'
 			});
 			
-			//一鍵新增-企業
-			$("#company").click(function(){
-				$("#password").val('123!Q123');
-				$("#username").val('ting0420a@gmail.com');
-			});
-			//一鍵新增-會員
-			$("#user").click(function(){
-				$("#password").val('a123456@');
-				$("#username").val('chrislo5311@gmail.com');
-			});
+// 			//一鍵新增-企業
+// 			$("#company").click(function(){
+// 				$("#password").val('123!Q123');
+// 				$("#username").val('ting0420a@gmail.com');
+// 			});
+// 			//一鍵新增-會員
+// 			$("#user").click(function(){
+// 				$("#password").val('a123456@');
+// 				$("#username").val('chrislo5311@gmail.com');
+// 			});
 			
 			$('form').submit(function(ev){
 				 ev.preventDefault();
@@ -134,6 +135,7 @@ function onSubmit(token){
 				// console.log(username);
 				 let urls = "<c:url value='/userPreLoggin/getName'/>";
 				 urls +="?username="+username;
+				 
 				 $.ajax({
 						type: "GET",
 						url: urls,				
@@ -157,6 +159,30 @@ function onSubmit(token){
 			
 			
 		});
+		 
+// 		$(document).ready(function(){
+// 			$("messageButton").click(function(){
+// 				$.ajax({
+// 					type:"POST",
+// 					url:"",
+// 					dataType:"json"
+// 					data:{
+// 						nickname:$("#nickname").val(),
+// 						username:$("#username").val(),
+// 						message-text:$("#message-text").val()
+// 					},
+// 					success:function(result){
+// 						console.log(result);
+// 						if(result.resultCode == 200){
+// 							alert("成功");
+// 						}
+// 					},
+// 					error:function(){
+// 						alert("失敗!");
+// 					}
+// 				});
+// 			});
+// 		});
 	</script>
 
 </body>

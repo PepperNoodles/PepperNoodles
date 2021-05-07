@@ -12,7 +12,7 @@ import com.infotran.springboot.commonmodel.Restaurant;
 
 public interface RestSearchRepository extends JpaRepository<Restaurant, Integer> {
 	
-	@Query(value="from Restaurant r Where r.restaurantName like concat('%',:restName,'%')",nativeQuery = false)
+	@Query(value="from Restaurant r Where r.restaurantName like concat('%',:restName,'%') or r.restaurantAddress like concat('%',:restName,'%')",nativeQuery = false)
 	public Page<Restaurant> findRestaurantNameLike(String restName,Pageable pageable);
 	
 	@Query(value="from Restaurant r Where r.restaurantAddress like concat('%',:restAddress,'%')",nativeQuery = false)

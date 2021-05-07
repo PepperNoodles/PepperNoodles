@@ -117,6 +117,9 @@ $(document).ready(function(){
 .modal-footer a:hover{
 	color:	#F75000;
 }
+div a{
+	color: red;
+}
 </style>
 </head>
 <body>
@@ -158,9 +161,10 @@ $(document).ready(function(){
 			</div>
 				
 			<div class="picbox">
-				<img class="picture-src" id="PicturePreview" width="300px" /><br>
+				<img class="picture-src" id="PicturePreview" width="300px" src="<c:url value="/rest/getMenuPicture/${updateMenu.menuDetailId}"/>" /><br>
 				<div>
-					<input class='picbox tohide' type='button'  value='新增菜單' id="addMenu" style="margin-bottom: 20px;margin-top: 10px"/>
+					<a class='picbox' id="updateMenu" >確認修改</a><a class='picbox' id="returnMenu">取消</a>
+					
 				</div>						
 			</div>
       	</div>
@@ -189,7 +193,7 @@ $(document).ready(function(){
 											</a>
 										</div>
 										<div class="modal-footer">
-											<a class="update" href="<c:url value='/rest/updateMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
+											<a class="update" href="<c:url value='/rest/updateMenuPicture/${menus.menuDetailId}' />" >修改菜單</a>
 											<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
 										</div>
 									</div>

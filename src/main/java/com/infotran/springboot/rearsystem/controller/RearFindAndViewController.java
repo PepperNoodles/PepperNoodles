@@ -59,4 +59,10 @@ public class RearFindAndViewController {
 		return "rearStage/rearStageRestaurant";
 	}
 	
+	//聯絡我們
+	@GetMapping("/rearContactMessage")
+	public String rearContactMessage() {
+		return "rearStage/rearContactMessage";
+	}
+	
 }

@@ -239,7 +239,11 @@ public class UserAccount implements Serializable{
 
 	
 	// =============================================================
-	
+	/** 1個User可以多次對後台留言 **/
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "userAccount" , cascade = CascadeType.ALL)
+	Set<RearMessageBox> rearMessageBox = new LinkedHashSet<RearMessageBox>();
+	//===========================================================================================
 	@Transient
 	private String code;
 	
@@ -463,6 +467,18 @@ public class UserAccount implements Serializable{
 
 	public void setRestaurantCollections(List<Restaurant> restaurantCollections) {
 		this.restaurantCollections = restaurantCollections;
+	}
+
+
+
+	public Set<RearMessageBox> getRearMessageBox() {
+		return rearMessageBox;
+	}
+
+
+
+	public void setRearMessageBox(Set<RearMessageBox> rearMessageBox) {
+		this.rearMessageBox = rearMessageBox;
 	}
 	
 	

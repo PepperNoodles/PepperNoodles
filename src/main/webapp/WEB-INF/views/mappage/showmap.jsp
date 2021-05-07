@@ -47,6 +47,20 @@ html, body {
 	width: 70%;
 	height: 70%;
 	}
+.rankcat{
+	height:25px;
+	margin:2px;
+	padding:0;
+}
+
+
+ .grayscale{
+ 	height:25px;
+	margin:2px;
+	padding:0;
+    filter:grayscale(1);
+    }
+
 
 tr a:hover{
 	color:#FFFFFF;
@@ -174,8 +188,8 @@ tr a:hover{
 
 	<br>
 
-	<h5 style="display:none" id="indexSearch">${rests}</h5>
-	
+	<h5 style="display: none;" id="indexSearch">${mapRests}</h5>
+	<h5 style="display: none;" id="currentPosition">${current}</h5>
 	
 	
 	
@@ -197,6 +211,7 @@ tr a:hover{
 		}).addTo(map);
 		
 		var selectedMarker;
+		var circleMarker;
 		
 		//新增icon圖案 有用到可以呼叫
 		var restIcon= new L.Icon({
@@ -207,6 +222,10 @@ tr a:hover{
 		        iconUrl:"<c:url value='/images/restaurantCRUD/restmarker_blue.png' />",
 			   	iconSize:[33,33],iconAnchor:[12,41],popupAncher:[1,-34],shadowSize:[41,41]
 			});
+		var userIcon= new L.Icon({
+	        iconUrl:"<c:url value='/images/restaurantCRUD/ruserloca.png.png' />",
+		   	iconSize:[33,33],iconAnchor:[12,41],popupAncher:[1,-34],shadowSize:[41,41]
+		});
 		
 		
 		$('#toast').toast('show')
@@ -214,7 +233,7 @@ tr a:hover{
 		const popup = L.popup();
 		
 		//從首頁傳值
-		if ($("#indexSearch").html().length>2){
+		if ($("#indexSearch").html().length>5){
 			console.log($("#indexSearch").html().length);
 			let indexResult = $("#indexSearch").html();
 			indexResult=JSON.parse(indexResult);
@@ -230,6 +249,59 @@ tr a:hover{
 		}else{
 			loca=[];
 		}
+		//從首頁不傳值
+		if($("#currentPosition").html().length>2){			
+			
+			map.locate({setView: true, maxZoom: 20});
+
+			map.on('locationfound', onLocationFound);
+			
+			function onLocationFound(e) {
+			    var radius = e.accuracy;
+
+			    L.marker(e.latlng).addTo(map)
+			     .bindPopup("你現在的位置在這附近").openPopup();
+				
+			    console.log(e.latitude);
+			    console.log(e.longitude);
+			    circleMarker = L.circle(e.latlng, radius).addTo(map);
+			    
+			    setTimeout(cleanCircle, 2000);
+				
+			    let urls="Http://localhost:433";
+			      	urls+="<c:url value='/restSearch/centerLocation' />";
+				  	urls+="/"+e.latitude+"/"+e.longitude;
+				    console.log(urls);
+				    nearselect(urls);
+				    
+			    function cleanCircle() {
+			    	map.removeLayer(circleMarker);
+			    }
+			}
+
+		
+			
+			//失敗
+				function errorHandler() {
+					alert('無法取得位置,預設位置為大安森林公園');
+					let lat=25.0333;
+					let lng=121.5358;
+					var marker = L.marker([lat,lng]).addTo(map).openPopup();
+					map.panTo([lat,lng]);
+					
+					 let urls="Http://localhost:433";
+				         urls+="<c:url value='/restSearch/centerLocation' />";
+					  	 urls+="/"+lat+"/"+lng;
+					  	 nearselect(urls);
+					
+					setTimeout(function(){
+						map.removeLayer(marker);
+					}, 2000);
+					
+				}
+				map.on('locationerror', errorHandler);
+		}
+		
 		
 		
 		//createSideMemo(loca,1);
@@ -428,27 +500,35 @@ tr a:hover{
 		  //設定距離多遠在抓
 		  let disLat=Math.abs(lat-currentCenterLat);
 		  let disLong=Math.abs(lng-currentCenterLong);
-		  
-		  
-		  
 		  //console.log("distance: lat: "+disLat+" long: "+disLong);
 		  if(disLat > 0.0045 ||  disLong> 0.0055 || (disLat+disLong)>0.007){			 
-			  currentCenterLat=lat;
-			  currentCenterLong=lng;
+				  currentCenterLat=lat;
+				  currentCenterLong=lng;
+				  
+				  
+				  let bound = map.getBounds()
+	//	 		  popup
+	//	  		    .setLatLng(e.latlng)		    
+	//	  		    .setContent("緯度："+lat+"<br/>經度："+lng)
+	//	 		    .openOn(map);	  
+				  
+				  map.panTo(e.latlng); 		  
+				  //ajax取地圖		  
+				  let urls="Http://localhost:433";
+				      urls+="<c:url value='/restSearch/restNear' />";
+					  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
+					 // console.log(urls);
+				  nearselect(urls);
+				 
+		  	}else{
 			  
-			  
-			  let bound = map.getBounds()
-//	 		  popup
-//	  		    .setLatLng(e.latlng)		    
-//	  		    .setContent("緯度："+lat+"<br/>經度："+lng)
-//	 		    .openOn(map);	  
-			  
-			  map.panTo(e.latlng); 		  
-			  //ajax取地圖		  
-			  let urls="Http://localhost:433";
-			      urls+="<c:url value='/restSearch/restNear' />";
-				  urls+="/"+bound._northEast.lat+"/"+bound._southWest.lat+"/"+bound._northEast.lng+"/"+bound._southWest.lng;
-				 // console.log(urls);
+			  map.panTo([lat,lng]);
+		  }
+		  
+
+		}
+	
+		function nearselect(urls){
 			  $.ajax({
 					type: "GET",
 					url: urls,				
@@ -476,19 +556,10 @@ tr a:hover{
 						console.log(thrownError);
 					}
 				});
-			  
-			  
-			  
-			  
-		  }else{
-			  
-			  map.panTo([lat,lng]);
-		  }
-		  
-
 		}
+	
 		//將餐廳物件陣列丟進去,不要亂改位置
-		function addMapMarker(loca){			
+		function addMapMarker(loca){	
 			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
@@ -497,9 +568,14 @@ tr a:hover{
 			 	long+=0.000356;
 			    
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
-			    
+			    markerArray.push(marker);
 			    let name=loca[i].restaurantName;
+			    let imgUrl ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
+			    let resturl ="<c:url value='/userPage/'/>"+loca[i].restaurantId;
 			    marker.addTo(map).openPopup();
+			    
+			    marker.bindPopup("<a href = "+resturl+">"+name+"</a>"+"<div class='frame2'><img src='"+imgUrl+"'></div>")
+			    
 			    
 			    marker.bindTooltip(name, {
 			    	  direction: 'bottom', // right、left、top、bottom、center。default: auto
@@ -516,6 +592,7 @@ tr a:hover{
 			let alat=0;
 			let along=0;
 			
+			
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
 			    	lat-=0.0001360;
@@ -525,7 +602,15 @@ tr a:hover{
 			    var marker = L.marker([lat,long],{icon:restSelectIcon});
 			    
 			    let name=loca[i].restaurantName;
-			    marker.addTo(map).openPopup();
+			    let imgUrl ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
+			    let resturl ="<c:url value='/userPage/'/>"+loca[i].restaurantId;
+			   // marker.addTo(map).openPopup();
+			    
+			    marker.bindPopup("<a href = "+resturl+">"+name+"</a>"+"<div class='frame2'><img src='"+imgUrl+"'></div>")
+			    
+			    
+			   // let name=loca[i].restaurantName;
+			  // marker.addTo(map).openPopup();
 			    markerArray.push(marker); //add each markers to array
 			
 			    marker.bindTooltip(name, {
@@ -571,7 +656,7 @@ tr a:hover{
 				    let tr1 = document.createElement("tr");
 				    // td1.className="tdtop";
 				    let td1=document.createElement("td");
-				    td1.rowSpan="4";	   
+				    td1.rowSpan="5";	   
 				    let img =document.createElement("img");	   
 				    let url ="<c:url value='/restSearch/restPicByid'/>"+"/"+loca[i].restaurantId;
 				    img.src=url;
@@ -598,9 +683,21 @@ tr a:hover{
 				    
 				    restAnchor.innerHTML=loca[i].restaurantName;
 				    restAnchor.style.color="#0000C6";
-				    td2.appendChild(restAnchor);
+				    td2.appendChild(restAnchor);	    
 				    tr2.appendChild(td2);     			        
-				        
+				    
+					let tr2_5 =  document.createElement("tr");
+				    let td2_5 =  document.createElement("td");
+				    td2_5.innerHTML ="rank:"+ loca[i].rankAmount;
+				    //append 星星
+				    if(loca[i].rankAmount != null){
+				    	 let span = document.createElement("span");
+						 let number = loca[i].rankAmount;
+						 createStar(number,td2_5);						 
+						 tr2_5.append(td2_5);
+				    }
+				    
+				    
 				    let tr3 = document.createElement("tr");
 				    let td3=document.createElement("td");
 				    td3.innerHTML=loca[i].restaurantAddress;
@@ -634,6 +731,7 @@ tr a:hover{
 				    
 				    memosheet.appendChild(tr1);
 				    memosheet.appendChild(tr2);
+				    memosheet.appendChild(tr2_5);
 				    memosheet.appendChild(tr3);
 				    memosheet.appendChild(tr4);    
 				    memosheet.appendChild(tr5); 
@@ -684,9 +782,55 @@ tr a:hover{
 					}
 				})
 		}
-		 
+		function createStar(number,position){
+			let rank = parseFloat(number);
+			//<c:url value='/images/restaurantCRUD/cat.png'/>
+				//差距過大
+			if (rank-Math.floor(rank)>0.1){
+				for(let j = 0; j < 5 ; j++){
+					if (j<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+						
+						
+						
+					}else if(j==Math.floor(rank)){
+						let img2 =  document.createElement("img");
+						img2.src = "<c:url value='/images/restaurantCRUD/halfcat.png'/>";
+						img2.className = "rankcat";
+						position.append(img2);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+				
+			}else{
+				for(let k = 0; k < 5 ; k++){
+					if (k<Math.floor(rank)){
+						let img  =  document.createElement("img");
+						img.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img.className = "rankcat";
+						position.append(img);
+					}else{
+						let img3 = document.createElement("img");
+						img3.src = "<c:url value='/images/restaurantCRUD/cat.png'/>";
+						img3.className = "grayscale";
+						position.append(img3);
+					}
+				}
+			}
+			
+			
+		} 
 		
 		
+		
+		//end
 	});
 	
 	</script>

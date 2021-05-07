@@ -144,6 +144,7 @@ public class Restaurant {
 	public void setTotalScore(Integer totalScore) {
 		this.totalScore = totalScore;
 	}
+	
 
 	public String getRankAmount() {
 		return rankAmount;
