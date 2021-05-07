@@ -25,6 +25,10 @@ import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
 import com.infotran.springboot.rearMessage.service.impl.RearMessageBoxServiceImpl;
 import com.infotran.springboot.rearsystem.service.RearUserAccountService;
+import com.infotran.springboot.shoppingmall.util.inform;
+
+import lombok.Getter;
+//import sun.print.resources.serviceui;
 
 @Controller
 public class RearMessageController {
@@ -84,5 +88,32 @@ public class RearMessageController {
 		}
 		return rearMessageBoxNull;
 	}
+	
+	
+//	user(entity) ====>你要任何東西getter、setter
+	
+//	
+	
+//	@GetMapping
+//	public List<inform> informlist getinformlist() {
+//		RearMessageBox rearmessbox  = xxx.get();
+//		String message  = rearmessbox.getMessageText();//kitty
+//		id  =rearmessbox.getUserAccountId();//id
+//		
+//		useraccount user = serviceui.getaccountbyid(id);//1個user
+//		String index = user.getaacountindex();//user 的帳號
+//		
+//		infrom inform1 = new inform();
+//		inform1.setText(message);
+//		inform1.setName(index);
+//		
+//		List<inform> inform1list = new ArrayList<>();//空的
+//		inform1list.add(inform1);//1個infrom物件====>>>kitty 帳號
+//		return inform1list ;
+//	}
+	
+	
+	
+	
 
 }

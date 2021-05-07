@@ -118,7 +118,6 @@
 	              }]
 				});
 			
-				
 				$.ajax({
 					method:"GET",	
 					url:"/PepperNoodles/rearStage/getCompanyList",
@@ -133,7 +132,7 @@
 			        	Table.clear().draw();
 			            Table.rows.add(result.CompanyList).draw();
 // 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
-			           
+			           //[{accountId} ]
 			        },
 			        error: function (result) {
 			        	console.log("有問題");
