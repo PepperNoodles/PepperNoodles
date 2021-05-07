@@ -65,4 +65,10 @@ public class RearFindAndViewController {
 		return "rearStage/rearContactMessage";
 	}
 	
+	//後台訊息
+	@GetMapping("/rearMessage")
+	public String rearMessage() {
+		return "rearStage/rearMessage";
+	}
+	
 }
