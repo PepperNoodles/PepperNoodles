@@ -44,7 +44,7 @@ public class Restaurant {
 	@Column(name = "totalScore")
 	private Integer totalScore;
 	@Column(name = "restaurantAmount")
-	private Integer rankAmount;
+	private String rankAmount;
 
 	@Column(name = "restaurantAddress")
 	private String restaurantAddress;
@@ -145,11 +145,11 @@ public class Restaurant {
 		this.totalScore = totalScore;
 	}
 
-	public Integer getRankAmount() {
+	public String getRankAmount() {
 		return rankAmount;
 	}
 
-	public void setRankAmount(Integer rankAmount) {
+	public void setRankAmount(String rankAmount) {
 		this.rankAmount = rankAmount;
 	}
 

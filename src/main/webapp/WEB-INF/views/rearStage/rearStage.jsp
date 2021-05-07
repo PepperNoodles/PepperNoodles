@@ -218,7 +218,7 @@ $(document).ready(function() {
 		
 		//圖表chart.js
 		var myChart,ctx;
-		$('body').on("click","#firesearch",function(e){
+		$('body').on("click","#firesearch",function(){
 			var datelist = new Array();
 			var mymonth = parseInt($('#mymonth :selected').val(),10);
 			var myyear = parseInt($('#myyear :selected').val(),10);
@@ -267,7 +267,26 @@ $(document).ready(function() {
 						      autoSkip: false
 						    }
 						  }]
-						}
+						},
+						animation: {
+						     onComplete: function(chart) {
+						       var ctx = chart.ctx;
+// 						       var chartInstance = this.chart,
+// 						       ctx = chartInstance.ctx;
+
+						       ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+						       ctx.textAlign = 'center';
+						       ctx.textBaseline = 'bottom';
+
+						       this.data.datasets.forEach(function(dataset, i) {
+						         var meta = chartInstance.controller.getDatasetMeta(i);
+						         meta.data.forEach(function(bar, index) {
+						           var data = dataset.data[index];
+						           ctx.fillText(data, bar._model.x, bar._model.y - 5);
+						         });
+						       });
+						     }
+						   }
 					  },
 					  plugins:[{
 						  beforeDraw: function(chart) {
@@ -275,7 +294,8 @@ $(document).ready(function() {
 						        ctx.fillStyle = "white";
 						        ctx.fillRect(0, 0, chart.width, chart.height);
 						    }
-					  }]
+					  }],
+					  
 					});//end of chart
 		        },
 		        error: function (result) {
@@ -307,8 +327,8 @@ $(document).ready(function() {
 		        success:function(result){
 		        	var labellist = result.pcatagory;
 		        	var totallist = result.psubtotal;
-		        	if (myChart){
-						myChart.destroy();
+		        	if (myChart2){
+		        		myChart2.destroy();
 					}
 		        	ctx2 = $('#myPieChart');
 					myChart2 = new Chart(ctx2, {
