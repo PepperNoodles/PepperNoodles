@@ -32,12 +32,17 @@ public class RearMessageBox {
 	
 	@Column(name = "messageText")
 	private String messageText;//kity
-		
+	
+	//發布訊息時間
 	@Column(name = "time")
 	private Date time;
 	
+	//更新訊息時間
+	@Column(name = "updateTime")
+	private Date updateTime;	
+
 	@Column(name = "condition")
-	private String condition;
+	private boolean  condition;
 	
 
 //	@Transient
@@ -48,7 +53,7 @@ public class RearMessageBox {
 	/** 1個User可以有多個訊息 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
-	@JsonIgnore
+//	@JsonIgnore 
 	private UserAccount userAccount;//jsonignore不回傳出去在json檔
 	
 		
@@ -77,7 +82,7 @@ public class RearMessageBox {
 	}
 
 
-	public String getCondition() {
+	public boolean isCondition() {
 		return condition;
 	}
 	
@@ -89,9 +94,18 @@ public class RearMessageBox {
 	public void setTime(Date time) {
 		this.time = time;
 	}
+	
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
 
-	public void setCondition(String condition) {
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+
+	public void setCondition(boolean condition) {
 		this.condition = condition;
 	}
 

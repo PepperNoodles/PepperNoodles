@@ -11,8 +11,12 @@ public interface RearMessageBoxService {
 	
 	RearMessageBox findById(Integer id);
 	
+	
 	List<RearMessageBox> getByUserAccount(UserAccount user);
 	
 	public ArrayList<RearMessageBox> findMessage();
+	
+//	public RearMessageBox findById1(Integer id);
+	
 
 }

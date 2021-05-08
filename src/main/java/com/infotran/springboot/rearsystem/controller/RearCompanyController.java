@@ -76,7 +76,7 @@ public class RearCompanyController {
 //	}
 	
 	//找CompanyList
-	@GetMapping(value="/rearStage/getCompanyList") //如改成/user/getAccountList就要登入會員才會顯示資料
+	@GetMapping(value="/rearStage/getCompanyList") //如改成/user/getCompanyList就要登入會員才會顯示資料
 	public @ResponseBody Map<String,ArrayList<UserAccount>> findCompanyByUserName(@ModelAttribute("userAccount")UserAccount user){
 		Map<String,ArrayList<UserAccount>> mapview = new HashMap<String,ArrayList<UserAccount>>();
 		ArrayList<UserAccount>  companyViewList = rearCompanyService.findCompanyUserList();
