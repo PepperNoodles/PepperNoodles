@@ -277,7 +277,7 @@
     		commentsLength =result.length;
 //        		alert(result[0].replyMessageBoxes);
     		console.log(JSON.stringify(result));
-    		console.log(JSON.stringify(result[0].time));
+//     		console.log(JSON.stringify(result[0].time));
     		 var aDay = new Date();
     		 aDay.setHours(9);
     		 aDay.setMinutes(0);

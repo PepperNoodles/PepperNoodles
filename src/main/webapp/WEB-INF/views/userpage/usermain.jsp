@@ -457,7 +457,7 @@ I've added a few comments on why we're using certain properties
 
 						<!-- 						使用Ajax的方法 -->
 						<div class="rounded border border-warning container-fluid table "
-							style="overflow-y: auto; height: 400px;" id="commentsForUser"></div>
+							style="overflow-y: auto; height: 300px;" id="commentsForUser"></div>
 
 
 						<!--      使用jstl的方法 -->
@@ -548,6 +548,18 @@ I've added a few comments on why we're using certain properties
 
 
 	<script>
+	
+	//留言滑到底的時候顯示
+	  $("#sssssss").scroll(function(){
+		    var h = $(this).height();//div可视区域的高度
+		    var sh = $(this)[0].scrollHeight;//滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点
+		    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
+		    if(h+st>=sh){
+		    //上面的代码是判断滚动条滑到底部的代码
+		      alert("滑到底部了");
+		      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
+		    }
+		  })
 			$(document).ready(function () {			
 				
 
@@ -1084,7 +1096,6 @@ I've added a few comments on why we're using certain properties
 							    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
 							    if(h+st>=sh){
 							    //上面的代码是判断滚动条滑到底部的代码
-							      //alert("滑到底部了");
 							      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
 							    }
 							  })
@@ -1755,8 +1766,6 @@ I've added a few comments on why we're using certain properties
  						}
  					});
  				};
- 				
-
  		
  	</script>
 
