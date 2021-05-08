@@ -93,8 +93,9 @@
 				<div class="mt-10 ">
 <!-- 					<button type="submit" id="messageButton" value="submit" -->
 <!-- 						class="genric-btn danger radius">送出</button> -->
-								<input id="messageButton" type="button" value="送出" 
-						class="genric-btn danger radius"/>
+								<a href="<c:url value='' />" ><input  id="messageButton" type="button" value="送出" 
+						class="genric-btn danger radius"/></a>
+						<a href="<c:url value='/rearStage/rest' />" class="btn btn-primary">Go somewhere</a>
 
 					<br><br><br>
 <!-- 					<div class="pull-right"> -->
@@ -197,6 +198,7 @@
 						console.log(result);
 						if(result.resultCode == 200){
 							alert("成功");
+							location.reload(); //成功重整頁面
 						}
 					},
 					error:function(){

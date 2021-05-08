@@ -52,4 +52,11 @@ public class RearMessageBoxServiceImpl implements RearMessageBoxService{
 		return message;
 	}
 
+	//找訊息
+//	@Override
+//	public RearMessageBox findById1(Integer id) {
+//		Optional<RearMessageBox> messageOptional = rearMessageBoxRepository.findById(id);
+//		return messageOptional.get();
+//	}
+
 }

@@ -11,6 +11,12 @@
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<!-- Bootstrap 4 Admin右上方訊息通知-->
+<script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+<!-- 右上方訊息通知 -->
+<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
+
 <style type="text/css">
 	a{
 		color:#FFFFFF;
@@ -41,15 +47,16 @@
 		
 <!-- 			<div class="tab-pane fade" id="v-pills-userList" role="tabpanel" aria-labelledby="v-pills-userList-tab"> -->
 							<h2>訊息資料</h2>
-							<table  id="userlist" class="display">
+							<table  id="messagelist" class="display">
 								<thead>
 									<tr>
 										<th>編號</th>
 										<th>帳號</th>
 										<th>訊息</th>
-										<th>時間</th>
+										<th>發布時間</th>
+										<th>更新時間</th>
 										<th>處理狀態</th>
-										<th>編輯</th>
+										<th>處理完畢</th>
 										
 										
 										
@@ -70,7 +77,7 @@
 	<script> 
 	  $(document).ready(function () {
 			
-			var Table = $("#userlist").DataTable({
+			var Table = $("#messagelist").DataTable({
 				 language: {
 				        "processing": "處理中...",
 				        "loadingRecords": "載入中...",
@@ -98,6 +105,7 @@
 				    	{ "data": "userAccount.accountIndex"  },
 		                { "data": "messageText"  },
 		                { "data": "time"  },
+		                { "data": "updateTime"  },
 		                { "data": "condition" },
 		                { "render":function(data,type,row,meta){
 			                return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
@@ -132,7 +140,6 @@
 			        	console.log(result.MessageList);
 			        	Table.clear().draw();
 			            Table.rows.add(result.MessageList).draw();
-// 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
 			           
 			        },
 			        error: function (result) {
@@ -147,13 +154,13 @@
 // 	       var status = $(this).parent().prevAll("tr td:eq(3)").text();
 // 	       alert(status)
 	       
-	        var status = $(this).parent().prevAll("tr td:eq(4)").text(); //編號id
+	        var status = $(this).parent().prevAll("tr td:eq(5)").text(); //編號id
 	       // data = new FormData();
 	       // data.append("account_id",new Blob([ JSON.stringify({"account_id" : status})])); //前面對應Controll
 	       // console.log(data);
 	        $.ajax({
 	         method:"GET",
-	         url:"/PepperNoodles/rearUserAccountQueryById.controller?account_id="+status,
+	         url:"/PepperNoodles/rearMessageFindById?rearMessage_id="+status,
 	         //data:data,  //後面data是 new FormData
 	         contentType:"application/json",
 	         processData: false,
@@ -161,7 +168,7 @@
              async : true,
              success: function (response) {
 // 	                localStorage.setItem("userAccountRearNormalUser",response.normalUserform);
-             alert(response.accountIndex)
+             alert(response.userAccount.accountIndex)
              location.reload(); //成功重整頁面
 
 //              window.open("http://localhost:433/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');

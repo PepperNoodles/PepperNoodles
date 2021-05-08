@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +28,7 @@ import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.loginsystem.service.Impl.UserAccountServiceImpl;
 import com.infotran.springboot.rearMessage.service.impl.RearMessageBoxServiceImpl;
+import com.infotran.springboot.rearsystem.dao.RearSendEmail;
 import com.infotran.springboot.rearsystem.service.RearUserAccountService;
 import com.infotran.springboot.shoppingmall.util.inform;
 
@@ -64,7 +66,7 @@ public class RearMessageController {
 		RearMessageBox rearMessage = new RearMessageBox();
 		
 		rearMessage.setTime(new Date());
-		rearMessage.setCondition("N");
+		rearMessage.isCondition();
 		rearMessage.setMessageText(text);
 		rearMessage.setUserAccount(user);
 		rearMessageBoxService.insert(rearMessage);
@@ -144,6 +146,26 @@ public class RearMessageController {
 		ArrayList<RearMessageBox> messageViewList = rearMessageBoxService.findMessage();
 		mapview.put("MessageList", messageViewList);
 		return mapview;
+	}
+	
+
+	//找訊息與處理狀態並更新時間
+	@GetMapping(value = "/rearMessageFindById")
+	@ResponseBody
+	public RearMessageBox messageFindById(@RequestParam(name = "rearMessage_id") Integer id) {
+		RearMessageBox conditionStatus = rearMessageBoxService.findById(id);
+
+		if(conditionStatus.isCondition()) {
+
+		conditionStatus.setCondition(false);
+	}
+	else {
+
+		conditionStatus.setCondition(true);
+		conditionStatus.setUpdateTime(new Date());
+	}
+	rearMessageBoxService.insert(conditionStatus);
+	return conditionStatus;
 	}
 
 
