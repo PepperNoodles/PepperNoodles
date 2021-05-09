@@ -1,5 +1,6 @@
 package com.infotran.springboot.rearMessage.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.infotran.springboot.commonmodel.RearMessageBox;
@@ -10,6 +11,12 @@ public interface RearMessageBoxService {
 	
 	RearMessageBox findById(Integer id);
 	
+	
 	List<RearMessageBox> getByUserAccount(UserAccount user);
+	
+	public ArrayList<RearMessageBox> findMessage();
+	
+//	public RearMessageBox findById1(Integer id);
+	
 
 }

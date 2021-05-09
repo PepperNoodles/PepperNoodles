@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 
 
+
 <style>
 .header {
 	background-color: #000000;
@@ -98,7 +99,7 @@
 								          <i class="far fa-comments"></i>
 								          <span class="badge badge-danger navbar-badge">3</span>
 								        </a>
-								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" >
 								          <a href="#" class="dropdown-item">
 								           <!-- Message Start -->
 								            <div class="media">
@@ -237,6 +238,8 @@
  		<script src="<c:url value='/scripts/main.js' />"></script> 
  		 <!-- DataTables v1.10.16 -->
 		<script  src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+		
+		
 	
 </body>
 </html>
