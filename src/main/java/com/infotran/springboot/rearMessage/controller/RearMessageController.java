@@ -1,7 +1,10 @@
 package com.infotran.springboot.rearMessage.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,5 +171,24 @@ public class RearMessageController {
 	return conditionStatus;
 	}
 
+	//後台訊息通知
+	@GetMapping(value = "/informMessageCondition")
+	public @ResponseBody Map<String,List<RearMessageBox>> informMessageCondition(){
+		Calendar calendar = new GregorianCalendar(); 
+		Date now = new Date();
+		calendar.setTime(now);
+		Date todayTime = calendar.getTime();
+		calendar.add(Calendar.DATE, -3);
+		Date replyTime = calendar.getTime();
+		SimpleDateFormat datestr = new SimpleDateFormat("yyyy/MM/dd");
+		String tTime = datestr.format(todayTime);
+		String rTime = datestr.format(replyTime);
+		List<RearMessageBox> messageNewList = rearMessageBoxService.findNewMessageByTime(tTime);
+		List<RearMessageBox> messageReplyList = rearMessageBoxService.findUpdatedMessageByTime(rTime);
+		Map<String,List<RearMessageBox>> mmap = new HashMap<>();
+		mmap.put("replyList", messageReplyList);
+		mmap.put("newList", messageNewList);
+		return mmap;
+	}
 
 }

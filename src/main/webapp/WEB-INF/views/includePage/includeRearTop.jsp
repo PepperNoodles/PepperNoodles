@@ -92,15 +92,21 @@
 <!-- 											<li class="login"><a href="loginSystem/loginPage"> <i -->
 <!-- 													class="ti-user"></i> Sign in or Register -->
 <!-- 											</a></li> -->
+									
+									 <li><a href="javascript:void(0)" id="inform">通知1</a>
+                                            	<ul class="submenu bigger" id="informMenu1">
+<!--                                             		<li><a href="javascript:void(0)">hi</a></li> -->
+                                            	</ul>
+                                            </li>
 											
 											<!-- Messages Dropdown Menu 訊息-->
-								      <li class="nav-item dropdown">
-								        <a class="nav-link" data-toggle="dropdown" href="#">
+								      <li class="nav-item dropdown" id="inform">
+								        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
 								          <i class="far fa-comments"></i>
 								          <span class="badge badge-danger navbar-badge">3</span>
 								        </a>
-								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" >
-								          <a href="#" class="dropdown-item">
+								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="informMenu">
+								          <a href="#" class="dropdown-item" >
 								           <!-- Message Start -->
 								            <div class="media">
 								              <img src="<c:url value="/dist/img/user1-128x128.jpg"/>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
@@ -214,7 +220,7 @@
 		<!-- All JS Custom Plugins Link Here here -->
 		<script src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
+<%-- 		<script src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
 		<script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 		<script src="<c:url value='/scripts/popper.min.js' />"></script>
 		<!-- Jquery Mobile Menu -->
