@@ -90,9 +90,9 @@
 <!-- 					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me"> -->
 <%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
 <!-- 				</div> -->
-				<div class="mt-10 ">
+				<div style="display:none" class="mt-10">
 					<button type="submit" id="messageButton" value="submit"
-						class="genric-btn danger radius">送出</button>
+						class="genric-btn danger radius ">送出</button>
 					<br><br><br>
 <!-- 					<div class="pull-right"> -->
 <!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
