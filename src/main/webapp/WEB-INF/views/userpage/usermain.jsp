@@ -1112,7 +1112,7 @@ I've added a few comments on why we're using certain properties
 								url:  urls,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1149,7 +1149,7 @@ I've added a few comments on why we're using certain properties
 								data:JSON.stringify(data),
 								
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1169,7 +1169,7 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1208,6 +1208,7 @@ I've added a few comments on why we're using certain properties
 // 							alert(text);
 // 							alert(time);
 // 							alert(likeAmount);
+
 							var data =
 							{
 									"userMessageId": id,
@@ -1227,7 +1228,7 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 
 								},

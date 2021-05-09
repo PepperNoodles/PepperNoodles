@@ -121,13 +121,13 @@
 			
 			
 			<div class="d-flex mt-3" style="height: 70vh">
- 				<div class="nav flex-column nav-pills p-2 bg-dark" id="nav-tab" role="tablist" aria-orientation="horizontal">
-				
-					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>		
+ 				<div class="nav flex-column nav-pills p-2 bg-dark" id="nav-tab" role="tablist" aria-orientation="horizontal">		
 				
 					<a class="nav-link" id="v-pills-aboutme-tab" data-toggle="pill" href="#v-pills-aboutme" role="tab" aria-controls="v-pills-aboutme" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>							
 				
-				<a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>							
+					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>	
+				
+					<a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>							
 								
 					<a class="nav-link" id="v-pills-collection-tab" data-toggle="pill" href="#v-pills-collection" role="tab" aria-controls="v-pills-collection" aria-selected="false"><i class="fas fa-heart"></i>收藏區</a>								
 				
@@ -137,14 +137,17 @@
 			
 			<div class="tab-content" id="v-pills-tabContent col-9">
 			<div class="tab-pane fade " id="v-pills-friend" role="tabpanel" aria-labelledby="v-pills-friend-tab">
-				<h2>基本資料</h2>
-				<p>email: ${viewUserAccount.accountIndex} </p>
-				<p>性別：${viewUserAccountDetail.gender}</p>
-				<p>地區：${viewUserAccountDetail.location}</p>
+				<h2>好友</h2>
+
 			</div>	
 
 			<div class="tab-pane fade " id="v-pills-aboutme" role="tabpanel" aria-labelledby="v-pills-aboutme-tab">
-				<h2>好友</h2>
+				<h2>基本資料</h2>
+				<p>email: ${viewUserAccount.accountIndex} </p>
+				<p>暱稱：${viewUserAccountDetail.nickName}</p>
+				<p>生日：${viewUserAccountDetail.birthDay}</p>
+				<p>性別：${viewUserAccountDetail.gender}</p>
+				<p>地區：${viewUserAccountDetail.location}</p>
 			</div>	
 			
 			<div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-aboutme-tab">
@@ -421,7 +424,7 @@
 				url:  urls,
 				dataType: "text",
 				success: function (result) {
-// 					alert(result);
+					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -459,7 +462,7 @@
 				data:JSON.stringify(data),
 				
 				success: function (result) {
-// 					alert(result);
+					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -480,7 +483,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-// 					alert(result);
+					alert(result);
 					showAllComments();
 				},
 				error: function (thrownError) {
@@ -538,7 +541,7 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-// 					alert(result);
+					alert(result);
 					showAllComments();
 
 				},
@@ -736,7 +739,7 @@
 	 					    }
 	 					memo.appendChild(memosheet);
 	 				}else{
-	 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
+	 					memo.innerHTML="<h2>${viewUserAccountDetail.nickName}還沒有收藏餐廳唷!</h2>";
 	 				}
 				},
 				error:function(result){
