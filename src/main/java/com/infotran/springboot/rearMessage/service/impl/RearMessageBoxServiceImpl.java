@@ -52,6 +52,18 @@ public class RearMessageBoxServiceImpl implements RearMessageBoxService{
 		return message;
 	}
 
+	//發布訊息時間
+	@Override
+	public List<RearMessageBox> findNewMessageByTime(String todayTime) {		
+		return rearMessageBoxRepository.findNewMessageByTime(todayTime);
+	}
+
+	//回復訊息更新時間
+	@Override
+	public List<RearMessageBox> findUpdatedMessageByTime(String replyTime) {		
+		return rearMessageBoxRepository.findUpdatedMessageByTime(replyTime);
+	}
+
 	//找訊息
 //	@Override
 //	public RearMessageBox findById1(Integer id) {

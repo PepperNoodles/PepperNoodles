@@ -17,6 +17,9 @@
 <!-- 右上方訊息通知 -->
 <%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
 
+<!-- Jquery, Popper, Bootstrap -->
+        <script src="<c:url value='/scripts/popper.min.js' />"></script>
+
 <style type="text/css">
 	a{
 		color:#FFFFFF;
@@ -60,14 +63,28 @@
 										
 										
 										
-<!-- 										<th>accountdetail</th> -->
-<!-- 										<th>roles</th> -->
-<!-- 										<th>code</th> -->
 										
 									</tr>
 								</thead>
 							
 							</table>
+							
+							<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+								  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
+								    <div class="toast-header">
+								      <!-- 上方框框的內容 -->
+								      <strong class="mr-auto">貼心提醒</strong>
+								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								        <span aria-hidden="true">&times;</span>
+								      </button>
+								    </div>
+								    <!-- 文字內容 P -->
+								    <div class="toast-body"> 
+								    	<p></p>
+								    </div>
+								  </div>
+							</div>
+	
 <!-- 			</div> -->
                            
 		
@@ -146,43 +163,69 @@
 			        	console.log("有問題");
 			        }
 				});
+				
+				 
+			  	  
+				
 	  });
 	  
 	  //呼應button
 	  $('body').on('click','#update',function(e){
 	       e.preventDefault();
-// 	       var status = $(this).parent().prevAll("tr td:eq(3)").text();
-// 	       alert(status)
 	       
 	        var status = $(this).parent().prevAll("tr td:eq(5)").text(); //編號id
-	       // data = new FormData();
-	       // data.append("account_id",new Blob([ JSON.stringify({"account_id" : status})])); //前面對應Controll
-	       // console.log(data);
 	        $.ajax({
 	         method:"GET",
 	         url:"/PepperNoodles/rearMessageFindById?rearMessage_id="+status,
-	         //data:data,  //後面data是 new FormData
 	         contentType:"application/json",
 	         processData: false,
 	         cache: false,  //不做快取
              async : true,
              success: function (response) {
-// 	                localStorage.setItem("userAccountRearNormalUser",response.normalUserform);
              alert(response.userAccount.accountIndex)
              location.reload(); //成功重整頁面
 
-//              window.open("http://localhost:433/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');
            	},
             error: function (response) {
              console.log("訊息沒出去");
             } 
 	        });
 	        
-
+	     
 	        
-	      
-	       
 	      });
+	  
+	  //後台訊息通知
+	  $("body").on("click","#inform",function(){
+  	  $.ajax({
+  			method:"GET",
+  			url:"/PepperNoodles/informMessageCondition",
+  			async : true,
+  			cache : false,
+  			success : function(response) {
+  				var messageReplyList = response.replyList;
+  				var messageNewList = response.newList;
+  				var informMenu1 = $("#informMenu1");
+  				var count = 0;
+  				count += (messageReplyList.length + messageNewList.length);
+  				$('.toast-body p').text('您有 '+count+' 則新通知');
+  				$('.toast').toast({delay: 3000});
+  				$('.toast').toast('show');
+  				$.each(messageReplyList,function(index,element){
+  					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已經回覆訊息囉!</a></li>");
+  					informMenu1.append(li1);
+  				});
+  				$.each(messageNewList,function(index,element){
+  					var li2 = $("<li><a href='javascript:void(0)'>新訊息! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 發布新訊息!</a></li>");
+  					informMenu1.append(li2);
+  				});
+  			},error:function(response){
+  				
+  			}
+  		});
+	  
+	  });
+	
 </script>
 
 
