@@ -81,7 +81,7 @@ public class CancelOrderServiceImpl implements CancelOrderService {
 	            try {
 	                Date date = DateUtil.date();
 	                orderlist.setOrderCreatedDate(date);
-	                orderlist.setCancelTime(DateUtil.offset(date, DateField.MINUTE, 10));
+	                orderlist.setCancelTime(DateUtil.offset(date, DateField.MINUTE, 3));
 	                queue.add(orderlist);
 	                System.out.println("有進來延遲對列嗎");
 	            } catch (Exception e) {

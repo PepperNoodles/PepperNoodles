@@ -1,5 +1,6 @@
 package com.infotran.springboot.rearMessage.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,5 +44,19 @@ public class RearMessageBoxServiceImpl implements RearMessageBoxService{
 		List<RearMessageBox> rearMessageBox = rearMessageBoxRepository.getByUserAccount(user, pageable);
 		return rearMessageBox;
 	}
+
+	@Override
+	//取得Message
+	public ArrayList<RearMessageBox> findMessage() {
+		ArrayList<RearMessageBox> message = rearMessageBoxRepository.findMessage();
+		return message;
+	}
+
+	//找訊息
+//	@Override
+//	public RearMessageBox findById1(Integer id) {
+//		Optional<RearMessageBox> messageOptional = rearMessageBoxRepository.findById(id);
+//		return messageOptional.get();
+//	}
 
 }
