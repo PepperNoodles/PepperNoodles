@@ -91,11 +91,29 @@
 <%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
 <!-- 				</div> -->
 				<div class="mt-10 ">
+				    
+				    <div class="bs-example">
+				    
 <!-- 					<button type="submit" id="messageButton" value="submit" -->
 <!-- 						class="genric-btn danger radius">送出</button> -->
-								<a href="<c:url value='' />" ><input  id="messageButton" type="button" value="送出" 
-						class="genric-btn danger radius"/></a>
-						<a href="<c:url value='/rearStage/rest' />" class="btn btn-primary">Go somewhere</a>
+					  <input  id="messageButton" type="button" value="送出" 
+								class="genric-btn danger radius show-toast"/>
+						
+					   <div class="toast" id="myToast" style="position: fixed; bottom: 76%;right: -55; ">
+					         <div class="toast-header">
+					            <strong class="mr-auto"><i class="fa fa-grav"></i> 訊息通知!</strong>
+					            <small>1 秒前</small>
+					            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+					                <span aria-hidden="true">&times;</span>
+					            </button>
+					        </div>
+					        <div class="toast-body">
+					            <div><p>感謝你寶貴的意見!! 我們會盡快回復你。 
+					                 <p><a href="/PepperNoodles" style="color: red">請按此返回首頁，謝謝</a></div>
+					        </div>
+					    </div>
+					</div>	
+						
 					<br><br><br>
 <!-- 					<div class="pull-right"> -->
 <!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
@@ -105,6 +123,24 @@
      
 				</div>
 			</form>
+			
+<!-- 			<div class="bs-example"> -->
+<!-- 			     <input  id="messageButton" type="button" value="送出"  -->
+<!-- 						class="genric-btn danger radius show-toast"/> -->
+<!-- 			    <button type="button" class="genric-btn danger radius show-toast">Show Toast</button> -->
+<!-- 			    <div class="toast" id="myToast" style="position: absolute; top: 20; right: -55;"> -->
+<!-- 			        <div class="toast-header"> -->
+<!-- 			            <strong class="mr-auto"><i class="fa fa-grav"></i> We miss you!</strong> -->
+<!-- 			            <small>11 mins ago</small> -->
+<!-- 			            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast"> -->
+<!-- 			                <span aria-hidden="true">&times;</span> -->
+<!-- 			            </button> -->
+<!-- 			        </div> -->
+<!-- 			        <div class="toast-body"> -->
+<!-- 			            <div>It's been a long time since you visited us. We've something special for you. <a href="#">Click here!</a></div> -->
+<!-- 			        </div> -->
+<!-- 			    </div> -->
+<!-- 			</div> -->
 
 		</div>
 	</div>
@@ -193,19 +229,31 @@
 // 						username:$("#username").val(),
 // 						message-text:$("#message-text").val()
 // 					},
-					success:function(result){
-						console.log(result);
-						if(result.resultCode == 200){
-							alert("成功");
-							location.reload(); //成功重整頁面
-						}
+					success:function(){	
+// 						    $("#myToast").toast({ delay: 8000 });
+                            $("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
+						    $("#myToast").toast('show');
+							
+						    alert("成功");
+// 							location.reload(); //成功重整頁面
+						
 					},
+					
 					error:function(){
 						alert("失敗!");
 					}
 				});
 			});
 		});
+	</script>
+	
+	<script>
+// 		$(document).ready(function(){
+// 		    $(".show-toast").click(function(){
+// 		        $("#myToast").toast({ delay: 8000 });
+// 		        $("#myToast").toast('show');
+// 		    }); 
+// 		});
 	</script>
 
 </body>

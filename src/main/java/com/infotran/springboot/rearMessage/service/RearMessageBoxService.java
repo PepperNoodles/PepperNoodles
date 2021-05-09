@@ -18,5 +18,10 @@ public interface RearMessageBoxService {
 	
 //	public RearMessageBox findById1(Integer id);
 	
+	//發布訊息時間
+	List<RearMessageBox> findNewMessageByTime(String todayTime);
+	//回復訊息更新時間
+	List<RearMessageBox> findUpdatedMessageByTime(String replyTime);
+	
 
 }
