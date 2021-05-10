@@ -15,7 +15,7 @@
 <!-- Bootstrap 4 Admin右上方訊息通知-->
 <script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
 <!-- 右上方訊息通知 -->
-<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
 
 <style type="text/css">
 	a{
@@ -105,9 +105,9 @@
 		</div>
 	</div>
 	
-	<div>
-		<h2>EndOfPage</h2>
-	</div>
+<!-- 	<div> -->
+<!-- 		<h2>EndOfPage</h2> -->
+<!-- 	</div> -->
 	<!-- 彈出修改視窗 -->
 	<div class="modal" id="updateModal" tabindex="-1">
 	  <div class="modal-dialog modal-lg">
@@ -272,11 +272,13 @@
 			        	console.log("有問題");
 			        }
 				});
+				var jq = jQuery.noConflict();
+				
 				
 				function updateRest(){
 					let id = this.id
 					console.log(id);
-					$('#updateModal').modal('toggle')
+					jq('#updateModal').modal('toggle')
 					$.ajax({
 						method:"GET",	
 						url:"/PepperNoodles/rearStage/rearRest/"+id,

@@ -96,7 +96,9 @@
 </form:form>
 <br> <br> 
 <input type="button" id="checktime"value="鎖定時間" /> 
-<input type="button" id="flashinput"value="一鍵新增" /> 
+<input type="button" id="flashinput1"value="一鍵新增兩段時間" /> 
+<input type="button" id="flashinput2"value="一鍵新增三段時間" /> 
+<input type="button" id="flashinputclear"value="清除" /> 
 <br> <br>
 
 
@@ -321,8 +323,26 @@ $(document).ready(function () {
 						});
 
 										
-	//一鍵新增
-	$('#flashinput').click(function() {
+	//一鍵新增 & 清除
+	$('#flashinput1').click(function() {
+		
+		$('#open1').val('07:30');
+		
+		$('#close1').val('11:30');
+		
+		$('#open2').val('13:30');
+		$('#close2').val('17:30');
+		
+		$('#open3').val('');
+		$('#close3').val('');
+		$(".checkinput").css({
+			"border" : "","background-color" : "white"
+		});
+		day1checktime = "false";
+
+	});
+	
+	$('#flashinput2').click(function() {
 		
 		$('#open1').val('07:30');
 		
@@ -333,6 +353,28 @@ $(document).ready(function () {
 		
 		$('#open3').val('18:30');
 		$('#close3').val('21:30');
+		$(".checkinput").css({
+			"border" : "","background-color" : "white"
+		});
+		day1checktime = "false";
+
+	});
+	
+	$('#flashinputclear').click(function() {
+		
+		$('#open1').val('');
+		
+		$('#close1').val('');
+		
+		$('#open2').val('');
+		$('#close2').val('');
+		
+		$('#open3').val('');
+		$('#close3').val('');
+		$(".checkinput").css({
+			"border" : "","background-color" : "white"
+		});
+		day1checktime = "false";
 
 	});
 										

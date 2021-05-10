@@ -189,7 +189,6 @@ $(document).ready(function(){
 											</a>
 										</div>
 										<div class="modal-footer">
-											<a class="update" href="<c:url value='/rest/updateMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
 											<a class="delete" href="<c:url value='/rest/deleteMenuPicture/${menus.menuDetailId}' />" >刪除菜單</a>
 										</div>
 									</div>

@@ -134,10 +134,14 @@ public class RestaurantMessageController {
 	public List<RestaurantMessageBox> deleteMessage(@PathVariable("messageId") Integer MessageId) {
 		System.out.println("找刪除的留言ID="+MessageId);
 		RestaurantMessageBox restMessage = restaurantMessageBoxService.findById(MessageId);
+		Restaurant restaurant = restMessage.getRestaurant();
 		restMessage.setRestaurant(null);
 		restMessage.setUserAccount(null);
-//		restMessage.setRestaurantMessage(null);
 		restaurantMessageBoxService.delete(MessageId);
+		//餐廳分數
+		String avgRank = restaurantMessageBoxService.avgRank(restaurant);
+		restaurant.setRankAmount(avgRank);
+		restaurantService.update(restaurant);
 		return null;
 	}
 	

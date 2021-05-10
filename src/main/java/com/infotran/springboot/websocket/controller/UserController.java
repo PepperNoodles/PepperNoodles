@@ -1,6 +1,7 @@
 package com.infotran.springboot.websocket.controller;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.infotran.springboot.commonmodel.FriendList;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
+import com.infotran.springboot.userAccsystem.service.inplement.FriendSysServiceImpl;
 import com.infotran.springboot.websocket.model.MessageUser;
 import com.infotran.springboot.websocket.storage.UserStorage;
 
@@ -29,6 +31,10 @@ public class UserController {
 	
 	@Autowired
 	UserSysService uSysServiceImpl;
+	
+	
+	@Autowired
+	FriendSysServiceImpl friendSysServiceImpl;
 	
 	@GetMapping("/userMessageLoggin/getName")
 	 public String returnNamePath(Model model) {
@@ -74,14 +80,17 @@ public class UserController {
 		Set<MessageUser> friendIndex = new LinkedHashSet<>();
 		
 		UserAccount user = uSysServiceImpl.findByAccountIndex(currentUserName);	
-		Set<FriendList> friends = user.getFriends();
-		for(FriendList flist:friends) {
-			MessageUser mUser = new MessageUser();
-			mUser.setmUserAccountIndex(flist.getFriends().getAccountIndex());
-			mUser.setmUserDetailId(flist.getFriends().getUserAccountDetail().getUseretailId());
-			mUser.setmUserAccountNickName(flist.getFriends().getUserAccountDetail().getNickName());
-			
-			friendIndex.add(mUser);			
+		//Set<FriendList> friends = user.getFriends();
+		List<FriendList> mainUserFriends = friendSysServiceImpl.findFriendByUserAndRelation(user,"Y");
+		if (mainUserFriends.isEmpty()==false) {		
+			for(FriendList flist:mainUserFriends) {
+				MessageUser mUser = new MessageUser();
+				mUser.setmUserAccountIndex(flist.getFriends().getAccountIndex());
+				mUser.setmUserDetailId(flist.getFriends().getUserAccountDetail().getUseretailId());
+				mUser.setmUserAccountNickName(flist.getFriends().getUserAccountDetail().getNickName());
+				
+				friendIndex.add(mUser);			
+			}
 		}
 		
 		return friendIndex;
