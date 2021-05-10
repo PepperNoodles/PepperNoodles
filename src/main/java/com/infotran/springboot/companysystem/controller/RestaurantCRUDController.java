@@ -127,7 +127,7 @@ public class RestaurantCRUDController {
 		Integer fk_restId = restaurantBusinHour.getRestaurant().getRestaurantId();
 //		System.out.println("fk_restId="+fk_restId);
 		String day = restaurantBusinHour.getDay();
-//		System.out.println("前端傳來day="+day);
+		System.out.println("前端傳來day="+day);
 
 		String openTime1 = restaurantBusinHour.getOpenTime();
 //		System.out.println("前端傳來openTime1="+openTime1);
@@ -181,8 +181,8 @@ public class RestaurantCRUDController {
 		Restaurant rest = new Restaurant();
 		rest.setRestaurantName("幽靈炒飯好吃");
 		rest.setRestaurantAddress("台北市 信義路 100號");
-		rest.setRestaurantContact("0909053909");
-		rest.setRestaurantWebsite("facebook.com");
+		rest.setRestaurantContact("02-28825252");
+		rest.setRestaurantWebsite("https://www.facebook.com/");
 		model.addAttribute("restaurant", rest);
 		return "company/InsertRestaurant";
 	}
