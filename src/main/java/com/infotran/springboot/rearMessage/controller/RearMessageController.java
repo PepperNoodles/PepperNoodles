@@ -190,5 +190,16 @@ public class RearMessageController {
 		mmap.put("newList", messageNewList);
 		return mmap;
 	}
+	
+	@GetMapping(value = "/rearMessageDeleteById")
+	public String messageDeleteById(@RequestParam(name = "rearMessage_id") Integer id) {
+		RearMessageBox rearMessage = rearMessageBoxService.findById(id);
+		rearMessage.setUserAccount(null);
+		rearMessageBoxService.delete(rearMessage);
+		return "OK";
+
+    
+		
+	}
 
 }
