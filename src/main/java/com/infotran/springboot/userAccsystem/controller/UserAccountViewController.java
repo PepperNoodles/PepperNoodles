@@ -13,13 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.infotran.springboot.commonmodel.ReCaptchaResponse;
@@ -91,6 +92,21 @@ public class UserAccountViewController {
 
 		}
 		return "AfterSendContactMessage";
+
+	}
+	
+	//驗證recaptcha ajax
+	@GetMapping(path="/recaptchaajaxcheck")
+	@ResponseBody
+	public String recaptchaAjaxCheck(@RequestParam(value = "token") String token,HttpServletResponse response) throws IOException {
+		
+		
+		if(!verifyReCAPTCHA(token)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return "機器人是在傳屁傳!";
+
+		}
+		return "不是機器人hen~棒唷(ﾉ>ω<)ﾉ";
 
 	}
 
