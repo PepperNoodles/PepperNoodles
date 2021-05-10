@@ -62,6 +62,7 @@
 <div>
 	<div id="main" class="container"> <!-- style="border: 1px solid red"> -->
 		<div class="row justify-content-center align-items-center pt-100">
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 			<form id="messageForm" action="<c:url value=''/>" method="post"
 				class="search-box align-items-center" >
 				
@@ -96,7 +97,16 @@
 				    
 <!-- 					<button type="submit" id="messageButton" value="submit" -->
 <!-- 						class="genric-btn danger radius">送出</button> -->
-					  <input  id="messageButton" type="button" value="送出" 
+							<div
+						    class="g-recaptcha"
+						    data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"
+						    data-theme="light" data-size="normal"
+						    data-callback="validateAjax"
+						    data-expired-callback="expired"
+						    data-error-callback="error">
+						</div>
+						<br>
+					  <input style="display:none" id="messageButton" type="button" value="送出" 
 								class="genric-btn danger radius show-toast"/>
 						
 					   <div class="toast" id="myToast" style="position: fixed; bottom: 76%;right: -55; ">
@@ -150,7 +160,7 @@
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
 </div>
-	<script>
+	<script type="text/javascript">
 // 		$(window).on('load', function() {
 
 // 			$(".header-sticky").css("height", "90px");
@@ -230,13 +240,14 @@
 // 						message-text:$("#message-text").val()
 // 					},
 					success:function(){	
-// 						    $("#myToast").toast({ delay: 8000 });
-                            $("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
+						    $("#myToast").toast({ delay: 5000 });//
+                            //$("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
 						    $("#myToast").toast('show');
-							
-						    alert("成功");
-// 							location.reload(); //成功重整頁面
-						
+						    //alert("成功");
+						    setTimeout(function(){
+				        		window.location.href = "http://localhost:433/PepperNoodles/";//页面重導
+//	 							location.reload(); //成功重整頁面
+				        		},5000);
 					},
 					
 					error:function(){
@@ -245,6 +256,27 @@
 				});
 			});
 		});
+		
+		 function  validateAjax (reponse){
+// 			 alert("1")
+			 console.log(reponse)
+			 urls= "/PepperNoodles/recaptchaajaxcheck/?token=";
+			 urls += reponse;
+			 $.ajax({
+				 method:"get",
+				 url: urls,
+				 dataType: "text",
+				 success:function(result){
+					 alert(result)
+					 $("#messageButton").toggle();
+					
+				 },
+				 error:function(result){
+					 alert(result)
+				 }
+			 
+			 });
+		 }
 	</script>
 	
 	<script>

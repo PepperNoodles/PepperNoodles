@@ -8,19 +8,19 @@
 <meta charset="UTF-8">
 <title>訊息資料</title>
 
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
 <!-- Bootstrap 4 Admin右上方訊息通知-->
-<script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+<%-- <script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script> --%>
 <!-- 右上方訊息通知 -->
-<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 
 <!-- Jquery, Popper, Bootstrap -->
         <script src="<c:url value='/scripts/popper.min.js' />"></script>
 
 <style type="text/css">
+	
 	a{
 		color:#FFFFFF;
 	}
@@ -40,12 +40,12 @@
 
 <body>
 	
-	
+	<div class="container-fluid" >
 	<div class="row" >
 		<div class="col-2 " >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
-		<div class="col-10">
+		<div class="col-10" style="margin-top: 20px;">
 		<!-- content -->
 		
 <!-- 			<div class="tab-pane fade" id="v-pills-userList" role="tabpanel" aria-labelledby="v-pills-userList-tab"> -->
@@ -60,35 +60,27 @@
 										<th>更新時間</th>
 										<th>處理狀態</th>
 										<th>處理完畢</th>
-										
-										
-										
-										
 									</tr>
 								</thead>
-							
 							</table>
-							
-							<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
-								  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
-								    <div class="toast-header">
-								      <!-- 上方框框的內容 -->
-								      <strong class="mr-auto">貼心提醒</strong>
-								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-								        <span aria-hidden="true">&times;</span>
-								      </button>
-								    </div>
-								    <!-- 文字內容 P -->
-								    <div class="toast-body"> 
-								    	<p></p>
-								    </div>
-								  </div>
-							</div>
-	
 <!-- 			</div> -->
-                           
-		
 		</div>
+	</div>
+	</div>
+	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+		  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
+		    <div class="toast-header">
+		      <!-- 上方框框的內容 -->
+		      <strong class="mr-auto">貼心提醒</strong>
+		      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+		        <span aria-hidden="true">&times;</span>
+		      </button>
+		    </div>
+		    <!-- 文字內容 P -->
+		    <div class="toast-body"> 
+		    	<p></p>
+		    </div>
+		  </div>
 	</div>
 	
 	<script> 
@@ -121,8 +113,20 @@
 				    	{ "data": "rearMessageId"  },
 				    	{ "data": "userAccount.accountIndex"  },
 		                { "data": "messageText"  },
-		                { "data": "time"  },
-		                { "data": "updateTime"  },
+		                { "data": "time" ,
+		                  "render":function(data,type,row,meta){ //用來轉換成本地時間
+		                  var time2 = new Date(data).format("yyyy-MM-dd hh:mm:ss");
+		                  return time2.substr(0,4)+'/'+time2.substr(5,2)+'/'+time2.substr(8,2)+' '+time2.substr(11,5)
+		                  }},
+		                { "data": "updateTime",
+			              "render":function(data,type,row,meta){ //用來轉換成本地時間如果更新時間不是null才執行
+			            	if(data!=null){
+			            		var time2 = new Date(data).format("yyyy-MM-dd hh:mm:ss");
+			              		return time2.substr(0,4)+'/'+time2.substr(5,2)+'/'+time2.substr(8,2)+' '+time2.substr(11,5)
+			            	}else{
+			            		return '';
+			            	}
+			              }},
 		                { "data": "condition" },
 		                { "render":function(data,type,row,meta){
 			                return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
@@ -164,7 +168,22 @@
 			        }
 				});
 				
-				 
+				//用來轉換本地日期時間
+				Date.prototype.format = function (fmt) {
+					  var o = {
+					    "M+": this.getMonth() + 1, //月份
+					    "d+": this.getDate(), //日
+					    "h+": this.getHours(), //小時
+					    "m+": this.getMinutes(), //分
+					    "s+": this.getSeconds(), //秒
+					    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+					    "S": this.getMilliseconds() //毫秒
+					  };
+					  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+					  for (var k in o)
+					  if (new RegExp("(" +  k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +  o[k]).substr(("" + o[k]).length)));
+					  return fmt;
+					}
 			  	  
 				
 	  });
@@ -195,8 +214,8 @@
 	        
 	      });
 	  
+	  var j = jQuery.noConflict(); //因為$吃不到才使用j
 	  //後台訊息通知
-	  $("body").on("click","#inform",function(){
   	  $.ajax({
   			method:"GET",
   			url:"/PepperNoodles/informMessageCondition",
@@ -208,15 +227,15 @@
   				var informMenu1 = $("#informMenu1");
   				var count = 0;
   				count += (messageReplyList.length + messageNewList.length);
-  				$('.toast-body p').text('您有 '+count+' 則新通知');
-  				$('.toast').toast({delay: 3000});
-  				$('.toast').toast('show');
+  				j('.toast-body p').text('您有 '+count+' 則新通知');
+  				j('.toast').toast({delay: 3000});
+  				j('.toast').toast('show');
   				$.each(messageReplyList,function(index,element){
-  					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已經回覆訊息囉!</a></li>");
+  					var li1 = $("<li><a href ='javascript:void(0)'>貼心提醒! 編號"+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已經回覆訊息囉!</a></li>");
   					informMenu1.append(li1);
   				});
   				$.each(messageNewList,function(index,element){
-  					var li2 = $("<li><a href='javascript:void(0)'>新訊息! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 發布新訊息!</a></li>");
+  					var li2 = $("<li><a href='javascript:void(0)'>新訊息! 編號"+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已發布!</a></li>");
   					informMenu1.append(li2);
   				});
   			},error:function(response){
@@ -224,7 +243,6 @@
   			}
   		});
 	  
-	  });
 	
 </script>
 

@@ -93,6 +93,7 @@ float: right;
 padding-right: 40px;
  }  
  
+div a:hover { color: blue; }
 
 </style>
 
@@ -252,10 +253,12 @@ padding-right: 40px;
 								<div class="modifydiv1">
 								<h2>  餐廳地址: </h2><h5>${restaurant.restaurantAddress}</h5><br>
 								<h2>  聯絡方式: </h2><h5>${restaurant.restaurantContact}</h5><br>
-								<h2>  餐廳網站: </h2><h5>${restaurant.restaurantWebsite}</h5>
+								<h2>  餐廳網站: </h2><h5><a href="<c:url value='${restaurant.restaurantWebsite}' />"><i class="fas fa-link"></i> ${restaurant.restaurantWebsite}</a></h5><br>
 								</div>
 								<div class="modifydiv2">
-								<h3><a class='updatelink'href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}"><i class="fas fa-edit"></i></a>
+								<h3>
+								
+								<a class='updatelink'href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}"><i class="fas fa-edit"></i></a>
 								<a class='deletelink' href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}"><i class="fas fa-trash-alt"></i></a></h3>
 								</div>
 								
