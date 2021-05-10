@@ -60,8 +60,6 @@ $(document).ready(function() {
 	
 	$('body').on("click","#editproduct",function(e){
 		e.preventDefault();
-		var mymessage=confirm("確定修改此產品嗎？");
-		if(mymessage==true){
 			var pname = $("#productname").val();
 			var pprice = $("#productprice").val();
 			var pdescription = $("#productdescription").val();
@@ -93,15 +91,14 @@ $(document).ready(function() {
 				async : true,
 				dataType:"text",
 				success : function(result) {
-					alert("修改成功");
-					location.reload();
+					$("#checkStatus").text("修改成功");
+					setTimeout(function(){
+		        		location.reload();//页面刷新
+		        		},2000);
 				},error : function(result) {
 					$("#checkAccountStatus2").text(result.fail); //填入提示訊息到result標籤內
 				}
 			});
-		}
-		else if(mymessage==false){
-		}
 	});
 	
 	
@@ -177,7 +174,7 @@ body {
 			</div>
 			<div class="col-12" style="margin-top: 20px; text-align: center;">
 				<input type="submit" id="editproduct" value="修改"> <span
-					id="checkStatus" style="font-size: 18px;"></span>
+					id="checkStatus" style="font-size: 18px;color:blue"></span>
 			</div>
 		</div>
 	</div>
