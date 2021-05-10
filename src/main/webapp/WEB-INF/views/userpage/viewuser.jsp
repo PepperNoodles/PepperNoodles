@@ -30,6 +30,8 @@
 	<script type="text/javascript"
 	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
 	
+	
+	
 	<script type="text/javascript">
 
 	$(window).on('load', function() {
@@ -58,7 +60,7 @@
 
 <style>
 	#body{
-	height: 100vh;
+	min-height: 100vh;
     background-image: url(
     "https://images.unsplash.com/photo-1483137140003-ae073b395549?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
     );
@@ -72,6 +74,36 @@
 	.butt{
 	height:60px;
 	width:105px;
+	}
+	.friendsysImg {
+	height: 120px; /*can be anything*/
+	width: 160px; /*can be anything*/
+	position: relative;
+	}
+
+	.friendsysImg img {
+		object-fit: cover;
+		max-height: 100%;
+		max-width: 100%;
+		width: auto;
+		height: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		display: block;
+	}
+	.friendList a{
+	color:#000000;
+	}
+	.friendList a:hover{
+	color:blue;
+	}
+	
+	tr:hover{
+	background-color: 	#E0E0E0;
 	}
 	
 </style>
@@ -92,7 +124,7 @@
 		</div>
 	</div>
 
-	<div id="main" class="container mt-5" style="width: 80%; height: 100vh">
+	<div id="main" class="container mt-5" style="width: 80%; min-height: 100vh">
 <%-- 			<h5>我是被看的喔,現在登入的 ${userAccount.accountIndex}</h5> --%>
  			<h5>您好${userAccount.accountIndex},我是:</h5>
 			<!-- 圖片+姓名bar-->
@@ -120,12 +152,12 @@
 			</div>
 			
 			
-			<div class="d-flex mt-3" style="height: 70vh">
+			<div class="d-flex mt-3" style="min-height: 70vh">
  				<div class="nav flex-column nav-pills p-2 bg-dark" id="nav-tab" role="tablist" aria-orientation="horizontal">		
 				
-					<a class="nav-link" id="v-pills-aboutme-tab" data-toggle="pill" href="#v-pills-aboutme" role="tab" aria-controls="v-pills-aboutme" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>							
+					<a class="nav-link active" id="v-pills-aboutme-tab" data-toggle="pill" href="#v-pills-aboutme" role="tab" aria-controls="v-pills-aboutme" aria-selected="false"><i class="fas fa-file-alt"></i>關於我</a>							
 				
-					<a class="nav-link active" id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>	
+					<a class="nav-link " id="v-pills-friend-tab" data-toggle="pill" href="#v-pills-friend" role="tab" aria-controls="v-pills-friend" aria-selected="true"><i class="fas fa-users"></i>好友</a>	
 				
 					<a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false"><i class="fas fa-comments"></i>留言區</a>							
 								
@@ -137,26 +169,57 @@
 			
 			<div class="tab-content" id="v-pills-tabContent col-9">
 			<div class="tab-pane fade " id="v-pills-friend" role="tabpanel" aria-labelledby="v-pills-friend-tab">
-				<h2>好友</h2>
+				<h2>${viewUserAccountDetail.nickName}的好友</h2>
+				<div class="friendList m-3" id="userFriendList" style="height:400px;overflow-x:hidden;overflow-y:auto;">
+					
+				
+				</div>
+				
+				
 
 			</div>	
 
-			<div class="tab-pane fade " id="v-pills-aboutme" role="tabpanel" aria-labelledby="v-pills-aboutme-tab">
+			<div class="tab-pane fade show active mx-5" id="v-pills-aboutme" role="tabpanel" aria-labelledby="v-pills-aboutme-tab">
 				<h2>基本資料</h2>
-				<p>email: ${viewUserAccount.accountIndex} </p>
-				<p>暱稱：${viewUserAccountDetail.nickName}</p>
-				<p>生日：${viewUserAccountDetail.birthDay}</p>
-				<p>性別：${viewUserAccountDetail.gender}</p>
-				<p>地區：${viewUserAccountDetail.location}</p>
+				<table class="table ">
+					 
+					  <tbody>
+					    <tr>					    
+					      <td>email:</td>
+					      <td>${viewUserAccount.accountIndex}</td>					    
+					    </tr>
+					    <tr>					      
+					      <td>暱稱:</td>
+					      <td>${viewUserAccountDetail.nickName}</td>					   
+					    </tr>
+					    <tr>					     
+					      <td>生日:</td>
+					      <td>${viewUserAccountDetail.birthDay}</td>
+					    </tr>
+					    <tr>					     
+					      <td>性別:</td>
+					      <td>${viewUserAccountDetail.gender}</td>
+					    </tr>
+					    <tr>					     
+					      <td>地區:</td>
+					      <td>${viewUserAccountDetail.location}</td>
+					    </tr>
+					  </tbody>
+					</table>
+				
+				
+<%-- 				<p>email: ${viewUserAccount.accountIndex} </p> --%>
+<%-- 				<p>暱稱：${viewUserAccountDetail.nickName}</p> --%>
+<%-- 				<p>生日：${viewUserAccountDetail.birthDay}</p> --%>
+<%-- 				<p>性別：${viewUserAccountDetail.gender}</p> --%>
+<%-- 				<p>地區：${viewUserAccountDetail.location}</p> --%>
 			</div>	
 			
 			<div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-aboutme-tab">
 										<h2>${viewUserAccount.userAccountDetail.nickName}的留言區</h2>
 
 
-						<iframe allowtransparency="" frameborder="0" id="fbLike"
-							scrolling="no" src=""
-							style="border-bottom: medium none; border-left: medium none; width: 250px; height: 30px; overflow: hidden; border-top: medium none; border-right: medium none"></iframe>
+						<iframe allowtransparency="" frameborder="0" id="fbLike" scrolling="no" src=""	style="border-bottom: medium none; border-left: medium none; width: 250px; height: 30px; overflow: hidden; border-top: medium none; border-right: medium none"></iframe>
 
 
 						<!-- 						新增主要留言input & 按鈕 -->
@@ -193,8 +256,9 @@
  		$(window).on('load', function() {
 			showAllComments();
  			createOthersSideMemo();
-
-
+ 			checkFriendList();
+ 			//
+			$("#v-pills-aboutme-tab").addClass("active");
  			//讓bar固定在上面以及設定高度
 			$(".header-sticky").addClass("sticky-bar");
  			$(".header-sticky").css("height", "90px");
@@ -204,17 +268,18 @@
  			$('#preloader-active').delay(450).fadeOut('slow');
  			$('body').delay(450).css({
  				'overflow' : 'visible'
- 		});			
+ 			});			
 			
  			judgeRelation();
-
+			
+ 			//判斷關係決定右上角按鈕
 			function judgeRelation(){
 				let mainUser = "${userAccount.accountIndex}";
 				let viewUser = "${viewUserAccount.accountIndex}";
 				let urls="${pageContext.request.contextPath}/";
 					urls+="<c:url value='judgeFriendShip'/>";
 					urls+="?userIndex="+mainUser+"&friendIndex="+viewUser;
-					console.log(urls);
+				//	console.log(urls);
 			$.ajax({
 					type: "GET",
 					url: urls,							
@@ -239,8 +304,86 @@
 	    			});
 			}
 			
+ 			//好友列表
+			function checkFriendList(){
+				let urls="${pageContext.request.contextPath}/";
+				urls+="<c:url value='findMainfriend'/>";
+				names="${viewUserAccount.accountIndex}";
+				urls+="/"+names;
+				console.log(urls);
+				$.ajax({
+						type: "GET",
+						url: urls,				
+						dataType: "json",
+						success: function (response) {
+							console.log(response);
+							showSearchList(response,"#userFriendList");
+						},
+						error: function (thrownError) {
+							console.log(thrownError);
+						}
+					});
+		
+				};
+ 			//顯示table
+				function showSearchList(response,id){
+					$(id).html("");
+					//let result = JSON.stringify(response);
+					//console.log(response[0]);
+					let table =  document.createElement("table");
+					table.border="1";
+					let trh = document.createElement("tr");
+						let th1 = document.createElement("th");
+						th1.innerHTML= "照片"
+						let th2 = document.createElement("th");
+						th2.innerHTML = "帳號"
+						let th3 = document.createElement("th");
+						th3.innerHTML = "名稱"
+						trh.appendChild(th1);
+						trh.appendChild(th2);
+						trh.appendChild(th3);
+						table.appendChild(trh);
+					
+					let length = Object.keys(response).length;
+					for (let i =0;i< length;i++){
+						let tr  = document.createElement("tr");
+						let td1 = document.createElement("td");
+						let td2 = document.createElement("td");
+						let td3 = document.createElement("td");
+						let img = document.createElement("img");
+						
+						let divFrame = document.createElement("div");
+						divFrame.className="friendsysImg";
+						
+						img.class="tdimg";
+						let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
+						img.src="<c:url value='"+imgSrc+"'/>";
+						
+						divFrame.append(img);
+						
+						td3.appendChild(divFrame);
+						
+						td1.innerHTML=response[i].accountIndex;
+						console.log(response[i].accountIndex);
+						console.log(response[i].userAccountDetail);								
+						//幫nickname建立連結
+						let a =document.createElement("a");
+						a.href="${pageContext.request.contextPath}/userView/"+response[i].accountIndex;
+						a.innerText =response[i].userAccountDetail.nickName;								
+						td2.appendChild(a);
+						//放圖,放account,放nickName
+						tr.appendChild(td3);
+						tr.appendChild(td1);
+						tr.appendChild(td2);
+						table.appendChild(tr);
+					}
+					$(id).append(table);
+					
+				}
+				
+				
 			
-
+			//按下送出邀請
 			function sendFriendRequest(){
 				alert("送出邀請");
 				let mainUser = "${userAccount.accountIndex}";
@@ -253,8 +396,14 @@
 					url: urls,							
 					dataType: "text",
 					success: function (response) {		
-				//		alert(response);
-						judgeRelation();
+						alert(response);
+						if(response=="request is sending"){
+							judgeRelation();
+						}else if(response=="request is already send"){
+							alert(response);
+						}
+				
+						
 					},
 						error: function (thrownError) {
 						console.log(thrownError);
@@ -649,7 +798,17 @@
 		});
 
 	});
-	
+		
+		//建立餐廳按鈕的funciton
+		function positionShow(){
+			console.log(this.id);
+			let restId = this.id.slice(4,);
+		
+			let url = "<c:url value='/restSearch/userSingleRestPage/' />" + restId;
+			features = "width="+1200+",height="+600+",top="+50+",left="+50; 
+			window.open(url,"toolbar=no,location=no,directories=no",features);
+		}	
+		
 		//建立隔壁memo的function
 		function createOthersSideMemo(){
 			//memo
@@ -699,7 +858,15 @@
 	 					    restAnchor.style.color="#0000C6";
 	 					    td2.appendChild(restAnchor);
 	 					    tr2.appendChild(td2);     			        
-	 					        
+	 					    
+	 					    let td2_2=document.createElement("td");
+	 					    td2_2.rowSpan="3";	   
+	 					    td2_2.innerHTML = '<button class="getPositionButton" style="background-color:#00008B;border-radius:15px;" id=rest'+result[i].restaurantId+'><i class="fas fa-map-marker-alt"></i></button>'
+	 					   	tr2.appendChild(td2_2);     	
+	 					    $(".getPositionButton").click(positionShow);
+	 					    
+	 					    
+	 					    
 	 					    let tr3 = document.createElement("tr");
 	 					    let td3=document.createElement("td");
 	 					    td3.innerHTML=result[i].restaurantAddress;
@@ -738,6 +905,7 @@
 	 					    memosheet.appendChild(tr5); 
 	 					    }
 	 					memo.appendChild(memosheet);
+	 					$(".getPositionButton").click(positionShow);
 	 				}else{
 	 					memo.innerHTML="<h2>${viewUserAccountDetail.nickName}還沒有收藏餐廳唷!</h2>";
 	 				}

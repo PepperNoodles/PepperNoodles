@@ -141,7 +141,7 @@ $("#indexSearch").on('click',function(){
 
 												</ul></li>
 											<li><a href="<c:url value='/restSearch/mapWithCurrentLoca'/>" id = "indexSearch">探索地圖</a></li>
-											<li><a href="about.html">發表食記</a></li>
+<!-- 											<li><a href="about.html">發表食記</a></li> -->
 
 											<li><a href="<c:url value='/contactUs'/>" >聯絡我們1</a></li>
 
@@ -201,8 +201,8 @@ $("#indexSearch").on('click',function(){
 												<c:when test="${userAccount != null}">
 													<li class="login"><sec:authorize
 															access="isAuthenticated()">
-															<a href="personalPage/edit"><i class="ti-user"></i>
-															<sec:authentication property="principal.username" /> </a>
+															<a href="<c:url value='/user/login'/>"><i class="ti-user"></i>
+															<sec:authentication property="principal.username" /> </a><!-- personalPage/edit -->
 														</sec:authorize>
 														<ul class="submenu">
 															<li><a href="<c:url value='/user/login'/>">個人頁面</a></li>
@@ -212,7 +212,7 @@ $("#indexSearch").on('click',function(){
 												<c:when test="${comDetail != null}">
 													<li class="login"><sec:authorize
 															access="isAuthenticated()">
-															<a href="personalPage/edit"><i class="ti-user"></i>
+															<a href="<c:url value='/Company/company'/>"><i class="ti-user"></i><!--  -->
 															<sec:authentication property="principal.username" /> </a>
 														</sec:authorize>
 														<ul class="submenu">
