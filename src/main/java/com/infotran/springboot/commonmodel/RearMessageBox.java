@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "rearMessageBox")
@@ -39,6 +41,7 @@ public class RearMessageBox {
 	
 	//更新訊息時間
 	@Column(name = "updateTime")
+	@JsonInclude(content = Include.NON_NULL)
 	private Date updateTime;	
 
 	@Column(name = "condition")

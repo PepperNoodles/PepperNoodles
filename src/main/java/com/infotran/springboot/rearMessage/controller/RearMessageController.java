@@ -178,7 +178,7 @@ public class RearMessageController {
 		Date now = new Date();
 		calendar.setTime(now);
 		Date todayTime = calendar.getTime();
-		calendar.add(Calendar.DATE, -3);
+		calendar.add(Calendar.DATE, -3); //今天明天後天3天，3天後通知訊息才會消失
 		Date replyTime = calendar.getTime();
 		SimpleDateFormat datestr = new SimpleDateFormat("yyyy/MM/dd");
 		String tTime = datestr.format(todayTime);

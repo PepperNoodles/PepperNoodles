@@ -93,86 +93,86 @@
 <!-- 													class="ti-user"></i> Sign in or Register -->
 <!-- 											</a></li> -->
 									
-									 <li><a href="javascript:void(0)" id="inform">通知1</a>
+									 <li><a href="javascript:void(0)" id="inform">訊息通知</a>
                                             	<ul class="submenu bigger" id="informMenu1">
 <!--                                             		<li><a href="javascript:void(0)">hi</a></li> -->
                                             	</ul>
                                             </li>
 											
 											<!-- Messages Dropdown Menu 訊息-->
-								      <li class="nav-item dropdown" id="inform">
-								        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
-								          <i class="far fa-comments"></i>
-								          <span class="badge badge-danger navbar-badge">3</span>
-								        </a>
-								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="informMenu">
-								          <a href="#" class="dropdown-item" >
-								           <!-- Message Start -->
-								            <div class="media">
-								              <img src="<c:url value="/dist/img/user1-128x128.jpg"/>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-								              <div class="media-body">
-								                <h3 class="dropdown-item-title">
-								                  Brad Diesel
-								                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-								                </h3>
-								                <p class="text-sm">Call me whenever you can...</p>
-								                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-								              </div>
-								            </div>
-								           <!-- Message End -->
-								          </a>
-								          <div class="dropdown-divider"></div>
-								          <a href="#" class="dropdown-item">
-								             <!-- Message Start -->
-								            <div class="media">
-								              <img src="<c:url value="/dist/img/user8-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3">
-								              <div class="media-body">
-								                <h3 class="dropdown-item-title">
-								                  John Pierce
-								                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-								                </h3>
-								                <p class="text-sm">I got your message bro</p>
-								                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-								              </div>
-								            </div>
-								            <!-- Message End 訊息-->
-								            </a>
-									        <div class="dropdown-divider"></div>
-									          <a href="#" class="dropdown-item">
-									             <!-- Message Start -->
-									            <div class="media">
-									              <img src="<c:url value="/dist/img/user8-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3">
-									              <div class="media-body">
-									                <h3 class="dropdown-item-title">
-									                  John Pierce
-									                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-									                </h3>
-									                <p class="text-sm">I got your message bro</p>
-									                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-									              </div>
-									            </div>
-									            <!-- Message End -->
-									          </a>
-									          <div class="dropdown-divider"></div>
-									          <a href="#" class="dropdown-item">
-									           <!-- Message Start -->
-									            <div class="media">
-									              <img src="<c:url value="/dist/img/user3-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3">
-									              <div class="media-body">
-									                <h3 class="dropdown-item-title">
-									                  Nora Silvester
-									                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-									                </h3>
-									                <p class="text-sm">The subject goes here</p>
-									                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-									              </div>
-									            </div>
-									            <!-- Message End -->
-									          </a>
-									          <div class="dropdown-divider"></div>
-									          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-									        </div>
-									      </li>
+<!-- 								      <li class="nav-item dropdown" id="inform"> -->
+<!-- 								        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)"> -->
+<!-- 								          <i class="far fa-comments"></i> -->
+<!-- 								          <span class="badge badge-danger navbar-badge">3</span> -->
+<!-- 								        </a> -->
+<!-- 								        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="informMenu"> -->
+<!-- 								          <a href="#" class="dropdown-item" > -->
+<!-- 								           Message Start -->
+<!-- 								            <div class="media"> -->
+<%-- 								              <img src="<c:url value="/dist/img/user1-128x128.jpg"/>" alt="User Avatar" class="img-size-50 mr-3 img-circle"> --%>
+<!-- 								              <div class="media-body"> -->
+<!-- 								                <h3 class="dropdown-item-title"> -->
+<!-- 								                  Brad Diesel -->
+<!-- 								                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span> -->
+<!-- 								                </h3> -->
+<!-- 								                <p class="text-sm">Call me whenever you can...</p> -->
+<!-- 								                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> -->
+<!-- 								              </div> -->
+<!-- 								            </div> -->
+<!-- 								           Message End -->
+<!-- 								          </a> -->
+<!-- 								          <div class="dropdown-divider"></div> -->
+<!-- 								          <a href="#" class="dropdown-item"> -->
+<!-- 								             Message Start -->
+<!-- 								            <div class="media"> -->
+<%-- 								              <img src="<c:url value="/dist/img/user8-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3"> --%>
+<!-- 								              <div class="media-body"> -->
+<!-- 								                <h3 class="dropdown-item-title"> -->
+<!-- 								                  John Pierce -->
+<!-- 								                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span> -->
+<!-- 								                </h3> -->
+<!-- 								                <p class="text-sm">I got your message bro</p> -->
+<!-- 								                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> -->
+<!-- 								              </div> -->
+<!-- 								            </div> -->
+<!-- 								            Message End 訊息 -->
+<!-- 								            </a> -->
+<!-- 									        <div class="dropdown-divider"></div> -->
+<!-- 									          <a href="#" class="dropdown-item"> -->
+<!-- 									             Message Start -->
+<!-- 									            <div class="media"> -->
+<%-- 									              <img src="<c:url value="/dist/img/user8-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3"> --%>
+<!-- 									              <div class="media-body"> -->
+<!-- 									                <h3 class="dropdown-item-title"> -->
+<!-- 									                  John Pierce -->
+<!-- 									                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span> -->
+<!-- 									                </h3> -->
+<!-- 									                <p class="text-sm">I got your message bro</p> -->
+<!-- 									                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> -->
+<!-- 									              </div> -->
+<!-- 									            </div> -->
+<!-- 									            Message End -->
+<!-- 									          </a> -->
+<!-- 									          <div class="dropdown-divider"></div> -->
+<!-- 									          <a href="#" class="dropdown-item"> -->
+<!-- 									           Message Start -->
+<!-- 									            <div class="media"> -->
+<%-- 									              <img src="<c:url value="/dist/img/user3-128x128.jpg"/>" alt="User Avatar" class="img-size-50 img-circle mr-3"> --%>
+<!-- 									              <div class="media-body"> -->
+<!-- 									                <h3 class="dropdown-item-title"> -->
+<!-- 									                  Nora Silvester -->
+<!-- 									                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span> -->
+<!-- 									                </h3> -->
+<!-- 									                <p class="text-sm">The subject goes here</p> -->
+<!-- 									                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p> -->
+<!-- 									              </div> -->
+<!-- 									            </div> -->
+<!-- 									            Message End -->
+<!-- 									          </a> -->
+<!-- 									          <div class="dropdown-divider"></div> -->
+<!-- 									          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a> -->
+<!-- 									        </div> -->
+<!-- 									      </li> -->
 											
 <%-- 											<c:url value='/shoppingSystem/ShoppingMall'/>" --%>
 											<li><a href="<c:url value='/shoppingSystem/ShoppingMall'/>">商城</a></li>
