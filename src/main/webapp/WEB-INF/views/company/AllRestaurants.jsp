@@ -149,7 +149,7 @@ div a:hover { color: blue; }
 		        <li class="nav-item dropdown" >
 		            <span  class="nav-link dropdown-toggle .nopadding" data-bs-toggle="dropdown" href="#" role="button"aria-expanded="false">營業時間</span>	
 		            <ul class="dropdown-menu">
-					<li><div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div></li>
+					<li><div id="getrestHour${restaurant.restaurantId}" name="restHour" ></div></li>
 		            </ul>
 		        </li>
 		</ul>
@@ -199,7 +199,12 @@ div a:hover { color: blue; }
 															'五',
 															'六',
 															'日' ];
-
+												if(result.length==0){
+														txt="營業時間待新增";
+														divrestHour.innerHTML = txt;
+													}
+													
+												else{
 													txt = '<table id="tablemenu" align="center" ><h6>';
 													for (j = 0; j < result.length; j++) {
 														txt += '<tr><td>星期'
@@ -234,7 +239,7 @@ div a:hover { color: blue; }
 
 													txt += "</h6></table>";
 													divrestHour.innerHTML = txt;
-													},
+												}},
 													error : function(thrownError) {
 														console.log(thrownError);
 													}
