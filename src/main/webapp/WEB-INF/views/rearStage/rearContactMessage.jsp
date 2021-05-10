@@ -98,13 +98,14 @@
 <!-- 					<button type="submit" id="messageButton" value="submit" -->
 <!-- 						class="genric-btn danger radius">送出</button> -->
 							<div
-						    class="g-recaptcha  m-3 row justify-content-center"
+						    class="g-recaptcha"
 						    data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"
 						    data-theme="light" data-size="normal"
 						    data-callback="validateAjax"
 						    data-expired-callback="expired"
 						    data-error-callback="error">
 						</div>
+						<br>
 					  <input style="display:none" id="messageButton" type="button" value="送出" 
 								class="genric-btn danger radius show-toast"/>
 						
@@ -266,11 +267,11 @@
 				 dataType: "text",
 				 success:function(result){
 					 alert(result)
-					 $("#messageButton").prop("disabled",false);
+					 $("#messageButton").toggle();
+					
 				 },
 				 error:function(result){
 					 alert(result)
-					 $("#messageButton").prop("disabled",true);
 				 }
 			 
 			 });
