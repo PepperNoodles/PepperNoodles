@@ -12,6 +12,10 @@
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
+<!-- Bootstrap 4 Admin右上方訊息通知-->
+<script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+<!-- 右上方訊息通知 -->
+<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
 
 <style type="text/css">
 	a{
@@ -32,7 +36,7 @@
 		<div class="col-10">
 		<!-- content -->
 
-        <div class="row productFrame" style="background-color: #FAFAFA"> 
+        <div class="row" style="background-color: #FAFAFA"> 
             <div id="" class="col-lg-6">
                 <div class="single-listing mb-30">
 					<div class="card" style="width: 40rem;">
@@ -77,11 +81,11 @@
 			<div id="" class="col-lg-6">
                 <div class="single-listing mb-30">
 					<div class="card" style="width: 40rem;">
-						<img src="<c:url value="/images/rear/restaurantTable.jpg"/>" class="card-img-top" alt="...">
+						<img src="<c:url value="/images/rear/productRearPicture.jpg"/>" height="247px" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h4 class="card-title">產品資料</h4>
 							<p class="card-text">產品後台</p>
-							<a href="http://localhost:433/PepperNoodles/user/rearStage/rearStage" class="btn btn-primary">前往企業後台</a>
+							<a href="http://localhost:433/PepperNoodles/user/rearStage/rearStage" class="btn btn-primary">前往產品後台</a>
 						</div>
 					</div>
 			 	</div>
@@ -160,7 +164,8 @@
 // 				});
 // 	  });
   </script>
-	  
-
+  
+  
+	
 </body>
 </html>

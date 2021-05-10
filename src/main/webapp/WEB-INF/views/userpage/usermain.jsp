@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template For inClude</title>
+<title>UserMain</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="<c:url value='/scripts/vendor/modernizr-3.5.0.min.js' />"></script>
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
@@ -19,42 +19,35 @@
 
 <style>
 
-	#body{
+#body{
 	height: 100vh;
-    background-image: url(
-    "https://images.unsplash.com/photo-1523294587484-bae6cc870010?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1464&q=80"
-    );
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-	}
+   background-image: url(
+   "https://images.unsplash.com/photo-1523294587484-bae6cc870010?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1464&q=80"
+   );
+   background-size: cover;
+   background-position: center center;
+   background-attachment: fixed;
+}
 
-	#main{
-	background-color:#FCFCFC			;
-	}
-@import
-	url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap')
-	;
-
+#main{
+	background-color:#FCFCFC;
+}
+@import	url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 .header {
 	background-color: #000000;
 }
-
 td a {
 	color: #0000C6;
 }
-
 .searchButton {
 	height: 30px;
 	border-radius: 5px;
 }
-
 .friendsysImg {
 	height: 120px; /*can be anything*/
 	width: 160px; /*can be anything*/
 	position: relative;
 }
-
 .friendsysImg img {
 	object-fit: cover;
 	max-height: 100%;
@@ -69,23 +62,18 @@ td a {
 	margin: auto;
 	display: block;
 }
-
 .nav a {
 	color: black;
 }
-
 a:hover {
 	color: blue;
 }
-
 tr:hover {
 	background-color: #BEBEBE;
 }
-
 td>img {
 	height: 100px;
 }
-
 table {
 	padding:5px;
 	border-collapse: separate;
@@ -93,37 +81,25 @@ table {
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 }
-
 .display {
 	font-family: 'Noto Serif TC', serif;
-	font-size: 15px;
-	button
-	{
-	color
-	:
-	black;
 }
 
 .collumntogreen {
 	color: green;
 }
-
-.collumntored {red;
-	
-}
-
-table a {
-	color: #0000C6;
-}
-
-.collumntogreen {
-	color: green;
-}
-
 .collumntored {
 	red;
 }
-	
+table a {
+	color: #0000C6;
+}
+.collumntogreen {
+	color: green;
+}
+.collumntored {
+	red;
+}
 table {
 	border-collapse: separate;
 	border: solid black 1px;
@@ -131,8 +107,8 @@ table {
 	-moz-border-radius: 6px;
 }
 .display{
-		font-family: 'Noto Serif TC', serif;
-		font-size: 10px; 
+	font-family: 'Noto Serif TC', serif;
+	font-size: 10px; 
 }
 button{
 	color: black;
@@ -140,22 +116,21 @@ button{
 table a{
 	color:#0000C6;
 }
-
-
-
-
 .frame2 {  
-  		 height: 60px; /*can be anything*/
-   	 width: 90px; /*can be anything*/
-  		 position: relative;
+    height: 60px; /*can be anything*/
+   	width: 90px; /*can be anything*/
+  	position: relative;
 }	
-
-	.memoBoard{
+.memoBoard{
 	overflow-x:hidden;
 	overflow-y:auto;
 }
-	
-
+#uuidclick{
+	cursor: pointer;
+}
+#uuidclick:hover{
+	text-decoration: underline;
+}
 
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
@@ -457,7 +432,7 @@ I've added a few comments on why we're using certain properties
 
 						<!-- 						使用Ajax的方法 -->
 						<div class="rounded border border-warning container-fluid table "
-							style="overflow-y: auto; height: 400px;" id="commentsForUser"></div>
+							style="overflow-y: auto; height: 300px;" id="commentsForUser"></div>
 
 
 						<!--      使用jstl的方法 -->
@@ -511,10 +486,9 @@ I've added a few comments on why we're using certain properties
 					</div>
 
 					<!-- 訂單表 -->
-					<div class="tab-pane fade" id="v-pills-userOrderList"
-						role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
+					<div class="tab-pane fade" id="v-pills-userOrderList" role="tabpanel" aria-labelledby="v-pills-userOrderList-tab">
 						<h2>訂單明細</h2>
-						<table id="orderlist" class="display">
+						<table id="orderlist" class="display" style="font-size: 13px;">
 							<thead>
 								<tr>
 									<th>編號</th>
@@ -532,7 +506,28 @@ I've added a few comments on why we're using certain properties
 								</tr>
 							</tbody>
 						</table>
+						
+						<div class="col-12" style="margin-top: 20px;font-size: 15px;display: none;" id="orderdetailforeach">
+							<h4><strong>您的訂單</strong></h4>
+							<div class="table-responsive-sm">
+								<table class="table table-hover text-info text-justify " style="font-size: 15px;">
+									<thead>
+										<tr class=" Active">
+											<th>#編號</th>
+											<th>產品名</th>
+											<th>數量</th>
+											<th>價格</th>
+										</tr>
+									</thead>
+									<tbody id="tbodyid">
+										<!-- product here -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
 					</div>
+					<!-- 訂單表 -->
 				</div>
 			</div>
 		</div>
@@ -545,12 +540,46 @@ I've added a few comments on why we're using certain properties
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
+	
+	<!-- Modal HTML -->
+		<div class="modal fade" id="confrimPaidAlready" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      <!-- write here -->
+		       <div class="col-12" id="modalContent"> 
+		       		
+		       </div>		      	
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>        
+		<!-- Modal HTML -->
 
 
 	<script>
+	
+	//留言滑到底的時候顯示
+	  $("#sssssss").scroll(function(){
+		    var h = $(this).height();//div可视区域的高度
+		    var sh = $(this)[0].scrollHeight;//滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点
+		    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
+		    if(h+st>=sh){
+		    //上面的代码是判断滚动条滑到底部的代码
+		      alert("滑到底部了");
+		      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
+		    }
+		  })
 			$(document).ready(function () {			
-				
-
 				
 					var Table = $("#orderlist").DataTable({
 						 language: {
@@ -577,7 +606,10 @@ I've added a few comments on why we're using certain properties
 						    data:[],
 						    columns: [
 						    	{ "data": "orderId" },
-				                { "data": "uuid"  },
+				                { "data": "uuid" ,
+						    	  "render": function(data,type,row,meta){
+						    		return "<font color='#191970' id='uuidclick'>"+data+"</font>";
+						    	  }},
 				                { "data": "orderCreatedDate" ,
 			                	  "render": function (data, type, row, meta) {
 			                	   var time2 = new Date(data).format("yyyy-MM-dd hh:mm:ss");
@@ -589,9 +621,8 @@ I've added a few comments on why we're using certain properties
 									return "$"+data;				                	  
 				                  }},
 				                { "data": "status"},
-				                { "data": "",
-				                  "render": function(data,type,row,meta){
-				                  return "<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>";
+				                { "render": function(data,type,row,meta){
+				                  return "<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster' data-toggle='modal' data-target='#confrimPaidAlready'><i class='far fa-credit-card'></i></button></td>";
 				                  }}
 						    ],
 						    filter: true,
@@ -602,7 +633,6 @@ I've added a few comments on why we're using certain properties
 						    retrieve: true,
 						    searching: true, //關閉filter功能
 						});
-					
 					
 					Date.prototype.format = function (fmt) {
 						  var o = {
@@ -619,7 +649,6 @@ I've added a few comments on why we're using certain properties
 						  if (new RegExp("(" +  k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +  o[k]).substr(("" + o[k]).length)));
 						  return fmt;
 						}
-					
 						///////////////////////////////////////////////////////
 						$.ajax({
 							method:"GET",	
@@ -632,19 +661,19 @@ I've added a few comments on why we're using certain properties
 					        	var orderlist = result.AccountMemberOrderList;
 					        	Table.clear().draw();
 					            Table.rows.add(result.AccountMemberOrderList).draw();
-// 					            $('#orderlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='cheqGreenMonster'><i class='far fa-credit-card'></i></button></td>");
 					        },
 					        error: function (result) {
 					        	console.log("有問題");
 					        }
 						});
 						
-						
 						$('body').on('click','#cheqGreenMonster',function(e){
 							e.preventDefault();
+							$("#exampleModalCenterTitle").empty();
+							$("#modalContent").empty();
 							var status = $(this).parent().prev().text();
+							var orderid = $(this).parent().prevAll("td:eq(6)").text();
 							if (status == '尚未付款'){
-								var orderid = $(this).parent().prevAll("td:eq(6)").text();
 								data = new FormData();
 								data.append("orderid",orderid);
 								$.ajax({
@@ -663,18 +692,55 @@ I've added a few comments on why we're using certain properties
 							        	console.log("綠界沒出去");
 							        }	
 								});    
-								
 							} else if (status == "超時取消訂單"){
-								alert('訂單已超時，請重新購買');
+								$("#exampleModalCenterTitle").text("訂單已超時，請重新購買");
+								$("#modalContent").append("訂單"+orderid+"已超時，請重新購買");
 							} else {
-								alert('該筆訂單已完成付款');
+								$("#exampleModalCenterTitle").text("該筆訂單已完成付款");
+								$("#modalContent").append(orderid+"訂單已完成付款");
 							}
+							
+						});
+						
+						$("body").on("click","#uuidclick",function(){
+							var orderid = parseInt($(this).parent().prev().text(),10);		
+							console.log(orderid);
+							$.ajax({
+								method:"GET",	
+								url:"/PepperNoodles/user/getDetailForEachOrder?orderid="+orderid+"",
+								contentType: 'application/json; charset=utf-8',
+								dataType:'json',
+						        async : true,
+						        cache: false,
+						        success:function(result){
+						        	$("#orderdetailforeach").toggle("slow");
+						        	$("#tbodyid").empty();
+						        	console.log(result.pname);
+						        	console.log(result.pprice);
+						        	console.log(result.pamount);
+						        	var pname = result.pname;
+						        	var pprice = result.pprice;
+						        	var pamount = result.pamount;
+						        	for (var i=0;i<pname.length;i++){
+						        		var tr   = $('<tr></tr>');
+						        		var col1 = $('<td>#'+(i+1)+'</td>');
+						        		var col2 = $('<td>'+pname[i]+'</td>');
+						        		var col3 = $('<td>'+pprice[i]+'</td>');
+						        		var col4 = $('<td>'+pamount[i]+'</td>');
+						        		tr.append(col1).append(col2).append(col3).append(col4);
+						        		$('#tbodyid').append(tr);
+						        	}
+						        
+						        },
+						        error: function (result) {
+						        	console.log("有問題");
+						        }
+							});
 							
 						});
 						
 						
 						///////////////////////////////////////////////
-	
 // 					$(document).ready(function(){ 
 // 					$(window).on('load', function () {
 						showAllComments();
@@ -924,7 +990,13 @@ I've added a few comments on why we're using certain properties
 							});
 						 }
 						
-
+						//顯示餐廳按鈕啟動的funciton
+						//顯示位址
+						 
+		
+						
+						
+						
 
 							
 						});//onload end
@@ -1078,7 +1150,6 @@ I've added a few comments on why we're using certain properties
 							    var st =$(this)[0].scrollTop;//滚动条的高度，即滚动条的当前位置到div顶部的距离
 							    if(h+st>=sh){
 							    //上面的代码是判断滚动条滑到底部的代码
-							      //alert("滑到底部了");
 							      $("#commentsForUser").append("<i>沒有留言囉~~</i>"+"<br>");//滚动条滑到底部时，只要继续滚动滚动条，就会触发这条代码.一直滑动滚动条，就一直执行这条代码。
 							    }
 							  })
@@ -1095,7 +1166,7 @@ I've added a few comments on why we're using certain properties
 								url:  urls,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1132,7 +1203,7 @@ I've added a few comments on why we're using certain properties
 								data:JSON.stringify(data),
 								
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1152,7 +1223,7 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 								},
 								error: function (thrownError) {
@@ -1191,6 +1262,7 @@ I've added a few comments on why we're using certain properties
 // 							alert(text);
 // 							alert(time);
 // 							alert(likeAmount);
+
 							var data =
 							{
 									"userMessageId": id,
@@ -1210,7 +1282,7 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-// 									alert(result);
+									alert(result);
 									showAllComments();
 
 								},
@@ -1629,6 +1701,17 @@ I've added a few comments on why we're using certain properties
  		});
  		
  		
+			function positionShow(){
+				console.log(this.id);
+				let restId = this.id.slice(4,);
+				
+				let url = "<c:url value='/restSearch/userSingleRestPage/' />" + restId;
+				features = "width="+1200+",height="+600+",top="+50+",left="+50; 
+				window.open(url,"toolbar=no,location=no,directories=no",features);
+			}
+		
+ 		
+ 		
  			//建立隔壁memo的function
  			function createSideMemo(){
  				//memo
@@ -1678,7 +1761,14 @@ I've added a few comments on why we're using certain properties
  		 					    restAnchor.innerHTML=result[i].restaurantName;
  		 					    restAnchor.style.color="#0000C6";
  		 					    td2.appendChild(restAnchor);
- 		 					    tr2.appendChild(td2);     			        
+ 		 					    tr2.appendChild(td2);     		
+ 		 					    
+ 		 					  	
+		 					    let td2_2=document.createElement("td");
+		 					    td2_2.rowSpan="3";	   
+		 					    td2_2.innerHTML = '<button class="getPositionButton" style="background-color:#00008B;border-radius:15px;" id=rest'+result[i].restaurantId+'><i class="fas fa-map-marker-alt"></i></button>'
+		 					   	tr2.appendChild(td2_2);     	
+		 					    $(".getPositionButton").click(positionShow);
  		 					        
  		 					    let tr3 = document.createElement("tr");
  		 					    let td3=document.createElement("td");
@@ -1716,10 +1806,13 @@ I've added a few comments on why we're using certain properties
  		 					    memosheet.appendChild(tr3);
  		 					    memosheet.appendChild(tr4);    
  		 					    memosheet.appendChild(tr5); 
+ 		 					  	
  		 					    }
  		 					memo.appendChild(memosheet);
 
  		 					memosheet.style.padding='5px';
+ 		 					$(".getPositionButton").click(positionShow);
+ 		 					
  		 				}else{
  		 					memo.innerHTML="<h2>您還沒有收藏餐廳唷!</h2>";
  		 				}
@@ -1728,7 +1821,6 @@ I've added a few comments on why we're using certain properties
  						}
  					});
  				};
-
  		
  	</script>
 

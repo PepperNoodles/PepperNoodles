@@ -69,7 +69,7 @@
 <div class="list-group list-group-root well">
   
   <a href="#item-1" class="list-group-item" data-toggle="collapse">
-    <img src="../images/rear/file-earmark-text.svg" alt="Bootstrap" width="30" height="30">
+    <img src="<c:url value='/images/rear/file-earmark-text.svg'/>" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>會員管理
   </a>
   <div class="list-group collapse" id="item-1">
@@ -102,7 +102,7 @@
   
   
   <a href="<c:url value='/rearStage/rest'/>" class="list-group-item" >
-	<img src="../images/rear/shop.svg" alt="Bootstrap" width="30" height="30">
+	<img src="<c:url value='/images/rear/shop.svg'/>" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>餐廳
   </a>
   <div class="list-group collapse" id="item-2">
@@ -137,8 +137,8 @@
   </div>
   
   
-  <a href="#item-3" class="list-group-item" data-toggle="collapse">
-    <img src="../images/rear/cart3.svg" alt="Bootstrap" width="30" height="30">
+  <a href="<c:url value='/user/rearStage/rearStage'/>" class="list-group-item" data-toggle="collapse">
+    <img src="<c:url value='/images/rear/cart3.svg'/>" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>產品
   </a>
   <div class="list-group collapse" id="item-3">
@@ -157,7 +157,8 @@
     </a>
   </div>
  
-   <a href="#item-4" class="list-group-item" >
+   <a href="<c:url value='/rearStage/rearMessage'/>" class="list-group-item" >
+    <img src="<c:url value='/images/rear/comment.svg'/>" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>訊息
   </a>
     

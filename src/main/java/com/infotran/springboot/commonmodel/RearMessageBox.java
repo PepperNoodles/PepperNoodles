@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "rearMessageBox")
@@ -31,23 +33,31 @@ public class RearMessageBox {
 //	private String accountIndex;
 	
 	@Column(name = "messageText")
-	private String messageText;
-		
+	private String messageText;//kity
+	
+	//發布訊息時間
 	@Column(name = "time")
 	private Date time;
 	
+	//更新訊息時間
+	@Column(name = "updateTime")
+	@JsonInclude(content = Include.NON_NULL)
+	private Date updateTime;	
+
 	@Column(name = "condition")
-	private String condition;
+	private boolean  condition;
 	
-	@Transient
-	@Column(name = "fk_userAccount_id")
-	private Integer userAccountId;
+
+//	@Transient
+	@Column(name = "fk_userAccount_id",insertable=false,updatable=false)
+	private Integer userAccountId;//transient對應不到資料表 //// ↑上面是指可以查詢 但是不能新增跟修改
+	
 
 	/** 1個User可以有多個訊息 **/
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_userAccount_id")
-	@JsonIgnore
-	private UserAccount userAccount;
+//	@JsonIgnore 
+	private UserAccount userAccount;//jsonignore不回傳出去在json檔
 	
 		
 	public RearMessageBox() {
@@ -75,7 +85,7 @@ public class RearMessageBox {
 	}
 
 
-	public String getCondition() {
+	public boolean isCondition() {
 		return condition;
 	}
 	
@@ -87,9 +97,18 @@ public class RearMessageBox {
 	public void setTime(Date time) {
 		this.time = time;
 	}
+	
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
 
-	public void setCondition(String condition) {
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+
+	public void setCondition(boolean condition) {
 		this.condition = condition;
 	}
 
