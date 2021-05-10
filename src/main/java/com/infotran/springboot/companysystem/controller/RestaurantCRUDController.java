@@ -179,7 +179,7 @@ public class RestaurantCRUDController {
 	@GetMapping(value = "/addrest")
 	public String initRestaurant(Model model) {
 		Restaurant rest = new Restaurant();
-		rest.setRestaurantName("幽靈炒飯好吃");
+		rest.setRestaurantName("幽靈炒飯");
 		rest.setRestaurantAddress("台北市 信義路 100號");
 		rest.setRestaurantContact("02-28825252");
 		rest.setRestaurantWebsite("https://www.facebook.com/");

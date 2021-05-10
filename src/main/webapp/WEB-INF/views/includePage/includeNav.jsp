@@ -142,9 +142,6 @@ $("#indexSearch").on('click',function(){
 												</ul></li>
 											<li><a href="<c:url value='/restSearch/mapWithCurrentLoca'/>" id = "indexSearch">探索地圖</a></li>
 											<li><a href="about.html">發表食記</a></li>
-
-											<li><a href="<c:url value='/contactUs'/>" >聯絡我們1</a></li>
-
 											<li><a href="<c:url value='/rearStage/rearContactMessage'/>">聯絡我們</a></li>
 
 
@@ -277,8 +274,9 @@ $("#indexSearch").on('click',function(){
 	<script
 		src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
 			<script>
-		console.log(isAuthenticated)
-		console.log(${isAuthenticated})</script>
+// 		console.log(isAuthenticated)
+// 		console.log(${isAuthenticated})
+		</script>
 
 </body>
 </html>
