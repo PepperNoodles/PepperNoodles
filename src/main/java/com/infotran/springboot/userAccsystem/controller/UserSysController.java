@@ -62,6 +62,7 @@ import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.loginsystem.dao.FoodTagRepository;
 import com.infotran.springboot.loginsystem.dao.FoodTagUserRepository;
 import com.infotran.springboot.loginsystem.service.UserAccountService;
+import com.infotran.springboot.shoppingmall.model.OrderDetail;
 import com.infotran.springboot.shoppingmall.model.OrderList;
 import com.infotran.springboot.shoppingmall.service.Impl.CancelOrderServiceImpl;
 import com.infotran.springboot.shoppingmall.service.Impl.OrderListServiceImpl;
@@ -612,7 +613,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		String status ="";
 		UserAccount viewUserAccount = uSysServiceImpl.findByAccountIndex(useraccount);
 		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
-
 		MessageBox newMSN = new MessageBox();
 		newMSN.setText(comment);
 		newMSN.setTime(new Date());
@@ -632,7 +632,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@PostMapping(value="/user/addNewReplyCommentAjax/{id}", consumes= {"application/json"})
 	@ResponseBody
 	public String addNewReplyComment(@PathVariable(value="id") Integer id, @RequestBody MessageBox replyMSN) {
-		
 		System.out.println("");
 		String message = "";
 		MessageBox msn = new MessageBox();
@@ -640,28 +639,21 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		msn.setText(replyMSN.getText());
 		msn.setTime(new Date());
 		msn.setLikeAmount(0);
-		
 		//找出要回覆留言的源頭
 		MessageBox userMsn = msnServiceImpl.findById(id);
-		
 		//設定回覆留言的主人
 		UserAccount userAccount = uSysServiceImpl.findByAccountIndex(userMsn.getUserAccount().getAccountIndex());
 		msn.setUserAccount(userAccount);
-
 		//設定留言者
 		msn.setNetizenAccount(uSysServiceImpl.findByAccountIndex(returnNamePath()));
-		
 		msn.setMessageBox(userMsn);
 //		userMsn.getReplyMessageBoxes().add(msn);
 		Integer success =msnServiceImpl.save(msn);
-		
 		if(success==1) {
 			message="訊息新增成功";
 		}else {
 			message="訊息新增失敗";
-
 		}
-
 		return message;
 	}
 	
@@ -671,10 +663,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public String deleteMainComment(@RequestParam(value = "id") Integer id) {
 		String message = "";
-		
-		
 		UserAccount commenter = uSysServiceImpl.findByAccountIndex(returnNamePath());
-		
 		MessageBox msn = msnServiceImpl.findById(id);
 		if(commenter.getAccountId()!=msn.getNetizenAccount().getAccountId()){
 			message = "別人的留言不能刪啦~";
@@ -682,19 +671,15 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		}else{
 			msn.setNetizenAccount(null);
 			msn.setUserAccount(null);
-			
 			List<MessageBox> listMsn = msn.getReplyMessageBoxes();
 			List<Integer> messageIdToDelete = new ArrayList<>();
-			
 			if(listMsn!=null) {
 				for(MessageBox otherMSN :listMsn ) {
-					
 					otherMSN.setMessageBox(null);
 					otherMSN.setNetizenAccount(null);
 					otherMSN.setUserAccount(null);
 					messageIdToDelete.add(otherMSN.getUserMessageId());
 					msnServiceImpl.delete(otherMSN);
-
 //					msnServiceImpl.save(otherMSN);
 				}
 			}
@@ -704,10 +689,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 			}else {
 				message="訊息尚未刪除";
 			}
-
 		}
-
-
 		return message;
 	}
 	
@@ -720,30 +702,22 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 				findByAccountIndex( msnServiceImpl.findById(updateMSN.getUserMessageId()).
 				getNetizenAccount().getAccountIndex());
 		UserAccount loginner = uSysServiceImpl.findByAccountIndex(returnNamePath());
-		
 		if(loginner.getAccountId()!=talker.getAccountId()){
 			message = "別人的留言不能改啦~麥笑想";
 			return message;
 		}else {
-			
 			MessageBox msn = msnServiceImpl.findById(updateMSN.getUserMessageId());
 			System.out.println("======================================="+updateMSN.getText());
 			msn.setText(updateMSN.getText());
 			msn.setTime(new Date());
-	        
-
 			msn.setLikeAmount(updateMSN.getLikeAmount());
-
 			Integer success =msnServiceImpl.save(msn);
 			if(success==1) {
 				message="訊息修改成功";
 			}else {
 				message="訊息尚未修改";
-
 			}
 		}
-		
-
 		return message;
 	}
 	
@@ -752,10 +726,8 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public String updateLikeComment( @RequestParam(value = "id") Integer msnID) {
 		String message = null;
-		
 		MessageBox msn = msnServiceImpl.findById(msnID);
 		System.out.println("=======================================要被讚的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
-		
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		Integer flag =likeServiceImpl.save(user, msn);
 		
@@ -772,9 +744,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 			message=String.valueOf(msn.getLikeAmount());
 			System.out.println("因為已經讚過了所以不會在加讚了~~~!!!!!");
 		}
-
-		
-
 		return message;
 	}
 	
@@ -785,7 +754,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		String message = null;
 		MessageBox msn = msnServiceImpl.findById(msnID);
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
-
 		System.out.println("=======================================要被刪刪刪刪刪刪刪的留言在者李~~~~~~~~~~~~~~~~~~~~~~"+msn.getText());
 		Integer delete =likeServiceImpl.delete(user, msn);
 		if(delete==1) {
@@ -793,9 +761,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 			Integer success =msnServiceImpl.save(msn);
 			System.out.println("成功保存刪除讚的MSNBOX: " + success );
 		}
-	
 			message=  String.valueOf(msn.getLikeAmount());
-			
 		return message;
 	}
 	
@@ -804,7 +770,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public List<UserAccount> showWhoLikeCommentAjax( @RequestParam(name = "msnID") Integer msnID) {
 		String message = null;
-		
 		MessageBox msn = msnServiceImpl.findById(msnID);
 		List<Like> msnLikes = msn.getLikes();
 		List<UserAccount> preToSend = new ArrayList<UserAccount>();
@@ -814,20 +779,16 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		return preToSend;
 	}
 	
-	
 //餐廳收藏功能======================================================================================================================
-	
 	
 	//使用者確認餐廳收藏功能
 	@GetMapping(value="/user/checkRestaurantCollection" )
 	@ResponseBody
 	public String checkRestaurantCollection( @RequestParam(name = "resID") Integer resID) {
 		String message = null;
-		
 		Restaurant res = restaurantService.get(resID);
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		List<Restaurant> userCollections = user.getRestaurantCollections();
-		
 		if(userCollections.contains(res)) {
 			System.out.println("餐廳已經加過收藏不能再加囉!");
 			message = "true";
@@ -836,7 +797,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 			System.out.println("餐廳還沒加過唷~~");
 			message="還沒加過唷~~";
 		}
-
 		return message;
 	}
 	
@@ -846,13 +806,9 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@ResponseBody
 	public String addRestaurantCollection( @RequestParam(name = "resID") Integer resID) {
 		String message = null;
-		
 		Restaurant res = restaurantService.get(resID);
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		List<Restaurant> userCollections = user.getRestaurantCollections();
-		
-
-		
 		if(userCollections.contains(res)) {
 			System.out.println("餐廳已經加過收藏不能再加囉!,為您取消收藏");
 			
@@ -865,19 +821,14 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 			}
 			uSysServiceImpl.update(user);
 			message = "取消收藏";
-			
 		}else {
 			userCollections.add(res);
 			user.setRestaurantCollections(userCollections);
 			service.update(user);
 			message="success";
 		}
-		
-
-
 		return message;
 	}
-	
 	
 	//使用者頁面顯示餐廳收藏
 	@GetMapping(value="/user/showUserCollections" )
@@ -885,12 +836,8 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	public List<Restaurant> showUserCollections( ) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		List<Restaurant> userCollections = user.getRestaurantCollections();
-		
-
-
 		return userCollections;
 	}
-	
 	
 	//瀏覽他人頁面的餐廳收藏
 	@GetMapping(value="/user/showOtherUserCollections" )
@@ -904,9 +851,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		return userCollections;
 	}
 	
-	
 //======================================================================================================================
-	
 	
 	@GetMapping(path="finduser")
 	@ResponseBody
@@ -943,19 +888,14 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 
 	}
 	
-	
-	
 	//得到mainUser的friendList
 	@GetMapping(path="findMainfriend/{userAccountIndex}")
 	@ResponseBody
 	public List<UserAccount> findMainUserFriend(@PathVariable("userAccountIndex") String mainAccountIndex){
 		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);
-		
-		
 		List<FriendList> mainUserFriends = friendSysServiceImpl.findFriendByUserAndRelation(user,"Y");
 //		Hibernate.initialize(user.getFriends());
 //		Set<FriendList> mainUserFriends = user.getFriends();
-
 		List<UserAccount> myFriend = new ArrayList<UserAccount>();
 		if (mainUserFriends.isEmpty()==false) {
 			for(FriendList flist:mainUserFriends) {
@@ -998,7 +938,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		UserAccount user = uSysServiceImpl.findByAccountIndex(userIndex);
 		UserAccount friend = uSysServiceImpl.findByAccountIndex(friendIndex);
 		String result="";
-		
 		List<FriendList> flist=friendSysServiceImpl.findRelationFromUserAndFriend(user, friend);
 		if (flist.size()>0) {
 			FriendList friendship = flist.get(0);
@@ -1073,9 +1012,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		
 	}
 	
-
-	
-	
 	//假裝用session登入(簡單利用pathVariable模擬登入)
 	@GetMapping(path="user/login/{userAccountIndex}")
 	public String goViewWithSession(@PathVariable("userAccountIndex") String uAccIndx,Model model) {
@@ -1110,7 +1046,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	@GetMapping(path="searchUserByNick",produces="application/json")
 	@ResponseBody
 	public List<UserAccount> searchUserNickName(@RequestParam(name="name") String name,Model model){
-
 //		UserAccount currentUser = (UserAccount)model.getAttribute("userAccount");
 		UserAccount currentUser = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		System.out.println("currentUser======="+currentUser.getAccountIndex());
@@ -1144,13 +1079,9 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		return uSysServiceImpl.findByAccountIndex(accIndex);
 	}
 	
-	
-	
-	
 	//用id找回database user照片
 	@GetMapping(path="/userProtrait/{userDetailID}",produces = "image/jpeg")
 	public ResponseEntity<byte[]> getUserDetailProtrait(@PathVariable("userDetailID") Integer detailId) {
-		
 		UserDetail uDtail = uDetailService.get(detailId);
 		Blob photo=null;
 		byte[] uPhoto=null;
@@ -1180,13 +1111,30 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	
 	@GetMapping(value="/user/getOrderList")
 	public @ResponseBody Map<String,ArrayList<OrderList>> findUserOrderListByUserName(@ModelAttribute("userAccount")UserAccount user){
-		
 		Map<String,ArrayList<OrderList>> mapview = new HashMap<String,ArrayList<OrderList>>();
 		ArrayList<OrderList>  orderViewList = olistservice.findOrderList(user.getAccountId());
-//		for(int i =0;i<orderViewList.size();i++) {
-//			System.out.println("uuid在user這邊"+orderViewList.get(i).getUuid());
-//		}
 		mapview.put("AccountMemberOrderList", orderViewList);
+		return mapview;
+	}
+	
+	@GetMapping(value="/user/getDetailForEachOrder")
+	public @ResponseBody Map<String,Object> findDetailForOrderList(@RequestParam("orderid")Integer orderid){
+		ArrayList<OrderDetail> detaillist = olistservice.findOrderDetailByFkOrderId(orderid);
+		List<String> pname = new ArrayList<String>();
+		List<Integer> pprice = new ArrayList<Integer>();
+		List<Integer> pamount = new ArrayList<Integer>();
+		for (OrderDetail od : detaillist) {
+			String name = od.getProduct().getProductName();
+			Integer price = od.getProduct().getProductPrice();
+			Integer amount = od.getAmount();
+			pname.add(name);
+			pprice.add(price);
+			pamount.add(amount);
+		}
+		Map<String,Object> mapview = new HashMap<String,Object>();
+		mapview.put("pname", pname);
+		mapview.put("pprice", pprice);
+		mapview.put("pamount", pamount);
 		return mapview;
 	}
 	

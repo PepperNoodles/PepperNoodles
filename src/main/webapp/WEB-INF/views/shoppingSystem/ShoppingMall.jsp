@@ -134,8 +134,7 @@ $(document).ready(function() {
 		$("#seeMoreTagProducts").click(function(e){
 			e.preventDefault();
 			ifprice = 5;
-			//
-			flag=1;
+			flag="1";
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -188,8 +187,6 @@ $(document).ready(function() {
 		       			$productCardDiv.append($singlelisting);
 		       			$productCardDiv.appendTo($(".row.productFrameall"));
 		       			});
-		        		
-		        
 		        },
 		        error: function (result) {
 		        	console.log("問題是:"+result);
@@ -201,8 +198,7 @@ $(document).ready(function() {
 		$("#seeMoreAllProducts").click(function(e){
 			e.preventDefault();
 			ifprice=5;
-			//
-			flag = 2;
+			flag = "2";
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -262,9 +258,8 @@ $(document).ready(function() {
 		$("#mainclass").on("click","a",function(e){
 			e.preventDefault();
 			ifprice = 5;
-			flag = $(this).index("a")-50;
-			console.log("mainclass===>>"+flag);
-			var mainname=$(this).attr("id");
+			flag = $("#coupon").data("val");//票券
+			var mainname=$(this).data("val");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -323,9 +318,8 @@ $(document).ready(function() {
 		$("#ingredientmainclass").on("click","a",function(e){
 			e.preventDefault();
 			ifprice = 5;
-			flag = $(this).index("a")-55;//59
-			console.log("ingredientmainclass===>>"+flag);
-			var mainname=$(this).attr("id");
+			flag = $("#ingredient").data("val");
+			var mainname=$(this).data("val");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -386,9 +380,8 @@ $(document).ready(function() {
 		$("#detailname").on("click","a",function(e){
 			e.preventDefault();
 			ifprice = 5;
-			flag = $(this).index("a")-49;//54
-			console.log("detailname====>>"+flag);
-			var detailname=$(this).attr("id");
+			flag = $(this).data("val");
+			var detailname=$(this).data("val");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -448,9 +441,8 @@ $(document).ready(function() {
 		$("#ingredientname").on("click","a",function(e){
 			e.preventDefault();
 			ifprice = 5;
-			flag = $(this).index("a")-50;//60
-			console.log("ingredientname====>>"+flag);
-			var detailname=$(this).attr("id");
+			flag = $(this).data("val");
+			var detailname=$(this).data("val");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -510,9 +502,8 @@ $(document).ready(function() {
 		$("#puretag").on("click","a",function(e){
 			e.preventDefault();
 			ifprice = 5;
-			flag = $(this).index("a")-55;//67
-			console.log("flag num is: "+flag);
-			var tagname=$(this).attr("id");
+			flag = $(this).data("val");
+			var tagname=$(this).data("val");
 			$("#pframeall > div").remove();
 			$("#Page1").hide();
 			$("#PageEverthing").show();
@@ -574,7 +565,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			ifprice = 5;
 // 			尚未修改start here
-			flag = 1001;
+			flag = "1001";
 			input = $("#searchall").val();
 			var insertornot = false;
 			if (input != ""){
@@ -658,9 +649,7 @@ $(document).ready(function() {
 			ifprice = 1;
 			price = $(this).attr("id");
 			input = $("#searchall").val();
-			console.log(input);
 			$("#pframeall > div").remove();
-			console.log("====>>flag:"+flag+"price"+price+"input"+input);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpricerange/"+price+"/"+flag+"?input="+input+"",
@@ -723,7 +712,6 @@ $(document).ready(function() {
 			}
 			var page = $(this).attr("id");//第一頁
 			$("#pframeall > div").remove();
-			console.log("ifprice: "+ifprice+"flag: "+flag+"page: "+page+"inpue: "+input);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpage/"+ifprice+"/"+flag+"/"+(page-1)+"?input="+input+"",
@@ -1121,17 +1109,6 @@ $(document).ready(function() {
 	
 	$('#checkout').on('click',function(e){
 		e.preventDefault();
-// 		var idlist = new Array();
-// 		var amountlist = new Array();
-// 		$('tbody tr').each(function(){
-// 			var amount = $('tbody tr td:nth-child(3) input[type=number]').val();
-// 			var pid    = $('table tbody tr td:first-child').attr('id').substring(4);
-// 			idlist.push(pid);
-// 			amountlist.push(amount);
-// 		});	
-// 		data = new FormData();
-// 		data.append('idlist',JSON.stringify(idlist));
-// 		data.append('amountlist',JSON.stringify(amountlist));
 		$.ajax({
 			method:"POST",
 			url:"/PepperNoodles/checkoutURL",
@@ -1141,9 +1118,7 @@ $(document).ready(function() {
 	        async : true,
 	        cache: false,
 	        success: function (url) {
-// 	        	location.href = "";
 				window.location.href="http://localhost:433/PepperNoodles"+url;
-// 	        	window.open("http://localhost:433/PepperNoodles"+url, '_blank');
 	        },
 	        error: function (url) {
 	        	console.log("Problems everywhere");
@@ -1152,7 +1127,6 @@ $(document).ready(function() {
 	});
 	
 	//通知表
-// 	$("body").on("click","#inform",function(){
 		$.ajax({
 			method:"GET",
 			url:"/PepperNoodles/informUserProductStatus",
@@ -1168,19 +1142,19 @@ $(document).ready(function() {
 				$('.toast').toast({delay: 3000});
 				$('.toast').toast('show');
 				$.each(pofflist,function(index,element){
-					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 商品: "+"<font color='blue'>"+element.productName+"</font>"+" 已經下架囉!</a></li>");
+					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 商品: "
+								+"<font color='blue'>"+element.productName+"</font>"+" 已經下架囉!</a></li>");
 					informMenu.append(li1);
 				});
 				$.each(pnewlist,function(index,element){
-					var li2 = $("<li><a href='javascript:void(0)'>新上架! 商品: "+"<font color='blue'>"+element.productName+"</font>"+" 全新上架!</a></li>");
+					var li2 = $("<li><a href='javascript:void(0)'>新上架! 商品: "
+								+"<font color='blue'>"+element.productName+"</font>"+" 全新上架!</a></li>");
 					informMenu.append(li2);
 				});
 			},error:function(response){
 				
 			}
 		});
-// 	});
-	
 	
 	
 	
@@ -1488,26 +1462,26 @@ $(document).ready(function() {
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="" id ="mainclass">
-                        			<h3><a id="coupon">票券</a></h3>
+                        			<h3><a id="coupon" data-val="票券">票券</a></h3>
                         		</div>
                         		<div class="detailclass">
                         			<ol class="ordered-list" id="detailname">
-                        				<li><a id="friedchicken">炸雞</a></li>
-                        				<li><a id="icecream">冰淇淋</a></li>
-                        				<li><a id="vegfruit">蔬菜水果</a></li>
-                        				<li><a id="desert">甜點</a></li>
-                        				<li><a id="steak">牛排</a></li>
+                        				<li><a id="friedchicken" data-val="炸雞">炸雞</a></li>
+                        				<li><a id="icecream" data-val="冰淇淋">冰淇淋</a></li>
+                        				<li><a id="vegfruit" data-val="蔬菜水果">蔬菜水果</a></li>
+                        				<li><a id="desert" data-val="甜點">甜點</a></li>
+                        				<li><a id="steak" data-val="牛排">牛排</a></li>
                         			</ol>
                         		</div>
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="" id ="ingredientmainclass">
-                        			<h3><a id="ingredient">食材</a></h3>
+                        			<h3><a id="ingredient" data-val="食材">食材</a></h3>
                         		</div>
                         		<div class="detailclass">
                         			<ol class="ordered-list" id="ingredientname">
-                        				<li><a id="hotpot">火鍋</a></li>
-                        				<li><a id="lambstove">羊肉爐</a></li>
+                        				<li><a id="hotpot" data-val="火鍋">火鍋</a></li>
+                        				<li><a id="lambstove" data-val="羊肉爐">羊肉爐</a></li>
                         			</ol>
                         		</div>
                         	</div>
@@ -1528,11 +1502,11 @@ $(document).ready(function() {
                         			<h3><a>TAGS</a></h3>
                         		</div>
                         		<div class="detailclass button-group-area mt-10" id="puretag">
-                        			<a class="genric-btn primary-border small" id="friedchicken">炸雞</a>
-                        			<a class="genric-btn primary-border small" id="icecream">冰淇淋</a>
-                        			<a class="genric-btn primary-border small" id="salad">沙拉</a>
-                        			<a class="genric-btn primary-border small" id="desert">甜點</a>
-                        			<a class="genric-btn primary-border small" id="hotpot">火鍋</a>
+                        			<a class="genric-btn primary-border small" id="friedchicken" data-val="炸雞標籤">炸雞</a>
+                        			<a class="genric-btn primary-border small" id="icecream" data-val="冰淇淋標籤">冰淇淋</a>
+                        			<a class="genric-btn primary-border small" id="salad" data-val="沙拉標籤">沙拉</a>
+                        			<a class="genric-btn primary-border small" id="desert" data-val="甜點標籤">甜點</a>
+                        			<a class="genric-btn primary-border small" id="hotpot" data-val="火鍋標籤">火鍋</a>
                         		</div>
                         	</div>
                         </div>

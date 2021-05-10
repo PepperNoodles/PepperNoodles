@@ -226,9 +226,6 @@ buttonImage{
 .time{
 	color: red;
 }
-.img{
-	 opacity: 0.5;
-}
 .pull-right a{
 	color:#8E8E8E;
 }
@@ -257,7 +254,7 @@ body {
         </div>
         
 		<div class="col-lg-10 nopadding" >
-<%-- 			<div class="image-container set-full-height img" style="background-image: url(<c:url value="/images/company/event.jpeg"/>)" > --%>
+			<div class="image-container set-full-height img" style="background-image: url(<c:url value="/images/company/event2.png"/>)" >
 				<br><br><br>
 				<table class="container" >
 					<tr>

@@ -24,11 +24,11 @@ public interface RearMessageBoxRepository extends JpaRepository<RearMessageBox, 
 	@Query(value="select message from RearMessageBox message where message.userAccount != null")
 	public ArrayList<RearMessageBox> findMessage();
 	
-	//發布訊息時間 111是對應日期格式 (上架中)
-	@Query(value="select message from RearMessageBox message where convert(nvarchar,message.time,111) =?1 and message.condition = 'false'")
+	//發布訊息時間 111是對應日期格式 (上架中) 0對應資料表的不是用false
+	@Query(value="select message from RearMessageBox message where convert(nvarchar,message.time,111) =?1 and message.condition = 0")
 	public List<RearMessageBox> findNewMessageByTime(String todayTime);
 	
-	//回復訊息更新時間 (下架中)
-	@Query(value="select message from RearMessageBox message where convert(varchar,message.updateTime,111) >= ?1 and message.condition ='true'")
+	//回復訊息更新時間 (下架中) 1對應資料表的不是用true
+	@Query(value="select message from RearMessageBox message where convert(nvarchar,message.updateTime,111) >= ?1 and message.condition =1")
 	public List<RearMessageBox> findUpdatedMessageByTime(String replyTime);
 }
