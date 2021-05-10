@@ -508,15 +508,10 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 		return message;
 	}
 	
-	
 	@GetMapping(value="/user/replacePhotoAjax")
 	public @ResponseBody Integer replacephoto( ) throws Exception{
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
-		
-
-
 		return user.getUserAccountDetail().getUseretailId();
-
 	}
 	
 //======================================================================================================================
@@ -526,10 +521,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	public String gopage(Model model) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		System.out.println(returnNamePath());
-//		System.out.println(user.getMsnBox().get(0));		
-
 		model.addAttribute("userAccount", user);
-
 		return "userpage/usermain";
 	}
 	
@@ -575,7 +567,6 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 				
 			}	
 		}
-		System.out.println("放進去了");
 		return userMsnNull;
 	}
 	
