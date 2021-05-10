@@ -915,13 +915,20 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	public String requestFriend(@PathVariable("userAccountIndex") String mainAccountIndex,@PathVariable("viewAccountIndex") String friendAccountIndex,Model model) {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(mainAccountIndex);
 		UserAccount friend = uSysServiceImpl.findByAccountIndex(friendAccountIndex);
-		FriendList flist=new FriendList();
-		flist.setMainUser(user);
-		flist.setFriends(friend);
-		flist.setFriendship("W");	
-		friendSysServiceImpl.save(flist);
+		List<FriendList> findflist = friendSysServiceImpl.findByFriendship(user, friend,"W");
+		if (findflist.size()==0) {
+			FriendList flist=new FriendList();
+			flist.setMainUser(user);
+			flist.setFriends(friend);
+			flist.setFriendship("W");	
+			friendSysServiceImpl.save(flist);
+			return "request is sending";
+		}
+		
+		
+		return "request is already send";
 
-		return "request is sending";
+		//return "request is sending";
 	}
 	
 	//用postman判斷是否為好友關係,動態影響button的值(主帳號session,被加的是friendIndex),目前用法為在viewUser頁面時,可以動態改成符合型態
