@@ -216,31 +216,34 @@ public class RearStageSystem {
 		SimpleDateFormat datestr = new SimpleDateFormat("yyyy/MM/dd");
 		SimpleDateFormat datestrint = new SimpleDateFormat("yyyyMMdd");
 		Integer lastday = Integer.valueOf(datestrint.format(lastdate).substring(6));
+		System.out.println("lastday==>>"+lastday);
 		Calendar calendar = new GregorianCalendar(); 
 		calendar.setTime(first);
 		for (int i =1 ; i<= lastday;i++) {
 			Date dateiterate =calendar.getTime();
 			double d1 = 0.00 ;
 			if (productid!=0) {//單商品銷售
-				Integer prototal;
+				Integer prototal = 0;
 				for (OrderList ol : olist) {
 					if (sameDate(dateiterate,ol.getOrderCreatedDate())) {
 						 ArrayList<OrderDetail> orderdetaillist = olistservice.findOrderDetailByFkOrderId(ol.getOrderId());
 						 for (OrderDetail od : orderdetaillist) {
 							 if (od.getProduct().getProductId()==productid) {
-								 prototal = od.getProduct().getProductPrice() * od.getAmount();
-								 System.out.println("單一商品價格:"+prototal);
-								 Double db  = prototal/10000.0;
-								 DecimalFormat df = new DecimalFormat("##.00");
-								 d1 = Double.parseDouble(df.format(db));
+								 prototal += od.getProduct().getProductPrice() * od.getAmount();
 							 }
 						 }
 					}else {
-						d1 = 0.00;
+						prototal += 0;
 					}
 				}
+				System.out.println("每單一商品總業績:"+prototal);
+				Double db  = prototal/10000.0;
+				System.out.println(db);
+				DecimalFormat df = new DecimalFormat("##.00");
+				d1 = Double.parseDouble(df.format(db));
+				salesamount.add(d1);
 			}else {
-				//總銷售
+				//每一天所有商品總銷售
 			    Integer total = olistservice.sumBySameDateWithConvertTo111(datestr.format(dateiterate));
 			    if (total!=null) {
 			    	 Double db = total/10000.0;
@@ -249,9 +252,13 @@ public class RearStageSystem {
 			    }else {
 			    	d1 = 0.00;
 			    }
+			    salesamount.add(d1);
 			}
 		    calendar.add(Calendar.DATE,1);
-		    salesamount.add(d1);
+		    
+		}
+		for (int j=0;j<salesamount.size();j++) {
+			System.out.println(salesamount.get(j));
 		}
 		Map<String, Object> salesmap = new HashMap<>();
 		salesmap.put("salesamount", salesamount);

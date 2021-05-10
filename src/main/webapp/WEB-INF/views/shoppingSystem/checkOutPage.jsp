@@ -115,12 +115,12 @@
 					}
 				}
 				totalprice = 0;
-				if (len!=0){
-					for (var i = 0; i < len; i ++){
+				if (localStorage.length!=0){
+					for (var i = 0; i < localStorage.length; i ++){
 						amount = $('#pr'+(i+1)+'').prev().children("input").val();
 						totalprice +=  parseInt($('#pr'+(i+1)+'').text(),10)*amount;
 					}
-				}else if (len==0){
+				}else if (localStorage.length==0){
 					$('tbody').children("tr").remove();
 					$('#pricetag>h4').remove();
 					var tr 	 = $('<tr></tr>');
@@ -228,26 +228,26 @@
 				data.append('amountlist',JSON.stringify(amountlist));
 				data.append('robject',JSON.stringify(robject));
 				if (idlist.length != 0){
-					alert("hi")
+					$.ajax({
+						method:"POST",
+						url:"/PepperNoodles/cheqInvoicecheckOutController",
+						data:data,
+						contentType: false, 
+						processData: false,
+						cache: false,  //不做快取
+				        async : true,
+				        success: function (response) {
+				        	myStorage.clear();
+							localStorage.setItem("ecpayform",response.ecpayform);
+//	 						$("#ecpayform").append(response.ecpayform);
+				        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/OrderFormECpay", '_blank');
+				        },
+				        error: function (url) {
+				        	console.log("Problems everywhere");
+				        }	
+					});
 				}
-				$.ajax({
-					method:"POST",
-					url:"/PepperNoodles/cheqInvoicecheckOutController",
-					data:data,
-					contentType: false, 
-					processData: false,
-					cache: false,  //不做快取
-			        async : true,
-			        success: function (response) {
-			        	myStorage.clear();
-						localStorage.setItem("ecpayform",response.ecpayform);
-// 						$("#ecpayform").append(response.ecpayform);
-			        	window.open("http://localhost:433/PepperNoodles/shoppingSystem/OrderFormECpay", '_blank');
-			        },
-			        error: function (url) {
-			        	console.log("Problems everywhere");
-			        }	
-				});    
+				    
 				
 			});
 			
@@ -268,6 +268,7 @@
 				var rphone   = $('#inputPhone4').val();
 				var robject = new Object();
 				robject = {"address":address,"reciever":reciever,"rphone":rphone}
+				
 				data = new FormData();
 				data.append('idlist',JSON.stringify(idlist));
 				data.append('amountlist',JSON.stringify(amountlist));
@@ -303,8 +304,8 @@
 		        async : true,
 		        cache: false,
 		        success:function(result){
-		        	$('#inputAddress2').val(result.uname) ;
-					$('#inputReciever4').val(result.uaddress);
+		        	$('#inputAddress2').val(result.uaddress) ;
+					$('#inputReciever4').val(result.uname);
 					$('#inputPhone4').val(result.uphone);
 		        },
 		        error: function (result) {
@@ -577,7 +578,7 @@
 								<div class=" col-lg-12">
 			                        <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">猜您可能有興趣的商品</h3> 
 			                        <span class="seeMore" id="seeMoreTagProducts" >
-			                        <a href="javascript:void(0);">查看更多</a>
+			                        <a>查看更多</a>
 			                        </span>
 			                        <!-- product frame start -->
 			                        <div class="row productFrame"  ></div>

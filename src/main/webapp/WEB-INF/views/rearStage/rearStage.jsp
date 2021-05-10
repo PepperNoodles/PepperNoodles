@@ -214,13 +214,14 @@ $(document).ready(function() {
 		
 		
 		
-		//圖表chart.js
+		//bar chart.js
 		var myChart,ctx;
 		$('body').on("click","#firesearch",function(){
 			var datelist = new Array();
 			var mymonth = parseInt($('#mymonth :selected').val(),10);
 			var myyear = parseInt($('#myyear :selected').val(),10);
 			var myprouctid = parseInt($('#myproductname :selected').val(),10);
+			console.log(myprouctid)
 			var d = new Date(myyear,mymonth,0)　//取得所選年月份有幾天
 		    var datenumber = d.getDate();
 			for (var i = 1;i<=datenumber;i++){
@@ -266,32 +267,14 @@ $(document).ready(function() {
 						    }
 						  }]
 						},
-// 						animation: {
-// 						     onComplete: function(chart) {
-// 						       var ctx = chart.ctx;
-// // 						       var chartInstance = this.chart,
-// // 						       ctx = chartInstance.ctx;
-
-// 						       ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-// 						       ctx.textAlign = 'center';
-// 						       ctx.textBaseline = 'bottom';
-
-// 						       this.data.datasets.forEach(function(dataset, i) {
-// 						         var meta = chartInstance.controller.getDatasetMeta(i);
-// 						         meta.data.forEach(function(bar, index) {
-// 						           var data = dataset.data[index];
-// 						           ctx.fillText(data, bar._model.x, bar._model.y - 5);
-// 						         });
-// 						       });
-// 						     }
-// 						   }
 					  },
 					  plugins:[{
 						  beforeDraw: function(chart) {
 						        var ctx = chart.ctx;
 						        ctx.fillStyle = "white";
 						        ctx.fillRect(0, 0, chart.width, chart.height);
-						    }
+						  }
+						
 					  }],
 					  
 					});//end of chart
@@ -300,9 +283,10 @@ $(document).ready(function() {
 		        	console.log("有問題");
 		        }
 			});//ajax ends
-			
-			
 		});//chart.js ends
+		
+		
+		
 		
 			
 		$("body").on("click","#mydownload",function(e){
@@ -356,7 +340,7 @@ $(document).ready(function() {
 					          }
 					        }
 					      }
-					    }
+					  }
 					});//end of chart
 		        },
 		        error:function(result){
