@@ -137,7 +137,7 @@
   </div>
   
   
-  <a href="#item-3" class="list-group-item" data-toggle="collapse">
+  <a href="<c:url value='/user/rearStage/rearStage'/>" class="list-group-item" data-toggle="collapse">
     <img src="../images/rear/cart3.svg" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>產品
   </a>
@@ -157,7 +157,8 @@
     </a>
   </div>
  
-   <a href="#item-4" class="list-group-item" >
+   <a href="<c:url value='/rearStage/rearMessage'/>" class="list-group-item" >
+    <img src="../images/rear/comment.svg" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>訊息
   </a>
     
