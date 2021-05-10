@@ -11,6 +11,12 @@
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<!-- Bootstrap 4 Admin右上方訊息通知-->
+<script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+<!-- 右上方訊息通知 -->
+<%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
+
 <style type="text/css">
 	a{
 		color:#FFFFFF;

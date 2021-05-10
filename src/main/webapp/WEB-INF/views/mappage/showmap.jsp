@@ -188,7 +188,7 @@ tr a:hover{
 
 	<br>
 
-	<h5 style="display: none;" id="indexSearch">${mapRests}</h5>
+	<h5 style="" id="indexSearchInvisible">${mapRests}</h5>
 	<h5 style="display: none;" id="currentPosition">${current}</h5>
 	
 	
@@ -233,9 +233,13 @@ tr a:hover{
 		const popup = L.popup();
 		
 		//從首頁傳值
-		if ($("#indexSearch").html().length>5){
-			console.log($("#indexSearch").html().length);
-			let indexResult = $("#indexSearch").html();
+		
+		console.log($("#indexSearchInvisible").html());
+		if ($("#indexSearchInvisible").html().length>3){
+			//console.log($("#indexSearchInvisible").html().length);
+			//console.log("=====result");
+			
+			let indexResult = $("#indexSearchInvisible").html();
 			indexResult=JSON.parse(indexResult);
 			if(indexResult){
 				//console.log("首頁功能:"+indexResult);
