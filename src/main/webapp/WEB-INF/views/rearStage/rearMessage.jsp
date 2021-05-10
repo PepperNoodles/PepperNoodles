@@ -60,6 +60,7 @@
 										<th>更新時間</th>
 										<th>處理狀態</th>
 										<th>處理完畢</th>
+										<th>刪除訊息</th>
 									</tr>
 								</thead>
 							</table>
@@ -130,6 +131,9 @@
 		                { "data": "condition" },
 		                { "render":function(data,type,row,meta){
 			                return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
+			              }},
+		                { "render":function(data,type,row,meta){
+			                return "<button style='background-color:#00008B;border-radius:15px;' id='delete'><i class='far fa-credit-card'></i></button>";
 			              }}
 		               
 		                
@@ -188,7 +192,7 @@
 				
 	  });
 	  
-	  //呼應button
+	  //呼應button更新訊息狀態
 	  $('body').on('click','#update',function(e){
 	       e.preventDefault();
 	       
@@ -214,6 +218,36 @@
 	        
 	      });
 	  
+	  //刪除留言
+	  $('body').on('click','#delete',function(e){
+	       e.preventDefault();
+// 	       if(confirm('確定刪除此筆訊息?')){
+	    	   
+// 	       }
+	        var status = parseInt($(this).parent().prevAll("tr td:eq(6)").text(),10); //編號id
+	        //parseInt( , 10)
+	        console.log(status)
+	        $.ajax({
+	         method:"GET",
+	         url:"/PepperNoodles/rearMessageDeleteById?rearMessage_id="+status,
+	         contentType:"application/json",
+	         processData: false,
+	         cache: false,  //不做快取
+            async : true,
+            success: function (response) {
+            alert(response.rearMessageId)
+            location.reload(); //成功重整頁面
+
+          	},
+           error: function (response) {
+            console.log("訊息沒出去");
+           } 
+	        });
+	        
+	     
+	        
+	      });
+	  
 	  var j = jQuery.noConflict(); //因為$吃不到才使用j
 	  //後台訊息通知
   	  $.ajax({
@@ -231,7 +265,7 @@
   				j('.toast').toast({delay: 3000});
   				j('.toast').toast('show');
   				$.each(messageReplyList,function(index,element){
-  					var li1 = $("<li><a href ='javascript:void(0)'>貼心提醒! 編號"+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已經回覆訊息囉!</a></li>");
+  					var li1 = $("<li><a href ='javascript:void(0)'>貼心提醒! 編號"+"<font color='blue'>"+element.rearMessageId+"</font>"+"已經回覆訊息囉!</a></li>");
   					informMenu1.append(li1);
   				});
   				$.each(messageNewList,function(index,element){

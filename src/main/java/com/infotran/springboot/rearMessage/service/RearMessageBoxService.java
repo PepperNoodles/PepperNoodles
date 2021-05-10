@@ -22,6 +22,8 @@ public interface RearMessageBoxService {
 	List<RearMessageBox> findNewMessageByTime(String todayTime);
 	//回復訊息更新時間
 	List<RearMessageBox> findUpdatedMessageByTime(String replyTime);
+
+	void delete(RearMessageBox rearMessageBox);
 	
 
 }
