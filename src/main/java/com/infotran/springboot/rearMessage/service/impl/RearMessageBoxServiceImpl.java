@@ -64,6 +64,13 @@ public class RearMessageBoxServiceImpl implements RearMessageBoxService{
 		return rearMessageBoxRepository.findUpdatedMessageByTime(replyTime);
 	}
 
+	@Override
+	public void delete(RearMessageBox rearMessageBox) {
+		rearMessageBoxRepository.delete(rearMessageBox);
+		
+	}
+
+
 	//找訊息
 //	@Override
 //	public RearMessageBox findById1(Integer id) {
