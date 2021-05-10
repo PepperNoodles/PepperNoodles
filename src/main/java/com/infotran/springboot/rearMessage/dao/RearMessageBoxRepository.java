@@ -1,5 +1,6 @@
 package com.infotran.springboot.rearMessage.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,17 @@ public interface RearMessageBoxRepository extends JpaRepository<RearMessageBox, 
 	
 //	@Query(value="from RearMessageBox r where r.restaurant = :restaurant and userAccount= :user")
 //	List<RearMessageBox> getByRestAndUser(Restaurant restaurant,UserAccount user,Pageable page);
-
+	
+	
+	//取得Message
+	@Query(value="select message from RearMessageBox message where message.userAccount != null")
+	public ArrayList<RearMessageBox> findMessage();
+	
+	//發布訊息時間 111是對應日期格式 (上架中)
+	@Query(value="select message from RearMessageBox message where convert(nvarchar,message.time,111) =?1 and message.condition = 'false'")
+	public List<RearMessageBox> findNewMessageByTime(String todayTime);
+	
+	//回復訊息更新時間 (下架中)
+	@Query(value="select message from RearMessageBox message where convert(varchar,message.updateTime,111) >= ?1 and message.condition ='true'")
+	public List<RearMessageBox> findUpdatedMessageByTime(String replyTime);
 }

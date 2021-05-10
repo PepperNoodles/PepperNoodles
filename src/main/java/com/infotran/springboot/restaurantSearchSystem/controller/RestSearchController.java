@@ -56,7 +56,7 @@ public class RestSearchController {
 		return "mappage/singleRest";
 	}
 	
-	
+	//首頁功能
 	@GetMapping(path="/map",produces = "application/json;charset=UTF-8" )
 	public String indexSearch(@RequestParam(name="restName",defaultValue = "") String searchName,
 			 				@RequestParam(name="searchTag",defaultValue = "") String searchTag,
@@ -66,10 +66,10 @@ public class RestSearchController {
 		if(searchTag.equals("NULL")) {			
 			List<Restaurant> rests = restSearchService.findRestaurantNameLike(searchName);
 //			System.out.println(searchName);
-//			System.out.println("======="+rests.size());
+			System.out.println("======="+rests.size());
 			try {
 				String jsonString = mapper.writeValueAsString(rests);
-				model.addAttribute("rests",jsonString);
+				model.addAttribute("mapRests",jsonString);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
