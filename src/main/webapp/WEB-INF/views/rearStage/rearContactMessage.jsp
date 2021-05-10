@@ -230,13 +230,14 @@
 // 						message-text:$("#message-text").val()
 // 					},
 					success:function(){	
-// 						    $("#myToast").toast({ delay: 8000 });
-                            $("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
+						    $("#myToast").toast({ delay: 5000 });//
+                            //$("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
 						    $("#myToast").toast('show');
-							
-						    alert("成功");
-// 							location.reload(); //成功重整頁面
-						
+						    //alert("成功");
+						    setTimeout(function(){
+				        		window.location.href = "http://localhost:433/PepperNoodles/";//页面重導
+//	 							location.reload(); //成功重整頁面
+				        		},5000);
 					},
 					
 					error:function(){
