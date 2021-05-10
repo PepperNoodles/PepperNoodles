@@ -299,7 +299,7 @@ p {
 							<form:errors path="restaurantContact" cssClass="error" />
 							<br><br>
 							<h5 style="color: #FF1493">餐廳網站：</h5>
-							<form:input path='restaurantWebsite' />
+							<form:input path='restaurantWebsite' size="35" placeholder="請輸入網址"/>
 							<form:errors path="restaurantWebsite" cssClass="error" />
 							<br><br>
 							<div id="tagdiv">

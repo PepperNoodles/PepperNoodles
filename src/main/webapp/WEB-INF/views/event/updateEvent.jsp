@@ -143,10 +143,10 @@ $j(document).ready(function(){
 	
 	//一鍵新增
 	$("#butAdd").click(function(){
-		$j("#eventName").val('開幕慶!!!');
-		$j("#eventStartDate").val('2021/05/18');
-		$j("#eventEndDate").val('2021/06/18');
-		$j("#content").val('提前預訂，兩人同行即可享第二人半價優惠!');
+		$j("#eventName").val('我的美國馬鈴薯之夜');
+		$j("#eventStartDate").val('2020-12-01');
+		$j("#eventEndDate").val('2021-12-31');
+		$j("#content").val('活動期間消費指定餐點，即可獲得限量贈品。');
 		eventNameError = true;
 		eventStartDateError = true;
 		eventEndDateError = true;
@@ -180,7 +180,7 @@ $j(document).ready(function(){
 			cache: false,  //不做快取
 			async : true,
 			success: function (result) {
-				alert("修改成功");
+// 				alert("修改成功");
 			location.href="http://localhost:433/PepperNoodles/event/"+restaurantId;
 			},
 	        error: function (result) {
@@ -226,9 +226,6 @@ buttonImage{
 .time{
 	color: red;
 }
-.img{
-	 opacity: 0.5;
-}
 .pull-right a{
 	color:#8E8E8E;
 }
@@ -257,7 +254,7 @@ body {
         </div>
         
 		<div class="col-lg-10 nopadding" >
-<%-- 			<div class="image-container set-full-height img" style="background-image: url(<c:url value="/images/company/event.jpeg"/>)" > --%>
+			<div class="image-container set-full-height img" style="background-image: url(<c:url value="/images/company/event2.png"/>)" >
 				<br><br><br>
 				<table class="container" >
 					<tr>
@@ -306,7 +303,7 @@ body {
 						<td colspan="4" >
 							<input id="updateEvent" type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm'
 							       name='next' value='確認修改' style="margin-bottom: 20px;margin-top: 10px"/>
-							<p style="text-align:right;" id="butAdd">一鍵新增</p>
+							<p style="text-align:right;" id="butAdd">一鍵修改</p>
 						</td>
 					</tr>
 				</table>
@@ -369,7 +366,7 @@ body {
 			</div>
 		<!--  big container -->
 		</div>
-<!-- 	</div> -->
+	</div>
 </div>
 <%@include file="../includePage/includeFooter.jsp" %>
 	<!-- Scroll Up -->

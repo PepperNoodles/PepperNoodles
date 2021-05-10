@@ -93,6 +93,7 @@ float: right;
 padding-right: 40px;
  }  
  
+div a:hover { color: blue; }
 
 </style>
 
@@ -148,7 +149,7 @@ padding-right: 40px;
 		        <li class="nav-item dropdown" >
 		            <span  class="nav-link dropdown-toggle .nopadding" data-bs-toggle="dropdown" href="#" role="button"aria-expanded="false">營業時間</span>	
 		            <ul class="dropdown-menu">
-					<li><div id="getrestHour${restaurant.restaurantId}" name="restHour" >待新增</div></li>
+					<li><div id="getrestHour${restaurant.restaurantId}" name="restHour" ></div></li>
 		            </ul>
 		        </li>
 		</ul>
@@ -198,7 +199,12 @@ padding-right: 40px;
 															'五',
 															'六',
 															'日' ];
-
+												if(result.length==0){
+														txt="營業時間待新增";
+														divrestHour.innerHTML = txt;
+													}
+													
+												else{
 													txt = '<table id="tablemenu" align="center" ><h6>';
 													for (j = 0; j < result.length; j++) {
 														txt += '<tr><td>星期'
@@ -233,7 +239,7 @@ padding-right: 40px;
 
 													txt += "</h6></table>";
 													divrestHour.innerHTML = txt;
-													},
+												}},
 													error : function(thrownError) {
 														console.log(thrownError);
 													}
@@ -252,10 +258,12 @@ padding-right: 40px;
 								<div class="modifydiv1">
 								<h2>  餐廳地址: </h2><h5>${restaurant.restaurantAddress}</h5><br>
 								<h2>  聯絡方式: </h2><h5>${restaurant.restaurantContact}</h5><br>
-								<h2>  餐廳網站: </h2><h5>${restaurant.restaurantWebsite}</h5>
+								<h2>  餐廳網站: </h2><h5><a href="<c:url value='${restaurant.restaurantWebsite}' />"><i class="fas fa-link"></i> ${restaurant.restaurantWebsite}</a></h5><br>
 								</div>
 								<div class="modifydiv2">
-								<h3><a class='updatelink'href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}"><i class="fas fa-edit"></i></a>
+								<h3>
+								
+								<a class='updatelink'href="${pageContext.request.contextPath}/updateRest/${restaurant.restaurantId}"><i class="fas fa-edit"></i></a>
 								<a class='deletelink' href="${pageContext.request.contextPath}/deleteRest/${restaurant.restaurantId}"><i class="fas fa-trash-alt"></i></a></h3>
 								</div>
 								

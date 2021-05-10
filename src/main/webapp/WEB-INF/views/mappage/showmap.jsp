@@ -188,7 +188,7 @@ tr a:hover{
 
 	<br>
 
-	<h5 style="" id="indexSearchInvisible">${mapRests}</h5>
+	<h5 style="display: none" id="indexSearchInvisible">${mapRests}</h5>
 	<h5 style="display: none;" id="currentPosition">${current}</h5>
 	
 	
@@ -234,7 +234,7 @@ tr a:hover{
 		
 		//從首頁傳值
 		
-		console.log($("#indexSearchInvisible").html());
+		//console.log($("#indexSearchInvisible").html());
 		if ($("#indexSearchInvisible").html().length>3){
 			//console.log($("#indexSearchInvisible").html().length);
 			//console.log("=====result");
@@ -596,7 +596,7 @@ tr a:hover{
 			let alat=0;
 			let along=0;
 			
-			
+			console.log(loca[1]);
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
 			    	lat-=0.0001360;
@@ -611,7 +611,7 @@ tr a:hover{
 			   // marker.addTo(map).openPopup();
 			    
 			    marker.bindPopup("<a href = "+resturl+">"+name+"</a>"+"<div class='frame2'><img src='"+imgUrl+"'></div>")
-			    
+			    marker.addTo(map);
 			    
 			   // let name=loca[i].restaurantName;
 			  // marker.addTo(map).openPopup();

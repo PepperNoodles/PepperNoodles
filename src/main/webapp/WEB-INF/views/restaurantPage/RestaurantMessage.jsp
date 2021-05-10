@@ -29,6 +29,14 @@ $(document).ready(function(){
 		$("#userMessage").val('老闆人超好，東西又好吃，直接列入口袋名單!!');
 	});
 	
+	$("#addReplyMessage").click(function() {
+		$(".replyMessage").val('我要預約5/14 18:30，6位。');
+	});
+	
+	$("#addReplyMessageCom").click(function() {
+		$(".replyMessage").val('謝謝你們喜歡，歡迎下次再來唷!');
+	});
+	
 	$("#addUserMessage").click(function(){
 		var userMessage = $("#userMessage").val();
 		console.log("新增使用者留言");
@@ -98,6 +106,8 @@ $(document).ready(function(){
 	$("#allMessageDiv").on('click','.replyMessage',function(){
 		$("#a~div").toggle();
 	});
+	
+
 	
 	//回覆留言
 	$("#allMessageDiv").on('click','.getReplyMessage',function(){
@@ -406,9 +416,12 @@ $.ajax({
 						}
 					//回覆留言的div
 					text +="		<div class='media collapse ml-5' id='collapseExample"+i+"'>";
-					text +="  			<input type='text' size='100%' class='form-control ml-5' placeholder='回覆...'>";
+					text +="  			<input type='text' size='100%' name='replyMessage' class='replyMessage form-control ml-5' placeholder='回覆...'>";
 					text +="			<button class='bg-secondary getReplyMessage' style='height:38px'>reply</button><span style='display:none'>" + allMessage[i].restaurantMessageId + "</span>";
 					text +="		</div>";
+// 					text +="		<div class='pull-right'>";
+// 					text +="			<a id='addReplyMessage'>一鍵新增回覆</a>";
+// 					text +="		</div>";
 					text +="	</div>";
 					text +="</div>";
 					text +="<br>";
@@ -539,7 +552,15 @@ hr {
 	padding:0;
     filter:grayscale(1);
     }
+.timeTable{
+	font-size:13px;
+	}
+.timeTable tr{
+	border-bottom: 3px solid white;
+}
+.timeTable td{
 
+}
 </style>
 </head>
 <body>
@@ -576,7 +597,7 @@ hr {
 					    </tr>
 					    <tr>
 					    	<th scope="row">營業時間</th>
-					      	<td>
+					      	<td width="450px">
 					      		<a class="text-info" href="#" id="toggleHour">營業時間</a>
 					      		<div id="getrestHour${rest.restaurantId}" class="hourArea" id="hourArea" name="restHour" ></div>
 						    	
@@ -608,22 +629,24 @@ hr {
 				MenuArea
 			</div>
 		</div>
-	  	<div class="d-flex container mt-1">	
+<!-- 	  	<div class="d-flex container mt-1">	 -->
 	  		<br>
-	  		<div class="col-2 d-flex justify-content-start">		  				
-	  			<a id="add">一鍵新增評論</a>
-	  		</div>
+<!-- 	  		<div class="float-right mr-5">		  				 -->
+<!-- 	  			<a id="add">一鍵評論</a>&emsp; -->
+<!-- 	  			<a id="addReplyMessage">User回覆</a>&emsp; -->
+<!-- 	  			<a id="addReplyMessageCom">企業回覆</a>&emsp; -->
+<!-- 	  		</div> -->
 	  		<br>
-	    </div>	
+<!-- 	    </div>	 -->
 		<c:choose>
 			<c:when test="${comDetail!=null}">
 					<div class="row">
 	  		 		<div class="container  p-8">
+			
 	  	 				<div class="media mx-5 userMessageArea">
 		  	 				<img class="rounded border" src=" <c:url value="/getComPicture/${comDetail.companyDetailId}"/> "style="margin-top: 3px" width="125px" height=125px>
 	  	 					<textarea class="form-control" rows="5" cols="60" id="comMessage" placeholder='發表您的評論吧....' ></textarea>
 	  	 					<button class="bg-secondary" id="addComMessage" style="height:134px">送出</button>
-	  	 		
 	  	 				</div>
 	  	 				<div>
 	  	 				</div>
@@ -657,19 +680,19 @@ hr {
 	  	 			</div>
 	  	 		</div>
 	  	 		<div class="container row rankSystem">
-									<div class="col-2"><span class="mt-2 ml-5">評分: </span>
-									</div>
+					<div class="col-2"><span class="mt-2 ml-5">評分: </span>
+					</div>
 									
-									<div class="col-8">
-			  	 						<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat1" >
-		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat2" >
-		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat3" >
-		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat4" >
-		                        		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat5" >
-		                        	</div>	
-		                        	<div class="col-2"><span class="mt-2" id="rankResult"> </span>	
-		                        	</div>
-                        	</div>
+						<div class="col-8">
+			  				<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat1" >
+		               		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat2" >
+		               		<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat3" >
+		                    <img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat4" >
+		                    <img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat5" >
+		               </div>	
+		                    <div class="col-2"><span class="mt-2" id="rankResult"> </span>	
+		                    </div>
+                </div>
  			</c:when>
  			<c:otherwise>
 	  	 		<div class="container row rankSystem">
@@ -677,6 +700,16 @@ hr {
 	  	 		</div>
  			</c:otherwise>
  		</c:choose>
+ 		
+ 		
+ 		<div class="float-right mr-5">   				
+	  		<a id="add">一鍵新增評論</a>&emsp;
+	  		<a id="addReplyMessage">User回覆</a>&emsp;
+	  		<a id="addReplyMessageCom">企業回覆</a>
+	  	</div>
+	  	
+	  	
+	  	
  		<div id="hiddenScore" style="display: none;">0</div>
  		<div class="ml-5" style="padding-left: 150px;" id="messageResult"></div>
 	  	<hr>
@@ -724,15 +757,13 @@ hr {
 <script>
 	$(window).on('load', function() {
 		checkCollectionButton();
-
-		
 		$("#toggleMenu").click(function() {
       	  $( "#menuArea" ).slideToggle("slow")
  		});
 		
 		$("#toggleHour").click(function() {
-	      	  $( ".hourArea" ).slideToggle("slow")
-	 		});
+	    	$( ".hourArea" ).slideToggle("slow")
+	 	});
  		
 		let postion = $("#rankStar");
 		let number = postion.html();
@@ -819,7 +850,6 @@ hr {
 		
 		//抓餐廳營業時間
 		var x = $("div[name='restHour']");
-		        console.log($("input[name='restHour']"));
 		var getHourid=x[0].id.substring(11, 15);
 //			        console.log(x.length);
 //			        console.log(${restaurant.restaurantId});
@@ -828,7 +858,7 @@ hr {
 	
 			var urls = "${pageContext.request.contextPath}/";
 			urls += "<c:url value='getHours/'/>" +${rest.restaurantId};
-					console.log(urls);
+// 					console.log(urls);
 
 			$.ajax({
 				type : "GET",
@@ -842,56 +872,32 @@ hr {
 					if(result.length == 0){
 						txt="目前沒有營業時間";
 					}else{
-						
-			
-					var weekday = [
-						'一',
-						'二',
-						'三',
-						'四',
-						'五',
-						'六',
-						'日' ];
+						var weekday = ['一','二','三','四','五','六','日' ];
 
-				txt = '<table ><h6>';
-				for (k = 0; k < result.length; k++) {
-					txt += '<tr><td>星期'
-							+ weekday[parseInt(result[k].day)]
-							+ '</td>';
-					if (result[k].openTime == null) {
-						txt += '<td>不營業</td></tr>';
-					} else {
-						txt += '<td>'
-								+ result[k].openTime
-								+ '~'
-								+ result[k].closeTime
-								+ '</td></tr>';
-
-					}
-
-					if (result[k].openTime2nd != null
-							&& result[k].openTime2nd.length != 0) {
-						txt += '<td></td><td>'
-								+ result[k].openTime2nd
-								+ '~'
-								+ result[k].closeTime2nd
-								+ '</td></tr>';
-					}
-					if (result[k].openTime3rd != null
-							&& result[k].openTime3rd.length != 0) {
-						txt += '<td></td><td>'+ result[k].openTime3rd
-								+ '~'+ result[k].closeTime3rd+ '</td></tr>';
-					}
-
-				}
-
-				txt += "</h6></table>";
-					}
-				divrestHour.innerHTML = txt;
-				},
-				error : function(thrownError) {
-					console.log(thrownError);
-				}
+						txt = '<table class="timeTable">';
+						for (k = 0; k < result.length; k++) {
+							txt += '<tr><td>星期'	+ weekday[parseInt(result[k].day)]+ '</td>';
+							if (result[k].openTime == null) {
+								txt += '<td colspan="3">不營業</td>';
+							} else {
+								txt += '<td>'+ result[k].openTime+ '~'+ result[k].closeTime+ '</td>';
+							}
+							if (result[k].openTime2nd != null&& result[k].openTime2nd.length != 0) {
+								txt += '<td>'+ result[k].openTime2nd+ '~'+ result[k].closeTime2nd+ '</td>';
+							}
+							if (result[k].openTime3rd != null&& result[k].openTime3rd.length != 0) {
+								txt += '<td>'+ result[k].openTime3rd+ '~'+ result[k].closeTime3rd+ '</td>';
+							}
+							txt +='</tr>'
+		
+						}
+						txt += "</table>";
+							}
+						divrestHour.innerHTML = txt;
+						},
+						error : function(thrownError) {
+							console.log(thrownError);
+						}
 
 			});
 			
@@ -928,9 +934,9 @@ hr {
 	function checkCollectionButton() {
 		var collectionButton = $('#collectbutton');
 		var collectionButtonCancel = $('#collectbuttonCancel');
-		var urls = '/PepperNoodles/user/checkRestaurantCollection?resID=';
 		var resID = '${rest.restaurantId}' ;
-		urls += resID;
+		var urls  = '/PepperNoodles/user/checkRestaurantCollection?resID=';
+			urls += resID;
 
 	$.ajax({
 		method:'GET',
