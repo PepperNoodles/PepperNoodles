@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>一般會員資料</title>
+<title>訊息資料</title>
 
 <script type="text/javascript"
 	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
@@ -16,6 +16,9 @@
 <script src="<c:url value='/plugins/bootstrap/js/bootstrap.bundle.min.js' />"></script>
 <!-- 右上方訊息通知 -->
 <%-- <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script> --%>
+
+<!-- Jquery, Popper, Bootstrap -->
+        <script src="<c:url value='/scripts/popper.min.js' />"></script>
 
 <style type="text/css">
 	a{
@@ -30,7 +33,7 @@
 		border-radius: 6px;
 		-moz-border-radius: 6px;
 	}
-	
+
 </style>
 </head>
 
@@ -46,24 +49,42 @@
 		<!-- content -->
 		
 <!-- 			<div class="tab-pane fade" id="v-pills-userList" role="tabpanel" aria-labelledby="v-pills-userList-tab"> -->
-							<h2>一般會員資料</h2>
-							<table  id="userlist" class="display">
+							<h2>訊息資料</h2>
+							<table  id="messagelist" class="display">
 								<thead>
 									<tr>
 										<th>編號</th>
 										<th>帳號</th>
-										<th>密碼</th>
-										<th>權限</th>
-										<th>停權</th>
-<!-- 										<th>刪除</th> -->
-<!-- 										<th>accountdetail</th> -->
-<!-- 										<th>roles</th> -->
-<!-- 										<th>code</th> -->
+										<th>訊息</th>
+										<th>發布時間</th>
+										<th>更新時間</th>
+										<th>處理狀態</th>
+										<th>處理完畢</th>
+										
+										
+										
 										
 									</tr>
 								</thead>
 							
 							</table>
+							
+							<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+								  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
+								    <div class="toast-header">
+								      <!-- 上方框框的內容 -->
+								      <strong class="mr-auto">貼心提醒</strong>
+								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								        <span aria-hidden="true">&times;</span>
+								      </button>
+								    </div>
+								    <!-- 文字內容 P -->
+								    <div class="toast-body"> 
+								    	<p></p>
+								    </div>
+								  </div>
+							</div>
+	
 <!-- 			</div> -->
                            
 		
@@ -73,7 +94,7 @@
 	<script> 
 	  $(document).ready(function () {
 			
-			var Table = $("#userlist").DataTable({
+			var Table = $("#messagelist").DataTable({
 				 language: {
 				        "processing": "處理中...",
 				        "loadingRecords": "載入中...",
@@ -97,14 +118,15 @@
 				    },
 				    data:[],
 				    columns: [	
-				    	{ "data": "accountId"  },
-				    	{ "data": "accountIndex"  },
-		                { "data": "password"  },		               
-		                { "data": "enabled" },
-		                { "data": "" ,
-		                  "render":function(data,type,row,meta){
-		                	  return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
-		                  }}
+				    	{ "data": "rearMessageId"  },
+				    	{ "data": "userAccount.accountIndex"  },
+		                { "data": "messageText"  },
+		                { "data": "time"  },
+		                { "data": "updateTime"  },
+		                { "data": "condition" },
+		                { "render":function(data,type,row,meta){
+			                return "<button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button>";
+			              }}
 		               
 		                
 				    ],
@@ -124,61 +146,86 @@
 				
 				$.ajax({
 					method:"GET",	
-					url:"/PepperNoodles/rearStage/getAccountList1", //如改成/user/getAccountList就要登入會員才會顯示資料
+					url:"/PepperNoodles/rearStage/getMessageList",
 					contentType: 'application/json; charset=utf-8',
 					dataType:'json',
 			        async : true,
 			        cache: false,
 			        success:function(result){
 			        	console.log("yes123");
-			        	console.log(JSON.stringify(result)); //Map的List物件
-			        	console.log(result.AccountList1);
+			        	console.log(JSON.stringify(result)); //Map的List物件	
+			        	console.log(result.MessageList);
 			        	Table.clear().draw();
-			            Table.rows.add(result.AccountList1).draw();
-// 			            $('#userlist>tbody tr').append("<td><button style='background-color:#00008B;border-radius:15px;' id='update'><i class='far fa-credit-card'></i></button></td>")
+			            Table.rows.add(result.MessageList).draw();
 			           
 			        },
 			        error: function (result) {
 			        	console.log("有問題");
 			        }
 				});
+				
+				 
+			  	  
+				
 	  });
 	  
 	  //呼應button
 	  $('body').on('click','#update',function(e){
 	       e.preventDefault();
-// 	       var status = $(this).parent().prevAll("tr td:eq(3)").text();
-// 	       alert(status)
 	       
-	        var status = $(this).parent().prevAll("tr td:eq(3)").text(); //編號id
-	       // data = new FormData();
-	       // data.append("account_id",new Blob([ JSON.stringify({"account_id" : status})])); //前面對應Controll
-	       // console.log(data);
+	        var status = $(this).parent().prevAll("tr td:eq(5)").text(); //編號id
 	        $.ajax({
 	         method:"GET",
-	         url:"/PepperNoodles/rearUserAccountQueryById.controller?account_id="+status,
-	         //data:data,  //後面data是 new FormData
+	         url:"/PepperNoodles/rearMessageFindById?rearMessage_id="+status,
 	         contentType:"application/json",
 	         processData: false,
 	         cache: false,  //不做快取
              async : true,
              success: function (response) {
-// 	                localStorage.setItem("userAccountRearNormalUser",response.normalUserform);
-             alert(response.accountIndex)
+             alert(response.userAccount.accountIndex)
              location.reload(); //成功重整頁面
 
-//              window.open("http://localhost:433/PepperNoodles/rearStage/userAccountRearNormalUser", '_blank');
            	},
             error: function (response) {
-             console.log("一般會員沒出去");
+             console.log("訊息沒出去");
             } 
 	        });
 	        
-
+	     
 	        
-	      
-	       
 	      });
+	  
+	  //後台訊息通知
+	  $("body").on("click","#inform",function(){
+  	  $.ajax({
+  			method:"GET",
+  			url:"/PepperNoodles/informMessageCondition",
+  			async : true,
+  			cache : false,
+  			success : function(response) {
+  				var messageReplyList = response.replyList;
+  				var messageNewList = response.newList;
+  				var informMenu1 = $("#informMenu1");
+  				var count = 0;
+  				count += (messageReplyList.length + messageNewList.length);
+  				$('.toast-body p').text('您有 '+count+' 則新通知');
+  				$('.toast').toast({delay: 3000});
+  				$('.toast').toast('show');
+  				$.each(messageReplyList,function(index,element){
+  					var li1 = $("<li><a href='javascript:void(0)'>貼心提醒! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 已經回覆訊息囉!</a></li>");
+  					informMenu1.append(li1);
+  				});
+  				$.each(messageNewList,function(index,element){
+  					var li2 = $("<li><a href='javascript:void(0)'>新訊息! 訊息: "+"<font color='blue'>"+element.rearMessageId+"</font>"+" 發布新訊息!</a></li>");
+  					informMenu1.append(li2);
+  				});
+  			},error:function(response){
+  				
+  			}
+  		});
+	  
+	  });
+	
 </script>
 
 

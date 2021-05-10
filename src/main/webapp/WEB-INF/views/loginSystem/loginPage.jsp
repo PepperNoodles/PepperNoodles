@@ -193,9 +193,9 @@
 					dataType: "text",
 
 					success: function (result) {
-						alert(result)
+// 						alert(result)
 						GverifyCodeFromServer=result;
-						alert(GverifyCodeFromServer)
+// 						alert(GverifyCodeFromServer)
 						
 						
 									var graphicVCodeVal = document.getElementById("graphicVCode").value;
@@ -204,7 +204,7 @@
 				checkVCodeInput.innerHTML = "<font color='red' >Please Enter</font>";
 // 				hasErrorCheckEmail = false;
 			} else if (GverifyCodeFromServer == graphicVCodeVal) {
-							alert(graphicVCodeVal);
+// 							alert(graphicVCodeVal);
 							graphicVCode.style.border = "2px solid green";
 				checkVCodeInput.innerHTML = "<font color='green' >Correct</font>";
 // 				hasErrorCheckEmail = true;

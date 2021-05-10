@@ -660,7 +660,7 @@ $(document).ready(function() {
 			input = $("#searchall").val();
 			console.log(input);
 			$("#pframeall > div").remove();
-			console.log("flag"+flag);
+			console.log("====>>flag:"+flag+"price"+price+"input"+input);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpricerange/"+price+"/"+flag+"?input="+input+"",
@@ -723,6 +723,7 @@ $(document).ready(function() {
 			}
 			var page = $(this).attr("id");//第一頁
 			$("#pframeall > div").remove();
+			console.log("ifprice: "+ifprice+"flag: "+flag+"page: "+page+"inpue: "+input);
 			$.ajax({
 				method:"GET",
 				url:"/PepperNoodles/getpage/"+ifprice+"/"+flag+"/"+(page-1)+"?input="+input+"",
