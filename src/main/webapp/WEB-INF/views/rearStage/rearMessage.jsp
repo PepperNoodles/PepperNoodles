@@ -68,6 +68,7 @@
 		</div>
 	</div>
 	</div>
+	<!-- 通知訊息 Bootstrap的Toast功能 -->
 	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
 		  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
 		    <div class="toast-header">
@@ -221,34 +222,35 @@
 	  //刪除留言
 	  $('body').on('click','#delete',function(e){
 	       e.preventDefault();
-// 	       if(confirm('確定刪除此筆訊息?')){
-	    	   
-// 	       }
+	       if(confirm('確定刪除此筆訊息?')){ //confirm確認功能
+	    	   	      
 	        var status = parseInt($(this).parent().prevAll("tr td:eq(6)").text(),10); //編號id
 	        //parseInt( , 10)
 	        console.log(status)
 	        $.ajax({
-	         method:"GET",
-	         url:"/PepperNoodles/rearMessageDeleteById?rearMessage_id="+status,
-	         contentType:"application/json",
-	         processData: false,
-	         cache: false,  //不做快取
-            async : true,
-            success: function (response) {
-            alert(response.rearMessageId)
-            location.reload(); //成功重整頁面
-
-          	},
-           error: function (response) {
-            console.log("訊息沒出去");
-           } 
+		         method:"GET",
+		         url:"/PepperNoodles/rearMessageDeleteById?rearMessage_id="+status,
+		         contentType:"application/json",
+		         processData: false,
+		         cache: false,  //不做快取
+	             async : true,
+	             success: function (response) {
+		             alert(response.rearMessageId);
+// 		             setTimeout(function(){
+		             	window.location.reload(); //成功重整頁面
+// 		             },3000);
+		
+	          	 },
+		         error: function (response) {
+		         console.log("訊息沒出去");
+		         } 
 	        });
 	        
-	     
-	        
-	      });
+	       }
+	        return false;
+	    });
 	  
-	  var j = jQuery.noConflict(); //因為$吃不到才使用j
+	  var j = jQuery.noConflict(); //因為$吃不到才使用j = jQuery.noConflict();
 	  //後台訊息通知
   	  $.ajax({
   			method:"GET",
