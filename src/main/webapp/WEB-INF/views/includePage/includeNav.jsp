@@ -277,8 +277,9 @@ $("#indexSearch").on('click',function(){
 	<script
 		src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
 			<script>
-		console.log(isAuthenticated)
-		console.log(${isAuthenticated})</script>
+// 		console.log(isAuthenticated)
+// 		console.log(${isAuthenticated})
+		</script>
 
 </body>
 </html>
