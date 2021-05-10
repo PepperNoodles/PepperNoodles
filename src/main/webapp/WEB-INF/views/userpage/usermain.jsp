@@ -713,7 +713,7 @@ I've added a few comments on why we're using certain properties
 						        async : true,
 						        cache: false,
 						        success:function(result){
-						        	$("#orderdetailforeach").toggle();
+						        	$("#orderdetailforeach").toggle("slow");
 						        	$("#tbodyid").empty();
 						        	console.log(result.pname);
 						        	console.log(result.pprice);
