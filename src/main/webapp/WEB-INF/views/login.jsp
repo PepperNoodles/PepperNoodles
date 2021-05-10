@@ -125,7 +125,7 @@ function onSubmit(token){
 			//一鍵新增-會員
 			$("#user").click(function(){
 				$("#password").val('a123456@');
-				$("#username").val('chrislo5311@gmail.com');
+				$("#username").val('chrismeow5311@gmail.com');
 			});
 			
 			$('form').submit(function(ev){
