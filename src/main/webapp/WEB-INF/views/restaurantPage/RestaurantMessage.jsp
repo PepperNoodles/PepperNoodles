@@ -681,7 +681,7 @@ hr {
 	  	 		</div>
 	  	 		<div class="container row rankSystem">
 					<div class="col-2"><span class="mt-2 ml-5">評分: </span>
-									</div>
+					</div>
 									
 						<div class="col-8">
 			  				<img class="rankcat grayscale" src="<c:url value='/images/restaurantCRUD/cat.png'/> " id="cat1" >
