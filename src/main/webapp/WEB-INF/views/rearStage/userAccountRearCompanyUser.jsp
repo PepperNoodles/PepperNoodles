@@ -36,13 +36,13 @@
 
 
 <body>
-	
-	
+	<!-- class="container-fluid"可以讓左右框往內縮 -->
+	<div class="container-fluid" >
 	<div class="row" >
 		<div class="col-2 " >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
-		<div class="col-10">
+		<div class="col-10" style="margin-top: 20px;">
 		<!-- content -->
 		
 <!-- 			<div class="tab-pane fade" id="v-pills-userList" role="tabpanel" aria-labelledby="v-pills-userList-tab"> -->
@@ -57,22 +57,13 @@
 										<th>權限</th>
 										<th>停權</th>
 										
-										
-										
-<!-- 										<th>accountdetail</th> -->
-<!-- 										<th>roles</th> -->
-<!-- 										<th>code</th> -->
-										
 									</tr>
 								</thead>
-							
 							</table>
 <!-- 			</div> -->
-                           
-		
 		</div>
 	</div>
-	
+	</div>
 	<script> 
 	  $(document).ready(function () {
 			

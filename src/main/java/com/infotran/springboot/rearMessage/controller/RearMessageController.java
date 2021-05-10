@@ -191,6 +191,7 @@ public class RearMessageController {
 		return mmap;
 	}
 	
+	//刪除留言
 	@GetMapping(value = "/rearMessageDeleteById")
 	public String messageDeleteById(@RequestParam(name = "rearMessage_id") Integer id) {
 		RearMessageBox rearMessage = rearMessageBoxService.findById(id);
