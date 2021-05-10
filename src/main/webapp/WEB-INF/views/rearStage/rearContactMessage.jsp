@@ -240,14 +240,14 @@
 // 						message-text:$("#message-text").val()
 // 					},
 					success:function(){	
-						    $("#myToast").toast({ delay: 5000 });//
+						    $("#myToast").toast({ delay: 5000 }); //訊息通知停留5秒
                             //$("#myToast").toast({ autohide: false }); //訊息通知需要手動關閉
 						    $("#myToast").toast('show');
 						    //alert("成功");
 						    setTimeout(function(){
-				        		window.location.href = "http://localhost:433/PepperNoodles/";//页面重導
+				        		window.location.href = "http://localhost:433/PepperNoodles/"; //页面重導
 //	 							location.reload(); //成功重整頁面
-				        		},5000);
+				        		},5000); //5秒後跳轉頁面
 					},
 					
 					error:function(){
@@ -256,7 +256,8 @@
 				});
 			});
 		});
-		
+		 
+		//機器人認證 reCAPTCHA
 		 function  validateAjax (reponse){
 // 			 alert("1")
 			 console.log(reponse)
