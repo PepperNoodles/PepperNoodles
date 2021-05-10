@@ -12,7 +12,6 @@
 <!-- favicon的圖-每頁都要加 -->
 <link rel="Shortcut icon" href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 <script type="text/javascript" src="<c:url value='/webjars/jquery/3.5.1/jquery.js'/>"></script>
-<script type="text/javascript" src="<c:url value='https://cdn.jsdelivr.net/npm/chart.js@3.2.0/dist/chart.min.js'/>"></script>
 <link rel='stylesheet' href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.css' />" />
 <link rel="stylesheet" href="<c:url value='/css/fontawesome-all.min.css' />"/>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.js'/>"></script>
@@ -29,21 +28,14 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <script type="text/javascript" src="<c:url value='https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js'/>"></script>
 
-
-<script>
+<script type="text/javascript"> 
 $(document).ready(function() {
 	
-		
-
-		$(function() {
-		   $('.list-group-item').on('click', function() {
-		     $('.glyphicon', this)
-		       .toggleClass('glyphicon-chevron-right')
-		       .toggleClass('glyphicon-chevron-down');
-		   });
-
-		 });
-		
+		  $('.list-group-item').on('click', function() {
+		    $('.glyphicon', this)
+		      .toggleClass('glyphicon-chevron-right')
+		      .toggleClass('glyphicon-chevron-down');
+		  });
 	    //提交產品
 		var pname,pprice,pdes,pquantity,detailclassval;
 		$("#submitproduct").click(function(e) {
@@ -66,7 +58,7 @@ $(document).ready(function() {
 			cache: false,  //不做快取
 	        async : true,
 	        success: function (result) {
-	        	setTimeout(function(){  
+	        	setTimeout(function(){
 	        		location.reload();//页面刷新
 	        		},2000);
 	             $("#checkStatus").text(result.success).css({"color":"blue"});
@@ -116,13 +108,11 @@ $(document).ready(function() {
                { "data": "quantity" },
                { "data": "productDetailClassName" },
                { "data": "salesamount"},
-               { "data": "",
-            	 "render":function(data,type,row,meta){
+               { "render":function(data,type,row,meta){
             	 return "<button style='background-color:#00008B;border-radius:15px;' id='openProduct'><i class='fas fa-eye'></i></button>"; 
             	 }},
-               { "data": "",
-            	 "render": function(data,type,row,meta){
-            		 return "<button style='background-color:#00008B;border-radius:15px;' id='deleteProduct'><i class='fas fa-trash-alt'></i></button>";
+               { "render": function(data,type,row,meta){
+            		 return "<button style='background-color:#00008B;border-radius:15px;' id='deleteProduct'  data-toggle='modal' data-target='#deleteModalCenter'><i class='fas fa-trash-alt'></i></button>";
             	 }},
            	   { "data": "status",
             	 "render":function(data,type,row,meta){
@@ -194,23 +184,31 @@ $(document).ready(function() {
 		//刪除商品
 		$("body").on("click","#deleteProduct",function(e){
 			var productid = parseInt($(this).parent().prevAll("td:eq(7)").text(),10);
-			var mymessage=confirm("確定修改此產品嗎？");
-			if(mymessage==true){
-				$.ajax({
-					method:"GET",
-					url:"/PepperNoodles/deleteProducts?deleteid="+productid+"",
-					contentType: 'application/json; charset=utf-8',
-					dataType:'text',
-			        async : true,
-			        cache: false,
-			        success:function(result){
-			        		alert("已成功刪除");
-			        },
-			        error: function (result) {
-			        	console.log("有問題");
-			        }
-				});
-			}
+			$("#todelete").on("click",function(e){
+				var dtext = $("#DeletePD").val();
+				var ifdelete = $("#todelete").data("val");
+				if (ifdelete == "yes" && dtext == "DELETE") {
+					$.ajax({
+						method:"GET",
+						url:"/PepperNoodles/deleteProducts?deleteid="+productid+"",
+						contentType: 'application/json; charset=utf-8',
+						dataType:'text',
+				        async : true,
+				        cache: false,
+				        success:function(result){
+				        		console.log("已成功刪除");
+				        		setTimeout(function(){
+					        		location.reload();//页面刷新
+					        		},3000);
+				        },
+				        error: function (result) {
+				        	console.log("有問題");
+				        }
+					});
+			 	}
+			});
+			
+			
 		});
 		
 		
@@ -384,7 +382,6 @@ $(document).ready(function() {
 		    return color;
 		}
 		
-		
 		function getRandomColorEachEmployee(count) {
 		    var data =[];
 		    for (var i = 0; i < count; i++) {
@@ -393,8 +390,6 @@ $(document).ready(function() {
 		    return data;
 		}
 		
-		
-	//////////////////////////斷//////////////////////////////////	
 		$('body').on('click','#addP',function(){
 			$("#productname").val('美式炸大雞');
 			$("#productprice").val('50');
@@ -424,77 +419,48 @@ $(document).ready(function() {
 			$('#chartheader').show();
 			$('#chartjs').show();
 			$("#piechart").show();
-// 			$.ajax({
-// 				method:"GET",
-// 				url:"/PepperNoodles/getoptionproductname",
-// 				contentType: 'application/json; charset=utf-8',
-// 				dataType:'json',
-// 		        async : true,
-// 		        cache: false,
-// 		        success:function(result){
-// 		        	$.each(result,function(index,element){
-// 		        		var option = $("<option></option>")
-// 		        		$("#myproduct").prop(option);
-// 		        	});
-		        	
-// 		        },
-// 		        error: function (result) {
-// 		        	console.log("getoptionproductname有問題");
-// 		        }
-// 			});
-			
-			
 		});
 		
 });
 
 </script>
 
-<style>
+<style >
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
 .left-column-div{
 	width:100%;
 	margin-bottom: 10px;
 }
-
 .productFrame{
  	padding:20px; 
 	clear: both;
 }
-	
 label{
 	font-size: 18px;
 }
 .just-padding {
   padding: 15px;
 }
-
 .list-group.list-group-root {
   padding: 0;
   overflow: hidden;
 }
-
 .list-group.list-group-root .list-group {
   margin-bottom: 0;
 }
-
 .list-group.list-group-root .list-group-item {
   border-radius: 0;
   border-width: 1px 0 0 0;
 }
-
 .list-group.list-group-root > .list-group-item:first-child {
   border-top-width: 0;
 }
-
 .list-group.list-group-root > .list-group > .list-group-item {
   padding-left: 30px;
 }
-
 .list-group.list-group-root > .list-group > .list-group > .list-group-item {
   padding-left: 45px;
 }
-
 .list-group-item .glyphicon {
   margin-right: 5px;
 }
@@ -512,9 +478,7 @@ a:hover{
  	font-family: 'Noto Serif TC', serif;
  	font-size: 13px;
 }
-option{
-/* 	padding: 5px 0; */
-}
+
 </style>
 </head>
 <body>
@@ -601,7 +565,6 @@ option{
 <!--         Header End -->
 <!-- 	  </header> -->
 	  <main>
-
         <!-- Hero Start-->
 <!--         <div class="hero-area3 hero-overly2 d-flex align-items-center " style="background-image:url(<c:url value="/images/hero/frechfries.jpg"/>);"> --%>
 <!--             <div class="container"> -->
@@ -615,95 +578,32 @@ option{
 <!--         </div> -->
         <!--Hero End -->
         <!-- listing Area Start -->
-        <div class="listing-area pt-120 pb-120" style="height:1500px;">
+        <div class="listing-area pt-120 pb-120" style="height:1700px;" >
             <div class="container" style="padding: 0px;">
                 <div class="row" >
                     <!-- Left content -->
-                    <div class="col-xl-4 col-lg-4 col-md-6" style="color:black;background-color:#DCDCDC;">
+                    <div class="col-xl-4 col-lg-4 col-md-6" style="color:black;background-color: rgba(220, 220, 220,0.7);">
                         <div class="row" style="padding:5px;">
                         	<div class="left-column-div" >
                         	<!-- left bar write here -->
-                        	<div class="just-padding" style="">
+                        	<div class="just-padding">
 							<div class="list-group list-group-root well">
-<!-- 							  <a href="#item-1" class="list-group-item" data-toggle="collapse"> -->
-<!-- 							    <i class="glyphicon glyphicon-chevron-right"></i>使用者 -->
-<!-- 							  </a> -->
-<!-- 							  <div class="list-group collapse" id="item-1"> -->
-<!-- 								    <a href="#item-1-1" class="list-group-item" data-toggle="collapse"> -->
-<!-- 								      <i class="glyphicon glyphicon-chevron-right"></i>Item 1.1 -->
-<!-- 								    </a> -->
-<!-- 								  <div class="list-group collapse" id="item-1-1"> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.1.1</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.1.2</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.1.3</a> -->
-<!-- 								  </div> -->
-<!-- 								    <a href="#item-1-2" class="list-group-item" data-toggle="collapse"> -->
-<!-- 								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.2 -->
-<!-- 								    </a> -->
-<!-- 								  <div class="list-group collapse" id="item-1-2"> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.2.1</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.2.2</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.2.3</a> -->
-<!-- 								  </div> -->
-<!-- 								    <a href="#item-1-3" class="list-group-item" data-toggle="collapse"> -->
-<!-- 								    <i class="glyphicon glyphicon-chevron-right"></i>Item 1.3 -->
-<!-- 								    </a> -->
-<!-- 								  <div class="list-group collapse" id="item-1-3"> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.3.1</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.3.2</a> -->
-<!-- 								    <a href="#" class="list-group-item">Item 1.3.3</a> -->
-<!-- 								  </div> -->
-<!-- 							  </div> -->
-							  
-							  <a href="#item-2" class="list-group-item" data-toggle="collapse" style="border: 1px solid #A9A9A9;border-radius: 15px;">
+							  <a href="#item-3" class="list-group-item" data-toggle="collapse" style="border: 1px solid #A9A9A9;border-radius: 15px;">
 							    <i class="glyphicon glyphicon-chevron-right"></i>產品
 							  </a>
-							  <div class="list-group collapse" id="item-2">
-							    <a href="#item-2-1" class="list-group-item" data-toggle="collapse" id="queryproduct">
-							      <i class="glyphicon glyphicon-chevron-right"></i>查詢/修改/刪除
-							    </a>
-<!-- 							  <div class="list-group collapse" id="item-2-1"> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.1.1</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.1.2</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.1.3</a> -->
-<!-- 							  </div> -->
-							    <a href="#item-2-2" class="list-group-item" data-toggle="collapse" id="newproduct">
-							      <i class="glyphicon glyphicon-chevron-right" ></i>新增
-							    </a>
-<!-- 							  <div class="list-group collapse" id="item-2-2"> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.2.1</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.2.2</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.2.3</a> -->
-<!-- 							  </div> -->
-							    <a href="#item-2-3" class="list-group-item" data-toggle="collapse" id="chart">
-							      <i class="glyphicon glyphicon-chevron-right"></i>報表
-							    </a>
-<!-- 							    <a href="#item-2-4" class="list-group-item" data-toggle="collapse" id="createEvent"> -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>建立活動 -->
-<!-- 							    </a> -->
-<!-- 							  <div class="list-group collapse" id="item-2-3"> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.3.1</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.3.2</a> -->
-<!-- 							    <a href="#" class="list-group-item">Item 2.3.3</a> -->
-<!-- 							  </div> -->
+							  <div class="list-group collapse " id="item-3">
+								    <a href="#item-3-1" class="list-group-item"  id="queryproduct" style="border: 1px solid #A9A9A9;border-radius: 15px;">
+								      <i class="glyphicon glyphicon-chevron-right"></i>查詢/修改/刪除
+								    </a>
+								    
+								    <a href="#item-3-2" class="list-group-item"  id="newproduct" style="border: 1px solid #A9A9A9;border-radius: 15px;">
+								      <i class="glyphicon glyphicon-chevron-right" ></i>新增
+								    </a>
+								    
+								    <a href="#item-3-3" class="list-group-item"  id="chart" style="border: 1px solid #A9A9A9;border-radius: 15px;">
+								      <i class="glyphicon glyphicon-chevron-right"></i>報表
+								    </a>
 							  </div>
-<!-- 							  	<a href="#item-3" class="list-group-item" data-toggle="collapse"> -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3 -->
-<!-- 							    </a> -->
-<!-- 							  <div class="list-group collapse" id="item-3"> -->
-<!-- 							    <a href="#item-3-1" class="list-group-item"> -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.1 -->
-<!-- 							    </a> -->
-<!-- 							    <a href="#item-3-2" class="list-group-item"> -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.2 -->
-<!-- 							    </a> -->
-<!-- 							    <a href="#item-3-3" class="list-group-item" > -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 3.3 -->
-<!-- 							    </a> -->
-<!-- 							  </div> -->
-<!-- 							   	<a href="#item-4" class="list-group-item" > -->
-<!-- 							      <i class="glyphicon glyphicon-chevron-right"></i>Item 4 -->
-<!-- 							  	</a> -->
 							</div>
 							</div>
                         	<!-- left bar ends here -->
@@ -711,7 +611,7 @@ option{
                         </div>
                     </div>
                     <!-- Right content -->
-                    <div class="col-xl-8 col-lg-8 col-md-6" style="height:1250px;padding:20px;">
+                    <div class="col-xl-8 col-lg-8 col-md-6" style="height:1450px;padding:20px;background-color: rgba(220, 220, 220,0.3);">
                         <!-- listing Details Start-->
                         <div class="listing-details-area" style=""> 
                         	<!-- 新增產品start -->
@@ -897,7 +797,7 @@ option{
 	                        	<div style="float: left;margin-left: 20px;display: flex;align-items: center;font-size: 10px;width: 30px;">
 	                        		<a id='piedownload'><button  style='background-color:#A9A9A9;' ><i class="fas fa-download"></i></button></a>
 	                        	</div>
-	                        	<div class="col-12" id="chartframe">
+	                        	<div class="col-12" id="chartframe" >
 									<canvas id="myPieChart" width="350" height="200"></canvas>	                        	
 	                        	</div>
 	                        
@@ -920,7 +820,33 @@ option{
             </div>
         </div>
         <!-- listing-area Area End -->
-
+        
+        <!-- Modal HTML -->
+		<div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalCenterTitle">確認刪除嗎</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      <!-- write here -->
+		       <div class="col-12">
+			       <label>請輸入"DELETE"確認刪除<small></small></label>
+				   <input class="form-control" type="text" name="deleteproduct" id="DeletePD" placeholder="">
+		       </div>		      	
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
+		        <button type="button" class="genric-btn danger-border circle arrow small" id="todelete" data-val="yes">刪除</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>        
+		<!-- Modal HTML -->
+		
     </main>
     <footer>
         <!-- Footer Start-->
