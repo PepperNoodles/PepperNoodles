@@ -121,6 +121,21 @@ table a{
    	width: 90px; /*can be anything*/
   	position: relative;
 }	
+.frame2 img{  
+		object-fit: cover; 
+	    max-height: 100%;  
+	    max-width: 100%; 
+	    width: auto;
+	    height: auto;
+	    position: absolute;  
+	    top: 0;  
+	    bottom: 0;  
+	    left: 0;  
+	    right: 0;  
+	    margin: auto;   
+  		display: block;
+		}
+
 .memoBoard{
 	overflow-x:hidden;
 	overflow-y:auto;
@@ -894,6 +909,8 @@ I've added a few comments on why we're using certain properties
 									if(response.length>0){
 										$("#checkRequestList").append("!!");
 										showRequestList(response);
+									}else{
+										showRequestList(response);
 									}
 									
 								},
@@ -985,6 +1002,7 @@ I've added a few comments on why we're using certain properties
 								data:	Object,
 								dataType: "text",
 								success: function (response) {
+									alert("已加為好友");
 									console.log(response);
 									checkRequestList();
 								},
