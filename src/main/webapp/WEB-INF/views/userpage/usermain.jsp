@@ -837,7 +837,11 @@ I've added a few comments on why we're using certain properties
 								dataType: "json",
 								success: function (response) {
 									console.log(response);
-									showRequestList(response);
+									if(response.length>0){
+										$("#checkRequestList").append("!!");
+										showRequestList(response);
+									}
+									
 								},
 								error: function (thrownError) {
 									console.log(thrownError);
@@ -918,7 +922,7 @@ I've added a few comments on why we're using certain properties
 							urls+="<c:url value='MainUserAddFriendwithIndex'/>";
 							urls+="/${userAccount.accountIndex}"
 							urls+="/"+this.value;
-							console.log(urls);
+//							console.log(urls);
 							
 							
 						$.ajax({
