@@ -694,7 +694,7 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 				getNetizenAccount().getAccountIndex());
 		UserAccount loginner = uSysServiceImpl.findByAccountIndex(returnNamePath());
 		if(loginner.getAccountId()!=talker.getAccountId()){
-			message = "別人的留言不能改啦~麥笑想";
+			message = "別人的留言不能改啦!";
 			return message;
 		}else {
 			MessageBox msn = msnServiceImpl.findById(updateMSN.getUserMessageId());

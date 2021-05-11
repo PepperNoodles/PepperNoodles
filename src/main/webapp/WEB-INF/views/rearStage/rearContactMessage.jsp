@@ -118,17 +118,18 @@
 					            </button>
 					        </div>
 					        <div class="toast-body">
-					            <div><p>感謝你寶貴的意見!! 我們會盡快回復你。 
+					            <div><p>感謝你寶貴的意見!! 我們會盡快回覆你。 
 					                 <p><a href="/PepperNoodles" style="color: red">請按此返回首頁，謝謝</a></div>
 					        </div>
 					    </div>
 					</div>	
 						
 					<br><br><br>
-<!-- 					<div class="pull-right"> -->
+					<div class="pull-right">
 <!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
 <!-- 						<a href="#"  id="company">企業一鍵登入</a> -->
-<!-- 					</div> -->
+							<a href="#"  id="message">訊息一鍵登入</a>
+					</div>
                     
      
 				</div>
@@ -212,9 +213,10 @@
 			
 // 		});
 		 
+		 //傳送form表單和留言訊息
 		$(document).ready(function(){
 			$("#messageButton").click(function(){
-				alert("here");
+// 				alert("here");
 				let formdata = new FormData();
 				let blob = new Blob([ JSON.stringify({
 					"userRealName":$("#nickname:text").val(),
@@ -254,6 +256,13 @@
 						alert("失敗!");
 					}
 				});
+			});
+			
+			//一鍵新增-訊息
+			$("#message").click(function(){
+				$("#nickname").val('路人甲');
+				$("#username").val('1qaz2ws0502@gmail.com');
+				$("#message-text").val('請問，我為什麼被停權了!!');
 			});
 		});
 		 

@@ -225,7 +225,7 @@
 						<!-- 						新增主要留言input & 按鈕 -->
 						<input placeholder='Hello....' id="commentInput"></input>
 						<button type="button" class="genric-btn default circle arrow"
-							id="addNewComment">新增留言</button>
+							id="addNewComment">新增留言</button><span style="display:none" id="messagePrompt"></span>
 
 						<!-- 						使用Ajax的方法 -->
 						<div class="table rounded border border-warning container-fluid table"
@@ -251,6 +251,21 @@
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
+	
+	
+						  	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+								  <div class="toast" style="position: fixed;top:20%;left:50%; ">
+								    <div class="toast-header">
+								      <strong class="mr-auto">貼心提醒</strong>
+								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								        <span aria-hidden="true">&times;</span>
+								      </button>
+								    </div>
+								    <div class="toast-body">
+								    	<p></p>
+								    </div>
+								  </div>
+							</div>
 
 	<script>
  		$(window).on('load', function() {
@@ -573,8 +588,16 @@
 				url:  urls,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
+					$('.toast-body p').text(result);
+					$('.toast').toast({delay: 900});
+					$('.toast').toast('show');
+					
+					$("#messagePrompt").text(result);
+					$("#messagePrompt").css("color", "#007500");
+					$("#messagePrompt").toggle();
+					setTimeout(function() { $("#messagePrompt").hide(); }, 900);
 				},
 				error: function (thrownError) {
 					console.log(thrownError);
@@ -611,8 +634,17 @@
 				data:JSON.stringify(data),
 				
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
+					
+					$('.toast-body p').text(result);
+					$('.toast').toast({delay: 900});
+					$('.toast').toast('show');
+					
+					$("#messagePrompt").text(result);
+					$("#messagePrompt").css("color", "#007500");
+					$("#messagePrompt").toggle();
+					setTimeout(function() { $("#messagePrompt").hide(); }, 900);
 				},
 				error: function (thrownError) {
 					console.log(thrownError);
@@ -632,8 +664,29 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
+					if(result.length<7){
+						
+						$('.toast-body p').text(result);
+						$('.toast').toast({delay: 900});
+						$('.toast').toast('show');
+						
+						$("#messagePrompt").text(result);
+						$("#messagePrompt").css("color", "#007500");
+						$("#messagePrompt").toggle();
+						setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+						}else{
+							
+							$('.toast-body p').text(result);
+							$('.toast').toast({delay: 900});
+							$('.toast').toast('show');
+							
+							$("#messagePrompt").text(result);
+							$("#messagePrompt").css("color", "#FF2D2D");
+							$("#messagePrompt").toggle();
+							setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+						}
 				},
 				error: function (thrownError) {
 					console.log(thrownError);
@@ -690,8 +743,30 @@
 				url: urls ,
 				dataType: "text",
 				success: function (result) {
-					alert(result);
+// 					alert(result);
 					showAllComments();
+					if(result.length<7){
+						
+						$('.toast-body p').text(result);
+						$('.toast').toast({delay: 900});
+						$('.toast').toast('show');
+						
+						$("#messagePrompt").text(result);
+						$("#messagePrompt").css("color", "#007500");
+						$("#messagePrompt").toggle();
+						setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+						}else{
+							
+							
+							$('.toast-body p').text(result);
+							$('.toast').toast({delay: 900});
+							$('.toast').toast('show');
+							
+							$("#messagePrompt").text(result);
+							$("#messagePrompt").css("color", "#FF2D2D");
+							$("#messagePrompt").toggle();
+							setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+						}
 
 				},
 			error: function (thrownError) {
