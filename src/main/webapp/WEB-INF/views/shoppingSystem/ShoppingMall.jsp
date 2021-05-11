@@ -518,6 +518,7 @@ $(document).ready(function() {
 		        success: function (allresult) {
 		        	var productlist = allresult.productlist;
 		        	var totalpage = allresult.totalpage;//總頁數
+		        	console.log("totalpage===>>>"+totalpage)
 						//print btns	        	
 		        		$("#pagframe>li").remove();
 						for (var i=1;i<=totalpage;i++){
@@ -707,6 +708,8 @@ $(document).ready(function() {
 			//flag判斷在哪個click事件
 			//page判斷哪一個分頁btn
 			e.preventDefault();
+			$("#pagframe >.page-item.active > .page-link").css('background-color', '');
+			$(this).css('background-color', '#DCDCDC');
 			if (ifprice==1){
 				ifprice = price;
 			}
@@ -1446,7 +1449,7 @@ $(document).ready(function() {
         </div>
         <!--Hero End -->
         <!-- listing Area Start -->
-        <div class="listing-area pt-120 pb-120">
+        <div class="listing-area pt-120 pb-120" >
             <div class="container">
                 <div class="row">
                 
@@ -1512,9 +1515,9 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <!-- Right content -->
-                    <div class="col-xl-8 col-lg-8 col-md-6" >
+                    <div class="col-xl-8 col-lg-8 col-md-6" style="height: 2000px;">
                         <!-- listing Details Start-->
-                        <div class="listing-details-area">
+                        <div class="listing-details-area" style="height: 1800px;">
                         	<!-- test for bootstrap modal -->
 	                        <!-- Modal Start -->
 							<div class="modal fade" id="myModal" >
