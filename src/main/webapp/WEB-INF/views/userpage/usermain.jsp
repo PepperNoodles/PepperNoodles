@@ -907,7 +907,7 @@ I've added a few comments on why we're using certain properties
 								success: function (response) {
 									console.log(response);
 									if(response.length>0){
-										$("#checkRequestList").append("!!");
+										//$("#checkRequestList").append("!!");
 										showRequestList(response);
 									}else{
 										showRequestList(response);
@@ -924,66 +924,75 @@ I've added a few comments on why we're using certain properties
 							$("#friendRequest").html("");
 							//let result = JSON.stringify(response);
 							//console.log(response[0]);
-							let table =  document.createElement("table");
-							table.border="1";
- 							let trh = document.createElement("tr");
- 							let th1 = document.createElement("th");
- 							th1.innerHTML= "照片"
- 							let th2 = document.createElement("th");
- 							th2.innerHTML = "帳號"
- 							let th3 = document.createElement("th");
- 							th3.innerHTML = "名稱"
- 							trh.appendChild(th1);
- 							trh.appendChild(th2);
- 							trh.appendChild(th3);
- 							table.appendChild(trh);
- 							
-							let length = Object.keys(response).length;
-							for (let i =0;i< length;i++){
-								let tr  = document.createElement("tr");
-								//td1 mail,td2 nick name ,td3 pic,td4 button
-								let td1 = document.createElement("td");
-								let td2 = document.createElement("td");
-								let td3 = document.createElement("td");
-								let td4 = document.createElement("td");
-								let divFrame = document.createElement("div");
-								divFrame.className="friendsysImg";
-								let img = document.createElement("img");
-								let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
-								img.src="<c:url value='"+imgSrc+"'/>";
-								divFrame.append(img);
-								
-								td3.appendChild(divFrame);								
-								
-								td1.innerHTML=response[i].accountIndex;
-								console.log(response[i].accountIndex);
-								console.log(response[i].userAccountDetail);
-								
-								//幫nickname建立連結
-								let a =document.createElement("a");
-								a.href="${pageContext.request.contextPath}/userView/"+response[i].accountIndex;
-								a.innerText =response[i].userAccountDetail.nickName;
-								
-								td2.appendChild(a);
-								//新增確認與取消按鈕
-								let btn_comfirm = document.createElement("button");
-								btn_comfirm.innerHTML="AddFriend";
-								btn_comfirm.value=response[i].accountIndex;
-								btn_comfirm.addEventListener("click",addFriend);
-								// a1_comfirm.href="${pageContext.request.contextPath}/"+"/${userAccount.accountIndex}"+"/"+response[i].accountIndex;
-								// a1_comfirm.innerHTML="AddFriend";
+							if(response.length>0){
+								let table =  document.createElement("table");
+								table.border="1";
+	 							let trh = document.createElement("tr");
+	 							let th1 = document.createElement("th");
+	 							th1.innerHTML= "照片"
+	 							let th2 = document.createElement("th");
+	 							th2.innerHTML = "帳號"
+	 							let th3 = document.createElement("th");
+	 							th3.innerHTML = "名稱"
+	 							let th4 = document.createElement("th");
+	 							th4.innerHTML = "加好友";
+	 							
+	 							trh.appendChild(th1);
+	 							trh.appendChild(th2);
+	 							trh.appendChild(th3);
+	 							trh.appendChild(th4);
+	 							table.appendChild(trh);
+	 							
+								let length = Object.keys(response).length;
+								for (let i =0;i< length;i++){
+									let tr  = document.createElement("tr");
+									//td1 mail,td2 nick name ,td3 pic,td4 button
+									let td1 = document.createElement("td");
+									let td2 = document.createElement("td");
+									let td3 = document.createElement("td");
+									let td4 = document.createElement("td");
+									let divFrame = document.createElement("div");
+									divFrame.className="friendsysImg";
+									let img = document.createElement("img");
+									let imgSrc="${pageContext.request.contextPath}/userProtrait/"+response[i].userAccountDetail.useretailId;
+									img.src="<c:url value='"+imgSrc+"'/>";
+									divFrame.append(img);
+									
+									td3.appendChild(divFrame);								
+									
+									td1.innerHTML=response[i].accountIndex;
+									console.log(response[i].accountIndex);
+									console.log(response[i].userAccountDetail);
+									
+									//幫nickname建立連結
+									let a =document.createElement("a");
+									a.href="${pageContext.request.contextPath}/userView/"+response[i].accountIndex;
+									a.innerText =response[i].userAccountDetail.nickName;
+									
+									td2.appendChild(a);
+									//新增確認與取消按鈕
+									let btn_comfirm = document.createElement("button");
+									btn_comfirm.innerHTML="AddFriend";
+									btn_comfirm.style.color="#D26900";
+									btn_comfirm.value=response[i].accountIndex;
+									btn_comfirm.addEventListener("click",addFriend);
+									// a1_comfirm.href="${pageContext.request.contextPath}/"+"/${userAccount.accountIndex}"+"/"+response[i].accountIndex;
+									// a1_comfirm.innerHTML="AddFriend";
 
-								// let a1_cancel =document.createElement("a");
-								 td4.appendChild(btn_comfirm);
-								
-								//放圖,放account,放nickName
-								tr.appendChild(td3);
-								tr.appendChild(td1);
-								tr.appendChild(td2);
-								tr.appendChild(td4);
-								table.appendChild(tr);
+									// let a1_cancel =document.createElement("a");
+									 td4.appendChild(btn_comfirm);
+									
+									//放圖,放account,放nickName
+									tr.appendChild(td3);
+									tr.appendChild(td1);
+									tr.appendChild(td2);
+									tr.appendChild(td4);
+									table.appendChild(tr);
+								}
+								$("#friendRequest").append(table);
 							}
-							$("#friendRequest").append(table);
+							
+
 							
 						}
 						//addFriend按鈕的function

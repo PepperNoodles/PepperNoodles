@@ -41,6 +41,10 @@
 #main{
 	height:100vh;
 }
+
+.hidden{
+	display: none;
+}
 </style>
 </head>
 <body id="body">
@@ -81,7 +85,7 @@
 				<div class="mt-10 ">
 					<button type="submit" id="loginButton" value="login"
 						class="genric-btn danger radius">Login</button>
-
+						
 <!-- 					<button type="submit" id="loginButton" value="login" -->
 <!-- 						class="g-recaptcha genric-btn danger radius" -->
 <!-- 						 data-sitekey="6LeiSMcaAAAAAEC4fWA0-CNm2mxSqJxKpfg6A0KP" -->
@@ -91,6 +95,15 @@
 					<div class="pull-right">
 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp;
 						<a href="#"  id="company">企業一鍵登入</a>
+						<p>
+						<a href="#"  id="userSwitch">切換會員登入</a>
+					
+					</div>
+					<div id="selectArea" class="hidden">
+						<select name="one" id="selectUser">						
+							<option value=1>好友一
+							<option value=2>好友二
+						</select>
 					</div>
 				</div>
 			</form>
@@ -107,6 +120,7 @@ function onSubmit(token){
 	document.getElementById("loginForm").submit();
 }
 </script>
+
 	<script>
 		$(window).on('load', function() {
 
@@ -127,6 +141,29 @@ function onSubmit(token){
 				$("#password").val('a123456@');
 				$("#username").val('chrismeow5311@gmail.com');
 			});
+			
+			$("#userSwitch").click(function(){
+				$("#selectArea").toggleClass('hidden');
+				
+			});
+			
+			
+			$("#selectUser").change(function(){
+				let selectId = document.getElementById("selectUser").value;
+				console.log(selectId);
+				switch (selectId){
+				case '1': 
+						$("#password").val('a123456@');
+						$("#username").val('catMeow0409@gmail.com');
+						break;
+				case '2':
+						$("#password").val('a123456@');
+						$("#username").val('catMeow0909@gmail.com');
+						break;
+				
+				}
+			});
+			
 			
 			$('form').submit(function(ev){
 				 ev.preventDefault();
