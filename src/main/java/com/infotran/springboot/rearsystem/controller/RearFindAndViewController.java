@@ -19,7 +19,7 @@ public class RearFindAndViewController {
 		return "rearStage/userAccountRearStage";
 	}
 	
-
+    //後台測試用
 	@GetMapping("/userAccountRearTest")
 	public String test() {
 		return "rearStage/userAccountRearTest";

@@ -151,7 +151,7 @@ $("#indexSearch").on('click',function(){
                                      <sec:authorize access="hasAnyAuthority('admin')" var="isAuthenticated">
 										<c:choose>
 											<c:when test="${isAuthenticated == true}">
-                                           		 <li><a href="rearStage/indexRearStage1">後台</a></li>
+                                           		 <li><a href="<c:url value='/rearStage/indexRearStage1'/> ">後台</a></li>
 											</c:when>
 											<c:otherwise>
 												</c:otherwise>
