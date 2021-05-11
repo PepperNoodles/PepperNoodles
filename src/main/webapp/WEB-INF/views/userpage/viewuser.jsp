@@ -385,7 +385,7 @@
 			
 			//按下送出邀請
 			function sendFriendRequest(){
-				alert("送出邀請");
+				//alert("送出邀請");
 				let mainUser = "${userAccount.accountIndex}";
 				let viewUser = "${viewUserAccount.accountIndex}";
 				let urls="${pageContext.request.contextPath}/";
@@ -395,9 +395,9 @@
 					type: "GET",
 					url: urls,							
 					dataType: "text",
-					success: function (response) {		
-						alert(response);
+					success: function (response) {						
 						if(response=="request is sending"){
+							alert(response);
 							judgeRelation();
 						}else if(response=="request is already send"){
 							alert(response);
