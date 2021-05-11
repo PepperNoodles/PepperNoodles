@@ -60,7 +60,7 @@ $(document).ready(function() {
 	        success: function (result) {
 	        	setTimeout(function(){
 	        		location.reload();//页面刷新
-	        		},2000);
+	        		},1500);
 	             $("#checkStatus").text(result.success).css({"color":"blue"});
 	        },
 	        error: function (result) {
@@ -200,7 +200,7 @@ $(document).ready(function() {
 				        		console.log("已成功刪除");
 				        		setTimeout(function(){
 					        		location.reload();//页面刷新
-					        		},3000);
+					        		},800);
 				        },
 				        error: function (result) {
 				        	console.log("有問題");
@@ -825,7 +825,7 @@ a:hover{
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal">Close</button>
-		        <button type="button" class="genric-btn danger-border circle arrow small" id="todelete" data-val="yes">刪除</button>
+		        <button type="button" class="genric-btn danger-border circle arrow small" data-dismiss="modal" id="todelete" data-val="yes">刪除</button>
 		      </div>
 		    </div>
 		  </div>
