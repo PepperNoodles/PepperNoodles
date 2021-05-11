@@ -16,7 +16,6 @@
 <script src="<c:url value='/scripts/popper.min.js' />"></script>
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-
 <style>
 
 #body{
@@ -443,8 +442,8 @@ I've added a few comments on why we're using certain properties
 						<!-- 						新增主要留言input & 按鈕 -->
 						<input placeholder='Hello....' id="commentInput"></input>
 						<button type="button" class="genric-btn default circle arrow"
-							id="addNewComment">新增留言</button>
-
+							id="addNewComment">新增留言</button><span style="display:none" id="messagePrompt"></span>
+			
 						<!-- 						使用Ajax的方法 -->
 						<div class="rounded border border-warning container-fluid table "
 							style="overflow-y: auto; height: 300px;" id="commentsForUser"></div>
@@ -580,7 +579,19 @@ I've added a few comments on why we're using certain properties
 		</div>        
 		<!-- Modal HTML -->
 
-
+						  	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+								  <div class="toast" style="position: fixed;top:20%;left:50%; ">
+								    <div class="toast-header">
+								      <strong class="mr-auto">貼心提醒</strong>
+								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								        <span aria-hidden="true">&times;</span>
+								      </button>
+								    </div>
+								    <div class="toast-body">
+								    	<p></p>
+								    </div>
+								  </div>
+							</div>
 	<script>
 	
 	//留言滑到底的時候顯示
@@ -1197,8 +1208,15 @@ I've added a few comments on why we're using certain properties
 								url:  urls,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
+									$('.toast-body p').text(result);
+									$('.toast').toast({delay: 900});
+									$('.toast').toast('show');
+									$("#messagePrompt").text(result);
+									$("#messagePrompt").css("color", "#007500");
+									$("#messagePrompt").toggle();
+									setTimeout(function() { $("#messagePrompt").hide(); }, 900);
 								},
 								error: function (thrownError) {
 									console.log(thrownError);
@@ -1234,8 +1252,15 @@ I've added a few comments on why we're using certain properties
 								data:JSON.stringify(data),
 								
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
+									$('.toast-body p').text(result);
+									$('.toast').toast({delay: 900});
+									$('.toast').toast('show');
+									$("#messagePrompt").text(result);
+									$("#messagePrompt").css("color", "#007500");
+									$("#messagePrompt").toggle();
+									setTimeout(function() { $("#messagePrompt").hide(); }, 900);
 								},
 								error: function (thrownError) {
 									console.log(thrownError);
@@ -1254,8 +1279,28 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
+									if(result.length<7){
+										$('.toast-body p').text(result);
+										$('.toast').toast({delay: 900});
+										$('.toast').toast('show');
+									
+										$("#messagePrompt").text(result);
+										$("#messagePrompt").css("color", "#007500");
+										$("#messagePrompt").toggle();
+										setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+										}else{
+											
+											$('.toast-body p').text(result);
+											$('.toast').toast({delay: 900});
+											$('.toast').toast('show');	
+										
+											$("#messagePrompt").text(result);
+											$("#messagePrompt").css("color", "#FF2D2D");
+											$("#messagePrompt").toggle();
+											setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+										}
 								},
 								error: function (thrownError) {
 									console.log(thrownError);
@@ -1313,13 +1358,34 @@ I've added a few comments on why we're using certain properties
 								url: urls ,
 								dataType: "text",
 								success: function (result) {
-									alert(result);
+// 									alert(result);
 									showAllComments();
-
+// 									alert(result.length);
+									if(result.length<7){
+										
+										$('.toast-body p').text(result);
+										$('.toast').toast({delay: 900});
+										$('.toast').toast('show');
+									
+									$("#messagePrompt").text(result);
+									$("#messagePrompt").css("color", "#007500");
+									$("#messagePrompt").toggle();
+									setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+									}else{
+										
+										$('.toast-body p').text(result);
+										$('.toast').toast({delay: 900});
+										$('.toast').toast('show');
+									
+										$("#messagePrompt").text(result);
+										$("#messagePrompt").css("color", "#FF2D2D");
+										$("#messagePrompt").toggle();
+										setTimeout(function() { $("#messagePrompt").hide(); }, 900);
+									}
 								},
 							error: function (thrownError) {
 									console.log(thrownError);
-									alert(thrownError);
+// 									alert(thrownError);
 								}
 							});
 		        		});
