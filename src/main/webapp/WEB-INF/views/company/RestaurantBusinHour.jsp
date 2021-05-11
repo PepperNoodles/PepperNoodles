@@ -233,23 +233,23 @@ $(document).ready(function () {
 			}
 			//只填一段時間
 			else if ($('#open1').val() != "" & $('#close1').val() != ""& $('#open2').val() == ""& $('#close2').val() == "") {
-				console.log('檢查1段時間');
+// 				console.log('檢查1段時間');
 
 				
 				
 				var time1 = (parseInt(open1_hr) * 60 + parseInt(open1_min));
 				var time2 = (parseInt(close1_hr) * 60 + parseInt(close1_min));
 				
-				console.log('time1'+time1);
-				console.log('time2'+time2);
+// 				console.log('time1'+time1);
+// 				console.log('time2'+time2);
 				if (time2 > time1) {
 					day1checktime = "true";
-					console.log('檢查結果:時間正確');
+// 					console.log('檢查結果:時間正確');
 					$(".checkinput").css({"border" : "2px solid green","background-color" : "#BBFFBB"});
 
 				} else {
 					day1checktime = "false";
-					console.log('檢查結果:時間錯誤');
+// 					console.log('檢查結果:時間錯誤');
 					$(".checkinput").css({"border" : "2px solid red","background-color" : "white"});
 				}
 
@@ -274,7 +274,6 @@ $(document).ready(function () {
 
 				} else {
 					day1checktime = "false";
-					console.log('檢查結果:時間錯誤');
 					$(".checkinput").css({"border" : "2px solid red","background-color" : "white"});
 				}
 			}
@@ -305,7 +304,7 @@ $(document).ready(function () {
 
 				} else {
 					day1checktime = "false";
-					console.log('檢查結果:時間錯誤');
+// 					console.log('檢查結果:時間錯誤');
 					$(".checkinput").css({
 						"border" : "2px solid red","background-color" : "white"
 					});
@@ -531,7 +530,7 @@ $(document).ready(function () {
 														});
 											} else {
 												alert('設定失敗')
-												console.log('day1checktime='+ day1checktime);
+// 												console.log('day1checktime='+ day1checktime);
 												
 												return false;
 											}
