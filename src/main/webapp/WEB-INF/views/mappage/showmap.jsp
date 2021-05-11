@@ -595,7 +595,7 @@ tr a:hover{
 			let count = 0;
 			let alat=0;
 			let along=0;
-			
+			markerArray=[];
 			console.log(loca[1]);
 			for(let i=0; i <loca.length;i++){
 			    let lat=parseFloat(loca[i].latitude);
