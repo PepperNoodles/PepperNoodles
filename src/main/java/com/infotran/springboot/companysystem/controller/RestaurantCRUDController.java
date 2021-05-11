@@ -3,18 +3,20 @@ package com.infotran.springboot.companysystem.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +38,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.infotran.springboot.commonmodel.CompanyDetail;
-import com.infotran.springboot.commonmodel.EventList;
 import com.infotran.springboot.commonmodel.FoodTag;
 import com.infotran.springboot.commonmodel.Restaurant;
 import com.infotran.springboot.commonmodel.RestaurantBusinHour;
@@ -45,12 +46,14 @@ import com.infotran.springboot.companysystem.service.RestaurantService;
 import com.infotran.springboot.companysystem.service.impl.BusinessHourServiceImpl;
 import com.infotran.springboot.companysystem.service.impl.CompanyDetailServiceImpl;
 import com.infotran.springboot.companysystem.validator.RestaurantValidator;
+import com.infotran.springboot.loginsystem.service.UserAccountService;
 import com.infotran.springboot.userAccsystem.service.UserSysService;
 
 @Controller
 @SessionAttributes(names = { "updateRestaurant", "foodTagListLength" })
 public class RestaurantCRUDController {
-
+	 @PersistenceContext
+	 EntityManager em;
 //	若@GetMapping("/restpicture/{id}")找不到圖就用此圖
 	String noImage = "/images/NoImage/restaurantdefault.png";
 
@@ -71,6 +74,9 @@ public class RestaurantCRUDController {
 
 	@Autowired
 	BusinessHourServiceImpl businessHourServiceImpl;
+	
+	@Autowired
+	private UserAccountService service;
 
 	// 顯示所有餐廳資料
 	@GetMapping("/showAllrest")
@@ -305,15 +311,31 @@ public class RestaurantCRUDController {
 			
 			businessHourServiceImpl.deleteByID(restaurantBusinHour.getRestaurantBusinHourId());
 		}
-	
-
 		
+			
 		//先去除掉關聯性再刪掉 不然會連同AccountUser+Role的comapny一同刪除== 幹!
 		restToDelete.setFoodTag(null);
 		restToDelete.setUserAccount(null);
-		restToDelete.setUsers(null);
+		List<UserAccount> users = restToDelete.getUsers();
+		for (UserAccount user:users) {
+			List<Restaurant> collections = user.getRestaurantCollections();
+			for (int i = 0;i<collections.size();i++) {
+				if(collections.get(i).getRestaurantId() ==restToDelete.getRestaurantId()) {
+					collections.remove(i);
+				}				
+			}
+			service.update(user);
+			
+		}
+		
+		
+		//restToDelete.setUsers(Collections.emptyList());
 		System.out.println("將編號:" + id + "餐廳的companyID及foodTag設為null---去除關聯性");
 		restaurantService.update(restToDelete);
+		
+		 Session session2 = (Session) em.getDelegate();
+		 session2.clear();
+		 
 		System.out.println("刪除了編號:" + id + "的餐廳!!");
 		restaurantService.delete(id);	
 		CompanyDetail comDetail=(CompanyDetail) session.getAttribute("comDetail");
