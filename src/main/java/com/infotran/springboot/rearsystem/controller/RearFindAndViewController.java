@@ -14,6 +14,7 @@ public class RearFindAndViewController {
 		return "rearStage/indexRearStage";
 	}
 	
+	//AdminLTE 3 | 後台管理系統測試用
 	@GetMapping("/userAccountRearStage")
 	public String rearsystem() {
 		return "rearStage/userAccountRearStage";
