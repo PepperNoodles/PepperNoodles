@@ -193,14 +193,11 @@ public class RearMessageController {
 	
 	//刪除留言
 	@GetMapping(value = "/rearMessageDeleteById")
-	public String messageDeleteById(@RequestParam(name = "rearMessage_id") Integer id) {
+	public @ResponseBody String messageDeleteById(@RequestParam(name = "rearMessage_id") Integer id) {
 		RearMessageBox rearMessage = rearMessageBoxService.findById(id);
 		rearMessage.setUserAccount(null);
 		rearMessageBoxService.delete(rearMessage);
 		return "OK";
-
-    
-		
 	}
 
 }

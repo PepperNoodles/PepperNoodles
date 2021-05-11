@@ -41,7 +41,7 @@ html, body {
 	height: 100%;
 	}
 #map {
-	width: 40%;
+	width: 25%;
 	height: 80%;
 	}
 
@@ -106,7 +106,7 @@ tr a:hover{
 	</div>
 	
 
-	<div style="height:80vh width:20vh; float: left;overflow: scroll;">
+	<div style="height:80vh; float: left;overflow: scroll;">
 		
 		<%@include file="../restaurantPage/RestaurantMessage.jsp" %>
 
