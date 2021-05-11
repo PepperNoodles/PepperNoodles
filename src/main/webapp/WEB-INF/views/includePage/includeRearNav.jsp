@@ -137,7 +137,7 @@
   </div>
   
   
-  <a href="<c:url value='/user/rearStage/rearStage'/>" class="list-group-item" data-toggle="collapse">
+  <a href="http://localhost:433/PepperNoodles/user/rearStage/rearStage" class="list-group-item">
     <img src="<c:url value='/images/rear/cart3.svg'/>" alt="Bootstrap" width="30" height="30">
     <i class="glyphicon glyphicon-chevron-right"></i>產品
   </a>
