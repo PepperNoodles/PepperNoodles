@@ -19,12 +19,9 @@
 	href="<c:url value='/webjars/bootstrap/4.6.0/css/bootstrap.min.css' />" />
 <link rel="stylesheet"
 	href="<c:url value='/css/fontawesome-all.min.css' />" />
-<script type="text/javascript"
-	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>
-<link rel="stylesheet"
-	href="<c:url value='/css/owl.carousel.min.css' />">
+<script type="text/javascript"	src="<c:url value='/webjars/jquery/3.5.1/jquery.min.js'/>"></script>	
+<script type="text/javascript"	src="<c:url value='/webjars/bootstrap/4.6.0/js/bootstrap.min.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/css/owl.carousel.min.css' />">
 <link rel="stylesheet" href="<c:url value='/css/slicknav.css' />">
 <link rel="stylesheet" href="<c:url value='/css/flaticon.css' />">
 <link rel="stylesheet" href="<c:url value='/css/animate.min.css' />">

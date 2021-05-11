@@ -48,7 +48,6 @@
 	href="<c:url value='/images/icon/favicon-PepperNoodles.ico' />">
 
 <!-- <!-- site.webmanifest run offline -->
-<link rel="manifest" href="site.webmanifest">
 
 
 <style>
