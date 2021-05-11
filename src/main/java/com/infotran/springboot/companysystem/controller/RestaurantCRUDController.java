@@ -268,7 +268,7 @@ public class RestaurantCRUDController {
 				System.out.println("有錯誤：" + error);
 			}
 			// 若有錯 回到修改頁面
-			return "company/UpdateRestauran";
+			return "company/UpdateRestaurant";
 		}
 		// 檢查提交表單的上傳圖片檔
 
