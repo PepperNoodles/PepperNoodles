@@ -6,7 +6,4 @@ public interface UserSysService {
 	UserAccount findByAccountIndex(String accountIndex);
 	UserAccount get(Integer id);
 
-	
-	
-	
 }
