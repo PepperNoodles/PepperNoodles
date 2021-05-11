@@ -1021,16 +1021,24 @@ System.out.println("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!");
 	//用網址找到對應的user,並把user和detail存到model,傳到被看的page
 	@GetMapping(path="/userView/{userAccountIndex}")
 	public String goUserView(@PathVariable("userAccountIndex") String uAccIndx,Model model ) {
-		UserAccount userAcc = uSysServiceImpl.findByAccountIndex(uAccIndx);
-		if(userAcc!=null) {
-			System.out.println(returnNamePath());
+		UserAccount currentUser = (UserAccount)model.getAttribute("userAccount");
+		if (currentUser!=null && !(currentUser.getAccountIndex().equals(uAccIndx))) {
+			UserAccount userAcc = uSysServiceImpl.findByAccountIndex(uAccIndx);
+			if(userAcc!=null) {
+				System.out.println(returnNamePath());
 
-			UserDetail userAccDetail = userAcc.getUserAccountDetail();
-			model.addAttribute("viewUserAccount",userAcc);
-			model.addAttribute("viewUserAccountDetail", userAccDetail);
+				UserDetail userAccDetail = userAcc.getUserAccountDetail();
+				model.addAttribute("viewUserAccount",userAcc);
+				model.addAttribute("viewUserAccountDetail", userAccDetail);
+				return "userpage/viewuser";
+			}
 			return "userpage/viewuser";
+		}else {
+			return "userpage/usermain";
 		}
-		return "userpage/viewuser";
+				
+		
+		
 	}
 	
 	//用Nickname找user(關鍵字搜尋功能)
