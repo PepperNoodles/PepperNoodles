@@ -220,9 +220,7 @@
                         	let buttons="";
                         	for (let i=0; i<JsonResultRow.rest.foodTag.length;i++ ){                        	
                         		buttons += '<button class="tagButton" style="border-radius:5px;" id=tag'+JsonResultRow.rest.foodTag[i].foodTagIid+'>'+JsonResultRow.rest.foodTag[i].foodTagName+'</button>'
-                        	}
-                        	
-                        	
+                        	}         
                         	return buttons;
                         }},
                         { "render": function (data, type, JsonResultRow, meta) {
@@ -265,8 +263,8 @@
 			        	Table.clear().draw();
 			            Table.rows.add(result).draw();
 			            
-			            $(".updateButton").click(updateRest);
-			            $(".getPositionButton").click(positionShow);
+			          //  $(".updateButton").click(updateRest);
+			          //  $(".getPositionButton").click(positionShow);
 			        },
 			        error: function (result) {
 			        	console.log("有問題");
@@ -310,6 +308,10 @@
 					});
 				}
 				
+				//綁定方法
+				
+				$("body").on("click",".getPositionButton",positionShow);
+				$("body").on("click",".updateButton",updateRest);
 				
 				//上傳並顯示圖片
 				function readURL(input) {
