@@ -234,10 +234,14 @@
 		         processData: false,
 		         cache: false,  //不做快取
 	             async : true,
+	             dataType:"text",
 	             success: function (response) {
-		             alert(response.rearMessageId);
+	            	 if (response == "OK"){
+	            		 alert(status+"已被刪除");
+	            		 location.reload();
+	            	 }
 // 		             setTimeout(function(){
-		             	window.location.reload(); //成功重整頁面
+		             	//成功重整頁面
 // 		             },3000);
 		
 	          	 },
