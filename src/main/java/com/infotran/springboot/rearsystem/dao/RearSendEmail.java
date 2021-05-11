@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.infotran.springboot.commonmodel.UserAccount;
 
+//Java Mail功能
 @Component
 public class RearSendEmail {
 	
