@@ -95,7 +95,7 @@ $(document).ready(function() {
 		    },
 		    data:[],
 		    columns: [
-		    	{ "data": "productId" },
+		       { "data": "productId"},
                { "data": "productName"  },
                { "data": "realeasedDate" ,
            	     "render": function (data, type, row, meta) {
@@ -164,14 +164,15 @@ $(document).ready(function() {
 		        	var orderlist = result.productlist;
 		        	Table.clear().draw();
 		            Table.rows.add(result.productlist).draw();
-// 		            setInterval(getdatatable, 30000); 
 		        },
 		        error: function (result) {
 		        	console.log("有問題");
 		        }
 			});
 		});
-		
+		///////////////////////////////////////////////////////
+
+
 		//檢視商品
 		$("body").on("click","#openProduct",function(e){
 			e.preventDefault();
@@ -665,7 +666,7 @@ a:hover{
 									<table  id="productlist" class="display" >
 										<thead>
 											<tr>
-												<th>#No.</th>
+												<th>#產品編號</th>
 												<th>品名</th>
 												<th>推出時間</th>
 												<th>價格</th>
