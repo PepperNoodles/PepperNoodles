@@ -277,7 +277,6 @@
 				 url: urls,
 				 dataType: "text",
 				 success:function(result){
-					 alert(result)
 					 $("#messageButton").toggle();
 					
 				 },

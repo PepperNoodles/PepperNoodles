@@ -149,7 +149,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://7cd8d2b87139.ngrok.io/PepperNoodles/NewFile");
+		aiocheckoutall.setReturnURL("https://80d207331d58.ngrok.io/PepperNoodles/NewFile");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
@@ -222,7 +222,7 @@ public class checkOutController {
 		aiocheckoutall.setTotalAmount(String.valueOf(Totalcost));
 		aiocheckoutall.setTradeDesc("PPN商城購物");
 		aiocheckoutall.setItemName(prostr);
-		aiocheckoutall.setReturnURL("https://7cd8d2b87139.ngrok.io/PepperNoodles/recheqMonster");
+		aiocheckoutall.setReturnURL("https://80d207331d58.ngrok.io/PepperNoodles/recheqMonster");
 		aiocheckoutall.setOrderResultURL("http://localhost:433/PepperNoodles/shoppingSystem/confirmOrderAndInvoice");
 //		String CheckMacValue = EcpayFunction.genCheckMacValue("5294y06JbISpM5x9 ", "v77hoKGq4kWxNNIS", aiocheckoutall);
 		String out = allinone.aioCheckOut(aiocheckoutall, null);
