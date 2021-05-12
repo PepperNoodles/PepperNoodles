@@ -556,7 +556,7 @@ hr {
 	font-size:13px;
 	}
 .timeTable tr{
-	border-bottom: 3px solid white;
+	border: 3px solid white;
 }
 .timeTable td{
 
