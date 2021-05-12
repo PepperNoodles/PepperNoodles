@@ -141,7 +141,9 @@ body{
 <script>
 $(window).load(function(){
     console.log("this is ok");
-	const url = 'http://localhost:433/PepperNoodles';
+    //"<c:url value='' />"
+	//const url = 'http://localhost:433/PepperNoodles';
+    const url = "<c:url value='/' />";
  	let currentUser =document.getElementById("userName").innerHTML;
 	let stompClient;
 	let selectedUser;
@@ -153,7 +155,7 @@ $(window).load(function(){
 	fetchAll();
 	$.ajax({
 		type: "GET",
-		url: url+"/userMessageLoggin/getName",				
+		url: url+"userMessageLoggin/getName",				
 		dataType: "text",
 		success: function (response) {
 			console.log(response);
@@ -224,7 +226,7 @@ $(window).load(function(){
 	    function registration(){
 	        let userName=currentUser;
 	        //對應到Message Controller的方法
-	        $.get(url+"/registration/"+userName,function(response){
+	        $.get(url+"registration/"+userName,function(response){
 	            connectToChat(userName);
 	        }).fail(function(error){
 	            if(error.status===400){
@@ -238,7 +240,7 @@ $(window).load(function(){
 	        //let userName=document.getElementById("userName").value;
 	        console.log(userName);
 	        //對應到Message Controller的方法
-	        $.get(url+"/registration/"+userName,function(response){
+	        $.get(url+"registration/"+userName,function(response){
 	            connectToChat(userName);
 	        }).fail(function(error){
 	            if(error.status===400){
@@ -278,14 +280,14 @@ $(window).load(function(){
         }
 	//創造好友聊天左邊的區塊
 	    function fetchAll(){	    	
-	        $.get(url+"/fetchAllUser/"+currentUser,function(response){	    
+	        $.get(url+"fetchAllUser/"+currentUser,function(response){	    
 	        	console.log("fetchAll: "+response);
 	            //let users = JSON.parse(response);
 	            let users=response;
 	            console.log(users);
 	            let userTemplateHTML="";
 	            for(let i = 0;i<users.length;i++){
-	            	let imgUrl=url+"/userProtrait/"+users[i].mUserDetailId;
+	            	let imgUrl=url+"userProtrait/"+users[i].mUserDetailId;
 	                userTemplateHTML=userTemplateHTML+'<a class="text-dark" href="#" id=\'user'+i+'\' name=\''+users[i].mUserAccountIndex+'\'><li class="clearfix">'+
 	                '<img alt="avatar" height="55px"'+
 	                     'src='+imgUrl+' '+
@@ -394,7 +396,7 @@ $(window).load(function(){
 	    	
 	    	$.ajax({
 	    		type: "GET",
-	    		url: url+"/getUserMessage/"+currentUser+"/"+toUser,				
+	    		url: url+"getUserMessage/"+currentUser+"/"+toUser,				
 	    		dataType: "text",
 	    		success: function (response) {
 	    			//console.log(response);
