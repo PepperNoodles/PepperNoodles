@@ -26,7 +26,7 @@
 	}
 	
 	.mainBody{
-		height:800px;
+		height:900px;
 		overflow:auto;
 	}
 </style>
@@ -34,8 +34,8 @@
 
 
 <body>
-	
-	
+ <!-- class="container-fluid"可以讓左右框往內縮 -->
+ <div class="container-fluid" >
 	<div class="row mainBody" style ="">
 		<div class="col-2 navBar" >
 			<%@include file="../includePage/includeRearNav.jsp"%>
@@ -105,7 +105,7 @@
 
 		</div>
 	</div>
-	
+ </div>
 	<script> 
 // 	  $(document).ready(function () {
 			
