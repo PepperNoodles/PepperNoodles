@@ -154,12 +154,12 @@ public class RearSendEmail {
 			System.out.println("1");
 			mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail) );
 			System.out.println("2");
-			mess.setSubject("User right notiffication");
+			mess.setSubject("User right notification");
 			if(user.isEnabled()) {
 				mess.setText("停權通知: STOP(停止使用權限)"); //信件寄出的內容
 
 			}else {
-				mess.setText("停權通知: REVIVE(開通使用權限)"); //信件寄出的內容
+				mess.setText("開通權限通知: REVIVE(開通使用權限)"); //信件寄出的內容
 
 			}
 			Transport.send(mess);
