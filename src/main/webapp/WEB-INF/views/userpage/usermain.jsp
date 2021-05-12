@@ -144,6 +144,9 @@ table a{
 #uuidclick:hover{
 	text-decoration: underline;
 }
+.nav-link{
+	width:270px;
+}
 
 /* border radius example is drawn from this pen: https://codepen.io/shshaw/pen/MqMZGR
 I've added a few comments on why we're using certain properties
@@ -209,13 +212,13 @@ I've added a few comments on why we're using certain properties
 			</div>
 		</div>
 	</div>
-	<div id="main" class="container mt-5 pb-5" style="width: 80%; min-height: 100vh">
+	<div id="main" class="container mt-5 pb-5" style="min-height: 100vh;margin-bottom: 5%;border-radius: 15px;border-style: outset">
 
-	<div class="listing-area pt-30 pb-30"></div>
+<!-- 	<div class="listing-area pt-30 pb-30"></div> -->
 
-	<div class="container-fluid">
+	<!-- <div class="container"> -->
 
-		<div class="container mt-10" style="width: 80%; height: 100%">
+		<div class="container " style=" height: 100%">
 			<!--有照片的那個bar  -->
 			<div class="d-flex">
 				<div class="p-2">
@@ -224,7 +227,7 @@ I've added a few comments on why we're using certain properties
 				</div>
 
 				<div class="p-2 flex-fill align-self-end justify-content-center">
-					<h1>${userAccount.userAccountDetail.nickName}</h1>
+					<h1><strong>${userAccount.userAccountDetail.nickName}</strong></h1>
 				</div>
 
 
@@ -232,12 +235,12 @@ I've added a few comments on why we're using certain properties
 			<div class="flex-fill bg-secondary p-1 mb-5"></div>
 
 			<!--左邊的分隔用-->
-			<div class="d-flex">
+			<div class="d-flex" style="min-height:900px ; " >
 				<div class="nav flex-column nav-pills col-3" id="v-pills-tab"
-					role="tablist" aria-orientation="vertical">
+					role="tablist" aria-orientation="vertical" style="background-color: rgba(1, 0, 0, 0.1);font-size: 20px;border-radius: 10px;">
 					<a class="nav-link active" id="v-pills-aboutUser-tab"
 						data-toggle="pill" href="#v-pills-aboutUser" role="tab"
-						aria-controls="v-pills-aboutUser" aria-selected="true"> <i
+						aria-controls="v-pills-aboutUser" aria-selected="true"><i
 						class="fas fa-file-alt"></i>關於我
 					</a> <a class="nav-link" id="v-pills-friend-tab" data-toggle="pill"
 						href="#v-pills-friend" role="tab" aria-controls="v-pills-friend"
@@ -258,12 +261,12 @@ I've added a few comments on why we're using certain properties
 
 				</div>
 
-				<div class="tab-content" id="v-pills-tabContent col-9">
+				<div class="tab-content col-9" id="v-pills-tabContent col-9" >
 					<div class="tab-pane fade show active" id="v-pills-aboutUser"
-						role="tabpanel" aria-labelledby="v-pills-aboutUser-tab">
-						<h2>關於我</h2>
+						role="tabpanel" aria-labelledby="v-pills-aboutUser-tab" style="" align="center">
+						<h2><strong>關於我</strong></h2>
 						<table border='1' class='table table-hover table-bordered '
-							style='font-size: 8px border-collapse:separate; border: solid #F0F0F0 1px; border-radius: 6px; -moz-border-radius: 6px;'>
+							style='font-weight:bolder;font-size: 13px border-collapse:separate; border: solid #F0F0F0 2px; border-radius: 6px; -moz-border-radius: 6px;'>
 							<tr>
 								<td><span id="accountIndex">email:</span></td>
 								<td><span> ${userAccount.accountIndex}</span>
@@ -364,10 +367,10 @@ I've added a few comments on why we're using certain properties
 							</tr>
 
 						</table>
-						<button class='genric-btn default circle arrow' id="openchange"
-							style="color: black;">修改基本資料</button>
-						<button class='genric-btn default circle arrow' id="closechange"
-							style="color: black;">取消</button>
+						<button class='genric-btn  primary medium' id="openchange"
+							style=";">修改基本資料</button>
+						<button class='genric-btn primary medium' id="closechange"
+							style="">取消</button>
 
 					</div>
 					<div class="tab-pane fade" id="v-pills-friend" role="tabpanel"
@@ -379,20 +382,23 @@ I've added a few comments on why we're using certain properties
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
 								<a class="nav-item nav-link active" id="nav-myFriend-tab"
 									data-toggle="tab" href="#nav-myFriend" role="tab"
-									aria-controls="nav-myFriend" aria-selected="true">
-									<button id="checkFriendList" style="color: black">我的好友</button>
-								</a> <a class="nav-item nav-link" id="nav-searchFriend-tab"
+									aria-controls="nav-myFriend" aria-selected="true" style="width: 130px;">
+									<button id="checkFriendList" style="color: black;">我的好友</button>
+								</a> 
+								<a class="nav-item nav-link" id="nav-searchFriend-tab"
 									data-toggle="tab" href="#nav-searchFriend" role="tab"
-									aria-controls="nav-searchFriend" aria-selected="false">
+									aria-controls="nav-searchFriend" aria-selected="false" style="width: 130px;">
 									<button id="checkFriendList" style="color: black">搜尋使用者</button>
-								</a> <a class="nav-item nav-link" id="nav-friendQequest-tab"
+								</a> 
+								<a class="nav-item nav-link" id="nav-friendQequest-tab"
 									data-toggle="tab" href="#nav-friendQequest" role="tab"
-									aria-controls="nav-friendQequest" aria-selected="false">
+									aria-controls="nav-friendQequest" aria-selected="false" style="width: 130px;">
 									<button class="btn-link" id="checkRequestList"
 										style="color: black">查看邀請</button>
-								</a> <a class="nav-item nav-link" id="nav-message-tab"
+								</a> 
+								<a class="nav-item nav-link" id="nav-message-tab"
 									data-toggle="tab" href="#nav-message" role="tab"
-									aria-controls="nav-message" aria-selected="false">
+									aria-controls="nav-message" aria-selected="false" style="width: 130px;">
 									<button
 										onclick="location.href='<c:url value='/user/websocket'/>'"
 										class="btn-link" id="checkmessage" style="color: black">聊天室
@@ -440,12 +446,12 @@ I've added a few comments on why we're using certain properties
 
 						<!-- 						新增主要留言input & 按鈕 -->
 						<input placeholder='Hello....' id="commentInput"></input>
-						<button type="button" class="genric-btn default circle arrow"
+						<button type="button" class="genric-btn  primary medium"
 							id="addNewComment">新增留言</button><span style="display:none" id="messagePrompt"></span>
 			
 						<!-- 						使用Ajax的方法 -->
-						<div class="rounded border border-warning container-fluid table "
-							style="overflow-y: auto; height: 300px;" id="commentsForUser"></div>
+						<div class="rounded border border-warning  table "
+							style="overflow-y: auto; height: 300px;margin-top: 15px;" id="commentsForUser"></div>
 
 
 						<!--      使用jstl的方法 -->
@@ -491,7 +497,7 @@ I've added a few comments on why we're using certain properties
 						role="tabpanel" aria-labelledby="v-pills-userCollection-tab">
 						<h2>我的餐廳收藏</h2>
 						<a href="<c:url value='/restSearch/map'/>"><button
-								type="button" class="genric-btn default circle arrow"
+								type="button" class="genric-btn  primary medium"
 								id="addNewComment">新增收藏</button></a><br><br>
 
 			<div class="memoBoard" id="memoBoard"></div>
@@ -544,10 +550,10 @@ I've added a few comments on why we're using certain properties
 				</div>
 			</div>
 		</div>
-	</div>
+	<!-- </div> -->
 </div>
 
-	<div class="listing-area pt-120 pb-120"></div>
+<!-- 	<div class="listing-area pt-120 pb-120"></div> -->
 
 	<!-- Scroll Up -->
 	<div id="back-top">
@@ -578,8 +584,8 @@ I've added a few comments on why we're using certain properties
 		</div>        
 		<!-- Modal HTML -->
 
-						  	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
-								  <div class="toast" style="position: fixed;top:20%;left:50%; ">
+						  	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: absolute; min-height: 200px;">
+								  <div class="toast" style="position: fixed;top:160px;;left:50%;width: 200px;text-align: center ">
 								    <div class="toast-header">
 								      <strong class="mr-auto">貼心提醒</strong>
 								      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -1168,7 +1174,7 @@ I've added a few comments on why we're using certain properties
 					        			segment += "<td><button class='genric-btn default circle arrow' style='color: black' name='edit"  + i + j + "'>edit</button></td><td>";
 					        			segment +="<button class='genric-btn default circle arrow' type='button' style='color: black' name  ='deleteComment" + i + j +	"' >delete</button><span  style='display:none'>" + result[i].replyMessageBoxes[j].userMessageId + "</span></tr>";
 									}
-				        		segment += "</table><span class='mt-0 pt-0'><input placeholder='我想吃....'></input><button type='button' class='genric-btn default circle arrow' style='color: black' name='addreply"  + i +"' >reply</button><span  style='display:none'>" + result[i].userMessageId + "</span></span><br><br><br>";
+				        		segment += "</table><span class='mt-0 pt-0'><input placeholder='我想吃....'></input><button type='button' class='genric-btn primary medium' style='margin-left:10px;' name='addreply"  + i +"' >reply</button><span  style='display:none'>" + result[i].userMessageId + "</span></span><br><br><br>";
 				        		
 // 				        		segment +="<button data-toggle='modal' data-target='#exampleModal' type='button' style='color: black' name  ='updateComment" + i +"' >更新主要留言</button><span  style='display:none'>" + result[i].text + "</span><span  style='display:none'>" + result[i].time + "</span><span  style='display:none'>" + result[i].likeAmount + "</span><br><br><hr>";
 				        	

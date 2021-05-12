@@ -368,6 +368,13 @@ public class UserSysController {
 				foodtags.add(ftr.findByFoodTagIid(i));
 				i++;
 			}
+		i=4;
+		while(ftr.findById(i).isEmpty()==false) {
+			System.out.println(ftr.findByFoodTagIid(i).getFoodTagName());
+			foodtags.add(ftr.findByFoodTagIid(i));
+			i++;
+		}
+
 
 		return foodtags;
 
