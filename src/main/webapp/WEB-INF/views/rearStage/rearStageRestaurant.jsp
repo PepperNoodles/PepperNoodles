@@ -62,15 +62,24 @@
 	 color:black;
 	}
 	
+	.navBar{
+	padding-left: 0px;
+	}
+	
+	.mainBody{
+		height:800px;
+		overflow:auto;
+	}
+	
 </style>
 </head>
 
 
 <body>
 	
-	
-	<div class="row" style ="">
-		<div class="col-2 " >
+<div class="container-fluid">
+	<div class="row mainBody" style ="">
+		<div class="col-2 navBar" >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
 		<div class="col-10">
@@ -171,6 +180,7 @@
 	        
 	        
 	      </div>
+</div>	      
 	      <div class="modal-footer">
 	        <button type="button" class="btn-secondary" data-dismiss="modal">Close</button>
 	        <button type="button" id="singleRestUpdate" class="btn-primary">Save changes</button>

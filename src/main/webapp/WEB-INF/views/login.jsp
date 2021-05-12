@@ -98,8 +98,9 @@
 					</div>
 					<div id="selectArea" class="hidden">
 						<select name="one" id="selectUser">						
-							<option value=1>好友一
-							<option value=2>好友二
+							<option value=1>使用者一
+							<option value=2>使用者二
+							<option value=3>使用者三
 						</select>
 					</div>
 				</div>
@@ -157,6 +158,10 @@ function onSubmit(token){
 						$("#password").val('a123456@');
 						$("#username").val('catMeow0909@gmail.com');
 						break;
+				case '3':
+					$("#password").val('a123456@');
+					$("#username").val('1qaz2ws0502@gmail.com');
+					break;
 				
 				}
 			});

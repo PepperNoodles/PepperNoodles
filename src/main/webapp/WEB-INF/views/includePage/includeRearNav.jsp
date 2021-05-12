@@ -60,11 +60,16 @@
 	color:#000000;
 }
 
+.navBar{
+	background-color:#3C3C3C;
+	
+}
+
 </style>
 
 </head>
 <body>
-<div class="just-padding">
+<div class="just-padding navBar">
 
 <div class="list-group list-group-root well">
   
