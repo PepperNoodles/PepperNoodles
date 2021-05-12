@@ -38,7 +38,7 @@
 	}
 	
 	.mainBody{
-		height:800px;
+		height:900px;
 		overflow:auto;
 	}
 
