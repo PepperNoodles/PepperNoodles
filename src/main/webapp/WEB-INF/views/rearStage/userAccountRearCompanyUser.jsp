@@ -30,7 +30,15 @@
 		border-radius: 6px;
 		-moz-border-radius: 6px;
 	}
-
+	
+	.navBar{
+	padding-left: 0px;
+	}
+	
+	.mainBody{
+		height:800px;
+		overflow:auto;
+	}
 </style>
 </head>
 
@@ -38,8 +46,8 @@
 <body>
 	<!-- class="container-fluid"可以讓左右框往內縮 -->
 	<div class="container-fluid" >
-	<div class="row" >
-		<div class="col-2 " >
+	<div class="row mainBody" >
+		<div class="col-2 navBar" >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
 		<div class="col-10" style="margin-top: 20px;">
