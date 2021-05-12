@@ -33,6 +33,14 @@
 		border-radius: 6px;
 		-moz-border-radius: 6px;
 	}
+	.navBar{
+	padding-left: 0px;
+	}
+	
+	.mainBody{
+		height:800px;
+		overflow:auto;
+	}
 
 </style>
 </head>
@@ -40,9 +48,9 @@
 
 <body>
 	
-	<div class="container-fluid" >
-	<div class="row" >
-		<div class="col-2 " >
+	<div class="container-fluid " >
+	<div class="row mainBody" >
+		<div class="col-2 navBar" >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
 		<div class="col-10" style="margin-top: 20px;">
@@ -66,10 +74,7 @@
 							</table>
 <!-- 			</div> -->
 		</div>
-	</div>
-	</div>
-	<!-- 通知訊息 Bootstrap的Toast功能 -->
-	<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
+			<div aria-live="polite" data-autohide="true" aria-atomic="true" style="position: relative; min-height: 200px;">
 		  <div class="toast" style="position: fixed; bottom: 15%;right: 15px;">
 		    <div class="toast-header">
 		      <!-- 上方框框的內容 -->
@@ -85,6 +90,10 @@
 		  </div>
 	</div>
 	
+	</div>
+	</div>
+	<!-- 通知訊息 Bootstrap的Toast功能 -->
+
 	<script> 
 	  $(document).ready(function () {
 			
