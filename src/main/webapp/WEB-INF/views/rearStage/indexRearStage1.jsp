@@ -21,7 +21,14 @@
 	a{
 		color:#FFFFFF;
 	}
-
+	.navBar{
+	padding-left: 0px;
+	}
+	
+	.mainBody{
+		height:800px;
+		overflow:auto;
+	}
 </style>
 </head>
 
@@ -29,8 +36,8 @@
 <body>
 	
 	
-	<div class="row" style ="">
-		<div class="col-2 " >
+	<div class="row mainBody" style ="">
+		<div class="col-2 navBar" >
 			<%@include file="../includePage/includeRearNav.jsp"%>
 		</div>
 		<div class="col-10">
