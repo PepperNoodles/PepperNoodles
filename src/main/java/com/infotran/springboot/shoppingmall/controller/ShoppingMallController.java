@@ -48,7 +48,6 @@ public class ShoppingMallController {
 	public List<Product> getAllProductsWithFoodtagsByClickOnShoppingMallBtn(
 			HttpServletRequest request) {
 		UserAccount user = (UserAccount) request.getSession().getAttribute("userAccount");
-		System.out.println(user.getAccountIndex());
 		List<Product> productList = shopservice.getPagedProductsByTag(user.getAccountIndex(), 0, 4);
 		return productList;
 	}
@@ -172,21 +171,15 @@ public class ShoppingMallController {
 			case "1":
 				productList = shopservice.getPagedProductsByTagAndPriceRange("chris@gmail.com", startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromTagAndPriceRange("chris@gmail.com", startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "2":
 				productList = shopservice.findProductByPriceBetween(startPrice, endPrice,0,6);
 				totalpages = shopservice.getBtnFromAllAndPriceBetween(startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "票券":
 			case "食材":
 				productList = shopservice.findByProductByMainClassAndPriceRange(flag, startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromMainClassAndPriceRange(flag, startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "炸雞":
 			case "冰淇淋":
@@ -197,36 +190,29 @@ public class ShoppingMallController {
 			case "羊肉爐":
 				productList =shopservice.findProductByDetailClassAndPriceRange(flag, startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromDetailClassAndPriceRange(flag, startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "冰淇淋標籤":
 				flagname = flag.substring(0, 3);
 				productList =shopservice.getProductsByExactTagAndPriceRange(flagname, startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange(flagname, startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "炸雞標籤":
 			case "沙拉標籤":
 			case "甜點標籤":
 			case "火鍋標籤":
 				flagname = flag.substring(0, 2);
-				System.out.println(flagname);
 				productList =shopservice.getProductsByExactTagAndPriceRange(flagname, startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromExactTagAndPriceRange(flagname, startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			case "1001":
 				productList =shopservice.getProductsBySearchAndPriceRange(input, startPrice, endPrice, 0, 6);
 				totalpages = shopservice.getBtnFromSearchAndPriceRange(input, startPrice, endPrice, 0, 6).get("TotalPages");
-				map.put("productlist", productList);
-				map.put("totalpage",totalpages);
 				break;
 			default:
 				break;
 		}
+		map.put("productlist", productList);
+		map.put("totalpage",totalpages);
 		return map; 
 	}
 	
@@ -344,6 +330,10 @@ public class ShoppingMallController {
 		pmap.put("newlist", pnewlist);
 		return pmap;
 	}
+	
+	
+	
+	
 	
 	
 }
