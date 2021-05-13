@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
 	
 		var flag;
@@ -89,7 +89,7 @@ $(document).ready(function() {
 		$.ajax({
 			method:"GET",
 			url:"/PepperNoodles/getallproducts",
-			contentType: 'application/json; charset=utf-8', 
+			contentType: 'charset=utf-8', 
 	        async : true,
 	        cache: false,
 	        success: function (allresult) {
@@ -1109,7 +1109,7 @@ $(document).ready(function() {
 			}
 		});
 		
-	
+	//查看訂單
 	$('#checkout').on('click',function(e){
 		e.preventDefault();
 		$.ajax({
@@ -1449,19 +1449,19 @@ $(document).ready(function() {
         </div>
         <!--Hero End -->
         <!-- listing Area Start -->
-        <div class="listing-area pt-120 pb-120" >
+        <div class="listing-area pt-120 pb-120" style="background-image: ">
             <div class="container">
                 <div class="row">
                 
                     <!-- Left content -->
-                    <div class="col-xl-4 col-lg-4 col-md-6" style="color:black;">
+                    <div class="col-xl-4 col-lg-4 col-md-6" style="height: 2200px;color:black;background-color: rgba(150, 222, 242, 0.2);border-radius: 12px; ">
                         <div class="row" style="padding:5px;">
                         	<div class="left-column-div" >
                         		<input type="search" id="searchall" style="width:85%;" placeholder="炸雞、咖哩、冰淇淋...">
-                        		<span ><button id="google" style="color: black"><i class="fas fa-search"></i></button></span>
+                        		<span ><button id="google" style="color: black;border-radius: 15px;background-color: "><i class="fas fa-search"></i></button></span>
                         	</div>
                         	<div class="left-column-div" style="margin-top: 10px;">
-                        		<h2><a>商品類別</a></h2>
+                        		<h2><a><strong>商品類別</strong></a></h2>
                         	</div>
                         	<div class="left-column-div" >
                         		<div class="mainclass" style="" id ="mainclass">
@@ -1561,14 +1561,14 @@ $(document).ready(function() {
 	                        <!-- Modal End -->
 	                        <div class="row" id="Page1" >
 	                            <div class=" col-lg-12">
-	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">您可能有興趣的商品</h3> 
+	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;"><strong>您可能有興趣的商品</strong> <i class="fas fa-child" ></i></h3> 
 	                                <span class="seeMore" id="seeMoreTagProducts" ><a>查看更多</a></span>
 	                                <!-- product frame start -->
 	                                <div class="row productFrame"></div>
 	                            </div>
 								<!--全部商品start -->
 	                            <div class="col-lg-12">
-	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;">全部商品</h3>
+	                                <h3 style="border-bottom: 1px solid #D3D3D3;float:left;"><strong>全部商品</strong> <i class="fas fa-home"></i></h3>
 	                                <span class="seeMore" id="seeMoreAllProducts" ><a>查看更多</a></span>
 	                                <div class="row productFrame2"></div>
 	                            
@@ -1614,7 +1614,7 @@ $(document).ready(function() {
 	</div>
 
 	
-	<div class="cartmenu" >
+	<div class="cartmenu" style="border-radius: 15px;">
 		<div class="table-responsive-sm">
 			<table class="table table-hover text-info text-justify ">
 				<thead>

@@ -532,6 +532,8 @@
 		$("#addcompany").click(function() {
 			$("#UserEmail").val('ting0420a@gmail.com');
 			$("#userPwd").val('123!Q123');
+			$("#verifycode").val('12345');
+			$("#graphicVCode").val('8742');
 			$("#privacycheck").prop("checked", true);
 			$("#company").prop("checked", true);
 			hasError = true;
