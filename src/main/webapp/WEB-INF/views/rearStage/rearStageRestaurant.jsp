@@ -161,7 +161,7 @@
 				    </tr>
 				    <tr>				  
 				      <td>restaurantOwner</td>
-				      <td><input id="restaurantOwner"></td>
+				      <td><input id="restaurantOwner"><span id="checkUSerResult"></span></td>
 				    </tr>
 				     <tr>				  
 				      <td>restaurantPicture
@@ -178,13 +178,13 @@
 					        
 	        
 	        
-	        
-	      </div>
-</div>	      
-	      <div class="modal-footer">
+	        <div class="modal-footer">
 	        <button type="button" class="btn-secondary" data-dismiss="modal">Close</button>
 	        <button type="button" id="singleRestUpdate" class="btn-primary">Save changes</button>
 	      </div>
+	      </div>
+</div>	      
+	      
 	    </div>
 	  </div>
 	</div>
@@ -282,11 +282,53 @@
 				});
 				var jq = jQuery.noConflict();
 				
+				//檢查公司使用者
+				function checkCompanyUser(){
+					$("#checkUSerResult").html();
+					let userAccount = this.value;
+					if (userAccount!=null){
+						//console.log("check user Account"+userAccount);
+						let urls="/PepperNoodles/rearStage/checkCompanyUser"+"?userAccount="+userAccount;
+						
+						$.ajax({
+							method:"GET",	
+							url:urls,
+							contentType: 'application/json; charset=utf-8',
+							dataType:'text',
+					        async : true,
+					        cache: false,
+					        success:function(result){
+					      //  	console.log("result");
+					        	switch(result) {
+					        	case "ok":
+					        		//$("#checkUSerResult").html("此使用者非企業會員");
+					        		 alert("確認OK");
+					        			break;
+					        	case "ng":
+					        			//$("#checkUSerResult").html("此使用者非企業會員");
+					        		   alert("此使用者非企業會員");
+					        			break;
+					        	case "no user":
+					        			//$("#checkUSerResult").html("沒有此使用者");
+					        		  alert("沒有此使用者");				        	
+					        			break;				        	
+					        	}
+					        	
+					        },
+					        error: function (result) {
+					        	console.log("有問題");
+					        }
+						});
+					}
+					
+					
+				}
 				
 				function updateRest(){
 					let id = this.id
 					console.log(id);
-					jq('#updateModal').modal('toggle')
+					jq('#updateModal').modal('toggle');
+					
 					$.ajax({
 						method:"GET",	
 						url:"/PepperNoodles/rearStage/rearRest/"+id,
@@ -311,6 +353,7 @@
 				        	$("#restaurantWebsite:text").val(result.rest.restaurantWebsite);
 				        	$("#restaurantOwner:text").val(result.userIndex);
 				        	
+				        	
 				        },
 				        error: function (result) {
 				        	console.log("有問題");
@@ -322,6 +365,7 @@
 				
 				$("body").on("click",".getPositionButton",positionShow);
 				$("body").on("click",".updateButton",updateRest);
+				$("body").on("change","#restaurantOwner",checkCompanyUser);
 				
 				//上傳並顯示圖片
 				function readURL(input) {
@@ -352,7 +396,6 @@
 				//更新
 				$("#singleRestUpdate").click(function(){
 					//let fileUploader = document.querySelector('#file_input');
-
 					let selectedFile = $('#file_input').get(0).files[0];
 					 console.log(typeof(selectedFile));
 					 console.log(selectedFile);
