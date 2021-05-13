@@ -21,4 +21,6 @@ public interface RestSearchService {
 	List<Restaurant> findSearchNameAndTag(String restName,String tagName);
 	List<Restaurant> findASearchtNameAndDistName(String restName,String distName);
 	List<Restaurant> findSearchNameAndDistAndTag(String restName,String distName,String tagName);
+	boolean ifThisNameExists(String name);
+	Restaurant returnRestByNameFromLine(String name);
 }

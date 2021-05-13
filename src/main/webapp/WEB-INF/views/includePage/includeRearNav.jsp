@@ -57,7 +57,13 @@
 }
 
 .well a{
-	color:#000000;
+	color:#E0E0E0;
+	background-color:#3C3C3C;
+}
+
+/* 修改SVG圖顏色 */
+.well img{	
+	filter: invert(100%) sepia(3%) saturate(452%) hue-rotate(161deg) brightness(93%) contrast(88%);
 }
 
 .navBar{
@@ -74,7 +80,7 @@
 <div class="list-group list-group-root well">
   
   <a href="#item-1" class="list-group-item" data-toggle="collapse">
-    <img src="<c:url value='/images/rear/file-earmark-text.svg'/>" alt="Bootstrap" width="30" height="30">
+    <img src="<c:url value='/images/rear/file-earmark-text.svg'/>" alt="Bootstrap" width="30" height="30" >
     <i class="glyphicon glyphicon-chevron-right"></i>會員管理
   </a>
   <div class="list-group collapse" id="item-1">

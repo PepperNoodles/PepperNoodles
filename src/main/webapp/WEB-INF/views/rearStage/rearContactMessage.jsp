@@ -59,81 +59,83 @@
 	</div>
 
 	<%@include file="../includePage/includeNav.jsp" %>
-<div>
-	<div id="main" class="container"> <!-- style="border: 1px solid red"> -->
-		<div class="row justify-content-center align-items-center pt-100">
+<!-- <div> -->
+	<div id="main" class="container" style=""> <!-- style="border: 1px solid red"> -->
+		<div class="row justify-content-center pt-100" style="">
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-			<form id="messageForm" action="<c:url value=''/>" method="post"
-				class="search-box align-items-center" >
-				
-				<div class="mt-10 col-36 ">
-					<label for="nickname" >姓名:</label>
-					<input id="nickname" type="text" name="nickname" placeholder="請輸入姓名" required
-						class="single-input">
-				</div>
-				
-				<div class="mt-10 col-36 ">
-					<label for="username" >信箱:</label>
-					<input id="username" type="text" name="username" placeholder="請輸入信箱" required
-						class="single-input">
-				</div>
-<!-- 				<div class="mt-10 col-24"> -->
-<!-- 					<input id="password" type="password" name="password" placeholder="Password:" required -->
-<!-- 						class="single-input "> -->
-<!-- 				</div> -->
-				
-				<div class="form-group">
-		            <label for="message-text" class="col-form-label">Message:</label>
-		            <textarea class="form-control" id="message-text"  cols="40" rows="6"></textarea>
-	          	</div>
-
-<!-- 				<div class="mt-10 col-24"> -->
-<!-- 					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me"> -->
-<%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
-<!-- 				</div> -->
-				<div class="mt-10 ">
-				    
-				    <div class="bs-example">
-				    
-<!-- 					<button type="submit" id="messageButton" value="submit" -->
-<!-- 						class="genric-btn danger radius">送出</button> -->
-							<div
-						    class="g-recaptcha"
-						    data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"
-						    data-theme="light" data-size="normal"
-						    data-callback="validateAjax"
-						    data-expired-callback="expired"
-						    data-error-callback="error">
-						</div>
-						<br>
-					  <input style="display:none" id="messageButton" type="button" value="送出" 
-								class="genric-btn danger radius show-toast"/>
-						
-					   <div class="toast" id="myToast" style="position: fixed; bottom: 76%;right: -55; ">
-					         <div class="toast-header">
-					            <strong class="mr-auto"><i class="fa fa-grav"></i> 訊息通知!</strong>
-					            <small>1 秒前</small>
-					            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-					                <span aria-hidden="true">&times;</span>
-					            </button>
-					        </div>
-					        <div class="toast-body">
-					            <div><p>感謝你寶貴的意見!! 我們會盡快回覆你。 
-					                 <p><a href="/PepperNoodles" style="color: red">請按此返回首頁，謝謝</a></div>
-					        </div>
-					    </div>
-					</div>	
-						
-					<br><br><br>
-					<div class="pull-right">
-<!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
-<!-- 						<a href="#"  id="company">企業一鍵登入</a> -->
-							<a href="#"  id="message">訊息一鍵登入</a>
+<%-- 			<form id="messageForm" action="<c:url value=''/>" method="post" > --%>
+				<div class="col-6" style="">
+					<div class="col-12">
+						<label for="nickname" style="" >姓名:</label>
+						<input id="nickname" type="text" name="nickname" placeholder="請輸入姓名" required
+							class="single-input">
 					</div>
-                    
-     
+					
+					<div class="col-12 ">
+						<label for="username" >信箱:</label>
+						<input id="username" type="text" name="username" placeholder="請輸入信箱" required
+							class="single-input">
+					</div>
+	<!-- 				<div class="mt-10 col-24"> -->
+	<!-- 					<input id="password" type="password" name="password" placeholder="Password:" required -->
+	<!-- 						class="single-input "> -->
+	<!-- 				</div> -->
+					
+					<div class=" col-12 ">
+			            <label for="message-text" class="col-form-label">Message:</label>
+			            <textarea class="form-control" id="message-text"  cols="40" rows="6"></textarea>
+		          	</div>
+	
+	<!-- 				<div class="mt-10 col-24"> -->
+	<!-- 					RememberMe&nbsp;&nbsp;<input type="checkbox" name="remember-me"> -->
+	<%-- 					<br><a href="<c:url value='/forgotPassword'/>" ><span style="color:blue; hover:background-color: blue;">Forgot Password?</span></a> --%>
+	<!-- 				</div> -->
+					<div class="col-12" style="margin-top: 4%">
+					    
+					    <div class="bs-example">
+					    
+	<!-- 					<button type="submit" id="messageButton" value="submit" -->
+	<!-- 						class="genric-btn danger radius">送出</button> -->
+								<div
+							    class="g-recaptcha"
+							    data-sitekey="6Lc1VccaAAAAAKKNWdKvTQoQcTDsaU8T8RgY2IjK"
+							    data-theme="light" data-size="normal"
+							    data-callback="validateAjax"
+							    data-expired-callback="expired"
+							    data-error-callback="error">
+							</div>
+							<br>
+						  <input style="display:none" id="messageButton" type="button" value="送出" 
+									class="genric-btn danger radius show-toast"/>
+							
+						   <div class="toast" id="myToast" style="position: fixed; bottom: 76%;right: -55; ">
+						         <div class="toast-header">
+						            <strong class="mr-auto"><i class="fa fa-grav"></i> 訊息通知!</strong>
+						            <small>1 秒前</small>
+						            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+						                <span aria-hidden="true">&times;</span>
+						            </button>
+						        </div>
+						        <div class="toast-body">
+						            <div><p>感謝你寶貴的意見!! 我們會盡快回覆你。 
+						                 <p><a href="/PepperNoodles" style="color: red">請按此返回首頁，謝謝</a></div>
+						        </div>
+						    </div>
+						</div>	
+							
+						<br><br><br>
+						<div class="pull-right">
+	<!-- 						<a href="#" id="user">會員一鍵登入</a>&emsp;&emsp;&emsp; -->
+	<!-- 						<a href="#"  id="company">企業一鍵登入</a> -->
+								<a href="#"  id="message">訊息一鍵登入</a>
+						</div>
+	                    
+	     
+					</div>
+				
 				</div>
-			</form>
+				
+<!-- 			</form> -->
 			
 <!-- 			<div class="bs-example"> -->
 <!-- 			     <input  id="messageButton" type="button" value="送出"  -->
@@ -160,7 +162,7 @@
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
-</div>
+<!-- </div> -->
 	<script type="text/javascript">
 // 		$(window).on('load', function() {
 
