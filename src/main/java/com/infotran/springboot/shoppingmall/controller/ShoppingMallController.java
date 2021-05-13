@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.infotran.springboot.commonmodel.UserAccount;
 import com.infotran.springboot.shoppingmall.model.Product;
@@ -117,7 +116,7 @@ public class ShoppingMallController {
 	}
 	
 	//子類別
-	@GetMapping(value="/detailclass",consumes = {"application/json"},produces ={ "application/json; charset=UTF-8" } )
+	@GetMapping(value="/detailclass",produces ={ "application/json; charset=UTF-8" } )
 	public Map<String,Object> getAllProductsByClickOnDetailClass(@RequestParam("detailname")String detailname){
 //		String detailClassName = translationForDetailClass(detailname);
 		List<Product> productList = shopservice.findProductByDetailClass(detailname, 0, 6);
