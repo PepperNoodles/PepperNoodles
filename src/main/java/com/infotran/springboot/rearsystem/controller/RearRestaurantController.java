@@ -114,7 +114,11 @@ public class RearRestaurantController {
 		UserAccount user = uSysServiceImpl.findByAccountIndex(jsonNode.get("restaurantOwner").asText());
 		if (user!=null) {
 			rest.setUserAccount(user);
+		}else if(jsonNode.get("restaurantOwner").asText().equals("null")) {
+			rest.setUserAccount(null);
 		}
+		
+		
 		
 		rest.setRestaurantName(jsonNode.get("restaurantName").asText());
 		rest.setRestaurantAddress(jsonNode.get("restaurantAddress").asText());
@@ -147,6 +151,28 @@ public class RearRestaurantController {
 		
 		
 		return "ok";
+	}
+	
+	@GetMapping(path = "/checkCompanyUser")
+	@ResponseBody
+	public String checkCompanyUser(@RequestParam(name = "userAccount")String userAccount) {
+		
+		UserAccount user = uSysServiceImpl.findByAccountIndex(userAccount);
+		
+		if(user!=null) {
+			if (user.getCompanyDetail()==null) {
+				return "ng";
+			}else {
+				return "ok";
+			}
+		}else {
+			return "no user";
+		}
+		
+		
+		
+		
+		
 	}
 	
 	
