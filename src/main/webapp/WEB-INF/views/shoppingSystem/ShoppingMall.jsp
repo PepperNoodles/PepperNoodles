@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="<c:url value='/css/nice-select.css' />">
 <link rel="stylesheet" href="<c:url value='/css/style.css' />">
 <link rel="stylesheet" href="<c:url value='/css/price_rangs.css' />">
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
 	
 		var flag;
@@ -89,7 +89,7 @@ $(document).ready(function() {
 		$.ajax({
 			method:"GET",
 			url:"/PepperNoodles/getallproducts",
-			contentType: 'application/json; charset=utf-8', 
+			contentType: 'charset=utf-8', 
 	        async : true,
 	        cache: false,
 	        success: function (allresult) {

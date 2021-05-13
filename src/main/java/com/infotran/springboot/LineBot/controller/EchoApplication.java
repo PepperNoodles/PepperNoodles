@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.infotran.springboot.LineBot.service.ReplyMessageHandler;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
@@ -29,5 +30,11 @@ public class EchoApplication {
         BotApiResponse response = replymessagehandler.reply(event);
         System.out.println("Sent messages: " + response);
     }
+	
+	@EventMapping
+	public void handlePostBackEvent(PostbackEvent event)throws Exception{
+		
+		
+	}
 	
 }

@@ -102,5 +102,24 @@ public class RestSearchServiceImpl implements RestSearchService {
 		return rests;
 	}
 	
+	
+	@Override
+	public boolean ifThisNameExists(String name) {
+		 Optional<Restaurant> rest = restSearchRepository.findByRestaurantName(name);
+		if (rest.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public Restaurant returnRestByNameFromLine(String name) {
+		 Optional<Restaurant> rest = restSearchRepository.findByRestaurantName(name);
+		if (rest.isPresent()) {
+			return rest.get();
+		}
+		return null;
+	}
+	
 
 }

@@ -2,6 +2,8 @@ package com.infotran.springboot.restaurantSearchSystem.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,9 @@ import org.springframework.data.jpa.repository.Query;
 import com.infotran.springboot.commonmodel.Restaurant;
 
 public interface RestSearchRepository extends JpaRepository<Restaurant, Integer> {
+	
+	
+	public Optional<Restaurant> findByRestaurantName(String name);
 	
 	@Query(value="from Restaurant r Where r.restaurantName like concat('%',:restName,'%') or r.restaurantAddress like concat('%',:restName,'%')",nativeQuery = false)
 	public Page<Restaurant> findRestaurantNameLike(String restName,Pageable pageable);
