@@ -12,12 +12,11 @@
 7. 再把你網站上的authtoken複製貼到ngrok上面(在第2點Connect your account從斜線後複製，不要複製到斜線)
 8. 貼完後再打 ngrok http 433  
 9. 出現online就代表連線成功
-10. 然後複製第二個Forwarding的==>(例如:https://ce90e75b1f39.ngrok.io 每次連線都會變不要複製這個)替換到checkOutController的第153行
-11. 如果不行那我也不行
-12. ==================line 只有以下兩種功能 =========================
-13. ====你輸入↓================得到↓============
-15. 我要尋找餐廳=======>收到，請問您要搜尋甚麼餐廳? 
-16. 台北市大安區=======>5家餐廳
+10. 然後複製第二個Forwarding的==>(例如:https://ce90e75b1f39.ngrok.io 每次連線都會變不要複製這個)
+11. ==================line功能 =========================
+12. ====你輸入↓================得到↓============
+13. 我要尋找餐廳=======>收到，請問您要搜尋甚麼餐廳? 
+14. 台北市大安區=======>5家餐廳
 ---------------------------------------------------------------
-17. 到資料庫eventList的設計->把[EventPicture]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)]
-18. 到資料庫restaurantMessageBox、restaurantReplyMessage的設計->把[Time]欄位改成datetime2(7) 
+15. 到資料庫eventList的設計->把[EventPicture]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)]
+16. 到資料庫restaurantMessageBox、restaurantReplyMessage的設計->把[Time]欄位改成datetime2(7) 
