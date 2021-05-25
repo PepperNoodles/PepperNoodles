@@ -72,7 +72,7 @@ body{
     
   
      <div class="friends ">
-        <ul class="list" style="height:60vh; overflow:scroll; overflow-x:hidden;overflow-y:auto;" id="usersList">
+        <ul class="list" style="height:55vh; overflow:scroll; overflow-x:hidden;overflow-y:auto;" id="usersList">
 
 
         </ul>
