@@ -27,6 +27,8 @@ public class FindViewControllerShop {
 	public String checkOutPage() {
 		return "shoppingSystem/checkOutPage";
 	}
+	
+	
 	@GetMapping("/confirmOrderAndInvoice")
 	public String checkOutconfirmOrderAndInvoice() {
 		return "shoppingSystem/confirmOrderAndInvoice";
@@ -35,6 +37,8 @@ public class FindViewControllerShop {
 	public String checkOutconfirmOrderAndInvoice2() {
 		return "shoppingSystem/confirmOrderAndInvoice";
 	}
+	
+	
 	@GetMapping("/OrderFormECpay")
 	public String checkOutOrderFormECpay() {
 		return "shoppingSystem/OrderFormECpay";

@@ -41,7 +41,7 @@ html, body {
 	height: 100%;
 	}
 #map {
-	width: 25%;
+	width: 50%;
 	height: 80%;
 	}
 

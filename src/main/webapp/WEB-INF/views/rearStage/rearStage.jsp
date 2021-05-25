@@ -185,6 +185,7 @@ $(document).ready(function() {
 		//刪除商品
 		$("body").on("click","#deleteProduct",function(e){
 			var productid = parseInt($(this).parent().prevAll("td:eq(7)").text(),10);
+			alert(productid)
 			$("#todelete").on("click",function(e){
 				var dtext = $("#DeletePD").val();
 				var ifdelete = $("#todelete").data("val");
@@ -340,7 +341,13 @@ $(document).ready(function() {
 					            color: 'green'
 					          }
 					        }
-					      }
+					      },
+						  beforeDraw: function(chart) {
+						        var ctx = chart.ctx;
+						        ctx.fillStyle = "white";
+						        ctx.fillRect(0, 0, chart.width, chart.height);
+						  }
+							
 					  }
 					});//end of chart
 		        },

@@ -267,7 +267,9 @@ public class RearStageSystem {
 	
 	@GetMapping(value="/deleteProducts")
 	public @ResponseBody String deleteProductId(@RequestParam("deleteid")Integer productid) {
+		System.out.println("productid==>>"+productid);
 		Product product = shoppingmallservice.get(productid);
+		System.out.println(product.getProductName());
 		product.setProductDetailClass(null);
 		shoppingmallservice.delete(product);
 		return "ok";
