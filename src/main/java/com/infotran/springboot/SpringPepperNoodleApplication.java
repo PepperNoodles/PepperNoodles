@@ -11,6 +11,8 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 @SpringBootApplication
 public class SpringPepperNoodleApplication {
 
+	private int id = 5;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringPepperNoodleApplication.class, args);
 	}
