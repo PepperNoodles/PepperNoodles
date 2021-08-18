@@ -21,14 +21,22 @@
 ## 專案ERD圖
 ![erd圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/erd.jpg "ERD圖")
 
+## 網頁範例(例: 首頁、地圖、商城)
+![首頁圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E9%A6%96%E9%A0%81.jpg "首頁圖")
+
+![地圖圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E5%9C%B0%E5%9C%96.jpg "地圖圖")
+
+![商城圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E5%95%86%E5%9F%8E.jpg "商城圖")
 
 
-### 執行前注意事項(小組成員觀看) 
+
+
+---
+## 執行前注意事項(小組成員觀看) 
 1. 記得要自己去資料庫role表格新增 normal,company,admin 共3筆資料 
    1. ``` insert into roles values ('normal'),('company'),('admin') ```
 2. 到資料庫companyDetail的設計->把[userphoto]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)] 
 3. 註冊完後要記得到userAccount手動把enable欄位變成1才能登入,之後要改 
----
 4. 請將埠號都改成`443`
 5. 請打開ngrok，然後登入ngrok的網站(https://dashboard.ngrok.com/login)
 6. 在ngrok上先打 **taskkill /f /im ngrok.exe**
@@ -38,8 +46,7 @@
 10. 然後複製第二個Forwarding的==>(例如:https://ce90e75b1f39.ngrok.io 每次連線都會變不要複製這個)
 11. 到資料庫eventList的設計->把[EventPicture]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)]
 12. 到資料庫restaurantMessageBox、restaurantReplyMessage的設計->把[Time]欄位改成datetime2(7) 
----
-### LineBot 功能
+13. #### LineBot 測試功能
 
 |  功能  |    負責人    | 輸入 | 得到  |
 |:------:|:----------:|:------------:|:------------:|
