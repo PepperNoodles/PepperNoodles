@@ -13,14 +13,17 @@
 |  餐廳  |    餐廳基本資料、資料檢查、餐廳標籤、營業時間、菜單新增刪除、餐廳活動建立修改刪除、餐廳評論、評論回覆與刪除   | 前端JS格式檢查、餐聽地址轉換座標、AJAX驗證資料庫地址註冊、Server端Validator檢查。使用jQuery Twitter/Typeahead 和 Bloodhound做餐廳標籤的輸入和關鍵字搜尋。營業時間的增刪查改、前端+Server端檢查輸入資料、AJAX存取。使用AJAX的技術完成餐廳評論以及針對該筆評論做回覆的功能，顯示畫面時能夠區分該則留言or回覆留言的人是餐廳還是一般會員。判斷登入者，讓評論訊息僅能發表人才能刪除。 | 
 |  商城  |    購物車、訂單、結帳、綠界金流串接、訂單保留、及自動取消未付款訂單、商品銷售報表    | 根據使用者興趣、使用者輸入、商品類別、標籤、價格進行篩選及分頁、金流串接、自訂義線程池並實現訂單定時功能、訂單建立使用snowflake算法產生全局唯一id、使用Chart.js產生月份總業績報表 | 
 |  後台  |    餐廳、一般會員、企業會員、寄信通知、訊息通知    | 後臺查詢餐廳以及修改餐廳、查詢一般或企業會員、違規停權、給於違規停權者寄送停權與開通權限通知的信件、訪客利用聯絡我們功能與後臺系統管理者進行訊息留言與提問 | 
+|  安全  |    Spring Security、reCAPTCHA 機器人驗證    | Spring Security 系統串接、角色權限設定、聯絡我們防機器人提交訊息驗證 | 
 
 ## 使用技術
+![技術圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/EEIT23.pptx.jpg "技術圖")
+
+## 專案ERD圖
+![erd圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/erd.jpg "ERD圖")
 
 
 
-
-
-### 執行前注意事項(可補充) 
+### 執行前注意事項(小組成員觀看) 
 1. 記得要自己去資料庫role表格新增 normal,company,admin 共3筆資料 
    1. ``` insert into roles values ('normal'),('company'),('admin') ```
 2. 到資料庫companyDetail的設計->把[userphoto]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)] 
