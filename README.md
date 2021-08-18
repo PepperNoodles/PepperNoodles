@@ -1,6 +1,6 @@
 # 美食地圖
 
-### 要執行前的注意事項(有人想到可以在自己補充) 
+### 執行前注意事項(可補充) 
 1. 記得要自己去資料庫role表格新增 normal,company,admin 共3筆資料 
    1. ``` insert into roles values ('normal'),('company'),('admin') ```
 2. 到資料庫companyDetail的設計->把[userphoto]欄位改成varbinary(max)[ddl的自動生成會是varbinary(255)] 
