@@ -1,0 +1,127 @@
+spring:
+  application:
+    name: peppernoodles-backend
+
+  # Loads the repository-root .env as a property source when present, so a
+  # developer only has to maintain one file. Real deployments set real
+  # environment variables and this import quietly does nothing.
+  config:
+    import: "optional:file:../.env[.properties]"
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:55322/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 10
+      pool-name: peppernoodles-pool
+
+  jpa:
+    # The schema is owned by supabase/migrations. Hibernate must never write DDL;
+    # `validate` fails fast when an entity and the migrated schema disagree.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        query:
+          fail_on_pagination_over_collection_fetch: true
+
+  jackson:
+    # Jackson 3 (shipped with Boot 4) already writes java.time values as ISO-8601
+    # strings by default, so no date configuration is needed here.
+    default-property-inclusion: non_null
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:55325}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:false}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:false}
+
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 20MB
+
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    com.peppernoodles: ${LOG_LEVEL:INFO}
+
+# --- Application configuration ------------------------------------------------
+peppernoodles:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  jwt:
+    # HS256 symmetric key. Must be at least 32 bytes. Generate with:
+    #   openssl rand -base64 64
+    secret: ${JWT_SECRET:ZGV2LW9ubHktc2VjcmV0LWRvLW5vdC11c2UtaW4tcHJvZHVjdGlvbi0xMjM0NTY3ODkwYWJjZGVm}
+    issuer: peppernoodles
+    access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:PT15M}
+    refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:P14D}
+  mail:
+    from: ${MAIL_FROM:noreply@peppernoodles.local}
+    # Where the e-mail links point — the frontend, not the API.
+    frontend-base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
+    verification-ttl: PT24H
+    password-reset-ttl: PT1H
+  storage:
+    url: ${SUPABASE_URL:http://127.0.0.1:55321}
+    service-key: ${SUPABASE_SERVICE_KEY:}
+  recaptcha:
+    enabled: ${RECAPTCHA_ENABLED:false}
+    secret: ${RECAPTCHA_SECRET:}
+    verify-url: ${RECAPTCHA_VERIFY_URL:https://www.google.com/recaptcha/api/siteverify}
+  orders:
+    # 訂單保留時間 — how long an unpaid order is held before it is expired.
+    hold-duration: ${ORDER_HOLD_DURATION:PT24H}
+    expiry-sweep-cron: ${ORDER_EXPIRY_CRON:0 */5 * * * *}
+  ecpay:
+    enabled: ${ECPAY_ENABLED:false}
+    merchant-id: ${ECPAY_MERCHANT_ID:2000132}
+    hash-key: ${ECPAY_HASH_KEY:}
+    hash-iv: ${ECPAY_HASH_IV:}
+    mode: ${ECPAY_MODE:Test}
+    return-url: ${ECPAY_RETURN_URL:http://localhost:8080/api/v1/payments/ecpay/callback}
+    client-back-url: ${ECPAY_CLIENT_BACK_URL:http://localhost:3000/orders}
+  linebot:
+    enabled: ${LINEBOT_ENABLED:false}
+    channel-token: ${LINE_CHANNEL_TOKEN:}
+    channel-secret: ${LINE_CHANNEL_SECRET:}

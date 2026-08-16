@@ -1,33 +1,50 @@
-HELP.md
+# --- secrets: never commit ---
+.env
+.env.*
+!.env.example
+.mcp.json
+
+# --- Java / Maven ---
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.class
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# --- Supabase ---
+supabase/.branches/
+supabase/.temp/
+
+# --- IDEs ---
+.idea/
 *.iml
 *.ipr
-
-### NetBeans ###
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- misc ---
+HELP.md
+*.log
