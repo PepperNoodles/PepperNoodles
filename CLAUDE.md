@@ -73,20 +73,30 @@ bin/                                       committed Eclipse build output (278 f
 
 These are established facts about the current code, verified in-tree. Do not re-derive them.
 
-### 3.1 Security — needs owner action, not just code changes
+### 3.1 Security — leaked credentials (resolved 2026-08-16)
 
-Live secrets are committed to a **public** GitHub repo (`github.com/PepperNoodles/PepperNoodles`)
-and are in git history, so removing them from `HEAD` is not sufficient — **they must be rotated**:
+The 2021 codebase committed live credentials to a **public** repo. All of them were
+**revoked by the owner and purged from git history** on 2026-08-16 via
+`git filter-repo --replace-text`, which rewrote all 454 commits across all 25 branches.
+Their former values now read `***REMOVED-…***` throughout history.
 
-| Secret | Location |
-|---|---|
-| Gmail app password `***REMOVED-GMAIL-APP-PASSWORD***` | `commonmodel/SendEmail.java:132`, `rearsystem/dao/RearSendEmail.java:135` |
-| LINE bot channel token + secret | `application.properties` |
-| reCAPTCHA site key + secret | `application.properties` |
-| MSSQL `watcher` / `***REMOVED-DB-PASSWORD***` | `application.properties` |
-| Spring Security in-memory `sa/sa123456` | `application.properties` |
+| Secret | Was in | Status |
+|---|---|---|
+| Gmail app password | `commonmodel/SendEmail.java`, `rearsystem/dao/RearSendEmail.java` | revoked + purged |
+| LINE bot channel token + secret | `application.properties` | purged — **reissue before enabling the LINE bot** |
+| reCAPTCHA site key + secret | `application.properties` | purged — **regenerate before enabling reCAPTCHA** |
+| MSSQL `watcher` password | `application.properties` | purged (MSSQL is gone entirely) |
+| Spring Security in-memory `sa/sa123456` | `application.properties` | gone with the legacy config |
 
-Other security defects:
+> ECPay's `2000132` / `5294y06JbISpM5x9` / `v77hoKGq4kWxNNIS` in `payment_conf.xml` are
+> **not** a leak — they are ECPay's published stage-test credentials. Replace them with
+> real merchant credentials only when going live.
+
+Anyone with a pre-2026-08-16 clone or fork still holds the old values, and GitHub may
+retain unreferenced commits until it garbage-collects. That is acceptable here **because
+the credentials were revoked first** — purging history is hygiene, not the mitigation.
+
+Other security defects in the legacy code:
 - `csrf().disable()` in `WebSecurityConfig` on a cookie-session app
 - `WebSecurityConfigurerAdapter` — removed in Spring Security 6
 - Authorization is a hand-maintained `antMatchers` list with a commented-out rule mid-chain
