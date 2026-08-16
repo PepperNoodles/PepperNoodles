@@ -233,6 +233,26 @@ JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
   loud failure. Update the expected counts when adding seed rows.
 - The `restaurants.geo` column is `GENERATED ALWAYS`. It is deliberately **not
   mapped** in the `Restaurant` entity — radius search uses a native query.
+- **`@Lock(PESSIMISTIC_WRITE)` does not refresh an already-loaded entity.**
+  Checkout loads cart rows with an entity graph that pulls in `Product`; a
+  subsequent `SELECT … FOR UPDATE` then returns the *cached* instance, so a
+  stock check reads a stale quantity. Three concurrent two-unit orders all
+  passed a check against a stock of three. Stock is therefore changed only by
+  `ProductRepository#reserveStock` / `#releaseStock`, which do the comparison
+  and the write in one atomic UPDATE. Never reintroduce an in-memory
+  decrement-then-save.
+- **Never derive a unique value with `count(*) + 1`.** The first order-number
+  generator did, and two simultaneous checkouts produced the same number.
+  `order_no` now comes from the `order_no_seq` sequence.
+- **Untyped nulls in JPQL break PostgreSQL.** The `(:param is null or col =
+  :param)` idiom binds NULL as `bytea`, so `lower(:q)` fails with *function
+  lower(bytea) does not exist* — and even when it works it is not sargable. The
+  shop catalogue filter uses `ProductSpecifications` and builds only the
+  predicates the caller supplied.
+- A malformed annotation aborts Lombok's annotation processing, and every
+  generated getter/setter then reports **"cannot find symbol"** across unrelated
+  files. When a compile suddenly produces dozens of missing-accessor errors,
+  look for one broken annotation, not dozens of broken classes.
 
 ---
 
