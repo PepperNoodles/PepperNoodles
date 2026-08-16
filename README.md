@@ -1,4 +1,12 @@
 # 美食地圖 - 呼叫美食地圖胡椒MAP！！
+
+> **🚧 重構進行中** — 本專案正從 2021 年的 Spring Boot 2.4 + JSP + MS SQL Server
+> 改寫為 Spring Boot 4 REST API + Next.js + Supabase(PostgreSQL)。
+> 原始程式碼保留在 [`legacy/`](legacy/)（目前無法執行），新的資料庫 schema 在
+> [`supabase/`](supabase/)，新後端在 [`backend/`](backend/)。
+> **以下說明描述的是舊版架構，安裝步驟已不適用**，完成後會一併改寫。
+> 開發指引請見 [CLAUDE.md](CLAUDE.md)。
+
 <div>
  <img src="https://komarev.com/ghpvc/?username=PepperNoodles&label=Profile%20views&color=red&style=flat" alt="PepperNoodles" />
  <img src="https://img.shields.io/github/languages/code-size/PepperNoodles/PepperNoodles" alt="PepperNoodles" />
@@ -43,8 +51,8 @@
 
 ---
 <h2 > 🔧 Technologies & Tools </h2>
-  <img src="https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/EEIT23.pptx.jpg">
-<!-- ![技術圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/EEIT23.pptx.jpg "技術圖") -->
+
+![技術圖](legacy/src/main/webapp/images/EEIT23.pptx.jpg "技術圖")
 
 1. 安裝軟體對應版本
 
@@ -72,16 +80,20 @@
 ---
 
 ## 專案ERD圖
-![erd圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/erd.jpg "ERD圖")
+
+> 這是 2021 年 MS SQL Server 版本的 ERD。重構後的 PostgreSQL schema 請見 `supabase/migrations/`。
+
+![erd圖](legacy/src/main/webapp/images/erd.jpg "ERD圖")
 
 ---
 
 ## 網頁範例(例: 首頁、地圖、商城)
-![首頁圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E9%A6%96%E9%A0%81.jpg "首頁圖")
 
-![地圖圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E5%9C%B0%E5%9C%96.jpg "地圖圖")
+![首頁圖](legacy/src/main/webapp/images/%E9%A6%96%E9%A0%81.jpg "首頁圖")
 
-![商城圖](https://github.com/PepperNoodles/PepperNoodles/blob/master/src/main/webapp/images/%E5%95%86%E5%9F%8E.jpg "商城圖")
+![地圖圖](legacy/src/main/webapp/images/%E5%9C%B0%E5%9C%96.jpg "地圖圖")
+
+![商城圖](legacy/src/main/webapp/images/%E5%95%86%E5%9F%8E.jpg "商城圖")
 
 
 
