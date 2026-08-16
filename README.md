@@ -1,11 +1,38 @@
 # 美食地圖 - 呼叫美食地圖胡椒MAP！！
 
 > **🚧 重構進行中** — 本專案正從 2021 年的 Spring Boot 2.4 + JSP + MS SQL Server
-> 改寫為 Spring Boot 4 REST API + Next.js + Supabase(PostgreSQL)。
-> 原始程式碼保留在 [`legacy/`](legacy/)（目前無法執行），新的資料庫 schema 在
-> [`supabase/`](supabase/)，新後端在 [`backend/`](backend/)。
-> **以下說明描述的是舊版架構，安裝步驟已不適用**，完成後會一併改寫。
-> 開發指引請見 [CLAUDE.md](CLAUDE.md)。
+> 改寫為 **Spring Boot 4 REST API + Next.js 16 + Supabase(PostgreSQL)**。
+> 舊程式碼保留在 [`legacy/`](legacy/)（無法執行，僅供移植參考）。
+
+## 本地啟動
+
+需要 Docker Desktop、JDK 25、Node 22、Supabase CLI。
+
+```bash
+cp .env.example .env          # 依 `supabase status` 填入金鑰
+
+supabase start                # 資料庫 + Storage（本專案使用 553xx 埠）
+supabase db reset             # 套用 migrations 與種子資料
+
+cd backend && JAVA_HOME=$(/usr/libexec/java_home -v 25) ./mvnw spring-boot:run
+cd frontend && npm install && npm run dev
+```
+
+| 服務 | 位址 |
+|---|---|
+| 前台 | http://localhost:3000 |
+| API / Swagger | http://localhost:8080/swagger-ui.html |
+| Supabase Studio | http://127.0.0.1:55323 |
+| 測試信箱 Mailpit | http://127.0.0.1:55324 |
+
+種子帳號密碼皆為 `Password123!`：`admin@peppernoodles.local`（管理員）、
+`owner.chun@peppernoodles.local`（企業）、`mei@example.com`（一般會員）。
+
+開發指引與架構決策請見 [CLAUDE.md](CLAUDE.md)。
+
+---
+
+### 以下為 2021 年原始版本的說明，架構與安裝步驟均已不適用
 
 <div>
  <img src="https://komarev.com/ghpvc/?username=PepperNoodles&label=Profile%20views&color=red&style=flat" alt="PepperNoodles" />
