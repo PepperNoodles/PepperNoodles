@@ -2,6 +2,10 @@
 -- Extensions and shared helpers
 -- =============================================================================
 
+-- Supabase provides this schema; creating it explicitly lets the same migrations
+-- run unchanged against a plain Postgres container in the integration tests.
+create schema if not exists extensions;
+
 -- Note: citext is deliberately NOT used. Hibernate's schema validator reports it
 -- as Types#OTHER and rejects it against a String field, and it does not exist in
 -- a plain Postgres test container. E-mail addresses are stored lower-cased

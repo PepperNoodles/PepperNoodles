@@ -1,0 +1,30 @@
+spring:
+  # The datasource is supplied by IntegrationTest's @DynamicPropertySource.
+  config:
+    import: ""
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  mail:
+    host: localhost
+    port: 3025
+
+peppernoodles:
+  jwt:
+    secret: dGVzdC1vbmx5LWp3dC1zZWNyZXQtd2l0aC1wbGVudHktb2YtZW50cm9weS0xMjM0NTY3ODkw
+    issuer: peppernoodles-test
+    access-token-ttl: PT15M
+    refresh-token-ttl: P14D
+  recaptcha:
+    enabled: false
+  storage:
+    service-key: ""
+  ecpay:
+    enabled: false
+  linebot:
+    enabled: false
+
+logging:
+  level:
+    com.peppernoodles: WARN
+    org.hibernate.SQL: WARN
