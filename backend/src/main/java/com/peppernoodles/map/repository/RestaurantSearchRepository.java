@@ -37,6 +37,7 @@ public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Lo
                            r.latitude                  as latitude,
                            r.longitude                 as longitude,
                            st_distance(r.geo, o.g)     as distanceMetres,
+                           rr.rating_count             as ratingCount,
                            rr.rating_average           as ratingAverage,
                            rr.review_count             as reviewCount
                       from restaurants r
@@ -72,6 +73,7 @@ public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Lo
                            r.latitude          as latitude,
                            r.longitude         as longitude,
                            0.0                 as distanceMetres,
+                           rr.rating_count     as ratingCount,
                            rr.rating_average   as ratingAverage,
                            rr.review_count     as reviewCount
                       from restaurants r
@@ -106,6 +108,8 @@ public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Lo
         BigDecimal getLongitude();
 
         Double getDistanceMetres();
+
+        Long getRatingCount();
 
         BigDecimal getRatingAverage();
 
