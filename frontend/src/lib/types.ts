@@ -267,3 +267,31 @@ export interface ProblemDetail {
   timestamp: string;
   errors?: Record<string, string>;
 }
+
+/** 首頁 rollups — see the backend's DiscoveryController. */
+export interface District {
+  district: string;
+  restaurantCount: number;
+}
+
+export interface Campaign {
+  id: number;
+  name: string;
+  content?: string | null;
+  imageUrl?: string | null;
+  startsOn: string;
+  endsOn: string;
+  restaurantId: number;
+  restaurantName: string;
+}
+
+export interface HighlightReview {
+  id: number;
+  body: string;
+  score?: number | null;
+  createdAt: string;
+  restaurantId: number;
+  restaurantName: string;
+  authorName: string;
+  authorAvatarUrl?: string | null;
+}

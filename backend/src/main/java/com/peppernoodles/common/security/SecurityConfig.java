@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/v1/restaurants/**",
                                 "/api/v1/map/**",
+                                "/api/v1/discovery/**",
                                 "/api/v1/food-tags/**",
                                 "/api/v1/shop/products/**",
                                 "/api/v1/shop/categories/**",
