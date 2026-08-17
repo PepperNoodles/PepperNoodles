@@ -45,7 +45,7 @@ export default function CartPage() {
     setCheckingOut(true);
     try {
       const order = await api.post<Order>("/orders/checkout", receiver);
-      router.push(`/orders?highlight=${order.orderNo}`);
+      router.push(`/orders/${order.id}`);
     } catch (e) {
       setError(e);
       load(); // stock may have changed underneath us

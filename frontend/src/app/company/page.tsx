@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Card, Empty, ErrorNote, Spinner, Stars, money } from "@/components/ui";
+import { Button, Card, Empty, ErrorNote, Spinner, Stars, money } from "@/components/ui";
 import type { Page, Product, RestaurantSummary } from "@/lib/types";
 
 export default function CompanyPage() {
@@ -52,23 +52,35 @@ export default function CompanyPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <h1 className="text-2xl font-bold">店家管理</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="mr-auto text-2xl font-bold">店家管理</h1>
+        <Link href="/company/reports">
+          <Button variant="ghost">銷售報表</Button>
+        </Link>
+        <Link href="/company/products/new">
+          <Button variant="ghost">新增商品</Button>
+        </Link>
+        <Link href="/company/restaurants/new">
+          <Button>登錄餐廳</Button>
+        </Link>
+      </div>
       <ErrorNote error={error} />
 
       <section>
         <h2 className="mb-3 text-lg font-semibold">我的餐廳 ({restaurants.length})</h2>
         {restaurants.length === 0 ? (
-          <Empty>還沒有登記任何餐廳。</Empty>
+          <Empty>還沒有登記任何餐廳。<Link href="/company/restaurants/new" className="ml-1 text-pepper hover:underline">登錄第一間 →</Link></Empty>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {restaurants.map((restaurant) => (
-              <Link key={restaurant.id} href={`/restaurants/${restaurant.id}`}>
+              <Link key={restaurant.id} href={`/company/restaurants/${restaurant.id}`}>
                 <Card className="h-full p-4 transition hover:shadow-md">
                   <h3 className="font-semibold">{restaurant.name}</h3>
                   <p className="mt-1 text-sm text-stone-500">{restaurant.address}</p>
                   <div className="mt-2">
                     <Stars average={restaurant.rating.average} count={restaurant.rating.reviewCount} />
                   </div>
+                  <p className="mt-3 text-xs font-medium text-pepper">管理這間餐廳 →</p>
                 </Card>
               </Link>
             ))}
@@ -79,7 +91,7 @@ export default function CompanyPage() {
       <section>
         <h2 className="mb-3 text-lg font-semibold">我的商品 ({products.length})</h2>
         {products.length === 0 ? (
-          <Empty>還沒有上架任何商品。</Empty>
+          <Empty>還沒有上架任何商品。<Link href="/company/products/new" className="ml-1 text-pepper hover:underline">新增第一件 →</Link></Empty>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -96,7 +108,7 @@ export default function CompanyPage() {
                 {products.map((product) => (
                   <tr key={product.id} className="border-b border-stone-100 dark:border-stone-900">
                     <td className="py-2">
-                      <Link href={`/shop/${product.id}`} className="hover:underline">
+                      <Link href={`/company/products/${product.id}`} className="hover:text-pepper hover:underline">
                         {product.name}
                       </Link>
                     </td>

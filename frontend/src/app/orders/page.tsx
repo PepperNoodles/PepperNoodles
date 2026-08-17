@@ -3,7 +3,9 @@
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
+import Link from "next/link";
 import { Button, Card, Empty, ErrorNote, Spinner, money } from "@/components/ui";
+import { EcpayButton } from "@/components/EcpayButton";
 import type { Order, Page } from "@/lib/types";
 
 const STATUS_LABELS: Record<Order["status"], string> = {
@@ -64,7 +66,9 @@ function OrderList() {
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-mono text-sm font-semibold">{order.orderNo}</p>
+                  <Link href={`/orders/${order.id}`} className="font-mono text-sm font-semibold hover:text-pepper hover:underline">
+                    {order.orderNo}
+                  </Link>
                   <p className="text-xs text-stone-500">
                     {new Date(order.createdAt).toLocaleString("zh-TW")}
                   </p>
@@ -92,6 +96,7 @@ function OrderList() {
                     <span className="text-xs text-stone-500">
                       保留至 {new Date(order.expiresAt).toLocaleString("zh-TW")}
                     </span>
+                    <EcpayButton orderId={order.id} />
                     <Button variant="ghost" onClick={() => cancel(order.id)}>
                       取消訂單
                     </Button>

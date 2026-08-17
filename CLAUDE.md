@@ -249,6 +249,15 @@ JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
   lower(bytea) does not exist* — and even when it works it is not sargable. The
   shop catalogue filter uses `ProductSpecifications` and builds only the
   predicates the caller supplied.
+- **Do not set `hibernate.jdbc.time_zone`.** It makes the driver convert
+  temporal values against that zone. `Instant`/`timestamptz` is unaffected
+  (absolute), but `LocalTime` is wall-clock with no zone and gets shifted — a
+  10:00 opening time came back as 18:00 on this UTC+8 host. Business hours are
+  `time` columns, so the setting is deliberately absent.
+- **Two collections cannot be fetched in one query.** An `@EntityGraph` naming
+  both `foodTags` and `businessHours` returned each opening row once per tag —
+  seven rows became twenty-one. Fetch one eagerly and let the other load inside
+  the same transaction.
 - A malformed annotation aborts Lombok's annotation processing, and every
   generated getter/setter then reports **"cannot find symbol"** across unrelated
   files. When a compile suddenly produces dozens of missing-accessor errors,

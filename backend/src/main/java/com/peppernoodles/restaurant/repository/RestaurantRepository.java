@@ -14,7 +14,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    @EntityGraph(attributePaths = {"foodTags", "businessHours"})
+    /**
+     * Fetches only the tag set eagerly. Adding businessHours here produced a
+     * cartesian product — seven opening rows times three tags came back as
+     * twenty-one — because two collections cannot be joined in one query
+     * without multiplying. The hours load separately inside the same
+     * transaction.
+     */
+    @EntityGraph(attributePaths = "foodTags")
     Optional<Restaurant> findDetailedById(Long id);
 
     Page<Restaurant> findByOwnerId(Long ownerId, Pageable pageable);

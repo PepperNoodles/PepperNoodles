@@ -25,7 +25,11 @@ spring:
     properties:
       hibernate:
         jdbc:
-          time_zone: UTC
+          # Deliberately NOT setting jdbc.time_zone. It makes the driver convert
+          # temporal values against that zone, which is harmless for the Instant
+          # columns (timestamptz is absolute) but silently shifts LocalTime — the
+          # business-hours columns are wall-clock times with no date or zone, and
+          # a 10:00 opening came back as 18:00 on a UTC+8 host.
           batch_size: 50
         order_inserts: true
         order_updates: true

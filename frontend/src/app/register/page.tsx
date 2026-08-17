@@ -50,7 +50,7 @@ export default function RegisterPage() {
         </p>
         <p className="mt-4 text-xs text-stone-500">
           開發環境可到 Mailpit 收信：
-          <a href="http://127.0.0.1:55324" className="text-red-600 hover:underline" target="_blank" rel="noreferrer">
+          <a href="http://127.0.0.1:55324" className="text-pepper hover:underline" target="_blank" rel="noreferrer">
             127.0.0.1:55324
           </a>
         </p>
@@ -63,7 +63,7 @@ export default function RegisterPage() {
       <div>
         <label htmlFor={name} className="mb-1 block text-sm font-medium">
           {label}
-          {required && <span className="text-red-600"> *</span>}
+          {required && <span className="text-pepper"> *</span>}
         </label>
         <Input
           id={name}
@@ -72,7 +72,7 @@ export default function RegisterPage() {
           value={form[name]}
           onChange={(e) => setForm({ ...form, [name]: e.target.value })}
         />
-        {fieldErrors[name] && <p className="mt-1 text-xs text-red-600">{fieldErrors[name]}</p>}
+        {fieldErrors[name] && <p className="mt-1 text-xs text-pepper">{fieldErrors[name]}</p>}
       </div>
     );
   }
@@ -121,8 +121,14 @@ export default function RegisterPage() {
       </form>
       <p className="mt-6 text-center text-sm text-stone-500">
         已經有帳號？{" "}
-        <Link href="/login" className="text-red-600 hover:underline">
+        <Link href="/login" className="text-pepper hover:underline">
           登入
+        </Link>
+      </p>
+      <p className="mt-2 text-center text-sm text-stone-500">
+        要開店嗎？{" "}
+        <Link href="/register/company" className="text-pepper hover:underline">
+          註冊企業會員
         </Link>
       </p>
     </Card>

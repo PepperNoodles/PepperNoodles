@@ -64,10 +64,19 @@ function LoginForm() {
           {submitting ? "登入中…" : "登入"}
         </Button>
       </form>
-      <p className="mt-6 text-center text-sm text-stone-500">
+      <p className="mt-4 text-center text-sm">
+        <Link href="/forgot-password" className="text-stone-500 hover:text-pepper hover:underline">
+          忘記密碼？
+        </Link>
+      </p>
+      <p className="mt-2 text-center text-sm text-stone-500">
         還沒有帳號？{" "}
-        <Link href="/register" className="text-red-600 hover:underline">
+        <Link href="/register" className="text-pepper hover:underline">
           註冊一個
+        </Link>
+        {" · "}
+        <Link href="/register/company" className="text-pepper hover:underline">
+          企業註冊
         </Link>
       </p>
     </Card>
