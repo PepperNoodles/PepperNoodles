@@ -57,6 +57,9 @@ export function SiteHeader() {
         <Link href="/shop" className={linkClass}>
           商城
         </Link>
+        <Link href="/forum" className={linkClass}>
+          專欄
+        </Link>
         {user && (
           <Link href="/friends" className={linkClass}>
             好友

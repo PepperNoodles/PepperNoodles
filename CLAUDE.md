@@ -332,10 +332,6 @@ another context's `service` interface.
 
 ### Known gaps
 
-- **論壇 / 專欄文章 was never built.** The legacy `userAccsystem` had a forum
-  (`Forum`, `ForumMessageBox`, `ForumReplyMessage`, `forumCollections`) and the
-  2021 首頁 ended with a 專欄文章 band. No forum tables, entities or endpoints
-  exist in the refactor, so that section is absent from the rebuilt home page.
 - **Newsletter subscribe** — the 2021 首頁 had a Subscribe form; there is no
   mailing-list backend, so it is not rebuilt rather than shipped as a dead input.
 - **LINE bot replies** — the webhook verifies signatures and

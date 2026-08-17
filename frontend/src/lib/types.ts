@@ -295,3 +295,92 @@ export interface HighlightReview {
   authorName: string;
   authorAvatarUrl?: string | null;
 }
+
+/** 論壇 */
+export interface ForumAuthor {
+  userId: number;
+  displayName: string;
+  avatarUrl?: string | null;
+}
+
+export interface ForumPostSummary {
+  id: number;
+  author: ForumAuthor;
+  excerpt: string;
+  imageUrl?: string | null;
+  tags: Tag[];
+  commentCount: number;
+  bookmarkCount: number;
+  bookmarked: boolean;
+  editable: boolean;
+  createdAt: string;
+}
+
+export interface ForumReply {
+  id: number;
+  author: ForumAuthor;
+  replyTo?: ForumAuthor | null;
+  body: string;
+  editable: boolean;
+  createdAt: string;
+}
+
+export interface ForumComment {
+  id: number;
+  author: ForumAuthor;
+  body: string;
+  score?: number | null;
+  editable: boolean;
+  createdAt: string;
+  replies: ForumReply[];
+}
+
+export interface ForumPostDetail {
+  id: number;
+  author: ForumAuthor;
+  body: string;
+  imageUrl?: string | null;
+  tags: Tag[];
+  bookmarkCount: number;
+  bookmarked: boolean;
+  editable: boolean;
+  comments: ForumComment[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** 留言牆 & 追蹤 */
+export interface WallMessage {
+  id: number;
+  author: ForumAuthor;
+  body: string;
+  likeCount: number;
+  likedByMe: boolean;
+  deletable: boolean;
+  createdAt: string;
+  replies: WallMessage[];
+}
+
+export interface FollowUser {
+  userId: number;
+  displayName: string;
+  avatarUrl?: string | null;
+  since: string;
+}
+
+export interface FollowCounts {
+  followers: number;
+  following: number;
+  followedByMe: boolean;
+}
+
+/** Another member's profile as returned by GET /users/{id}. */
+export interface PublicProfile {
+  userId: number;
+  nickname: string;
+  avatarUrl?: string | null;
+  location?: string | null;
+  foodTags: Tag[];
+  /** NONE / PENDING / ACCEPTED / DECLINED / BLOCKED, or null when unauthenticated. */
+  friendshipStatus?: string | null;
+}

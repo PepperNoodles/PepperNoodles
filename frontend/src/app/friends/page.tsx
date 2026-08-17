@@ -144,7 +144,9 @@ export default function FriendsPage() {
               return (
                 <Card key={friend.friendshipId} className="flex items-center gap-3 p-4">
                   <div className="flex-1">
-                    <p className="font-medium">{friend.nickname}</p>
+                    <Link href={`/members/${friend.userId}`} className="font-medium hover:text-pepper">
+                      {friend.nickname}
+                    </Link>
                     {conversation && (
                       <p className="truncate text-xs text-stone-500">{conversation.lastMessage}</p>
                     )}
