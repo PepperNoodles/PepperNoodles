@@ -54,7 +54,7 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   if (!user) return <p className="py-12 text-center text-sm text-stone-500">請先登入。</p>;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl space-y-4 px-6 py-10">
       <h1 className="text-xl font-bold">聊天室</h1>
       <ErrorNote error={error} />
 

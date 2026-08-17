@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
   if (done) {
     return (
-      <Card className="mx-auto max-w-md p-8 text-center">
+      <Card className="mx-auto my-16 max-w-md p-8 text-center">
         <h1 className="text-2xl font-bold">確認信已寄出 📬</h1>
         <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">
           我們寄了一封驗證信到 <strong>{form.email}</strong>。點擊信中的連結後就能登入。
@@ -78,7 +78,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="mx-auto max-w-lg p-8">
+    <Card className="mx-auto my-16 max-w-lg p-8">
       <h1 className="text-2xl font-bold">註冊會員</h1>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         {field("email", "電子信箱", "email", true)}

@@ -32,7 +32,7 @@ export default function RestaurantsPage() {
   }, [submitted, activeTags, pageNumber]);
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 px-6 py-10">
       <h1 className="text-2xl font-bold">餐廳</h1>
 
       <form

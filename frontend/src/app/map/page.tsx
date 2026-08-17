@@ -57,7 +57,7 @@ export default function MapPage() {
   useEffect(() => () => { if (debounce.current) clearTimeout(debounce.current); }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-7xl space-y-4 px-6 py-10">
       <div className="flex flex-wrap items-end gap-3">
         <h1 className="mr-auto text-2xl font-bold">美食地圖</h1>
         <div>

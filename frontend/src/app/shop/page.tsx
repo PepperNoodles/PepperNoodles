@@ -42,56 +42,101 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">商城</h1>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setPageNumber(0);
-          setApplied(filters);
-        }}
-        className="grid gap-3 sm:grid-cols-5"
+    <>
+      {/* Banner: the 2021 商城 header — food photography, script welcome, title. */}
+      <section
+        className="hero-overlay relative flex min-h-[340px] items-center justify-center bg-cover bg-center"
+        style={{ backgroundImage: "url(/brand/hero-shop.jpg)" }}
       >
-        <Input
-          className="sm:col-span-2"
-          placeholder="搜尋商品…"
-          value={filters.q}
-          onChange={(e) => setFilters({ ...filters, q: e.target.value })}
-          aria-label="搜尋商品"
-        />
-        <Input
-          type="number"
-          placeholder="最低價"
-          value={filters.minPrice}
-          onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-          aria-label="最低價"
-        />
-        <Input
-          type="number"
-          placeholder="最高價"
-          value={filters.maxPrice}
-          onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-          aria-label="最高價"
-        />
-        <div className="flex gap-2">
-          <select
-            value={filters.categoryId}
-            onChange={(e) => setFilters({ ...filters, categoryId: e.target.value })}
-            aria-label="分類"
-            className="w-full rounded-lg border border-stone-300 bg-white px-2 text-sm dark:border-stone-700 dark:bg-stone-900"
-          >
-            <option value="">全部分類</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          <Button type="submit">篩選</Button>
+        <div className="relative z-10 px-6 text-center">
+          <span className="block font-script text-4xl text-mint sm:text-5xl">Welcome to PepperNoodle</span>
+          <h1 className="mt-1 text-4xl font-bold tracking-wide text-white sm:text-5xl">New Upcoming Products</h1>
         </div>
-      </form>
+      </section>
 
+      <div className="mx-auto max-w-7xl gap-10 px-6 py-12 lg:flex">
+        <aside className="mb-8 w-full shrink-0 lg:mb-0 lg:w-56">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setPageNumber(0);
+              setApplied(filters);
+            }}
+            className="space-y-6"
+          >
+            <Input
+              placeholder="搜尋商品…"
+              value={filters.q}
+              onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+              aria-label="搜尋商品"
+            />
+
+            <div>
+              <h2 className="mb-2 font-display text-lg font-bold">商品類別</h2>
+              <ul className="space-y-1 text-sm">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = { ...filters, categoryId: "" };
+                      setPageNumber(0);
+                      setFilters(next);
+                      setApplied(next);
+                    }}
+                    className={`transition hover:text-pepper ${!filters.categoryId ? "font-semibold text-pepper" : "text-stone-600 dark:text-stone-400"}`}
+                  >
+                    全部
+                  </button>
+                </li>
+                {categories.map((category, index) => (
+                  <li key={category.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const next = { ...filters, categoryId: String(category.id) };
+                        setPageNumber(0);
+                        setFilters(next);
+                        setApplied(next);
+                      }}
+                      className={`transition hover:text-pepper ${
+                        filters.categoryId === String(category.id)
+                          ? "font-semibold text-pepper"
+                          : "text-stone-600 dark:text-stone-400"
+                      }`}
+                    >
+                      <span className="mr-2 text-stone-400">{String(index + 1).padStart(2, "0")}</span>
+                      {category.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="mb-2 font-display text-lg font-bold">價格</h2>
+              <div className="flex gap-2">
+                <Input
+                  type="number"
+                  placeholder="最低"
+                  value={filters.minPrice}
+                  onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
+                  aria-label="最低價"
+                />
+                <Input
+                  type="number"
+                  placeholder="最高"
+                  value={filters.maxPrice}
+                  onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
+                  aria-label="最高價"
+                />
+              </div>
+            </div>
+
+            <Button type="submit" className="w-full">篩選</Button>
+          </form>
+        </aside>
+
+        <div className="min-w-0 flex-1">
       <ErrorNote error={error} />
 
       {loading ? (
@@ -103,7 +148,20 @@ export default function ShopPage() {
           <p className="text-sm text-stone-500">共 {page.totalElements} 件商品</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {page.content.map((product) => (
-              <Card key={product.id} className="flex h-full flex-col overflow-hidden">
+              <Card key={product.id} className="group flex h-full flex-col overflow-hidden">
+                <Link href={`/shop/${product.id}`} className="relative block">
+                  <div className="relative flex h-44 items-center justify-center overflow-hidden bg-stone-100 dark:bg-stone-800">
+                    {product.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-5xl" aria-hidden>🍜</span>
+                    )}
+                    <span className="absolute bottom-2 right-2 rounded-full bg-pepper px-4 py-1 font-display text-xs font-bold uppercase text-white opacity-0 transition group-hover:opacity-100">
+                      Open
+                    </span>
+                  </div>
+                </Link>
                 <Link href={`/shop/${product.id}`} className="block flex-1 p-4">
                   <h2 className="font-semibold">{product.name}</h2>
                   <p className="mt-1 text-xs text-stone-500">{product.restaurantName}</p>
@@ -147,6 +205,8 @@ export default function ShopPage() {
           )}
         </>
       )}
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

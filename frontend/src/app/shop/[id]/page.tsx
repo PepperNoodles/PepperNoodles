@@ -39,7 +39,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   if (!product) return <ErrorNote error={error ?? new Error("找不到這件商品。")} />;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
+    <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-2">
       <Card className="flex items-center justify-center overflow-hidden bg-stone-100 p-8 dark:bg-stone-900">
         {product.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element

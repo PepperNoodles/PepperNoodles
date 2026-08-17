@@ -20,15 +20,15 @@ export function Button({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "danger" }) {
   const styles = {
-    primary: "bg-red-600 text-white hover:bg-red-700 disabled:bg-stone-300",
+    primary: "bg-pepper text-white hover:bg-pepper-dark disabled:bg-stone-300",
     ghost:
       "border border-stone-300 text-stone-700 hover:bg-stone-100 dark:border-stone-700 dark:text-stone-200 dark:hover:bg-stone-800",
-    danger: "bg-stone-800 text-white hover:bg-black",
+    danger: "bg-ink text-white hover:bg-black",
   }[variant];
   return (
     <button
       {...props}
-      className={`rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${styles} ${className}`}
+      className={`rounded-full px-5 py-2 font-display text-sm font-bold uppercase tracking-wide transition disabled:cursor-not-allowed disabled:opacity-60 ${styles} ${className}`}
     >
       {children}
     </button>
@@ -39,14 +39,14 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className={`w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 dark:border-stone-700 dark:bg-stone-900 dark:focus:ring-red-950 ${props.className ?? ""}`}
+      className={`w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-pepper focus:ring-2 focus:ring-orange-100 dark:border-stone-700 dark:bg-stone-900 dark:focus:ring-orange-950 ${props.className ?? ""}`}
     />
   );
 }
 
 export function TagPill({ children }: { children: ReactNode }) {
   return (
-    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+    <span className="rounded-full border border-stone-200 px-2.5 py-0.5 text-xs font-medium text-stone-600 dark:border-stone-700 dark:text-stone-300">
       {children}
     </span>
   );
@@ -86,7 +86,7 @@ export function Empty({ children }: { children: ReactNode }) {
 export function Spinner() {
   return (
     <div className="flex justify-center py-12" role="status" aria-label="載入中">
-      <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-red-600" />
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-pepper" />
     </div>
   );
 }

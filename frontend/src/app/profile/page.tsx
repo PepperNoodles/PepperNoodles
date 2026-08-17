@@ -80,7 +80,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
       <h1 className="text-2xl font-bold">個人資料</h1>
       <ErrorNote error={error} />
       {saved && <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">已儲存 ✓</p>}
@@ -134,7 +134,7 @@ export default function ProfilePage() {
           </form>
         </Card>
 
-        <div className="space-y-6">
+        <div className="mx-auto max-w-7xl space-y-6 px-6 py-10">
           <Card className="p-6">
             <h2 className="font-semibold">修改密碼</h2>
             <form onSubmit={changePassword} className="mt-4 space-y-3">

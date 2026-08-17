@@ -281,6 +281,14 @@ frontend/    Next.js (App Router) · TypeScript · Tailwind CSS
    mechanism — the backend connects as a privileged role and enforces authorization in the service
    layer.* RLS is still enabled on tables as defence-in-depth.
 3. **Database: Supabase (PostgreSQL).** MS SQL Server is removed entirely.
+3a. **The 2021 visual identity is kept.** Design tokens were lifted from
+   `legacy/src/main/webapp/css/{style,main}.css` and are declared in
+   `frontend/src/app/globals.css`: `--color-pepper #ff3d1c` (the original
+   `.btn`), `--color-mint #31ff7a` (the `.hero__caption` script tagline),
+   `--color-gold #c6a16e`, Sacramento for script text and Sulphur Point for
+   display. Hero photography and the circular logo were copied to
+   `frontend/public/brand/`. The header lies transparently over the hero on
+   pages that have one. Do not substitute a generic palette.
 4. **Schema is owned by SQL migrations** in `supabase/migrations/`. Hibernate runs with
    `ddl-auto: validate` and never writes DDL.
 5. **Images move out of the database** into Supabase Storage buckets. Every `Blob` column becomes a
@@ -315,7 +323,8 @@ another context's `service` interface.
 
 ### Non-goals
 
-- Preserving the 2021 visual design pixel-for-pixel.
+- Re-creating the 2021 markup. The *visual design* is deliberately preserved
+  (see below); the JSP/jQuery implementation of it is not.
 - Keeping the ~130 MB of vendored jQuery plugins under `src/main/webapp/plugins` and `vendor`.
 - Re-implementing ECPay from scratch — the vendored SDK is replaced with the official Maven artifact
   or an isolated adapter, but the payment flow itself is out of scope for restructuring.

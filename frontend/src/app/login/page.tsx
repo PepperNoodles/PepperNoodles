@@ -30,7 +30,7 @@ function LoginForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-md p-8">
+    <Card className="mx-auto my-16 max-w-md p-8">
       <h1 className="text-2xl font-bold">登入</h1>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div>

@@ -29,7 +29,7 @@ function Verify() {
   if (state === "pending") return <Spinner />;
 
   return (
-    <Card className="mx-auto max-w-md p-8 text-center">
+    <Card className="mx-auto my-16 max-w-md p-8 text-center">
       {state === "ok" ? (
         <>
           <h1 className="text-2xl font-bold">信箱驗證完成 ✓</h1>
