@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
+import { Logo } from "./Logo";
 import { api } from "@/lib/api";
 
 /**
@@ -45,7 +45,7 @@ export function SiteHeader() {
     >
       <nav className="mx-auto flex max-w-7xl items-center gap-1 px-6 py-4">
         <Link href="/" className="mr-8 shrink-0" aria-label="胡椒MAP 首頁">
-          <Image src="/brand/logo.png" alt="PepperNoodle" width={132} height={52} priority className="h-12 w-auto" />
+          <Logo onDark={overHero} />
         </Link>
 
         <Link href="/map" className={linkClass}>

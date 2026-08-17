@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
 /*
+ * The 2021 site was light-only, and so is this one.
+ *
+ * Tailwind v4 resolves `dark:` from prefers-color-scheme by default, so on a
+ * machine set to dark mode the whole UI flipped. Redefining the variant to
+ * require an explicit `.dark` ancestor — which nothing sets — pins the site to
+ * light without having to strip the `dark:` classes out of every component.
+ * Re-enabling dark mode later is then a matter of toggling that class on <html>.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
  * Design tokens lifted from the 2021 stylesheets
  * (legacy/src/main/webapp/css/style.css, main.css) so the rebuilt frontend
  * keeps the original brand rather than inventing a new one.
@@ -16,6 +27,11 @@
 
   --font-display: var(--font-sulphur), "Sulphur Point", sans-serif;
   --font-script: var(--font-sacramento), "Sacramento", cursive;
+}
+
+html {
+  /* Keeps native controls — selects, date pickers, scrollbars — light too. */
+  color-scheme: light;
 }
 
 body {
@@ -36,11 +52,4 @@ body {
 .search-ring {
   border: 8px solid rgba(255, 255, 255, 0.2);
   border-radius: 50px;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #f5f5f4;
-    background: #0c0a09;
-  }
 }
