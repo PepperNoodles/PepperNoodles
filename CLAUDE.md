@@ -321,6 +321,21 @@ Each context: `api/` (`@RestController` + request/response records) · `domain/`
 `repository/` · `service/` (interface + impl). Nothing crosses a context boundary except through
 another context's `service` interface.
 
+### Known gaps
+
+- **論壇 / 專欄文章 was never built.** The legacy `userAccsystem` had a forum
+  (`Forum`, `ForumMessageBox`, `ForumReplyMessage`, `forumCollections`) and the
+  2021 首頁 ended with a 專欄文章 band. No forum tables, entities or endpoints
+  exist in the refactor, so that section is absent from the rebuilt home page.
+- **Newsletter subscribe** — the 2021 首頁 had a Subscribe form; there is no
+  mailing-list backend, so it is not rebuilt rather than shipped as a dead input.
+- **LINE bot replies** — the webhook verifies signatures and
+  `LineBotService#replyTo` holds the lookup logic, but nothing is pushed back to
+  LINE; that needs a channel token, and the project's channel was deleted.
+- **Product images** — seed products have no photos. The legacy images lived in
+  MSSQL BLOBs and that database is gone. Upload via
+  `POST /api/v1/shop/products/{id}/image`.
+
 ### Non-goals
 
 - Re-creating the 2021 markup. The *visual design* is deliberately preserved
