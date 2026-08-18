@@ -17,6 +17,11 @@ import org.springframework.stereotype.Repository;
  * list. These queries use the generated {@code geo geography(Point,4326)}
  * column and its GiST index: {@code ST_DWithin} becomes an index lookup and
  * {@code ST_Distance} returns metres on the spheroid.
+ *
+ * <p>PostGIS functions are schema-qualified because the extension is installed
+ * into {@code extensions} (see the first migration). Unqualified names resolve
+ * on Supabase only because that schema happens to be on the role's search_path,
+ * and fail on a plain Postgres container.
  */
 @Repository
 public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Long> {
@@ -36,17 +41,17 @@ public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Lo
                            r.photo_path                as photoPath,
                            r.latitude                  as latitude,
                            r.longitude                 as longitude,
-                           st_distance(r.geo, o.g)     as distanceMetres,
+                           extensions.st_distance(r.geo, o.g)     as distanceMetres,
                            rr.rating_count             as ratingCount,
                            rr.rating_average           as ratingAverage,
                            rr.review_count             as reviewCount
                       from restaurants r
                       cross join (
-                        select st_setsrid(st_makepoint(:lng, :lat), 4326)::geography as g
+                        select extensions.st_setsrid(extensions.st_makepoint(:lng, :lat), 4326)::extensions.geography as g
                       ) o
                       left join restaurant_ratings rr on rr.restaurant_id = r.id
-                     where st_dwithin(r.geo, o.g, :radiusMetres)
-                     order by st_distance(r.geo, o.g)
+                     where extensions.st_dwithin(r.geo, o.g, :radiusMetres)
+                     order by extensions.st_distance(r.geo, o.g)
                      limit :maxResults
                     """,
             nativeQuery = true)
@@ -78,7 +83,7 @@ public interface RestaurantSearchRepository extends JpaRepository<Restaurant, Lo
                            rr.review_count     as reviewCount
                       from restaurants r
                       left join restaurant_ratings rr on rr.restaurant_id = r.id
-                     where r.geo && st_makeenvelope(:west, :south, :east, :north, 4326)::geography
+                     where r.geo operator(extensions.&&) extensions.st_makeenvelope(:west, :south, :east, :north, 4326)::extensions.geography
                      limit :maxResults
                     """,
             nativeQuery = true)

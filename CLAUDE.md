@@ -258,6 +258,11 @@ JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
   both `foodTags` and `businessHours` returned each opening row once per tag —
   seven rows became twenty-one. Fetch one eagerly and let the other load inside
   the same transaction.
+- **Schema-qualify PostGIS.** The extension is installed into `extensions`, and
+  unqualified `st_dwithin(...)` / `::geography` resolve on Supabase only because
+  that schema is on the role's search_path — they fail on a plain test
+  container. Functions take `extensions.` and the `&&` overlap operator takes
+  `operator(extensions.&&)`.
 - A malformed annotation aborts Lombok's annotation processing, and every
   generated getter/setter then reports **"cannot find symbol"** across unrelated
   files. When a compile suddenly produces dozens of missing-accessor errors,
