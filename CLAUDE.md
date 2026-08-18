@@ -263,6 +263,15 @@ JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
   that schema is on the role's search_path — they fail on a plain test
   container. Functions take `extensions.` and the `&&` overlap operator takes
   `operator(extensions.&&)`.
+- **Frontend E2E: inject auth with `addInitScript`, never after `goto`.** Writing
+  tokens to localStorage after a navigation races the AuthProvider, which has
+  already settled on "anonymous"; tests then fail at random. The suite went from
+  flaky-and-3-minutes to stable-and-20-seconds by injecting up front. Tests that
+  need a *different* identity open their own browser context rather than
+  clearing storage, because the init script would just re-inject.
+- **Vitest alias must use `fileURLToPath`.** This repo's path contains
+  non-ASCII characters and `new URL(...).pathname` leaves them percent-encoded,
+  so an alias built that way silently fails to resolve.
 - A malformed annotation aborts Lombok's annotation processing, and every
   generated getter/setter then reports **"cannot find symbol"** across unrelated
   files. When a compile suddenly produces dozens of missing-accessor errors,
