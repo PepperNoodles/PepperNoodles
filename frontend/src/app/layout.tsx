@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Sacramento, Sulphur_Point } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -20,7 +21,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <SiteHeader />
           {children}
-          <footer className="border-t border-stone-200 bg-white py-8 text-center text-xs text-stone-500 dark:border-stone-800 dark:bg-stone-950">
+          <footer className="border-t border-stone-200 bg-white py-8 text-center text-xs text-stone-500">
+            <nav className="mb-3 flex justify-center gap-4">
+              <Link href="/contact" className="hover:text-pepper">
+                聯絡我們
+              </Link>
+              <Link href="/forum" className="hover:text-pepper">
+                專欄文章
+              </Link>
+              <Link href="/map" className="hover:text-pepper">
+                美食地圖
+              </Link>
+            </nav>
             胡椒MAP · 重構自 2021 年 EEIT23 專案
           </footer>
         </AuthProvider>

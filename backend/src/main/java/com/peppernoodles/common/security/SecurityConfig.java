@@ -77,6 +77,13 @@ public class SecurityConfig {
                                 "/api/v1/forum/**")
                         .permitAll()
 
+                        // 電子報訂閱 — the whole flow is for people without accounts.
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/newsletter/subscribe",
+                                "/api/v1/newsletter/confirm",
+                                "/api/v1/newsletter/unsubscribe")
+                        .permitAll()
+
                         // 聯絡我們 — reachable while logged out.
                         .requestMatchers(HttpMethod.POST, "/api/v1/inquiries").permitAll()
 

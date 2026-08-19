@@ -75,3 +75,30 @@ export async function createPost(page: Page, body: string) {
 export async function ensureNotFollowing(page: Page, userId: number) {
   await page.request.delete(`${API}/users/${userId}/follow`, { headers: await authHeaders(page) });
 }
+
+/** Reads the most recent Mailpit message body, for double-opt-in flows. */
+export async function latestMailBody(page: Page) {
+  const list = await (await page.request.get("http://127.0.0.1:55324/api/v1/messages?limit=1")).json();
+  if (!list.messages?.length) return "";
+  const id = list.messages[0].ID;
+  const message = await (await page.request.get(`http://127.0.0.1:55324/api/v1/message/${id}`)).json();
+  return (message.Text ?? "") as string;
+}
+
+/**
+ * Pulls a token out of a link in the most recent mail, polling until it shows up.
+ *
+ * <p>Delivery is asynchronous: the API has already answered by the time the
+ * page updates, but the message can land in Mailpit a moment later.
+ */
+export async function tokenFromMail(page: Page, path: string, timeoutMs = 10_000) {
+  const pattern = new RegExp(`${path}\\?token=([A-Za-z0-9_%-]+)`);
+  const deadline = Date.now() + timeoutMs;
+
+  while (Date.now() < deadline) {
+    const match = pattern.exec(await latestMailBody(page));
+    if (match) return match[1];
+    await page.waitForTimeout(250);
+  }
+  return null;
+}

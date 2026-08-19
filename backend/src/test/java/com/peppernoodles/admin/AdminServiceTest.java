@@ -151,6 +151,50 @@ class AdminServiceTest extends IntegrationTest {
                 .isInstanceOf(ConflictException.class);
     }
 
+    // --- 餐廳管理 -------------------------------------------------------------
+
+    @Test
+    @DisplayName("the restaurant list shows each listing with the account behind it")
+    void listsRestaurantsWithOwners() {
+        User owner = fixtures.owner();
+        var restaurant = fixtures.restaurant(owner);
+
+        var row = adminService.listRestaurants(restaurant.getName(), PageRequest.of(0, 20)).content().stream()
+                .filter(r -> r.id().equals(restaurant.getId()))
+                .findFirst()
+                .orElseThrow();
+
+        assertThat(row.name()).isEqualTo(restaurant.getName());
+        assertThat(row.ownerUserId()).isEqualTo(owner.getId());
+        assertThat(row.ownerEmail()).isEqualTo(owner.getEmail());
+        assertThat(row.ownerName()).isNotBlank();
+    }
+
+    @Test
+    @DisplayName("the restaurant search matches on address and on the owner's e-mail")
+    void searchesAddressAndOwnerEmail() {
+        User owner = fixtures.owner();
+        var restaurant = fixtures.restaurant(owner);
+
+        assertThat(adminService.listRestaurants(restaurant.getAddress(), PageRequest.of(0, 20)).content())
+                .anySatisfy(r -> assertThat(r.id()).isEqualTo(restaurant.getId()));
+
+        assertThat(adminService.listRestaurants(owner.getEmail(), PageRequest.of(0, 20)).content())
+                .anySatisfy(r -> assertThat(r.id()).isEqualTo(restaurant.getId()));
+    }
+
+    /** Regression guard: the filter binds an untyped NULL when no term is given. */
+    @Test
+    @DisplayName("an empty search returns every restaurant rather than failing")
+    void emptySearchListsEverything() {
+        fixtures.restaurant(fixtures.owner());
+
+        assertThat(adminService.listRestaurants(null, PageRequest.of(0, 20)).totalElements())
+                .isPositive();
+        assertThat(adminService.listRestaurants("   ", PageRequest.of(0, 20)).totalElements())
+                .isPositive();
+    }
+
     @Test
     @DisplayName("the dashboard counts reflect what is in the database")
     void dashboardCounts() {

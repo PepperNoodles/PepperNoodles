@@ -49,6 +49,19 @@ public final class AdminDtos {
             Long id, Long actorUserId, String actorEmail, String action,
             String targetType, String targetId, String detail, Instant createdAt) {}
 
+    /** One row of the back-office restaurant list. */
+    public record ManagedRestaurantDto(
+            Long id,
+            String name,
+            String address,
+            String contact,
+            Long ownerUserId,
+            String ownerEmail,
+            String ownerName,
+            long reviewCount,
+            java.math.BigDecimal ratingAverage,
+            java.time.Instant createdAt) {}
+
     /** 後台首頁 counters. */
     public record DashboardDto(
             long totalUsers, long suspendedUsers, long totalRestaurants,

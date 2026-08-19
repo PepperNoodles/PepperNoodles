@@ -72,6 +72,9 @@ export default function AdminPage() {
     <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="mr-auto text-2xl font-bold">後台</h1>
+        <Link href="/admin/restaurants">
+          <Button variant="ghost">餐廳管理</Button>
+        </Link>
         <Link href="/admin/audit-log">
           <Button variant="ghost">操作紀錄</Button>
         </Link>

@@ -4,12 +4,14 @@ import com.peppernoodles.admin.api.dto.AdminDtos.AuditLogDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.CreateInquiryRequest;
 import com.peppernoodles.admin.api.dto.AdminDtos.DashboardDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.InquiryDto;
+import com.peppernoodles.admin.api.dto.AdminDtos.ManagedRestaurantDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.ManagedUserDto;
 import com.peppernoodles.admin.domain.AdminAuditLog;
 import com.peppernoodles.admin.domain.AdminInquiry;
 import com.peppernoodles.admin.domain.AdminInquiry.Status;
 import com.peppernoodles.admin.repository.AdminAuditLogRepository;
 import com.peppernoodles.admin.repository.AdminInquiryRepository;
+import com.peppernoodles.admin.repository.AdminRestaurantRepository;
 import com.peppernoodles.auth.service.RecaptchaVerifier;
 import com.peppernoodles.common.error.ApiExceptions.ConflictException;
 import com.peppernoodles.common.error.ApiExceptions.NotFoundException;
@@ -42,6 +44,7 @@ public class AdminService {
     private final AdminAuditLogRepository auditLog;
     private final UserRepository users;
     private final RestaurantRepository restaurants;
+    private final AdminRestaurantRepository adminRestaurants;
     private final ProductRepository products;
     private final OrderRepository orders;
     private final MailService mailService;
@@ -52,6 +55,7 @@ public class AdminService {
             AdminAuditLogRepository auditLog,
             UserRepository users,
             RestaurantRepository restaurants,
+            AdminRestaurantRepository adminRestaurants,
             ProductRepository products,
             OrderRepository orders,
             MailService mailService,
@@ -60,6 +64,7 @@ public class AdminService {
         this.auditLog = auditLog;
         this.users = users;
         this.restaurants = restaurants;
+        this.adminRestaurants = adminRestaurants;
         this.products = products;
         this.orders = orders;
         this.mailService = mailService;
@@ -149,6 +154,28 @@ public class AdminService {
 
         mailService.sendAccountReinstated(user.getEmail());
         log.info("Admin {} reinstated user {}", caller.id(), userId);
+    }
+
+    // --- 餐廳管理 -------------------------------------------------------------
+
+    /**
+     * 後台餐廳查詢. Unlike the public catalogue this shows every restaurant with
+     * its owner, so an admin can trace a listing back to an account.
+     */
+    @Transactional(readOnly = true)
+    public PageResponse<ManagedRestaurantDto> listRestaurants(String query, Pageable pageable) {
+        String q = (query == null || query.isBlank()) ? null : query.trim();
+        return PageResponse.of(adminRestaurants.search(q, pageable), row -> new ManagedRestaurantDto(
+                row.getId(),
+                row.getName(),
+                row.getAddress(),
+                row.getContact(),
+                row.getOwnerUserId(),
+                row.getOwnerEmail(),
+                row.getOwnerName(),
+                row.getReviewCount() == null ? 0 : row.getReviewCount(),
+                row.getRatingAverage(),
+                row.getCreatedAt()));
     }
 
     // --- dashboard / audit ---------------------------------------------------

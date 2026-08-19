@@ -76,6 +76,48 @@ public class MailService {
     }
 
     @Async
+    /** Double opt-in confirmation for 電子報訂閱. */
+    public void sendNewsletterConfirmation(String to, String rawToken) {
+        String link = "%s/newsletter/confirm?token=%s".formatted(frontendBaseUrl(), encode(rawToken));
+        send(
+                to,
+                "【胡椒MAP】確認訂閱電子報",
+                """
+                您好，
+
+                有人（希望是您）用這個信箱訂閱了胡椒MAP 電子報。
+                請點擊以下連結完成訂閱：
+
+                %s
+
+                在您點擊之前，我們不會寄送任何電子報。
+                若這不是您本人，請忽略這封信，什麼都不會發生。
+
+                —— 胡椒MAP
+                """
+                        .formatted(link));
+    }
+
+    /** Sent once the subscription is live, so the reader always has a way out. */
+    public void sendNewsletterWelcome(String to, String rawUnsubscribeToken) {
+        String link =
+                "%s/newsletter/unsubscribe?token=%s".formatted(frontendBaseUrl(), encode(rawUnsubscribeToken));
+        send(
+                to,
+                "【胡椒MAP】訂閱成功",
+                """
+                訂閱成功！
+
+                之後有新的餐廳、優惠與專欄文章，我們會寄給您。
+
+                隨時想取消訂閱，點這裡即可，不需要登入：
+                %s
+
+                —— 胡椒MAP
+                """
+                        .formatted(link));
+    }
+
     public void sendAccountSuspended(String to, String reason) {
         send(
                 to,

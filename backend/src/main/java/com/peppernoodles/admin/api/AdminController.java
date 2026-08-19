@@ -3,6 +3,7 @@ package com.peppernoodles.admin.api;
 import com.peppernoodles.admin.api.dto.AdminDtos.AuditLogDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.DashboardDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.InquiryDto;
+import com.peppernoodles.admin.api.dto.AdminDtos.ManagedRestaurantDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.ManagedUserDto;
 import com.peppernoodles.admin.api.dto.AdminDtos.ResolveInquiryRequest;
 import com.peppernoodles.admin.api.dto.AdminDtos.SuspendUserRequest;
@@ -59,6 +60,16 @@ public class AdminController {
     @Operation(summary = "恢復會員權限")
     public void reinstate(@PathVariable Long userId, @CurrentUser AuthenticatedUser caller) {
         adminService.reinstate(userId, caller);
+    }
+
+    @GetMapping("/restaurants")
+    @Operation(
+            summary = "餐廳查詢",
+            description = "Every restaurant with its owner. Editing and deletion go through the "
+                    + "normal /restaurants endpoints, which already admit an admin.")
+    public PageResponse<ManagedRestaurantDto> restaurants(
+            @RequestParam(required = false) String q, @PageableDefault(size = 20) Pageable pageable) {
+        return adminService.listRestaurants(q, pageable);
     }
 
     @GetMapping("/inquiries")

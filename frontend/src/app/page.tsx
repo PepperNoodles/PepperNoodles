@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Card, Spinner, Stars, TagPill } from "@/components/ui";
 import type {
   Campaign,
@@ -277,6 +278,20 @@ export default function HomePage() {
               </div>
             </section>
           )}
+
+          {/* ---------- 訂閱電子報 ---------- */}
+          <section
+            className="hero-overlay relative bg-cover bg-center py-20"
+            style={{ backgroundImage: "url(/brand/hero-shop.jpg)" }}
+          >
+            <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+              <span className="font-script text-4xl text-mint">Subscribe our newsletter</span>
+              <h2 className="mb-8 mt-1 text-3xl font-bold text-white sm:text-4xl">
+                Subscribe For Newsletter
+              </h2>
+              <NewsletterSignup source="home" />
+            </div>
+          </section>
 
           {/* ---------- 最新餐廳 ---------- */}
           <section className="py-20">

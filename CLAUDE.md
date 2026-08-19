@@ -346,8 +346,6 @@ another context's `service` interface.
 
 ### Known gaps
 
-- **Newsletter subscribe** — the 2021 首頁 had a Subscribe form; there is no
-  mailing-list backend, so it is not rebuilt rather than shipped as a dead input.
 - **LINE bot replies** — the webhook verifies signatures and
   `LineBotService#replyTo` holds the lookup logic, but nothing is pushed back to
   LINE; that needs a channel token, and the project's channel was deleted.
