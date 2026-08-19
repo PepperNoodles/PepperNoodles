@@ -1,5 +1,7 @@
 # 美食地圖 - 呼叫美食地圖胡椒MAP！！
 
+[![CI](https://github.com/PepperNoodles/PepperNoodles/actions/workflows/ci.yml/badge.svg)](https://github.com/PepperNoodles/PepperNoodles/actions/workflows/ci.yml)
+
 > **🚧 重構進行中** — 本專案正從 2021 年的 Spring Boot 2.4 + JSP + MS SQL Server
 > 改寫為 **Spring Boot 4 REST API + Next.js 16 + Supabase(PostgreSQL)**。
 > 舊程式碼保留在 [`legacy/`](legacy/)（無法執行，僅供移植參考）。
@@ -27,6 +29,17 @@ cd frontend && npm install && npm run dev
 
 種子帳號密碼皆為 `Password123!`：`admin@peppernoodles.local`（管理員）、
 `owner.chun@peppernoodles.local`（企業）、`mei@example.com`（一般會員）。
+
+## 測試
+
+```bash
+cd backend  && JAVA_HOME=$(/usr/libexec/java_home -v 25) ./mvnw test   # 86 個
+cd frontend && npm test                                                # 35 個單元測試
+cd frontend && npm run test:e2e                                        # 34 個 E2E（需三層都啟動）
+```
+
+CI 會在每次 push 與 PR 跑上述全部，設定見
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml)。
 
 開發指引與架構決策請見 [CLAUDE.md](CLAUDE.md)。
 

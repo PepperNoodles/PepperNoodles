@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError, api, query, tokenStore } from "./api";
+import type { AuthResponse } from "./types";
 
 const BASE = "http://localhost:8080/api/v1";
 
@@ -15,7 +16,7 @@ function noContent() {
   return new Response(null, { status: 204 });
 }
 
-function authResponse(suffix: string) {
+function authResponse(suffix: string): AuthResponse {
   return {
     accessToken: `access-${suffix}`,
     refreshToken: `refresh-${suffix}`,

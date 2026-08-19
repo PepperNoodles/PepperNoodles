@@ -77,13 +77,18 @@ function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
   );
 }
 
+/** Defaults the report to the last year, evaluated once per mount. */
+function defaultRange() {
+  const iso = (ms: number) => new Date(ms).toISOString().slice(0, 10);
+  return { from: iso(Date.now() - 365 * 86_400_000), to: iso(Date.now()) };
+}
+
 export default function ReportsPage() {
   const { hasRole, loading: authLoading } = useAuth();
-  const today = new Date().toISOString().slice(0, 10);
-  const yearAgo = new Date(Date.now() - 365 * 86_400_000).toISOString().slice(0, 10);
-
-  const [range, setRange] = useState({ from: yearAgo, to: today });
-  const [applied, setApplied] = useState(range);
+  // Computed once via a lazy initialiser rather than on every render — reading
+  // the clock during render makes the component impure.
+  const [range, setRange] = useState(defaultRange);
+  const [applied, setApplied] = useState(defaultRange);
   const [report, setReport] = useState<SalesReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
