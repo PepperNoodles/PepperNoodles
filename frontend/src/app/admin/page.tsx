@@ -70,7 +70,12 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <h1 className="text-2xl font-bold">後台</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="mr-auto text-2xl font-bold">後台</h1>
+        <Link href="/admin/audit-log">
+          <Button variant="ghost">操作紀錄</Button>
+        </Link>
+      </div>
       <ErrorNote error={error} />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">

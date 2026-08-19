@@ -89,18 +89,23 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
         </div>
 
         {post.editable && (
-          <button
-            onClick={() => {
-              if (!confirm("確定要刪除這篇文章嗎？")) return;
-              act(async () => {
-                await api.delete(`/forum/posts/${id}`);
-                router.push("/forum");
-              });
-            }}
-            className="mt-4 text-xs text-stone-400 hover:text-pepper"
-          >
-            刪除文章
-          </button>
+          <div className="mt-4 flex gap-3 text-xs">
+            <Link href={`/forum/${id}/edit`} className="text-stone-400 hover:text-pepper">
+              編輯文章
+            </Link>
+            <button
+              onClick={() => {
+                if (!confirm("確定要刪除這篇文章嗎？")) return;
+                act(async () => {
+                  await api.delete(`/forum/posts/${id}`);
+                  router.push("/forum");
+                });
+              }}
+              className="text-stone-400 hover:text-pepper"
+            >
+              刪除文章
+            </button>
+          </div>
         )}
       </Card>
 

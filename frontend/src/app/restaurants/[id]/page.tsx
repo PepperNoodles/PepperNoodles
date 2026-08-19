@@ -19,6 +19,9 @@ export default function RestaurantPage({ params }: { params: Promise<{ id: strin
   const [error, setError] = useState<unknown>(null);
   const [body, setBody] = useState("");
   const [score, setScore] = useState(5);
+  /** Which review the reply box is open under. */
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyBody, setReplyBody] = useState("");
 
   const load = useCallback(async () => {
     setError(null);
@@ -60,6 +63,28 @@ export default function RestaurantPage({ params }: { params: Promise<{ id: strin
     try {
       await api.post(`/restaurants/${id}/reviews`, { body, score });
       setBody("");
+      await load();
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  async function submitReply(reviewId: number) {
+    setError(null);
+    try {
+      await api.post(`/restaurants/reviews/${reviewId}/replies`, { body: replyBody });
+      setReplyingTo(null);
+      setReplyBody("");
+      await load();
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  async function deleteReply(replyId: number) {
+    setError(null);
+    try {
+      await api.delete(`/restaurants/reviews/replies/${replyId}`);
       await load();
     } catch (e) {
       setError(e);
@@ -265,18 +290,62 @@ export default function RestaurantPage({ params }: { params: Promise<{ id: strin
                           </span>
                         )}
                         <p className="mt-0.5 whitespace-pre-wrap text-stone-600 dark:text-stone-400">{reply.body}</p>
+                        {reply.editable && (
+                          <button
+                            onClick={() => deleteReply(reply.id)}
+                            className="text-xs text-stone-400 hover:text-pepper"
+                          >
+                            刪除
+                          </button>
+                        )}
                       </li>
                     ))}
                   </ul>
                 )}
 
-                {review.editable && (
-                  <button
-                    onClick={() => deleteReview(review.id)}
-                    className="mt-3 text-xs text-stone-400 hover:text-red-600"
+                <div className="mt-3 flex gap-3 text-xs">
+                  {user && (
+                    <button
+                      onClick={() => {
+                        setReplyingTo(replyingTo === review.id ? null : review.id);
+                        setReplyBody("");
+                      }}
+                      className="text-stone-400 hover:text-pepper"
+                    >
+                      回覆
+                    </button>
+                  )}
+                  {review.editable && (
+                    <button
+                      onClick={() => deleteReview(review.id)}
+                      className="text-stone-400 hover:text-pepper"
+                    >
+                      刪除
+                    </button>
+                  )}
+                </div>
+
+                {replyingTo === review.id && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      submitReply(review.id);
+                    }}
+                    className="mt-3 flex gap-2"
                   >
-                    刪除
-                  </button>
+                    <input
+                      required
+                      maxLength={1000}
+                      value={replyBody}
+                      onChange={(e) => setReplyBody(e.target.value)}
+                      placeholder={
+                        restaurant.editable ? "以店家身分回覆…" : `回覆 ${review.author.displayName}…`
+                      }
+                      aria-label="回覆內容"
+                      className="flex-1 rounded-lg border border-stone-300 px-3 py-1.5 text-sm outline-none focus:border-pepper"
+                    />
+                    <Button type="submit">送出</Button>
+                  </form>
                 )}
               </Card>
             ))}

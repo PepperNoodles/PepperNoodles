@@ -139,6 +139,8 @@ jobs:
         run: |
           supabase start
           supabase db reset
+          # Publish the locally generated service_role key to later steps.
+          echo "SUPABASE_SERVICE_KEY=$(supabase status -o env | grep '^SERVICE_ROLE_KEY=' | cut -d'\"' -f2)" >> "$GITHUB_ENV"
 
       - name: Build the backend
         working-directory: backend
@@ -146,6 +148,10 @@ jobs:
 
       - name: Start the backend
         working-directory: backend
+        env:
+          # Image upload goes through Supabase Storage, which needs the
+          # service_role key; without it every upload endpoint answers 502.
+          SUPABASE_SERVICE_KEY: ${{ env.SUPABASE_SERVICE_KEY }}
         run: |
           nohup java -jar target/*.jar > /tmp/backend.log 2>&1 &
           echo "Waiting for the API to come up…"

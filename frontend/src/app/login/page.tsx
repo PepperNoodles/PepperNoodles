@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { Button, Card, ErrorNote, Input } from "@/components/ui";
+import { ResendVerification } from "@/components/ResendVerification";
 
 function LoginForm() {
   const { login } = useAuth();
@@ -60,6 +61,9 @@ function LoginForm() {
           />
         </div>
         <ErrorNote error={error} />
+        {/* Shown only after a failure — an unverified account is the most
+            common reason a correct password still cannot sign in. */}
+        {error != null && <ResendVerification email={email || undefined} />}
         <Button type="submit" disabled={submitting} className="w-full">
           {submitting ? "登入中…" : "登入"}
         </Button>

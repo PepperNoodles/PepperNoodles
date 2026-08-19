@@ -17,6 +17,7 @@ export default function ProfilePage() {
   const [form, setForm] = useState({ realName: "", nickname: "", phone: "", location: "" });
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [passwords, setPasswords] = useState({ currentPassword: "", newPassword: "" });
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -67,6 +68,23 @@ export default function ProfilePage() {
     }
   }
 
+  async function uploadAvatar(file: File) {
+    setError(null);
+    setUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const { avatarUrl } = await api.post<{ avatarUrl: string }>("/users/me/avatar", body);
+      setProfile((current) => (current ? { ...current, avatarUrl } : current));
+      // The header shows the avatar too, so refresh the session copy.
+      await refreshUser();
+    } catch (e) {
+      setError(e);
+    } finally {
+      setUploading(false);
+    }
+  }
+
   async function changePassword(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
@@ -86,6 +104,37 @@ export default function ProfilePage() {
       {saved && <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">已儲存 ✓</p>}
 
       <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="p-6 lg:col-span-2">
+          <h2 className="font-semibold">大頭貼</h2>
+          <div className="mt-4 flex flex-wrap items-center gap-5">
+            {profile.avatarUrl ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={profile.avatarUrl}
+                alt="目前的大頭貼"
+                className="h-24 w-24 rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-stone-100 text-4xl">
+                🍜
+              </div>
+            )}
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                aria-label="上傳大頭貼"
+                disabled={uploading}
+                onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])}
+                className="text-sm"
+              />
+              <p className="mt-2 text-xs text-stone-500">
+                {uploading ? "上傳中…" : "JPG 或 PNG，建議 400×400 以上。"}
+              </p>
+            </div>
+          </div>
+        </Card>
+
         <Card className="p-6">
           <h2 className="font-semibold">基本資料</h2>
           <form onSubmit={saveProfile} className="mt-4 space-y-3">

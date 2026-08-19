@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { Button, Card, ErrorNote, Input } from "@/components/ui";
+import { ResendVerification } from "@/components/ResendVerification";
 import type { Tag } from "@/lib/types";
 
 export default function RegisterPage() {
@@ -48,6 +49,9 @@ export default function RegisterPage() {
         <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">
           我們寄了一封驗證信到 <strong>{form.email}</strong>。點擊信中的連結後就能登入。
         </p>
+        <div className="mt-4">
+          <ResendVerification email={form.email} />
+        </div>
         <p className="mt-4 text-xs text-stone-500">
           開發環境可到 Mailpit 收信：
           <a href="http://127.0.0.1:55324" className="text-pepper hover:underline" target="_blank" rel="noreferrer">
