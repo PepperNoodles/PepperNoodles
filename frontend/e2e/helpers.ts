@@ -2,6 +2,12 @@ import { Page, expect } from "@playwright/test";
 
 export const API = process.env.E2E_API_URL ?? "http://localhost:8080/api/v1";
 
+/** Credentials for the seeded accounts. */
+export interface TestAccount {
+  email: string;
+  password: string;
+}
+
 export const ACCOUNTS = {
   consumer: { email: "mei@example.com", password: "Password123!", name: "小美" },
   owner: { email: "owner.chun@peppernoodles.local", password: "Password123!" },
@@ -18,7 +24,7 @@ export const ACCOUNTS = {
  * <p>Driving the login form for every test would make each one depend on that
  * one screen; the form itself is covered by its own test.
  */
-export async function loginAs(page: Page, account: { email: string; password: string }) {
+export async function loginAs(page: Page, account: TestAccount) {
   const response = await page.request.post(`${API}/auth/login`, {
     data: { email: account.email, password: account.password },
   });
@@ -46,7 +52,7 @@ export async function clearCart(page: Page) {
  * <p>Signs in again over the API rather than reading the page's localStorage,
  * which is only populated once a navigation has happened.
  */
-export async function authHeaders(page: Page, account = ACCOUNTS.consumer) {
+export async function authHeaders(page: Page, account: TestAccount = ACCOUNTS.consumer) {
   const response = await page.request.post(`${API}/auth/login`, {
     data: { email: account.email, password: account.password },
   });
