@@ -177,9 +177,12 @@ jobs:
       - name: Install the Playwright browser
         working-directory: frontend
         timeout-minutes: 8
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: npx playwright install --with-deps chromium
+        # Deliberately without --with-deps. That flag shells out to apt, which
+        # blocked on the package lock and hung the job for twenty minutes on two
+        # consecutive runs. The ubuntu-latest image already carries the shared
+        # libraries headless chromium needs; if that ever stops being true the
+        # browser fails to launch with a clear message rather than hanging.
+        run: npx playwright install chromium
 
       - name: Build and start the frontend
         working-directory: frontend
