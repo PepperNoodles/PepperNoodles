@@ -144,7 +144,16 @@ jobs:
           supabase start
           supabase db reset
           # Publish the locally generated service_role key to later steps.
-          echo "SUPABASE_SERVICE_KEY=$(supabase status -o env | grep '^SERVICE_ROLE_KEY=' | cut -d'\"' -f2)" >> "$GITHUB_ENV"
+          # Split on the first '=' and strip quotes; an earlier version passed
+          # cut a two-character delimiter, which it rejects, so the key came out
+          # empty and every upload answered 502 with the tests none the wiser.
+          key=$(supabase status -o env | grep '^SERVICE_ROLE_KEY=' | cut -d= -f2- | tr -d '"')
+          if [ -z "$key" ]; then
+            echo "::error::Could not read SERVICE_ROLE_KEY from supabase status."
+            supabase status -o env
+            exit 1
+          fi
+          echo "SUPABASE_SERVICE_KEY=$key" >> "$GITHUB_ENV"
 
       - name: Build the backend
         working-directory: backend
