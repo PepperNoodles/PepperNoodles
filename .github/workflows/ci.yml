@@ -23,6 +23,7 @@ jobs:
   migrations:
     name: Supabase migrations
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
 
@@ -47,6 +48,7 @@ jobs:
   backend:
     name: Backend tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
 
@@ -79,6 +81,7 @@ jobs:
   # ---------------------------------------------------------------------------
   frontend:
     name: Frontend lint, types and unit tests
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -115,6 +118,7 @@ jobs:
   e2e:
     name: End-to-end
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     needs: [migrations, backend, frontend]
     steps:
       - uses: actions/checkout@v5
@@ -172,6 +176,9 @@ jobs:
 
       - name: Install the Playwright browser
         working-directory: frontend
+        timeout-minutes: 8
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: npx playwright install --with-deps chromium
 
       - name: Build and start the frontend
