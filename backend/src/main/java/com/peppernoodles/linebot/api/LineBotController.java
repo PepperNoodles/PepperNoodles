@@ -1,6 +1,7 @@
 package com.peppernoodles.linebot.api;
 
 import com.peppernoodles.linebot.service.LineBotService;
+import com.peppernoodles.linebot.service.LineWebhookDispatcher;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -27,9 +28,11 @@ public class LineBotController {
     private static final Logger log = LoggerFactory.getLogger(LineBotController.class);
 
     private final LineBotService lineBotService;
+    private final LineWebhookDispatcher dispatcher;
 
-    public LineBotController(LineBotService lineBotService) {
+    public LineBotController(LineBotService lineBotService, LineWebhookDispatcher dispatcher) {
         this.lineBotService = lineBotService;
+        this.dispatcher = dispatcher;
     }
 
     @PostMapping("/webhook")
@@ -46,11 +49,10 @@ public class LineBotController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // Event dispatch is intentionally minimal: replying needs a channel token,
-        // and the credentials for this project's LINE channel were revoked when
-        // the channel was deleted. LineBotService.replyTo/replyToLocation hold the
-        // reply logic and are unit-testable without LINE.
-        log.info("Received a verified LINE webhook payload ({} bytes)", rawBody.length());
+        // Always 200: LINE retries anything else, and a reply token is dead
+        // within about a minute, so a retry could not succeed anyway.
+        int replied = dispatcher.dispatch(rawBody);
+        log.info("Handled a LINE webhook payload ({} bytes, {} replies)", rawBody.length(), replied);
         return ResponseEntity.ok().build();
     }
 }

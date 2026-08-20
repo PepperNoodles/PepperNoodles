@@ -346,12 +346,14 @@ another context's `service` interface.
 
 ### Known gaps
 
-- **LINE bot replies** — the webhook verifies signatures and
-  `LineBotService#replyTo` holds the lookup logic, but nothing is pushed back to
-  LINE; that needs a channel token, and the project's channel was deleted.
+- **LINE bot replies are implemented but unconfigured.** The webhook verifies
+  the signature, dispatches events and builds the reply; `LineMessagingClient`
+  posts it to the Messaging API. It is inert until `LINE_CHANNEL_TOKEN` is set,
+  because this project's channel was deleted — reissue one to switch it on.
 - **Product images** — seed products have no photos. The legacy images lived in
-  MSSQL BLOBs and that database is gone. Upload via
-  `POST /api/v1/shop/products/{id}/image`.
+  MSSQL BLOBs and that database is gone. Upload one via
+  `POST /api/v1/shop/products/{id}/image`, or a folder at once with
+  `scripts/upload-product-images.sh`.
 
 ### Non-goals
 
