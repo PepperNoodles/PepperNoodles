@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, query } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, Empty, ErrorNote, Spinner } from "@/components/ui";
+import { Button, Empty, ErrorNote, Spinner } from "@/components/ui";
 import type { Page } from "@/lib/types";
 
 interface AuditEntry {

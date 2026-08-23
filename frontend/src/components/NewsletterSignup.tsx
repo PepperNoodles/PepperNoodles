@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { api } from "@/lib/api";
 import { Recaptcha, recaptchaEnabled } from "@/components/Recaptcha";
-import { Button, ErrorNote } from "./ui";
+import { ErrorNote } from "./ui";
 
 /**
  * 電子報訂閱 — the 2021 首頁 had this form, wired to nothing.
