@@ -1,0 +1,88 @@
+# Dependabot version updates.
+#
+# Only the directories that are actually built and deployed are listed.
+# `legacy/` is deliberately absent: it is the 2021 codebase, kept as a porting
+# reference, and it cannot be compiled or run. Note that leaving it out stops
+# Dependabot opening *update* PRs against it but does not stop *alerts* — those
+# come from the dependency graph — so its known-vulnerable dependencies are
+# dismissed as not-used instead.
+version: 2
+
+updates:
+  # --- backend ---------------------------------------------------------------
+  - package-ecosystem: maven
+    directory: /backend
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Taipei
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - backend
+    groups:
+      # One PR for the whole Spring release train; they are versioned together
+      # and upgrading them piecemeal produces incompatible combinations.
+      spring:
+        patterns:
+          - "org.springframework*:*"
+          - "org.springframework.boot:*"
+      # Everything else patch/minor in a single PR, so CI runs once.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # --- frontend --------------------------------------------------------------
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Taipei
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - frontend
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+          - "@next/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      testing:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "@testing-library/*"
+          - "@playwright/test"
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # --- CI ---------------------------------------------------------------------
+  # Pinned action versions go stale silently; this is what caught the Node 20
+  # deprecation warnings by hand last time.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Taipei
+    labels:
+      - dependencies
+      - ci
+    groups:
+      actions:
+        patterns:
+          - "*"
