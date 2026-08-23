@@ -344,6 +344,20 @@ Each context: `api/` (`@RestController` + request/response records) · `domain/`
 `repository/` · `service/` (interface + impl). Nothing crosses a context boundary except through
 another context's `service` interface.
 
+### Dependency security
+
+Dependabot alerts, security updates, secret scanning and push protection are all
+enabled on the repository. Version updates are configured in
+`.github/dependabot.yml` for `backend/`, `frontend/` and the workflow actions,
+grouped so a routine week produces a few PRs rather than one per dependency.
+
+`legacy/` is excluded from version updates, and its ten known-vulnerable
+dependencies (log4j 1.2.17, hutool-all, commons-io) are **dismissed as
+`not_used`** rather than fixed: that tree is never compiled, packaged or
+deployed, and no CI job builds `legacy/pom.xml`. Leaving them open would have
+meant a permanently red security tab, which trains everyone to ignore the one
+alert that eventually matters. **If `legacy/` is ever built again, reopen them.**
+
 ### Known gaps
 
 - **LINE bot replies are implemented but unconfigured.** The webhook verifies
