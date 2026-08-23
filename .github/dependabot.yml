@@ -88,6 +88,14 @@ updates:
       - dependency-name: eslint
         update-types:
           - version-update:semver-major
+      # @types/node describes the API surface of a *runtime*, so its major must
+      # track the Node this project actually runs on — 22, in CI and locally.
+      # Left alone Dependabot proposes the newest major (26), which type-checks
+      # against APIs that do not exist at runtime, and tsc would not complain.
+      # Bump this deliberately alongside NODE_VERSION in ci.yml.
+      - dependency-name: "@types/node"
+        update-types:
+          - version-update:semver-major
 
   # --- CI ---------------------------------------------------------------------
   # Pinned action versions go stale silently; this is what caught the Node 20
