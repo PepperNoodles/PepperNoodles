@@ -68,6 +68,26 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # Both of these are blocked by what eslint-config-next bundles, not by
+      # anything in this repo — its peer ranges are loose (eslint >=9,
+      # typescript >=3.3.1) so npm installs happily and lint fails at runtime.
+      #
+      #   typescript 7.x  -> "typescript-eslint does not support TS 7.0"
+      #                      (typescript-eslint 8.67.0 is the latest release
+      #                       and still refuses it)
+      #   eslint 10.x     -> eslint-plugin-react 7.37.5 calls
+      #                      context.getFilename(), removed in ESLint 10
+      #
+      # Ignoring only the major bumps: patches and minors still come through.
+      # Revisit when eslint-config-next ships newer transitive versions —
+      # drop these entries and let Dependabot retry.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
+      - dependency-name: eslint
+        update-types:
+          - version-update:semver-major
 
   # --- CI ---------------------------------------------------------------------
   # Pinned action versions go stale silently; this is what caught the Node 20
