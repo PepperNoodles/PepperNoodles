@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { RestaurantForm } from "@/components/RestaurantForm";
-import { Spinner } from "@/components/ui";
+import { ButtonLink, Gate, PageHeader, PageShell, Spinner } from "@/components/ui";
 
 export default function NewRestaurantPage() {
   const { hasRole, loading } = useAuth();
@@ -11,22 +10,21 @@ export default function NewRestaurantPage() {
   if (loading) return <Spinner />;
   if (!hasRole("ROLE_COMPANY", "ROLE_ADMIN")) {
     return (
-      <p className="py-16 text-center text-sm text-stone-500">
+      <Gate title="僅限企業會員" action={<ButtonLink href="/register/company">註冊企業帳號</ButtonLink>}>
         只有企業會員能登錄餐廳。
-        <Link href="/register/company" className="ml-1 text-pepper hover:underline">
-          註冊企業帳號
-        </Link>
-      </p>
+      </Gate>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
-      <Link href="/company" className="text-sm text-stone-500 hover:text-pepper">
-        ← 回到店家管理
-      </Link>
-      <h1 className="mb-6 mt-2 text-2xl font-bold">登錄新餐廳</h1>
+    <PageShell width="reading">
+      <PageHeader
+        kicker="New listing"
+        title="登錄新餐廳"
+        description="填好基本資料與營業時間，儲存後就能繼續上傳照片與菜單。"
+        back={{ href: "/company", label: "回到店家管理" }}
+      />
       <RestaurantForm />
-    </div>
+    </PageShell>
   );
 }

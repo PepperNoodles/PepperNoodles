@@ -5,7 +5,27 @@ import { useRouter } from "next/navigation";
 import { use, useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, ErrorNote, Spinner, TagPill } from "@/components/ui";
+import {
+  Alert,
+  Button,
+  Card,
+  CharCount,
+  ErrorNote,
+  PageShell,
+  SectionHeader,
+  Spinner,
+  TagPill,
+  Textarea,
+  TextLink,
+} from "@/components/ui";
+import {
+  IconArrowLeft,
+  IconBookmark,
+  IconBookmarkFilled,
+  IconMessage,
+  IconPencil,
+  IconTrash,
+} from "@/components/icons";
 import type { ForumPostDetail } from "@/lib/types";
 
 export default function ForumPostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -41,24 +61,38 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
   }
 
   if (loading) return <Spinner />;
-  if (!post) return <div className="mx-auto max-w-3xl px-6 py-10"><ErrorNote error={error} /></div>;
+  if (!post) {
+    return (
+      <PageShell width="reading">
+        <ErrorNote error={error} />
+      </PageShell>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-6 py-10">
-      <Link href="/forum" className="text-sm text-stone-500 hover:text-pepper">
-        ← 回到專欄
+    <PageShell width="reading">
+      <Link
+        href="/forum"
+        className="-ml-2 mb-4 inline-flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-subtle transition hover:bg-mist hover:text-pepper-ink sm:-ml-0 sm:mb-6 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
+      >
+        <IconArrowLeft className="text-base" />
+        回到專欄
       </Link>
 
-      <Card className="p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link href={`/members/${post.author.userId}`} className="font-semibold hover:text-pepper">
+      <Card as="article" className="p-7 sm:p-8">
+        <header className="flex items-start justify-between gap-4 border-b border-line pb-5">
+          <div className="min-w-0">
+            <Link
+              href={`/members/${post.author.userId}`}
+              className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-display text-base font-bold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+            >
               {post.author.displayName}
             </Link>
-            <span className="text-xs text-stone-400">
-              {new Date(post.createdAt).toLocaleString("zh-TW")}
-            </span>
+            <p className="mt-0.5 text-xs tabular text-subtle">
+              <time dateTime={post.createdAt}>{new Date(post.createdAt).toLocaleString("zh-TW")}</time>
+            </p>
           </div>
+
           {user && (
             <button
               onClick={() =>
@@ -68,29 +102,47 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
                     : api.put(`/forum/posts/${id}/bookmark`),
                 )
               }
-              className={`text-sm ${post.bookmarked ? "text-pepper" : "text-stone-400 hover:text-pepper"}`}
+              aria-pressed={post.bookmarked}
+              className={`inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-[13px] font-semibold transition ${
+                post.bookmarked
+                  ? "border-pepper bg-pepper-tint text-pepper-ink"
+                  : "border-line-strong text-body hover:border-ink/40 hover:bg-mist"
+              }`}
             >
-              {post.bookmarked ? "★ 已收藏" : "☆ 收藏"} {post.bookmarkCount}
+              {post.bookmarked ? <IconBookmarkFilled /> : <IconBookmark />}
+              {post.bookmarked ? "已收藏" : "收藏"}
+              <span className="tabular">{post.bookmarkCount}</span>
             </button>
           )}
-        </div>
+        </header>
 
-        <p className="mt-4 whitespace-pre-wrap leading-relaxed">{post.body}</p>
+        <p className="measure mt-6 whitespace-pre-wrap text-[17px] leading-[1.8] text-body">{post.body}</p>
 
         {post.imageUrl && (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={post.imageUrl} alt="" className="mt-4 max-h-96 w-full rounded object-cover" />
+          <img
+            src={post.imageUrl}
+            alt=""
+            loading="lazy"
+            className="mt-7 max-h-[30rem] w-full rounded-2xl object-cover"
+          />
         )}
 
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {post.tags.map((tag) => (
-            <TagPill key={tag.id}>{tag.name}</TagPill>
-          ))}
-        </div>
+        {post.tags.length > 0 && (
+          <div className="mt-7 flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <TagPill key={tag.id}>{tag.name}</TagPill>
+            ))}
+          </div>
+        )}
 
         {post.editable && (
-          <div className="mt-4 flex gap-3 text-xs">
-            <Link href={`/forum/${id}/edit`} className="text-stone-400 hover:text-pepper">
+          <div className="mt-7 flex gap-4 border-t border-line pt-5 text-[13px]">
+            <Link
+              href={`/forum/${id}/edit`}
+              className="inline-flex items-center gap-1.5 font-medium text-subtle transition hover:text-pepper-ink"
+            >
+              <IconPencil aria-hidden className="text-base" />
               編輯文章
             </Link>
             <button
@@ -101,21 +153,24 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
                   router.push("/forum");
                 });
               }}
-              className="text-stone-400 hover:text-pepper"
+              className="-mx-2 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-2 font-medium text-subtle transition hover:bg-danger-tint hover:text-danger sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
             >
+              <IconTrash aria-hidden className="text-base" />
               刪除文章
             </button>
           </div>
         )}
       </Card>
 
-      <ErrorNote error={error} />
+      <div className="mt-5">
+        <ErrorNote error={error} />
+      </div>
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">留言 ({post.comments.length})</h2>
+      <section className="mt-12">
+        <SectionHeader title="留言" count={post.comments.length} />
 
         {user ? (
-          <Card className="mb-4 p-5">
+          <Card className="mb-6 p-6">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -126,58 +181,78 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
               }}
               className="space-y-3"
             >
-              <textarea
+              <label htmlFor="comment" className="block text-sm font-semibold text-ink">
+                留言內容
+              </label>
+              <Textarea
+                id="comment"
                 required
-                rows={2}
+                rows={3}
                 maxLength={2000}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="留下你的想法…"
-                aria-label="留言內容"
-                className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-pepper"
               />
-              <Button type="submit">送出留言</Button>
+              <CharCount value={comment} max={2000} />
+              <Button type="submit" icon={<IconMessage />}>
+                送出留言
+              </Button>
             </form>
           </Card>
         ) : (
-          <p className="mb-4 text-sm text-stone-500">
-            <Link href="/login" className="text-pepper hover:underline">
-              登入
-            </Link>{" "}
-            後即可留言。
-          </p>
+          <div className="mb-6">
+            <Alert tone="info">
+              <TextLink href={`/login?next=/forum/${id}`}>登入</TextLink> 後即可留言。
+            </Alert>
+          </div>
         )}
 
-        <ul className="space-y-3">
+        <ul className="space-y-4">
           {post.comments.map((c) => (
-            <Card key={c.id} className="p-5">
+            <Card key={c.id} as="li" className="p-6">
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <Link href={`/members/${c.author.userId}`} className="font-medium hover:text-pepper">
+                <div className="min-w-0">
+                  <Link
+                    href={`/members/${c.author.userId}`}
+                    className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                  >
                     {c.author.displayName}
                   </Link>
-                  <span className="ml-2 text-xs text-stone-400">
-                    {new Date(c.createdAt).toLocaleDateString("zh-TW")}
-                  </span>
+                  <p className="mt-0.5 text-xs tabular text-subtle">
+                    <time dateTime={c.createdAt}>{new Date(c.createdAt).toLocaleDateString("zh-TW")}</time>
+                  </p>
                 </div>
-                {c.score && <span className="text-amber-500">{"★".repeat(c.score)}</span>}
+                {c.score && (
+                  <span className="shrink-0 text-sm tabular text-gold" aria-label={`${c.score} 分`}>
+                    {"★".repeat(c.score)}
+                  </span>
+                )}
               </div>
-              <p className="mt-2 whitespace-pre-wrap text-sm">{c.body}</p>
+
+              <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-body">{c.body}</p>
 
               {c.replies.length > 0 && (
-                <ul className="mt-3 space-y-2 border-l-2 border-stone-200 pl-4">
+                <ul className="mt-5 space-y-4 border-l-2 border-line pl-5">
                   {c.replies.map((r) => (
-                    <li key={r.id} className="text-sm">
-                      <Link href={`/members/${r.author.userId}`} className="font-medium hover:text-pepper">
-                        {r.author.displayName}
-                      </Link>
-                      {r.replyTo && <span className="text-xs text-stone-400"> 回覆 {r.replyTo.displayName}</span>}
-                      <p className="mt-0.5 whitespace-pre-wrap text-stone-600">{r.body}</p>
+                    <li key={r.id}>
+                      <p className="text-sm">
+                        <Link
+                          href={`/members/${r.author.userId}`}
+                          className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                        >
+                          {r.author.displayName}
+                        </Link>
+                        {r.replyTo && (
+                          <span className="text-xs text-subtle"> 回覆 {r.replyTo.displayName}</span>
+                        )}
+                      </p>
+                      <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-body">{r.body}</p>
                       {r.editable && (
                         <button
                           onClick={() => act(() => api.delete(`/forum/replies/${r.id}`))}
-                          className="text-xs text-stone-400 hover:text-pepper"
+                          className="-mx-2 mt-1 inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-lg px-2 text-xs text-subtle transition hover:bg-danger-tint hover:text-danger sm:mx-0 sm:mt-1.5 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
                         >
+                          <IconTrash aria-hidden className="text-sm" />
                           刪除
                         </button>
                       )}
@@ -186,23 +261,26 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
                 </ul>
               )}
 
-              <div className="mt-3 flex gap-3 text-xs">
+              <div className="mt-4 flex gap-4 border-t border-line pt-3 text-[13px]">
                 {user && (
                   <button
                     onClick={() => {
                       setReplyingTo(replyingTo === c.id ? null : c.id);
                       setReplyBody("");
                     }}
-                    className="text-stone-400 hover:text-pepper"
+                    aria-expanded={replyingTo === c.id}
+                    className="-mx-2 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-2 font-medium text-subtle transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
                   >
+                    <IconMessage aria-hidden className="text-base" />
                     回覆
                   </button>
                 )}
                 {c.editable && (
                   <button
                     onClick={() => act(() => api.delete(`/forum/comments/${c.id}`))}
-                    className="text-stone-400 hover:text-pepper"
+                    className="-mx-2 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-2 font-medium text-subtle transition hover:bg-danger-tint hover:text-danger sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
                   >
+                    <IconTrash aria-hidden className="text-base" />
                     刪除
                   </button>
                 )}
@@ -221,15 +299,16 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
                       setReplyBody("");
                     });
                   }}
-                  className="mt-3 flex gap-2"
+                  className="mt-4 flex flex-col gap-2.5 sm:flex-row"
                 >
                   <input
                     required
+                    autoFocus
                     value={replyBody}
                     onChange={(e) => setReplyBody(e.target.value)}
                     placeholder={`回覆 ${c.author.displayName}…`}
                     aria-label="回覆內容"
-                    className="flex-1 rounded-lg border border-stone-300 px-3 py-1.5 text-sm outline-none focus:border-pepper"
+                    className="min-h-11 flex-1 rounded-xl border border-line-strong bg-white px-3.5 text-sm text-ink transition placeholder:text-subtle focus:border-pepper focus:outline-none focus:ring-4 focus:ring-pepper/15"
                   />
                   <Button type="submit">送出</Button>
                 </form>
@@ -238,6 +317,6 @@ export default function ForumPostPage({ params }: { params: Promise<{ id: string
           ))}
         </ul>
       </section>
-    </div>
+    </PageShell>
   );
 }

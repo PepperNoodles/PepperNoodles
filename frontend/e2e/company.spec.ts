@@ -18,7 +18,7 @@ test.describe("store management", () => {
   /** Regression: hours were rendering as three identical shifted rows per day. */
   test("the edit form loads real business hours, one row per day", async ({ page }) => {
     await page.goto("/company");
-    await page.getByText("管理這間餐廳 →").first().click();
+    await page.getByText("管理這間餐廳").first().click();
 
     await expect(page.getByRole("heading", { name: /^管理「/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: "營業時間" })).toBeVisible();
@@ -32,7 +32,7 @@ test.describe("store management", () => {
   test("an event can be added and removed", async ({ page }) => {
     const name = `E2E 活動 ${Date.now()}`;
     await page.goto("/company");
-    await page.getByText("管理這間餐廳 →").first().click();
+    await page.getByText("管理這間餐廳").first().click();
 
     await page.getByLabel("活動名稱").fill(name);
     await page.getByLabel("活動說明").fill("測試用活動");

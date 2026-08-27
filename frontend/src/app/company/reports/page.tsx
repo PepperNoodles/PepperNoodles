@@ -4,7 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, query } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, Empty, ErrorNote, Input, Spinner, money } from "@/components/ui";
+import {
+  Button,
+  ButtonLink,
+  Card,
+  Empty,
+  ErrorNote,
+  Field,
+  Gate,
+  Input,
+  PageHeader,
+  PageShell,
+  DataTable,
+  Spinner,
+  StatCard,
+  money,
+} from "@/components/ui";
+import { IconChart } from "@/components/icons";
 
 interface SalesReport {
   daily: { date: string; orderCount: number; revenue: string }[];
@@ -18,9 +34,12 @@ interface SalesReport {
  * <p>Drawn as inline SVG rather than pulling in Chart.js (which the 2021 version
  * used) — one bar chart does not justify the dependency, and this scales with
  * the container and stays readable without JavaScript measuring anything.
+ *
+ * <p>The bars are decorative: the same numbers are given as a real table below
+ * the chart, so the figures are reachable without reading a graphic.
  */
 function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
-  if (points.length === 0) return <Empty>這段期間沒有已付款的訂單。</Empty>;
+  if (points.length === 0) return <Empty icon={<IconChart />}>這段期間沒有已付款的訂單。</Empty>;
 
   const max = Math.max(...points.map((p) => Number(p.revenue)), 1);
   // Cap the slot width so a single month renders as a bar rather than a slab,
@@ -40,7 +59,7 @@ function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
             y2={36 - 36 * f}
             stroke="currentColor"
             strokeWidth="0.15"
-            className="text-stone-200"
+            className="text-line"
           />
         ))}
         {points.map((point, i) => {
@@ -53,7 +72,7 @@ function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
                 width={slot * 0.6}
                 height={height}
                 className="fill-pepper"
-                rx="0.4"
+                rx="0.5"
               >
                 <title>{`${point.month}：${money(point.revenue)}（${point.orderCount} 筆）`}</title>
               </rect>
@@ -61,7 +80,7 @@ function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
                 x={left + i * slot + slot / 2}
                 y="41"
                 textAnchor="middle"
-                className="fill-stone-500"
+                className="fill-[var(--color-subtle)]"
                 style={{ fontSize: 2.6 }}
               >
                 {point.month.slice(5)}
@@ -70,7 +89,7 @@ function RevenueChart({ points }: { points: SalesReport["monthly"] }) {
           );
         })}
       </svg>
-      <figcaption className="mt-1 text-center text-xs text-stone-400">
+      <figcaption className="mt-2 text-center text-xs tabular text-subtle">
         最高 {money(max)}／月
       </figcaption>
     </figure>
@@ -108,101 +127,133 @@ export default function ReportsPage() {
 
   if (authLoading || loading) return <Spinner />;
   if (!hasRole("ROLE_COMPANY", "ROLE_ADMIN")) {
-    return <p className="py-16 text-center text-sm text-stone-500">只有企業會員能查看報表。</p>;
+    return (
+      <Gate title="僅限企業會員" action={<ButtonLink href="/register/company">註冊企業帳號</ButtonLink>}>
+        只有企業會員能查看銷售報表。
+      </Gate>
+    );
   }
 
   const totalRevenue = report?.monthly.reduce((sum, m) => sum + Number(m.revenue), 0) ?? 0;
   const totalOrders = report?.monthly.reduce((sum, m) => sum + m.orderCount, 0) ?? 0;
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 px-6 py-10">
-      <div>
-        <Link href="/company" className="text-sm text-stone-500 hover:text-pepper">
-          ← 回到店家管理
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold">銷售報表</h1>
-      </div>
+    <PageShell width="full">
+      <PageHeader
+        kicker="Performance"
+        title="銷售報表"
+        back={{ href: "/company", label: "回到店家管理" }}
+      />
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setApplied(range);
-        }}
-        className="flex flex-wrap items-end gap-3"
-      >
-        <div>
-          <label htmlFor="from" className="mb-1 block text-xs text-stone-500">
-            起始日
-          </label>
-          <Input
-            id="from"
-            type="date"
-            value={range.from}
-            onChange={(e) => setRange({ ...range, from: e.target.value })}
+      <div className="space-y-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setApplied(range);
+          }}
+          className="flex flex-wrap items-end gap-4"
+        >
+          <Field id="from" label="起始日">
+            {(props) => (
+              <Input
+                {...props}
+                type="date"
+                value={range.from}
+                onChange={(e) => setRange({ ...range, from: e.target.value })}
+                className="tabular"
+              />
+            )}
+          </Field>
+          <Field id="to" label="結束日">
+            {(props) => (
+              <Input
+                {...props}
+                type="date"
+                value={range.to}
+                onChange={(e) => setRange({ ...range, to: e.target.value })}
+                className="tabular"
+              />
+            )}
+          </Field>
+          <Button type="submit">查詢</Button>
+        </form>
+
+        <ErrorNote error={error} />
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <StatCard label="總營收" value={money(totalRevenue)} tone="brand" />
+          <StatCard label="已付款訂單" value={totalOrders} />
+          <StatCard
+            label="平均客單價"
+            value={totalOrders > 0 ? money(totalRevenue / totalOrders) : money(0)}
           />
         </div>
-        <div>
-          <label htmlFor="to" className="mb-1 block text-xs text-stone-500">
-            結束日
-          </label>
-          <Input id="to" type="date" value={range.to} onChange={(e) => setRange({ ...range, to: e.target.value })} />
-        </div>
-        <Button type="submit">查詢</Button>
-      </form>
 
-      <ErrorNote error={error} />
+        <Card className="p-6 sm:p-7">
+          <h2 className="mb-5 font-display text-base font-bold text-ink">每月營收</h2>
+          <RevenueChart points={report?.monthly ?? []} />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5 text-center">
-          <p className="text-2xl font-bold text-pepper">{money(totalRevenue)}</p>
-          <p className="mt-1 text-xs text-stone-500">總營收</p>
+          {report && report.monthly.length > 0 && (
+            <details className="mt-6">
+              <summary className="cursor-pointer text-[13px] font-semibold text-pepper-ink underline-offset-2 hover:underline">
+                以表格檢視這些數字
+              </summary>
+              <div className="mt-4">
+                <DataTable
+                  caption="每月營收明細"
+                  rows={report.monthly}
+                  rowKey={(m) => m.month}
+                  columns={[
+                    { key: "month", header: "月份", primary: true, cell: (m) => <span className="tabular">{m.month}</span> },
+                    { key: "orders", header: "訂單數", align: "right", cell: (m) => <span className="tabular">{m.orderCount}</span> },
+                    {
+                      key: "revenue",
+                      header: "營收",
+                      align: "right",
+                      cell: (m) => <span className="tabular font-medium text-ink">{money(m.revenue)}</span>,
+                    },
+                  ]}
+                />
+              </div>
+            </details>
+          )}
         </Card>
-        <Card className="p-5 text-center">
-          <p className="text-2xl font-bold">{totalOrders}</p>
-          <p className="mt-1 text-xs text-stone-500">已付款訂單</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-2xl font-bold">
-            {totalOrders > 0 ? money(totalRevenue / totalOrders) : money(0)}
-          </p>
-          <p className="mt-1 text-xs text-stone-500">平均客單價</p>
-        </Card>
-      </div>
 
-      <Card className="p-6">
-        <h2 className="mb-4 font-display text-lg font-bold">每月營收</h2>
-        <RevenueChart points={report?.monthly ?? []} />
-      </Card>
-
-      <Card className="p-6">
-        <h2 className="mb-4 font-display text-lg font-bold">熱銷商品</h2>
-        {!report || report.topProducts.length === 0 ? (
-          <Empty>這段期間沒有銷售紀錄。</Empty>
-        ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-stone-200 text-xs uppercase text-stone-500">
-              <tr>
-                <th className="py-2">商品</th>
-                <th className="py-2 text-right">售出</th>
-                <th className="py-2 text-right">營收</th>
-              </tr>
-            </thead>
-            <tbody>
-              {report.topProducts.map((p) => (
-                <tr key={p.productId} className="border-b border-stone-100 last:border-0">
-                  <td className="py-2">
-                    <Link href={`/shop/${p.productId}`} className="hover:text-pepper hover:underline">
+        <Card className="p-6 sm:p-7">
+          <h2 className="mb-5 font-display text-base font-bold text-ink">熱銷商品</h2>
+          {!report || report.topProducts.length === 0 ? (
+            <Empty icon={<IconChart />}>這段期間沒有銷售紀錄。</Empty>
+          ) : (
+            <DataTable
+              caption="熱銷商品排行"
+              rows={report.topProducts}
+              rowKey={(p) => p.productId}
+              columns={[
+                {
+                  key: "product",
+                  header: "商品",
+                  primary: true,
+                  cell: (p) => (
+                    <Link
+                      href={`/shop/${p.productId}`}
+                      className="font-medium text-ink underline-offset-2 hover:text-pepper-ink hover:underline"
+                    >
                       {p.productName}
                     </Link>
-                  </td>
-                  <td className="py-2 text-right">{p.unitsSold}</td>
-                  <td className="py-2 text-right font-medium">{money(p.revenue)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </Card>
-    </div>
+                  ),
+                },
+                { key: "units", header: "售出", align: "right", cell: (p) => <span className="tabular">{p.unitsSold}</span> },
+                {
+                  key: "revenue",
+                  header: "營收",
+                  align: "right",
+                  cell: (p) => <span className="tabular font-medium text-ink">{money(p.revenue)}</span>,
+                },
+              ]}
+            />
+          )}
+        </Card>
+      </div>
+    </PageShell>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner } from "@/components/ui";
+import { ButtonLink, Spinner } from "@/components/ui";
+import { AuthResult } from "@/components/AuthShell";
 
 function Verify() {
   const token = useSearchParams().get("token");
@@ -28,23 +28,22 @@ function Verify() {
 
   if (state === "pending") return <Spinner />;
 
+  if (state === "ok") {
+    return (
+      <AuthResult title="信箱驗證完成" action={<ButtonLink href="/login">前往登入</ButtonLink>}>
+        <p>現在可以登入使用胡椒MAP 了。</p>
+      </AuthResult>
+    );
+  }
+
   return (
-    <Card className="mx-auto my-16 max-w-md p-8 text-center">
-      {state === "ok" ? (
-        <>
-          <h1 className="text-2xl font-bold">信箱驗證完成 ✓</h1>
-          <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">現在可以登入使用胡椒MAP 了。</p>
-          <Link href="/login" className="mt-6 inline-block text-red-600 hover:underline">
-            前往登入 →
-          </Link>
-        </>
-      ) : (
-        <>
-          <h1 className="text-2xl font-bold">驗證失敗</h1>
-          <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">{message}</p>
-        </>
-      )}
-    </Card>
+    <AuthResult
+      tone="failure"
+      title="驗證失敗"
+      action={<ButtonLink href="/login" variant="ghost">回到登入</ButtonLink>}
+    >
+      <p>{message}</p>
+    </AuthResult>
   );
 }
 

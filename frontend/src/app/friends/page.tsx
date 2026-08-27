@@ -4,7 +4,21 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { api, query } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, Empty, ErrorNote, Input, Spinner } from "@/components/ui";
+import {
+  Badge,
+  Button,
+  ButtonLink,
+  Card,
+  Empty,
+  ErrorNote,
+  Gate,
+  Input,
+  PageHeader,
+  PageShell,
+  SectionHeader,
+  Spinner,
+} from "@/components/ui";
+import { IconMessage, IconSearch, IconUser, IconUsers } from "@/components/icons";
 import type { Conversation, Friend } from "@/lib/types";
 
 interface PublicProfileRow {
@@ -14,15 +28,24 @@ interface PublicProfileRow {
   friendshipStatus?: string | null;
 }
 
+/** How the API's friendship states read to a person. */
+const FRIENDSHIP_LABELS: Record<string, string> = {
+  PENDING: "邀請已送出",
+  ACCEPTED: "已是好友",
+  DECLINED: "已婉拒",
+  BLOCKED: "已封鎖",
+};
+
 export default function FriendsPage() {
   const { user, loading: authLoading } = useAuth();
   const [friends, setFriends] = useState<Friend[]>([]);
   const [incoming, setIncoming] = useState<Friend[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [results, setResults] = useState<PublicProfileRow[]>([]);
+  const [results, setResults] = useState<PublicProfileRow[] | null>(null);
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
 
   const load = useCallback(() => {
     if (!user) return;
@@ -45,10 +68,13 @@ export default function FriendsPage() {
   async function search(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
+    setSearching(true);
     try {
       setResults(await api.get<PublicProfileRow[]>(`/users/search${query({ nickname })}`));
     } catch (e) {
       setError(e);
+    } finally {
+      setSearching(false);
     }
   }
 
@@ -65,109 +91,176 @@ export default function FriendsPage() {
   if (authLoading || loading) return <Spinner />;
   if (!user) {
     return (
-      <p className="py-12 text-center text-sm text-stone-500">
-        請先{" "}
-        <Link href="/login?next=/friends" className="text-red-600 hover:underline">
-          登入
-        </Link>
-        。
-      </p>
+      <Gate title="請先登入" action={<ButtonLink href="/login?next=/friends">前往登入</ButtonLink>}>
+        登入後即可加好友、傳訊息。
+      </Gate>
     );
   }
 
+  const visibleResults = results?.filter((r) => r.userId !== user.id) ?? null;
+
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <h1 className="text-2xl font-bold">好友</h1>
-      <ErrorNote error={error} />
+    <PageShell>
+      <PageHeader kicker="Your people" title="好友" />
 
-      {incoming.length > 0 && (
-        <section>
-          <h2 className="mb-3 text-lg font-semibold">收到的邀請 ({incoming.length})</h2>
-          <ul className="space-y-2">
-            {incoming.map((request) => (
-              <Card key={request.friendshipId} className="flex items-center gap-3 p-4">
-                <span className="flex-1 font-medium">{request.nickname}</span>
-                <Button onClick={() => act(() => api.post(`/friends/requests/${request.friendshipId}/accept`))}>
-                  接受
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => act(() => api.post(`/friends/requests/${request.friendshipId}/decline`))}
-                >
-                  拒絕
-                </Button>
-              </Card>
-            ))}
-          </ul>
-        </section>
-      )}
+      <div className="space-y-12">
+        <ErrorNote error={error} />
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">尋找朋友</h2>
-        <form onSubmit={search} className="flex gap-2">
-          <Input
-            placeholder="以暱稱搜尋…"
-            aria-label="以暱稱搜尋"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-          <Button type="submit">搜尋</Button>
-        </form>
-        {results.length > 0 && (
-          <ul className="mt-3 space-y-2">
-            {results
-              .filter((r) => r.userId !== user.id)
-              .map((result) => (
-                <Card key={result.userId} className="flex items-center gap-3 p-4">
-                  <span className="flex-1 font-medium">{result.nickname}</span>
-                  {result.friendshipStatus === "NONE" ? (
-                    <Button onClick={() => act(() => api.post(`/friends/requests/${result.userId}`))}>
-                      加好友
+        {/* ---------- Incoming requests ---------- */}
+        {incoming.length > 0 && (
+          <section>
+            <SectionHeader title="收到的邀請" count={incoming.length} />
+            <ul className="space-y-3">
+              {incoming.map((request) => (
+                <Card key={request.friendshipId} as="li" className="flex flex-wrap items-center gap-4 p-4">
+                  <PersonAvatar name={request.nickname} />
+                  <span className="min-w-0 flex-1 font-semibold text-ink">{request.nickname}</span>
+                  <div className="flex gap-2.5">
+                    <Button
+                      size="sm"
+                      onClick={() => act(() => api.post(`/friends/requests/${request.friendshipId}/accept`))}
+                    >
+                      接受
                     </Button>
-                  ) : (
-                    <span className="text-xs text-stone-500">{result.friendshipStatus}</span>
-                  )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => act(() => api.post(`/friends/requests/${request.friendshipId}/decline`))}
+                    >
+                      拒絕
+                    </Button>
+                  </div>
                 </Card>
               ))}
-          </ul>
+            </ul>
+          </section>
         )}
-      </section>
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">我的好友 ({friends.length})</h2>
-        {friends.length === 0 ? (
-          <Empty>還沒有好友，搜尋暱稱加一個吧。</Empty>
-        ) : (
-          <ul className="space-y-2">
-            {friends.map((friend) => {
-              const conversation = conversations.find((c) => c.partnerId === friend.userId);
-              return (
-                <Card key={friend.friendshipId} className="flex items-center gap-3 p-4">
-                  <div className="flex-1">
-                    <Link href={`/members/${friend.userId}`} className="font-medium hover:text-pepper">
-                      {friend.nickname}
-                    </Link>
-                    {conversation && (
-                      <p className="truncate text-xs text-stone-500">{conversation.lastMessage}</p>
+        {/* ---------- Find people ---------- */}
+        <section>
+          <SectionHeader title="尋找朋友" description="以暱稱搜尋其他會員。" />
+          <form onSubmit={search} className="flex flex-col gap-2.5 sm:flex-row" role="search">
+            <div className="relative flex-1">
+              <IconSearch
+                aria-hidden
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg text-subtle"
+              />
+              <Input
+                type="search"
+                placeholder="以暱稱搜尋…"
+                aria-label="以暱稱搜尋"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="pl-11"
+              />
+            </div>
+            <Button type="submit" loading={searching}>
+              搜尋
+            </Button>
+          </form>
+
+          {visibleResults !== null && (
+            <div className="mt-4">
+              {visibleResults.length === 0 ? (
+                <p className="text-sm text-subtle">找不到這個暱稱的會員。</p>
+              ) : (
+                <ul className="space-y-3">
+                  {visibleResults.map((result) => (
+                    <Card key={result.userId} as="li" className="flex flex-wrap items-center gap-4 p-4">
+                      <PersonAvatar name={result.nickname} url={result.avatarUrl} />
+                      <Link
+                        href={`/members/${result.userId}`}
+                        className="min-w-0 flex-1 -mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                      >
+                        {result.nickname}
+                      </Link>
+                      {result.friendshipStatus === "NONE" ? (
+                        <Button size="sm" onClick={() => act(() => api.post(`/friends/requests/${result.userId}`))}>
+                          加好友
+                        </Button>
+                      ) : (
+                        <Badge>{FRIENDSHIP_LABELS[result.friendshipStatus ?? ""] ?? result.friendshipStatus}</Badge>
+                      )}
+                    </Card>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* ---------- Friends ---------- */}
+        <section>
+          <SectionHeader title="我的好友" count={friends.length} />
+          {friends.length === 0 ? (
+            <Empty icon={<IconUsers />}>還沒有好友，用上面的搜尋加一個吧。</Empty>
+          ) : (
+            <ul className="space-y-3">
+              {friends.map((friend) => {
+                const conversation = conversations.find((c) => c.partnerId === friend.userId);
+                const unread = conversation?.unreadCount ?? 0;
+                return (
+                  <Card key={friend.friendshipId} as="li" className="flex flex-wrap items-center gap-4 p-4">
+                    <PersonAvatar name={friend.nickname} />
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        href={`/members/${friend.userId}`}
+                        className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                      >
+                        {friend.nickname}
+                      </Link>
+                      {conversation && (
+                        <p className="truncate text-[13px] text-subtle">{conversation.lastMessage}</p>
+                      )}
+                    </div>
+
+                    {unread > 0 && (
+                      <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-pepper-fill px-1.5 text-xs font-bold tabular text-white">
+                        {unread}
+                        <span className="sr-only">則未讀訊息</span>
+                      </span>
                     )}
-                  </div>
-                  {conversation && conversation.unreadCount > 0 && (
-                    <span className="rounded-full bg-red-600 px-2 py-0.5 text-xs font-semibold text-white">
-                      {conversation.unreadCount}
-                    </span>
-                  )}
-                  <Link href={`/friends/${friend.userId}`}>
-                    <Button variant="ghost">聊天</Button>
-                  </Link>
-                  <Button variant="ghost" onClick={() => act(() => api.delete(`/friends/${friend.friendshipId}`))}>
-                    移除
-                  </Button>
-                </Card>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-    </div>
+
+                    <div className="flex gap-2.5">
+                      <ButtonLink
+                        href={`/friends/${friend.userId}`}
+                        variant="ghost"
+                        size="sm"
+                        icon={<IconMessage />}
+                      >
+                        聊天
+                      </ButtonLink>
+                      <Button
+                        variant="quiet"
+                        size="sm"
+                        onClick={() => act(() => api.delete(`/friends/${friend.friendshipId}`))}
+                      >
+                        移除
+                      </Button>
+                    </div>
+                  </Card>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      </div>
+    </PageShell>
+  );
+}
+
+function PersonAvatar({ name, url }: { name: string; url?: string | null }) {
+  if (url) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={url} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-line" />;
+  }
+  return (
+    <span
+      aria-hidden
+      title={name}
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mist text-lg text-subtle ring-1 ring-line"
+    >
+      <IconUser />
+    </span>
   );
 }

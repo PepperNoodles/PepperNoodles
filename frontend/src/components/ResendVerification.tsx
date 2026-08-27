@@ -30,7 +30,11 @@ export function ResendVerification({ email: initialEmail }: { email?: string }) 
   }
 
   if (sent) {
-    return <p className="text-sm text-stone-500">若這個信箱尚未驗證，我們已再寄一次驗證信。</p>;
+    return (
+      <p className="text-sm text-subtle" role="status">
+        若這個信箱尚未驗證，我們已再寄一次驗證信。
+      </p>
+    );
   }
 
   return (
@@ -43,14 +47,14 @@ export function ResendVerification({ email: initialEmail }: { email?: string }) 
           onChange={(e) => setEmail(e.target.value)}
           placeholder="註冊時使用的信箱"
           aria-label="重寄驗證信的信箱"
-          className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-pepper"
+          className="min-h-11 w-full rounded-xl border border-line-strong bg-white px-3.5 text-sm text-ink transition placeholder:text-subtle focus:border-pepper focus:outline-none focus:ring-4 focus:ring-pepper/15"
         />
       )}
       <button
         type="button"
         onClick={resend}
         disabled={sending || !email}
-        className="text-sm text-pepper hover:underline disabled:opacity-50"
+        className="cursor-pointer text-sm font-medium text-pepper-ink underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
       >
         {sending ? "寄送中…" : "沒收到信？重寄驗證信"}
       </button>

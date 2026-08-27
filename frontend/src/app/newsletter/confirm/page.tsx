@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner } from "@/components/ui";
+import { ButtonLink, Spinner } from "@/components/ui";
+import { AuthResult } from "@/components/AuthShell";
 
 function Confirm() {
   const token = useSearchParams().get("token");
@@ -28,25 +28,18 @@ function Confirm() {
 
   if (state === "pending") return <Spinner />;
 
+  if (state === "ok") {
+    return (
+      <AuthResult title="訂閱完成" action={<ButtonLink href="/">回首頁</ButtonLink>}>
+        <p>之後有新的餐廳、優惠與專欄文章，我們會寄給您。取消訂閱的連結在每封信裡。</p>
+      </AuthResult>
+    );
+  }
+
   return (
-    <Card className="mx-auto my-16 max-w-md p-8 text-center">
-      {state === "ok" ? (
-        <>
-          <h1 className="text-2xl font-bold">訂閱完成 ✓</h1>
-          <p className="mt-3 text-sm text-stone-600">
-            之後有新的餐廳、優惠與專欄文章，我們會寄給您。取消訂閱的連結在每封信裡。
-          </p>
-          <Link href="/" className="mt-6 inline-block text-pepper hover:underline">
-            回首頁 →
-          </Link>
-        </>
-      ) : (
-        <>
-          <h1 className="text-2xl font-bold">確認失敗</h1>
-          <p className="mt-3 text-sm text-stone-600">{message}</p>
-        </>
-      )}
-    </Card>
+    <AuthResult tone="failure" title="確認失敗" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
+      <p>{message}</p>
+    </AuthResult>
   );
 }
 

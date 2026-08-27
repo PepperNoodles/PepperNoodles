@@ -272,6 +272,35 @@ JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
 - **Vitest alias must use `fileURLToPath`.** This repo's path contains
   non-ASCII characters and `new URL(...).pathname` leaves them percent-encoded,
   so an alias built that way silently fails to resolve.
+- **`backdrop-filter` establishes a containing block for `position: fixed`.**
+  The non-hero header carries `backdrop-blur-md`, so the mobile nav drawer —
+  nested inside `<header>` as `fixed inset-0` — resolved against the header's
+  76px-tall box instead of the viewport and opened as a sliver. The drawer is
+  now a **sibling** of `<header>`, not a child. The same applies to `transform`,
+  `filter`, `perspective`, `contain` and `will-change`: any overlay meant to
+  cover the viewport must not live under one. Note this was invisible on `/` and
+  `/shop`, whose headers lie over the hero with no backdrop filter — test
+  overlays on a *plain* page, not just the home page.
+
+- **Leaflet's z-indices leak into the page.** Its panes run from `z-index: 400`
+  to 1000 while `.leaflet-container` is `position: relative; z-index: auto`,
+  which establishes no stacking context — so those numbers compete in the ROOT
+  stacking context and the map painted over the sticky header (z-40) and the nav
+  drawer (z-50). `globals.css` gives `.leaflet-container` `isolation: isolate`
+  to contain them. An element can be `toBeVisible()` and still be covered;
+  `document.elementFromPoint` is what actually proves it is on top.
+
+- **`mx-auto` does not stretch inside a flex container.** `<main>` is a flex
+  column (so a page can fill the leftover height with `flex-1`). In a flex
+  container `mx-auto` sets *both* cross-axis margins to `auto`, and the spec
+  suppresses `align-items: stretch` for an item with an auto cross-axis margin —
+  so a top-level `mx-auto max-w-*` wrapper shrink-wraps its content instead of
+  filling the width. It must also say `w-full`; `PageShell` does. This is nasty
+  to spot because it only *narrows* things, so no overflow check catches it, and
+  content with a wide intrinsic width (a card grid) still looks right. The map
+  page collapsed to a 234px vertical strip inside a 1600px viewport while every
+  other page looked fine.
+
 - A malformed annotation aborts Lombok's annotation processing, and every
   generated getter/setter then reports **"cannot find symbol"** across unrelated
   files. When a compile suddenly produces dozens of missing-accessor errors,

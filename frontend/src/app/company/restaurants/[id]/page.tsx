@@ -1,11 +1,25 @@
 "use client";
 
-import Link from "next/link";
 import { use, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { RestaurantForm } from "@/components/RestaurantForm";
-import { Button, Card, ErrorNote, Input, Spinner } from "@/components/ui";
+import {
+  Badge,
+  Button,
+  ButtonLink,
+  Card,
+  ErrorNote,
+  Field,
+  Gate,
+  ImageUploadField,
+  Input,
+  PageHeader,
+  PageShell,
+  SectionHeader,
+  Spinner,
+} from "@/components/ui";
+import { IconClose, IconPlus, IconTrash, IconUpload } from "@/components/icons";
 import type { RestaurantDetail, RestaurantEvent } from "@/lib/types";
 
 export default function EditRestaurantPage({ params }: { params: Promise<{ id: string }> }) {
@@ -15,6 +29,8 @@ export default function EditRestaurantPage({ params }: { params: Promise<{ id: s
   const [events, setEvents] = useState<RestaurantEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [uploadingMenu, setUploadingMenu] = useState(false);
   const [newEvent, setNewEvent] = useState({ name: "", content: "", startsOn: "", endsOn: "" });
 
   const load = useCallback(() => {
@@ -45,13 +61,17 @@ export default function EditRestaurantPage({ params }: { params: Promise<{ id: s
   async function uploadPhoto(file: File) {
     const body = new FormData();
     body.append("file", file);
+    setUploadingPhoto(true);
     await act(() => api.post(`/restaurants/${id}/photo`, body));
+    setUploadingPhoto(false);
   }
 
   async function uploadMenu(file: File) {
     const body = new FormData();
     body.append("file", file);
+    setUploadingMenu(true);
     await act(() => api.post(`/restaurants/${id}/menu`, body));
+    setUploadingMenu(false);
   }
 
   async function createEvent(e: React.FormEvent) {
@@ -63,171 +83,206 @@ export default function EditRestaurantPage({ params }: { params: Promise<{ id: s
   }
 
   if (loading) return <Spinner />;
-  if (!restaurant) return <div className="mx-auto max-w-3xl px-6 py-10"><ErrorNote error={error} /></div>;
+  if (!restaurant) {
+    return (
+      <PageShell width="reading">
+        <ErrorNote error={error} />
+      </PageShell>
+    );
+  }
 
   if (!restaurant.editable) {
     return (
-      <p className="py-16 text-center text-sm text-stone-500">
+      <Gate title="沒有管理權限" action={<ButtonLink href="/company" variant="ghost">回到店家管理</ButtonLink>}>
         您沒有權限管理這間餐廳。
-        <Link href="/company" className="ml-1 text-pepper hover:underline">
-          回到店家管理
-        </Link>
-      </p>
+      </Gate>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
-      <div>
-        <Link href="/company" className="text-sm text-stone-500 hover:text-pepper">
-          ← 回到店家管理
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold">管理「{restaurant.name}」</h1>
-      </div>
+    <PageShell width="reading">
+      <PageHeader
+        title={`管理「${restaurant.name}」`}
+        back={{ href: "/company", label: "回到店家管理" }}
+        actions={<ButtonLink href={`/restaurants/${id}`} variant="ghost">查看公開頁面</ButtonLink>}
+      />
 
-      <ErrorNote error={error} />
+      <div className="space-y-12">
+        <ErrorNote error={error} />
 
-      <RestaurantForm existing={restaurant} />
+        <RestaurantForm existing={restaurant} />
 
-      {/* --- 照片 --- */}
-      <Card className="p-6">
-        <h2 className="font-display text-lg font-bold">餐廳照片</h2>
-        <div className="mt-4 flex items-center gap-4">
-          {restaurant.photoUrl ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={restaurant.photoUrl} alt="" className="h-24 w-32 rounded object-cover" />
-          ) : (
-            <div className="flex h-24 w-32 items-center justify-center rounded bg-stone-100 text-stone-400">
-              尚無照片
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            aria-label="上傳餐廳照片"
-            onChange={(e) => e.target.files?.[0] && uploadPhoto(e.target.files[0])}
-            className="text-sm"
-          />
-        </div>
-      </Card>
-
-      {/* --- 菜單 --- */}
-      <Card className="p-6">
-        <h2 className="font-display text-lg font-bold">菜單 ({restaurant.menu.length})</h2>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {restaurant.menu.map((item) => (
-            <div key={item.id} className="group relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.imageUrl} alt={item.caption ?? ""} className="h-28 w-full rounded object-cover" />
-              <button
-                onClick={() => act(() => api.delete(`/restaurants/${id}/menu/${item.id}`))}
-                className="absolute right-1 top-1 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white opacity-0 transition group-hover:opacity-100"
-                aria-label="刪除這張菜單"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-        <input
-          type="file"
-          accept="image/*"
-          aria-label="上傳菜單圖片"
-          onChange={(e) => e.target.files?.[0] && uploadMenu(e.target.files[0])}
-          className="mt-4 text-sm"
-        />
-      </Card>
-
-      {/* --- 活動 --- */}
-      <Card className="p-6">
-        <h2 className="font-display text-lg font-bold">活動 ({events.length})</h2>
-
-        <ul className="mt-4 space-y-2">
-          {events.map((event) => (
-            <li
-              key={event.id}
-              className="flex items-start justify-between gap-3 border-b border-stone-100 pb-2 last:border-0"
-            >
-              <div>
-                <p className="font-medium">
-                  {event.name}
-                  {event.active && (
-                    <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-[11px] text-green-700">
-                      進行中
-                    </span>
-                  )}
-                </p>
-                <p className="text-sm text-stone-500">{event.content}</p>
-                <p className="text-xs text-stone-400">
-                  {event.startsOn} ~ {event.endsOn}
-                </p>
-              </div>
-              <button
-                onClick={() => act(() => api.delete(`/restaurants/events/${event.id}`))}
-                className="text-xs text-stone-400 hover:text-pepper"
-              >
-                刪除
-              </button>
-            </li>
-          ))}
-          {events.length === 0 && <li className="text-sm text-stone-400">還沒有任何活動。</li>}
-        </ul>
-
-        <form onSubmit={createEvent} className="mt-6 space-y-3 border-t border-stone-200 pt-5">
-          <h3 className="text-sm font-semibold">新增活動</h3>
-          <Input
-            required
-            placeholder="活動名稱"
-            aria-label="活動名稱"
-            value={newEvent.name}
-            onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
-          />
-          <Input
-            placeholder="活動說明"
-            aria-label="活動說明"
-            value={newEvent.content}
-            onChange={(e) => setNewEvent({ ...newEvent, content: e.target.value })}
-          />
-          <div className="flex gap-3">
-            <Input
-              required
-              type="date"
-              aria-label="開始日期"
-              value={newEvent.startsOn}
-              onChange={(e) => setNewEvent({ ...newEvent, startsOn: e.target.value })}
-            />
-            <Input
-              required
-              type="date"
-              aria-label="結束日期"
-              value={newEvent.endsOn}
-              onChange={(e) => setNewEvent({ ...newEvent, endsOn: e.target.value })}
+        {/* ---------- Photo ---------- */}
+        <Card className="p-6 sm:p-7">
+          <h2 className="font-display text-base font-bold text-ink">餐廳照片</h2>
+          <div className="mt-5">
+            <ImageUploadField
+              label="上傳照片"
+              inputLabel="上傳餐廳照片"
+              imageUrl={restaurant.photoUrl}
+              emptyLabel="尚無照片"
+              uploading={uploadingPhoto}
+              onFile={uploadPhoto}
+              hint="店面或招牌菜的橫幅照片，建議 1200×800 以上。"
             />
           </div>
-          <Button type="submit">新增活動</Button>
-        </form>
-      </Card>
+        </Card>
 
-      {/* --- 危險操作 --- */}
-      <Card className="border-red-200 p-6">
-        <h2 className="font-display text-lg font-bold text-pepper">刪除餐廳</h2>
-        <p className="mt-1 text-sm text-stone-500">
-          會一併刪除菜單、營業時間、活動與評論，且無法復原。
-        </p>
-        <Button
-          variant="danger"
-          className="mt-4"
-          onClick={async () => {
-            if (!confirm(`確定要刪除「${restaurant.name}」嗎？此操作無法復原。`)) return;
-            await act(async () => {
-              await api.delete(`/restaurants/${id}`);
-              router.push("/company");
-            });
-          }}
-        >
-          刪除這間餐廳
-        </Button>
-      </Card>
-    </div>
+        {/* ---------- Menu ---------- */}
+        <Card className="p-6 sm:p-7">
+          <SectionHeader title="菜單" count={restaurant.menu.length} />
+
+          {restaurant.menu.length > 0 && (
+            <ul className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {restaurant.menu.map((item) => (
+                <li key={item.id} className="group relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.imageUrl}
+                    alt={item.caption ?? "菜單"}
+                    loading="lazy"
+                    className="aspect-4/3 w-full rounded-xl object-cover ring-1 ring-line"
+                  />
+                  {/*
+                    Always present, not hover-only: a hover-revealed control is
+                    unreachable on touch and invisible to a keyboard user.
+                  */}
+                  <button
+                    onClick={() => act(() => api.delete(`/restaurants/${id}/menu/${item.id}`))}
+                    className="absolute right-1.5 top-1.5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-ink/70 text-white opacity-80 backdrop-blur-sm transition hover:bg-danger hover:opacity-100 focus-visible:opacity-100"
+                    aria-label="刪除這張菜單"
+                  >
+                    <IconClose />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-line-strong bg-white px-5 font-display text-sm font-bold uppercase tracking-wide text-ink transition hover:border-ink hover:bg-mist has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-pepper">
+            <IconUpload aria-hidden className="text-base" />
+            {uploadingMenu ? "上傳中…" : "新增菜單照片"}
+            <input
+              type="file"
+              accept="image/*"
+              aria-label="上傳菜單圖片"
+              disabled={uploadingMenu}
+              onChange={(e) => e.target.files?.[0] && uploadMenu(e.target.files[0])}
+              className="sr-only"
+            />
+          </label>
+        </Card>
+
+        {/* ---------- Events ---------- */}
+        <Card className="p-6 sm:p-7">
+          <SectionHeader title="活動" count={events.length} />
+
+          {events.length === 0 ? (
+            <p className="text-sm text-subtle">還沒有任何活動。</p>
+          ) : (
+            <ul className="divide-y divide-line">
+              {events.map((event) => (
+                <li key={event.id} className="flex items-start justify-between gap-4 py-4 first:pt-0">
+                  <div className="min-w-0">
+                    <p className="flex flex-wrap items-center gap-2">
+                      <span className="font-semibold text-ink">{event.name}</span>
+                      {event.active && <Badge tone="success">進行中</Badge>}
+                    </p>
+                    {event.content && (
+                      <p className="mt-1 text-sm leading-relaxed text-body">{event.content}</p>
+                    )}
+                    <p className="mt-1 text-xs tabular text-subtle">
+                      {event.startsOn} ~ {event.endsOn}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => act(() => api.delete(`/restaurants/events/${event.id}`))}
+                    className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-subtle transition hover:bg-danger-tint hover:text-danger"
+                    aria-label={`刪除活動 ${event.name}`}
+                  >
+                    <IconTrash />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <form onSubmit={createEvent} className="mt-6 space-y-5 border-t border-line pt-6">
+            <h3 className="font-display text-sm font-bold uppercase tracking-wider text-ink">新增活動</h3>
+
+            <Field id="event-name" label="活動名稱" required>
+              {(props) => (
+                <Input
+                  {...props}
+                  value={newEvent.name}
+                  onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
+                />
+              )}
+            </Field>
+
+            <Field id="event-content" label="活動說明">
+              {(props) => (
+                <Input
+                  {...props}
+                  value={newEvent.content}
+                  onChange={(e) => setNewEvent({ ...newEvent, content: e.target.value })}
+                />
+              )}
+            </Field>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field id="event-start" label="開始日期" required>
+                {(props) => (
+                  <Input
+                    {...props}
+                    type="date"
+                    value={newEvent.startsOn}
+                    onChange={(e) => setNewEvent({ ...newEvent, startsOn: e.target.value })}
+                    className="tabular"
+                  />
+                )}
+              </Field>
+              <Field id="event-end" label="結束日期" required>
+                {(props) => (
+                  <Input
+                    {...props}
+                    type="date"
+                    value={newEvent.endsOn}
+                    onChange={(e) => setNewEvent({ ...newEvent, endsOn: e.target.value })}
+                    className="tabular"
+                  />
+                )}
+              </Field>
+            </div>
+
+            <Button type="submit" icon={<IconPlus />}>
+              新增活動
+            </Button>
+          </form>
+        </Card>
+
+        {/* ---------- Danger zone ---------- */}
+        <Card className="border-danger/30 p-6 sm:p-7">
+          <h2 className="font-display text-base font-bold text-danger">刪除餐廳</h2>
+          <p className="measure mt-2 text-sm leading-relaxed text-body">
+            會一併刪除菜單、營業時間、活動與評論，且無法復原。
+          </p>
+          <Button
+            variant="danger"
+            className="mt-5"
+            icon={<IconTrash />}
+            onClick={async () => {
+              if (!confirm(`確定要刪除「${restaurant.name}」嗎？此操作無法復原。`)) return;
+              await act(async () => {
+                await api.delete(`/restaurants/${id}`);
+                router.push("/company");
+              });
+            }}
+          >
+            刪除這間餐廳
+          </Button>
+        </Card>
+      </div>
+    </PageShell>
   );
 }

@@ -12,44 +12,274 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design tokens lifted from the 2021 stylesheets
- * (legacy/src/main/webapp/css/style.css, main.css) so the rebuilt frontend
- * keeps the original brand rather than inventing a new one.
+ * ---------------------------------------------------------------------------
+ * Design tokens
+ * ---------------------------------------------------------------------------
+ * The brand hues are the 2021 ones (legacy/src/main/webapp/css/style.css,
+ * main.css) and are fixed by CLAUDE.md §5.3a. Everything else — the neutral
+ * ramp, the type scale, spacing, elevation — is new, and is where the
+ * "elegant / professional" reading actually comes from. Warm neutrals, not
+ * slate: next to a warm red, cool greys read as cheap.
  */
 @theme {
-  --color-pepper: #ff3d1c;        /* .btn background — primary action */
-  --color-pepper-dark: #e02f10;
+  /* --- brand ------------------------------------------------------------ */
+  /*
+   * The 2021 red. Kept exactly, but it cannot carry white text on its own:
+   * #fff on #ff3d1c is 3.54:1, and a 14px bold button label needs 4.5:1 (the
+   * large-text exemption starts at 18.66px bold). So the hue stays the brand
+   * hue — focus rings, the map pin, chip borders, accents, anything large —
+   * and filled controls use --color-pepper-fill, which is the same family a
+   * few steps darker and clears 4.5:1 with white.
+   */
+  --color-pepper: #ff3d1c;        /* brand hue — accents, rings, marks */
+  --color-pepper-fill: #d92f11;   /* filled buttons — 4.8:1 with white */
+  --color-pepper-dark: #b82609;   /* filled hover/active — 6.3:1 with white */
+  --color-pepper-ink: #c22d10;    /* 4.9:1 on white — inline links, small text */
+  --color-pepper-tint: #fff1ee;   /* selected chips, subtle fills */
   --color-mint: #31ff7a;          /* .hero__caption span — script tagline */
-  --color-gold: #c6a16e;          /* secondary accent */
-  --color-ink: #111111;           /* body copy */
-  --color-ash: #b7b7b7;
-  --color-mist: #f9f9ff;          /* section background */
+  --color-gold: #a67c45;          /* secondary accent, darkened for contrast */
 
+  /* --- neutrals (warm) -------------------------------------------------- */
+  --color-ink: #141210;           /* headings */
+  --color-body: #57534e;          /* body copy — 7.1:1 on white */
+  --color-subtle: #78716c;        /* meta, placeholders, functional icons — 4.9:1 */
+  /*
+   * There is deliberately no third, lighter text grey. The first draft had one
+   * (#a8a29e) "for decorative use only" and it immediately ended up on
+   * timestamps, phone numbers and stock counts at 2.5:1. Anything that carries
+   * meaning uses --color-subtle; anything purely decorative and aria-hidden
+   * uses --color-line-strong, which is a border colour and reads as one.
+   */
+  --color-surface: #ffffff;
+  --color-mist: #faf8f6;          /* alternating section background */
+  --color-line: #e7e2dd;
+  --color-line-strong: #d6cfc7;
+
+  /* --- status ----------------------------------------------------------- */
+  --color-danger: #b42318;        /* destructive — deliberately not pepper */
+  --color-danger-tint: #fef3f2;
+  --color-success: #067647;
+  --color-success-tint: #ecfdf3;
+  --color-warn: #b54708;
+  --color-warn-tint: #fffaeb;
+
+  /* --- type ------------------------------------------------------------- */
   --font-display: var(--font-sulphur), "Sulphur Point", sans-serif;
   --font-script: var(--font-sacramento), "Sacramento", cursive;
+  /* Native CJK first: no webfont download, correct 繁體 shaping. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang TC",
+    "Noto Sans TC", "Microsoft JhengHei", "Hiragino Sans", sans-serif;
+
+  /* --- elevation -------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgb(20 18 16 / 0.04), 0 1px 3px rgb(20 18 16 / 0.06);
+  --shadow-lift: 0 8px 24px -6px rgb(20 18 16 / 0.12), 0 2px 6px rgb(20 18 16 / 0.06);
+  --shadow-pop: 0 16px 48px -12px rgb(20 18 16 / 0.2);
+
+  /* --- motion ----------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-html {
-  /* Keeps native controls — selects, date pickers, scrollbars — light too. */
-  color-scheme: light;
+/*
+ * Element defaults belong in Tailwind's `base` layer.
+ *
+ * <p>Written as bare rules after `@import "tailwindcss"` they land *outside*
+ * the cascade layers, which puts them above every utility — a plain
+ * `h1 { color: var(--color-ink) }` then beat `text-white` on the hero
+ * headings and painted them near-black on the photograph. Inside `base` they
+ * are defaults that any utility can override, which is what they are meant
+ * to be.
+ */
+@layer base {
+  html {
+    /* Keeps native controls — selects, date pickers, scrollbars — light too. */
+    color-scheme: light;
+    scroll-behavior: smooth;
+    /* Anchors and focused elements must clear the sticky header (WCAG 2.2 AA
+       "focus not obscured"), otherwise tabbing scrolls a control under it. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background: var(--color-surface);
+    /* Keeps 繁體中文 punctuation from stacking oddly at small sizes. */
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--color-ink);
+    text-wrap: balance;   /* no orphan word on a heading's last line */
+  }
+
+  p {
+    text-wrap: pretty;
+  }
 }
 
-body {
-  color: var(--color-ink);
-  background: #fff;
+/*
+ * One visible focus style for the whole site. `:focus-visible` keeps it off
+ * mouse clicks, and the offset keeps the ring clear of the control's own
+ * border so it stays legible on filled buttons.
+ */
+:focus-visible {
+  outline: 2px solid var(--color-pepper);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-/* .hero-overly::before — dark scrim that keeps hero text legible on photography */
+/* Prices, counts and table figures should not jitter as digits change. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Long-form body copy stays inside a comfortable measure. */
+.measure {
+  max-width: 68ch;
+}
+
+/* .hero-overly::before — dark scrim that keeps hero text legible on photography.
+   A vertical gradient rather than a flat wash: the top needs to be dark enough
+   for white nav links, the middle for the headline, and the bottom can lighten
+   so the photograph is still visible. */
 .hero-overlay::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 1, 2, 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgb(12 10 9 / 0.66) 0%,
+    rgb(12 10 9 / 0.56) 45%,
+    rgb(12 10 9 / 0.62) 100%
+  );
   z-index: 0;
 }
 
-/* .search-box — translucent ring around the hero search control */
+/*
+ * Text over photography.
+ *
+ * <p>The scrim alone is not enough where a photo has a bright subject behind
+ * the headline — a white latte, a plate under a window. A soft shadow in the
+ * scrim's own colour lifts the glyphs off whatever is behind them without
+ * reading as a drop shadow.
+ */
+.on-photo {
+  text-shadow:
+    0 1px 2px rgb(12 10 9 / 0.45),
+    0 2px 12px rgb(12 10 9 / 0.35);
+}
+
+/*
+ * .search-box — translucent ring around the hero search control.
+ *
+ * <p>The 2021 control was a single row, so a pill radius fitted it. Below `sm`
+ * the fields stack, and a 999px radius on a tall box bows the sides inwards and
+ * clips the first field's corners — hence the softer radius until the row
+ * un-stacks.
+ */
 .search-ring {
-  border: 8px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
+  border: 8px solid rgb(255 255 255 / 0.18);
+  border-radius: 1.75rem;
+  box-shadow: var(--shadow-pop);
+}
+
+@media (min-width: 40rem) {
+  .search-ring {
+    border-radius: 999px;
+  }
+}
+
+/*
+ * Leaflet numbers its own panes from z-index 400 up to 1000, and its container
+ * is `position: relative; z-index: auto`, which does NOT establish a stacking
+ * context — so those numbers land in the ROOT stacking context and paint over
+ * anything the page puts below 400: the sticky header (z-40) on scroll, and the
+ * mobile nav drawer (z-50), which the map covered completely.
+ *
+ * `isolation: isolate` gives the map its own stacking context, so Leaflet's
+ * internal ordering stays inside the map box and the container itself takes its
+ * natural place in the page's order.
+ */
+.leaflet-container {
+  isolation: isolate;
+}
+
+/*
+ * Leaflet's own attribution bar. Its default link colour is #0078A8 on #ddd —
+ * 3.6:1, under AA — and the bar itself is barely visible over the tiles.
+ */
+.leaflet-control-attribution {
+  /* Opaque, so the link colour is measured against white rather than
+     whatever tile happens to be underneath. */
+  background: #fff !important;
+  color: var(--color-body) !important;
+  /* Leaflet's default is 11px; 12px is this design's floor for any real text. */
+  font-size: 12px;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-pepper-ink) !important;
+}
+
+/*
+ * Leaflet draws its own controls at desktop sizes — 30px zoom buttons and a
+ * 26px-wide marker. Both are tapped, so on a coarse pointer they grow to the
+ * comfortable target size. Mouse users keep the compact original.
+ */
+@media (pointer: coarse), (max-width: 40rem) {
+  .leaflet-touch .leaflet-bar a,
+  .leaflet-bar a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 20px !important;
+  }
+}
+
+/* Content reveal used by SectionTitle/Reveal. Kept CSS-only — one scroll
+   animation does not justify a motion library. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.animate-rise {
+  animation: rise 0.42s var(--ease-out-soft) both;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Skeleton placeholders — reserve the space the content will occupy so nothing
+   shifts when it arrives. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #f0ece8;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
+  animation: shimmer 1.6s infinite;
+}
+
+/*
+ * Respect the OS "reduce motion" setting. Transitions are flattened rather than
+ * removed so state changes are still perceivable, just instant.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .skeleton::after { animation: none; }
 }

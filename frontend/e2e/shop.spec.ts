@@ -43,7 +43,7 @@ test.describe("shopping", () => {
 
     await page.getByRole("button", { name: /^移除/ }).first().click();
 
-    await expect(page.getByText("購物車是空的。")).toBeVisible();
+    await expect(page.getByText("購物車還是空的。")).toBeVisible();
   });
 
   /** Checkout must reserve stock and produce an order that can then be paid. */

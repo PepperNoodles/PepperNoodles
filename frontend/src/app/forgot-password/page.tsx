@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { api } from "@/lib/api";
-import { Button, Card, ErrorNote, Input } from "@/components/ui";
+import { Button, ButtonLink, ErrorNote, Field, Input } from "@/components/ui";
+import { AuthFooterLink, AuthResult, AuthShell, MailpitHint } from "@/components/AuthShell";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -29,54 +29,48 @@ export default function ForgotPasswordPage() {
   // confirmation must not imply that an account was found.
   if (sent) {
     return (
-      <Card className="mx-auto my-16 max-w-md p-8 text-center">
-        <h1 className="text-2xl font-bold">請查看信箱 📬</h1>
-        <p className="mt-3 text-sm text-stone-600">
-          如果 <strong>{email}</strong> 是已註冊的帳號，我們已寄出重設密碼的連結。連結一小時內有效。
+      <AuthResult
+        title="請查看信箱"
+        action={<ButtonLink href="/login" variant="ghost">回到登入</ButtonLink>}
+      >
+        <p>
+          如果 <strong className="font-semibold text-ink">{email}</strong> 是已註冊的帳號，
+          我們已寄出重設密碼的連結。連結一小時內有效。
         </p>
-        <p className="mt-4 text-xs text-stone-500">
-          開發環境可到{" "}
-          <a href="http://127.0.0.1:55324" target="_blank" rel="noreferrer" className="text-pepper hover:underline">
-            Mailpit
-          </a>{" "}
-          收信。
-        </p>
-        <Link href="/login" className="mt-6 inline-block text-sm text-pepper hover:underline">
-          回到登入 →
-        </Link>
-      </Card>
+        <MailpitHint />
+      </AuthResult>
     );
   }
 
   return (
-    <Card className="mx-auto my-16 max-w-md p-8">
-      <h1 className="text-2xl font-bold">忘記密碼</h1>
-      <p className="mt-2 text-sm text-stone-500">輸入註冊信箱，我們會寄一封重設密碼的連結給你。</p>
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
-        <div>
-          <label htmlFor="email" className="mb-1 block text-sm font-medium">
-            電子信箱
-          </label>
-          <Input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+    <AuthShell
+      kicker="Forgot it?"
+      title="忘記密碼"
+      description="輸入註冊信箱，我們會寄一封重設密碼的連結給你。"
+      footer={
+        <>
+          想起來了？ <AuthFooterLink href="/login">回到登入</AuthFooterLink>
+        </>
+      }
+    >
+      <form onSubmit={onSubmit} className="space-y-5">
+        <Field id="email" label="電子信箱" required>
+          {(props) => (
+            <Input
+              {...props}
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          )}
+        </Field>
         <ErrorNote error={error} />
-        <Button type="submit" disabled={submitting} className="w-full">
-          {submitting ? "寄送中…" : "寄送重設連結"}
+        <Button type="submit" loading={submitting} size="lg" className="w-full">
+          寄送重設連結
         </Button>
       </form>
-      <p className="mt-6 text-center text-sm text-stone-500">
-        想起來了？{" "}
-        <Link href="/login" className="text-pepper hover:underline">
-          回到登入
-        </Link>
-      </p>
-    </Card>
+    </AuthShell>
   );
 }

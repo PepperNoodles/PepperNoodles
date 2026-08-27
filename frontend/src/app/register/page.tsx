@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
-import { Button, Card, ErrorNote, Input } from "@/components/ui";
+import { Button, ErrorNote, Field, FilterChip, Input } from "@/components/ui";
+import { AuthFooterLink, AuthResult, AuthShell, MailpitHint } from "@/components/AuthShell";
 import { ResendVerification } from "@/components/ResendVerification";
 import type { Tag } from "@/lib/types";
 
@@ -44,97 +44,98 @@ export default function RegisterPage() {
 
   if (done) {
     return (
-      <Card className="mx-auto my-16 max-w-md p-8 text-center">
-        <h1 className="text-2xl font-bold">確認信已寄出 📬</h1>
-        <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">
-          我們寄了一封驗證信到 <strong>{form.email}</strong>。點擊信中的連結後就能登入。
+      <AuthResult title="確認信已寄出">
+        <p>
+          我們寄了一封驗證信到 <strong className="font-semibold text-ink">{form.email}</strong>。
+          點擊信中的連結後就能登入。
         </p>
-        <div className="mt-4">
+        <div className="mt-5">
           <ResendVerification email={form.email} />
         </div>
-        <p className="mt-4 text-xs text-stone-500">
-          開發環境可到 Mailpit 收信：
-          <a href="http://127.0.0.1:55324" className="text-pepper hover:underline" target="_blank" rel="noreferrer">
-            127.0.0.1:55324
-          </a>
-        </p>
-      </Card>
+        <MailpitHint />
+      </AuthResult>
     );
   }
 
-  function field(name: keyof typeof form, label: string, type = "text", required = false) {
+  function field(
+    name: keyof typeof form,
+    label: string,
+    options: { type?: string; required?: boolean; hint?: string; autoComplete?: string } = {},
+  ) {
+    const { type = "text", required = false, hint, autoComplete } = options;
     return (
-      <div>
-        <label htmlFor={name} className="mb-1 block text-sm font-medium">
-          {label}
-          {required && <span className="text-pepper"> *</span>}
-        </label>
-        <Input
-          id={name}
-          type={type}
-          required={required}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-        />
-        {fieldErrors[name] && <p className="mt-1 text-xs text-pepper">{fieldErrors[name]}</p>}
-      </div>
+      <Field id={name} label={label} required={required} hint={hint} error={fieldErrors[name]}>
+        {(props) => (
+          <Input
+            {...props}
+            type={type}
+            autoComplete={autoComplete}
+            value={form[name]}
+            onChange={(e) => setForm({ ...form, [name]: e.target.value })}
+          />
+        )}
+      </Field>
     );
   }
 
   return (
-    <Card className="mx-auto my-16 max-w-lg p-8">
-      <h1 className="text-2xl font-bold">註冊會員</h1>
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
-        {field("email", "電子信箱", "email", true)}
-        {field("password", "密碼（至少 8 碼，含英文與數字）", "password", true)}
-        {field("realName", "姓名", "text", true)}
-        {field("nickname", "暱稱")}
-        {field("phone", "手機號碼", "tel")}
+    <AuthShell
+      width="lg"
+      kicker="Join the table"
+      title="註冊會員"
+      description="建立帳號即可收藏餐廳、發表評論、加好友並在商城下單。"
+      footer={
+        <>
+          已經有帳號？ <AuthFooterLink href="/login">登入</AuthFooterLink>
+          <span aria-hidden className="mx-2 text-subtle">·</span>
+          要開店嗎？ <AuthFooterLink href="/register/company">註冊企業會員</AuthFooterLink>
+        </>
+      }
+    >
+      <form onSubmit={onSubmit} className="space-y-5">
+        {field("email", "電子信箱", { type: "email", required: true, autoComplete: "email" })}
+        {field("password", "密碼", {
+          type: "password",
+          required: true,
+          hint: "至少 8 碼，需包含英文字母與數字。",
+          autoComplete: "new-password",
+        })}
+        {field("realName", "姓名", { required: true, autoComplete: "name" })}
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          {field("nickname", "暱稱", { hint: "其他會員看到的名稱。", autoComplete: "nickname" })}
+          {field("phone", "手機號碼", { type: "tel", autoComplete: "tel" })}
+        </div>
         {field("location", "居住地區")}
 
-        <div>
-          <span className="mb-2 block text-sm font-medium">興趣標籤</span>
+        <fieldset>
+          <legend className="mb-2.5 text-sm font-semibold text-ink">興趣標籤</legend>
+          <p className="mb-3 text-[13px] text-subtle">選幾個喜歡的類型，之後推薦會更準。</p>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => {
               const active = selectedTags.includes(tag.id);
               return (
-                <button
-                  type="button"
+                <FilterChip
                   key={tag.id}
-                  aria-pressed={active}
+                  active={active}
                   onClick={() =>
-                    setSelectedTags(active ? selectedTags.filter((id) => id !== tag.id) : [...selectedTags, tag.id])
+                    setSelectedTags(
+                      active ? selectedTags.filter((id) => id !== tag.id) : [...selectedTags, tag.id],
+                    )
                   }
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                    active
-                      ? "bg-red-600 text-white"
-                      : "bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300"
-                  }`}
                 >
                   {tag.name}
-                </button>
+                </FilterChip>
               );
             })}
           </div>
-        </div>
+        </fieldset>
 
         <ErrorNote error={error} />
-        <Button type="submit" disabled={submitting} className="w-full">
-          {submitting ? "送出中…" : "註冊"}
+        <Button type="submit" loading={submitting} size="lg" className="w-full">
+          註冊
         </Button>
       </form>
-      <p className="mt-6 text-center text-sm text-stone-500">
-        已經有帳號？{" "}
-        <Link href="/login" className="text-pepper hover:underline">
-          登入
-        </Link>
-      </p>
-      <p className="mt-2 text-center text-sm text-stone-500">
-        要開店嗎？{" "}
-        <Link href="/register/company" className="text-pepper hover:underline">
-          註冊企業會員
-        </Link>
-      </p>
-    </Card>
+    </AuthShell>
   );
 }

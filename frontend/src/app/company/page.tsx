@@ -4,7 +4,22 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, Empty, ErrorNote, Spinner, Stars, money } from "@/components/ui";
+import {
+  Badge,
+  ButtonLink,
+  Card,
+  Empty,
+  ErrorNote,
+  Gate,
+  PageHeader,
+  PageShell,
+  SectionHeader,
+  DataTable,
+  Spinner,
+  Stars,
+  money,
+} from "@/components/ui";
+import { IconArrowRight, IconChart, IconPackage, IconPlus, IconStore } from "@/components/icons";
 import type { Page, Product, RestaurantSummary } from "@/lib/types";
 
 export default function CompanyPage() {
@@ -41,94 +56,112 @@ export default function CompanyPage() {
   if (authLoading || loading) return <Spinner />;
   if (!hasRole("ROLE_COMPANY", "ROLE_ADMIN")) {
     return (
-      <p className="py-12 text-center text-sm text-stone-500">
+      <Gate title="僅限企業會員" action={<ButtonLink href="/register/company">註冊企業帳號</ButtonLink>}>
         這個頁面只有企業會員能存取。
-        <Link href="/" className="ml-1 text-red-600 hover:underline">
-          回首頁
-        </Link>
-      </p>
+      </Gate>
     );
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="mr-auto text-2xl font-bold">店家管理</h1>
-        <Link href="/company/reports">
-          <Button variant="ghost">銷售報表</Button>
-        </Link>
-        <Link href="/company/products/new">
-          <Button variant="ghost">新增商品</Button>
-        </Link>
-        <Link href="/company/restaurants/new">
-          <Button>登錄餐廳</Button>
-        </Link>
+    <PageShell>
+      <PageHeader
+        kicker="Merchant"
+        title="店家管理"
+        actions={
+          <>
+            <ButtonLink href="/company/reports" variant="ghost" icon={<IconChart />}>
+              銷售報表
+            </ButtonLink>
+            <ButtonLink href="/company/products/new" variant="ghost" icon={<IconPlus />}>
+              新增商品
+            </ButtonLink>
+            <ButtonLink href="/company/restaurants/new" icon={<IconStore />}>
+              登錄餐廳
+            </ButtonLink>
+          </>
+        }
+      />
+
+      <div className="space-y-12">
+        <ErrorNote error={error} />
+
+        {/* ---------- Restaurants ---------- */}
+        <section>
+          <SectionHeader title="我的餐廳" count={restaurants.length} />
+          {restaurants.length === 0 ? (
+            <Empty
+              icon={<IconStore />}
+              action={<ButtonLink href="/company/restaurants/new">登錄第一間餐廳</ButtonLink>}
+            >
+              還沒有登記任何餐廳。登錄後就能管理菜單、營業時間與活動。
+            </Empty>
+          ) : (
+            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {restaurants.map((restaurant) => (
+                <li key={restaurant.id} className="flex">
+                  <Link href={`/company/restaurants/${restaurant.id}`} className="group w-full">
+                    <Card interactive className="flex h-full flex-col p-5">
+                      <h3 className="font-display text-base font-bold text-ink transition group-hover:text-pepper-ink">
+                        {restaurant.name}
+                      </h3>
+                      <p className="mt-1.5 text-sm text-subtle">{restaurant.address}</p>
+                      <div className="mt-3">
+                        <Stars average={restaurant.rating.average} count={restaurant.rating.reviewCount} />
+                      </div>
+                      <p className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[13px] font-semibold text-pepper-ink">
+                        管理這間餐廳
+                        <IconArrowRight aria-hidden className="text-base" />
+                      </p>
+                    </Card>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* ---------- Products ---------- */}
+        <section>
+          <SectionHeader title="我的商品" count={products.length} />
+          {products.length === 0 ? (
+            <Empty
+              icon={<IconPackage />}
+              action={<ButtonLink href="/company/products/new">新增第一件商品</ButtonLink>}
+            >
+              還沒有上架任何商品。
+            </Empty>
+          ) : (
+            <DataTable
+              caption="我的商品列表"
+              rows={products}
+              rowKey={(p) => p.id}
+              columns={[
+                {
+                  key: "name",
+                  header: "商品",
+                  primary: true,
+                  cell: (p) => (
+                    <Link
+                      href={`/company/products/${p.id}`}
+                      className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                    >
+                      {p.name}
+                    </Link>
+                  ),
+                },
+                { key: "restaurant", header: "餐廳", cell: (p) => <span className="text-subtle">{p.restaurantName}</span> },
+                { key: "price", header: "價格", align: "right", cell: (p) => <span className="tabular text-ink">{money(p.price)}</span> },
+                { key: "stock", header: "庫存", align: "right", cell: (p) => <span className="tabular">{p.quantity}</span> },
+                {
+                  key: "status",
+                  header: "狀態",
+                  cell: (p) => (p.status === "LISTED" ? <Badge tone="success">上架中</Badge> : <Badge>下架中</Badge>),
+                },
+              ]}
+            />
+          )}
+        </section>
       </div>
-      <ErrorNote error={error} />
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">我的餐廳 ({restaurants.length})</h2>
-        {restaurants.length === 0 ? (
-          <Empty>還沒有登記任何餐廳。<Link href="/company/restaurants/new" className="ml-1 text-pepper hover:underline">登錄第一間 →</Link></Empty>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {restaurants.map((restaurant) => (
-              <Link key={restaurant.id} href={`/company/restaurants/${restaurant.id}`}>
-                <Card className="h-full p-4 transition hover:shadow-md">
-                  <h3 className="font-semibold">{restaurant.name}</h3>
-                  <p className="mt-1 text-sm text-stone-500">{restaurant.address}</p>
-                  <div className="mt-2">
-                    <Stars average={restaurant.rating.average} count={restaurant.rating.reviewCount} />
-                  </div>
-                  <p className="mt-3 text-xs font-medium text-pepper">管理這間餐廳 →</p>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">我的商品 ({products.length})</h2>
-        {products.length === 0 ? (
-          <Empty>還沒有上架任何商品。<Link href="/company/products/new" className="ml-1 text-pepper hover:underline">新增第一件 →</Link></Empty>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-stone-200 text-xs uppercase text-stone-500 dark:border-stone-800">
-                <tr>
-                  <th className="py-2">商品</th>
-                  <th className="py-2">餐廳</th>
-                  <th className="py-2 text-right">價格</th>
-                  <th className="py-2 text-right">庫存</th>
-                  <th className="py-2">狀態</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product.id} className="border-b border-stone-100 dark:border-stone-900">
-                    <td className="py-2">
-                      <Link href={`/company/products/${product.id}`} className="hover:text-pepper hover:underline">
-                        {product.name}
-                      </Link>
-                    </td>
-                    <td className="py-2 text-stone-500">{product.restaurantName}</td>
-                    <td className="py-2 text-right">{money(product.price)}</td>
-                    <td className="py-2 text-right">{product.quantity}</td>
-                    <td className="py-2 text-xs">
-                      {product.status === "LISTED" ? (
-                        <span className="text-green-600">上架中</span>
-                      ) : (
-                        <span className="text-stone-400">下架中</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-    </div>
+    </PageShell>
   );
 }

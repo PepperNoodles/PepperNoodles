@@ -59,7 +59,7 @@ export function Recaptcha({ onToken }: { onToken: (token: string | null) => void
 
   if (failed) {
     return (
-      <p className="text-xs text-stone-500">
+      <p className="text-xs text-subtle">
         驗證元件載入失敗，請確認網路連線後重新整理。
       </p>
     );

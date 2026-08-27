@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { api } from "@/lib/api";
 import { Button, ErrorNote } from "./ui";
+import { IconExternal } from "./icons";
 
 interface EcpayForm {
   action: string;
@@ -50,8 +51,8 @@ export function EcpayButton({ orderId, disabled }: { orderId: number; disabled?:
 
   return (
     <div>
-      <Button onClick={pay} disabled={disabled || submitting}>
-        {submitting ? "前往綠界…" : "前往付款"}
+      <Button onClick={pay} disabled={disabled} loading={submitting} icon={<IconExternal />}>
+        前往付款
       </Button>
       <div className="mt-2">
         <ErrorNote error={error} />

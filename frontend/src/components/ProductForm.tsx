@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
-import { Button, Card, ErrorNote, Input } from "./ui";
+import { Alert, Button, Card, Checkbox, ErrorNote, Field, Input, Select, TagPicker, Textarea } from "./ui";
 import type { Category, Page, ProductDetail, RestaurantSummary, Tag } from "@/lib/types";
 
 export function ProductForm({ existing }: { existing?: ProductDetail }) {
@@ -74,151 +74,121 @@ export function ProductForm({ existing }: { existing?: ProductDetail }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <Card className="space-y-4 p-6">
-        <div>
-          <label htmlFor="restaurantId" className="mb-1 block text-sm font-medium">
-            所屬餐廳 <span className="text-pepper">*</span>
-          </label>
-          <select
-            id="restaurantId"
-            required
-            value={form.restaurantId}
-            onChange={(e) => setForm({ ...form, restaurantId: e.target.value })}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value="">請選擇…</option>
-            {restaurants.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select>
-          {restaurants.length === 0 && (
-            <p className="mt-1 text-xs text-pepper">請先登錄一間餐廳，才能上架商品。</p>
-          )}
-        </div>
+    <form onSubmit={onSubmit} className="space-y-5">
+      {restaurants.length === 0 && (
+        <Alert tone="warn" title="還沒有餐廳">
+          請先登錄一間餐廳，才能上架商品。
+        </Alert>
+      )}
 
-        <div>
-          <label htmlFor="name" className="mb-1 block text-sm font-medium">
-            商品名稱 <span className="text-pepper">*</span>
-          </label>
-          <Input
-            id="name"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          {fieldErrors.name && <p className="mt-1 text-xs text-pepper">{fieldErrors.name}</p>}
-        </div>
+      <Card className="p-6 sm:p-7">
+        <h2 className="font-display text-base font-bold text-ink">商品資料</h2>
 
-        <div>
-          <label htmlFor="description" className="mb-1 block text-sm font-medium">
-            商品說明
-          </label>
-          <textarea
-            id="description"
-            rows={3}
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-pepper"
-          />
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label htmlFor="price" className="mb-1 block text-sm font-medium">
-              價格 <span className="text-pepper">*</span>
-            </label>
-            <Input
-              id="price"
-              type="number"
-              min="0"
-              step="1"
-              required
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-            />
-            {fieldErrors.price && <p className="mt-1 text-xs text-pepper">{fieldErrors.price}</p>}
-          </div>
-          <div className="flex-1">
-            <label htmlFor="quantity" className="mb-1 block text-sm font-medium">
-              庫存
-            </label>
-            <Input
-              id="quantity"
-              type="number"
-              min="0"
-              value={form.quantity}
-              onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="subcategoryId" className="mb-1 block text-sm font-medium">
-            分類
-          </label>
-          <select
-            id="subcategoryId"
-            value={form.subcategoryId}
-            onChange={(e) => setForm({ ...form, subcategoryId: e.target.value })}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value="">不分類</option>
-            {categories.map((c) => (
-              <optgroup key={c.id} label={c.name}>
-                {c.subcategories.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
+        <div className="mt-5 space-y-5">
+          <Field id="restaurantId" label="所屬餐廳" required>
+            {(props) => (
+              <Select
+                {...props}
+                value={form.restaurantId}
+                onChange={(e) => setForm({ ...form, restaurantId: e.target.value })}
+              >
+                <option value="">請選擇…</option>
+                {restaurants.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
                   </option>
                 ))}
-              </optgroup>
-            ))}
-          </select>
-        </div>
+              </Select>
+            )}
+          </Field>
 
-        <div>
-          <span className="mb-2 block text-sm font-medium">食物標籤</span>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => {
-              const active = selectedTags.includes(tag.id);
-              return (
-                <button
-                  type="button"
-                  key={tag.id}
-                  aria-pressed={active}
-                  onClick={() =>
-                    setSelectedTags(active ? selectedTags.filter((i) => i !== tag.id) : [...selectedTags, tag.id])
-                  }
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                    active ? "bg-pepper text-white" : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                  }`}
-                >
-                  {tag.name}
-                </button>
-              );
-            })}
+          <Field id="name" label="商品名稱" required error={fieldErrors.name}>
+            {(props) => (
+              <Input {...props} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+            )}
+          </Field>
+
+          <Field id="description" label="商品說明" hint="口味、份量、保存方式等。">
+            {(props) => (
+              <Textarea
+                {...props}
+                rows={4}
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            )}
+          </Field>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Field id="price" label="價格" hint="新台幣，整數。" required error={fieldErrors.price}>
+              {(props) => (
+                <Input
+                  {...props}
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  step="1"
+                  value={form.price}
+                  onChange={(e) => setForm({ ...form, price: e.target.value })}
+                  className="tabular"
+                />
+              )}
+            </Field>
+            <Field id="quantity" label="庫存">
+              {(props) => (
+                <Input
+                  {...props}
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  value={form.quantity}
+                  onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                  className="tabular"
+                />
+              )}
+            </Field>
           </div>
-        </div>
 
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
+          <Field id="subcategoryId" label="分類">
+            {(props) => (
+              <Select
+                {...props}
+                value={form.subcategoryId}
+                onChange={(e) => setForm({ ...form, subcategoryId: e.target.value })}
+              >
+                <option value="">不分類</option>
+                {categories.map((c) => (
+                  <optgroup key={c.id} label={c.name}>
+                    {c.subcategories.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </Select>
+            )}
+          </Field>
+
+          <TagPicker legend="食物標籤" tags={tags} selected={selectedTags} onChange={setSelectedTags} />
+
+          <Checkbox
+            id="listed"
+            label="立即上架"
+            hint="未勾選則存為下架中，只有你看得到。"
             checked={form.listed}
-            onChange={(e) => setForm({ ...form, listed: e.target.checked })}
+            onChange={(listed) => setForm({ ...form, listed })}
           />
-          立即上架（未勾選則存為下架中）
-        </label>
+        </div>
       </Card>
 
       <ErrorNote error={error} />
 
       <div className="flex gap-3">
-        <Button type="submit" disabled={submitting || restaurants.length === 0}>
-          {submitting ? "儲存中…" : existing ? "儲存變更" : "新增商品"}
+        <Button type="submit" loading={submitting} disabled={restaurants.length === 0} size="lg">
+          {existing ? "儲存變更" : "新增商品"}
         </Button>
-        <Button type="button" variant="ghost" onClick={() => router.back()}>
+        <Button type="button" variant="ghost" size="lg" onClick={() => router.back()}>
           取消
         </Button>
       </div>

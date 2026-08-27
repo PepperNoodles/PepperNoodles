@@ -1,18 +1,21 @@
 "use client";
 
-import Link from "next/link";
 import { use, useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { EcpayButton } from "@/components/EcpayButton";
-import { Button, Card, ErrorNote, Spinner, money } from "@/components/ui";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  ErrorNote,
+  PageHeader,
+  PageShell,
+  Spinner,
+  money,
+} from "@/components/ui";
+import { ORDER_STATUS } from "@/lib/orderStatus";
 import type { Order } from "@/lib/types";
-
-const STATUS: Record<Order["status"], { label: string; className: string }> = {
-  PENDING: { label: "待付款", className: "bg-amber-100 text-amber-800" },
-  PAID: { label: "已付款", className: "bg-green-100 text-green-800" },
-  CANCELLED: { label: "已取消", className: "bg-stone-200 text-stone-700" },
-  EXPIRED: { label: "已逾期", className: "bg-stone-200 text-stone-700" },
-};
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -65,90 +68,89 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   if (loading) return <Spinner />;
-  if (!order) return <div className="mx-auto max-w-3xl px-6 py-10"><ErrorNote error={error} /></div>;
+  if (!order) {
+    return (
+      <PageShell width="reading">
+        <ErrorNote error={error} />
+      </PageShell>
+    );
+  }
 
-  const status = STATUS[order.status];
+  const status = ORDER_STATUS[order.status];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-6 py-10">
-      <Link href="/orders" className="text-sm text-stone-500 hover:text-pepper">
-        ← 回到訂單列表
-      </Link>
+    <PageShell width="reading">
+      <PageHeader
+        title={order.orderNo}
+        description={`成立於 ${new Date(order.createdAt).toLocaleString("zh-TW")}`}
+        back={{ href: "/orders", label: "回到訂單列表" }}
+        actions={<Badge tone={status.tone}>{status.label}</Badge>}
+      />
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="font-mono text-2xl font-bold">{order.orderNo}</h1>
-          <p className="mt-1 text-sm text-stone-500">
-            成立於 {new Date(order.createdAt).toLocaleString("zh-TW")}
+      <div className="space-y-5">
+        <ErrorNote error={error} />
+
+        {order.status === "PENDING" && (
+          <Card className="border-warn/25 bg-warn-tint p-6">
+            <Alert tone="warn">
+              這筆訂單尚未付款，保留至{" "}
+              <strong className="font-semibold">
+                {new Date(order.expiresAt).toLocaleString("zh-TW")}
+              </strong>
+              。逾時後庫存會自動釋出。
+            </Alert>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <EcpayButton orderId={order.id} />
+              <Button variant="ghost" onClick={cancel}>
+                取消訂單
+              </Button>
+            </div>
+          </Card>
+        )}
+
+        {order.status === "PAID" && (
+          <Alert tone="success" title="付款完成">
+            {order.paidAt ? new Date(order.paidAt).toLocaleString("zh-TW") : "—"} · 感謝您的訂購！
+          </Alert>
+        )}
+
+        <Card className="p-6 sm:p-7">
+          <h2 className="font-display text-base font-bold text-ink">訂購商品</h2>
+          <ul className="mt-5 divide-y divide-line">
+            {order.items.map((item, index) => (
+              <li key={index} className="flex justify-between gap-4 py-3 text-sm first:pt-0">
+                <span className="min-w-0 text-body">
+                  {item.productName}
+                  <span className="ml-2 tabular text-subtle">× {item.quantity}</span>
+                </span>
+                <span className="shrink-0 font-medium tabular text-ink">{money(item.lineTotal)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 flex items-baseline justify-between border-t-2 border-line pt-5">
+            <span className="font-semibold text-ink">總計</span>
+            <span className="font-display text-2xl font-bold tabular text-pepper">
+              {money(order.totalCost)}
+            </span>
           </p>
-        </div>
-        <span className={`rounded-full px-3 py-1 text-sm font-medium ${status.className}`}>
-          {status.label}
-        </span>
+        </Card>
+
+        <Card className="p-6 sm:p-7">
+          <h2 className="font-display text-base font-bold text-ink">收件資訊</h2>
+          <dl className="mt-5 space-y-3 text-sm">
+            {[
+              ["收件人", order.receiverName],
+              ["電話", order.receiverPhone],
+              ["地址", order.receiverAddress],
+            ].map(([label, value]) => (
+              <div key={label} className="flex gap-4">
+                <dt className="w-20 shrink-0 text-subtle">{label}</dt>
+                <dd className="text-ink">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Card>
       </div>
-
-      <ErrorNote error={error} />
-
-      {order.status === "PENDING" && (
-        <Card className="border-amber-300 bg-amber-50 p-5">
-          <p className="text-sm text-amber-900">
-            這筆訂單尚未付款，保留至{" "}
-            <strong>{new Date(order.expiresAt).toLocaleString("zh-TW")}</strong>
-            。逾時後庫存會自動釋出。
-          </p>
-          <div className="mt-4 flex items-center gap-3">
-            <EcpayButton orderId={order.id} />
-            <Button variant="ghost" onClick={cancel}>
-              取消訂單
-            </Button>
-          </div>
-        </Card>
-      )}
-
-      {order.status === "PAID" && (
-        <Card className="border-green-300 bg-green-50 p-5">
-          <p className="text-sm text-green-900">
-            付款完成於 {order.paidAt ? new Date(order.paidAt).toLocaleString("zh-TW") : "—"}，感謝您的訂購！
-          </p>
-        </Card>
-      )}
-
-      <Card className="p-6">
-        <h2 className="font-semibold">訂購商品</h2>
-        <ul className="mt-4 space-y-2">
-          {order.items.map((item, index) => (
-            <li key={index} className="flex justify-between border-b border-stone-100 pb-2 text-sm last:border-0">
-              <span>
-                {item.productName}
-                <span className="ml-2 text-stone-400">× {item.quantity}</span>
-              </span>
-              <span className="font-medium">{money(item.lineTotal)}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 flex justify-between border-t border-stone-200 pt-4 text-lg font-bold">
-          <span>總計</span>
-          <span className="text-pepper">{money(order.totalCost)}</span>
-        </p>
-      </Card>
-
-      <Card className="p-6">
-        <h2 className="font-semibold">收件資訊</h2>
-        <dl className="mt-4 space-y-2 text-sm">
-          <div className="flex gap-3">
-            <dt className="w-20 shrink-0 text-stone-500">收件人</dt>
-            <dd>{order.receiverName}</dd>
-          </div>
-          <div className="flex gap-3">
-            <dt className="w-20 shrink-0 text-stone-500">電話</dt>
-            <dd>{order.receiverPhone}</dd>
-          </div>
-          <div className="flex gap-3">
-            <dt className="w-20 shrink-0 text-stone-500">地址</dt>
-            <dd>{order.receiverAddress}</dd>
-          </div>
-        </dl>
-      </Card>
-    </div>
+    </PageShell>
   );
 }

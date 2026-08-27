@@ -4,7 +4,18 @@ import { use, useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { connectChatSocket, type ConnectionState } from "@/lib/chatSocket";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, ErrorNote, Input, Spinner } from "@/components/ui";
+import {
+  Button,
+  ButtonLink,
+  Card,
+  ErrorNote,
+  Gate,
+  Input,
+  PageShell,
+  Spinner,
+} from "@/components/ui";
+import { IconArrowLeft, IconMessage, IconSend } from "@/components/icons";
+import Link from "next/link";
 import type { ChatMessage, Page } from "@/lib/types";
 
 const STATE_LABELS: Record<ConnectionState, string> = {
@@ -90,39 +101,77 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
   }
 
   if (authLoading || loading) return <Spinner />;
-  if (!user) return <p className="py-12 text-center text-sm text-stone-500">請先登入。</p>;
+  if (!user) {
+    return (
+      <Gate title="請先登入" action={<ButtonLink href={`/login?next=/friends/${userId}`}>前往登入</ButtonLink>}>
+        登入後即可與好友聊天。
+      </Gate>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4 px-6 py-10">
-      <div className="flex items-baseline gap-3">
-        <h1 className="text-xl font-bold">聊天室</h1>
-        <span
-          className={`text-xs ${connection === "connected" ? "text-green-600" : "text-stone-400"}`}
-          role="status"
-        >
-          {STATE_LABELS[connection]}
+    <PageShell width="narrow">
+      <Link
+        href="/friends"
+        className="-ml-2 mb-3 inline-flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-subtle transition hover:bg-mist hover:text-pepper-ink sm:-ml-0 sm:mb-5 sm:min-h-0 sm:px-0 sm:hover:bg-transparent"
+      >
+        <IconArrowLeft className="text-base" />
+        回到好友列表
+      </Link>
+
+      <div className="mb-4 flex flex-wrap items-baseline gap-3">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-ink">聊天室</h1>
+        {/*
+          Connection state carries a dot as well as a colour — "connected" and
+          "disconnected" must not be distinguishable by hue alone.
+        */}
+        <span className="flex items-center gap-1.5 text-xs font-medium" role="status">
+          <span
+            aria-hidden
+            className={`h-2 w-2 rounded-full ${
+              connection === "connected"
+                ? "bg-success"
+                : connection === "connecting"
+                  ? "bg-warn"
+                  : "bg-faint"
+            }`}
+          />
+          <span className={connection === "connected" ? "text-success" : "text-subtle"}>
+            {STATE_LABELS[connection]}
+          </span>
         </span>
       </div>
 
       <ErrorNote error={error} />
 
-      <Card className="flex h-[60vh] flex-col p-4">
-        <div className="flex-1 space-y-2 overflow-y-auto">
+      <Card className="mt-4 flex h-[min(60vh,34rem)] flex-col overflow-hidden">
+        <div className="flex-1 space-y-2.5 overflow-y-auto p-5" aria-live="polite" aria-label="訊息紀錄">
+          {messages.length === 0 && (
+            <p className="flex h-full flex-col items-center justify-center gap-2 text-center text-sm text-subtle">
+              <IconMessage aria-hidden className="text-3xl text-line-strong" />
+              還沒有訊息，說聲哈囉吧。
+            </p>
+          )}
+
           {messages.map((message) => {
             const mine = message.senderId === user.id;
             return (
               <div key={message.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${
-                    mine ? "bg-pepper text-white" : "bg-stone-100"
+                  className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm ${
+                    mine
+                      ? "rounded-br-md bg-pepper-fill text-white"
+                      : "rounded-bl-md border border-line bg-mist text-body"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{message.body}</p>
-                  <p className={`mt-0.5 text-[11px] ${mine ? "text-white/70" : "text-stone-400"}`}>
-                    {new Date(message.createdAt).toLocaleTimeString("zh-TW", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                  <p className="whitespace-pre-wrap leading-relaxed">{message.body}</p>
+                  <p className={`mt-1 text-xs tabular ${mine ? "text-white/70" : "text-subtle"}`}>
+                    <time dateTime={message.createdAt}>
+                      {new Date(message.createdAt).toLocaleTimeString("zh-TW", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </time>
                   </p>
                 </div>
               </div>
@@ -131,16 +180,18 @@ export default function ChatPage({ params }: { params: Promise<{ userId: string 
           <div ref={bottom} />
         </div>
 
-        <form onSubmit={send} className="mt-3 flex gap-2 border-t border-stone-100 pt-3">
+        <form onSubmit={send} className="flex gap-2.5 border-t border-line bg-white p-4">
           <Input
             placeholder="輸入訊息…"
             aria-label="訊息內容"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
           />
-          <Button type="submit">送出</Button>
+          <Button type="submit" disabled={!draft.trim()} icon={<IconSend />}>
+            送出
+          </Button>
         </form>
       </Card>
-    </div>
+    </PageShell>
   );
 }
