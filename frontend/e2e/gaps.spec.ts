@@ -16,7 +16,7 @@ test.describe("restaurant review replies", () => {
     await expect(page.getByText(body)).toBeVisible();
 
     await page
-      .locator("li", { hasText: body })
+      .locator("li li", { hasText: body }) // a reply is a list item inside a review
       .getByRole("button", { name: "刪除" })
       .click();
     await expect(page.getByText(body)).toHaveCount(0);
@@ -32,9 +32,9 @@ test.describe("restaurant review replies", () => {
     await page.getByLabel("回覆內容").fill(body);
     await page.getByRole("button", { name: "送出", exact: true }).click();
 
-    const reply = page.locator("li", { hasText: body });
+    const reply = page.locator("li li", { hasText: body }); // reply inside a review
     await expect(reply).toBeVisible();
-    await expect(reply.getByText("店家", { exact: true })).toBeVisible();
+    await expect(reply.getByText("店家回覆", { exact: true })).toBeVisible();
 
     await reply.getByRole("button", { name: "刪除" }).click();
   });
@@ -83,9 +83,9 @@ test.describe("audit log", () => {
 
     await expect(page).toHaveURL("/admin/audit-log");
     await expect(page.getByRole("heading", { name: "操作紀錄" })).toBeVisible();
-    await expect(page.getByText("停權會員").first()).toBeVisible();
+    await expect(page.getByText("停權會員").filter({ visible: true }).first()).toBeVisible();
     // The reason is stored as JSON and unwrapped for display.
-    await expect(page.getByText("E2E 稽核測試").first()).toBeVisible();
+    await expect(page.getByText("E2E 稽核測試").filter({ visible: true }).first()).toBeVisible();
   });
 
   test("a consumer is refused the audit log", async ({ page }) => {
@@ -155,7 +155,7 @@ test.describe("forum post editing", () => {
     await loginAs(otherPage, ACCOUNTS.owner);
     await otherPage.goto(`http://localhost:3000/forum/${id}/edit`);
 
-    await expect(otherPage.getByText("您沒有權限編輯這篇文章。")).toBeVisible();
+    await expect(otherPage.getByText("只有作者本人可以編輯這篇文章。")).toBeVisible();
     await context.close();
   });
 });

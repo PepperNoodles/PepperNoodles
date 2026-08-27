@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
-import { Button, Card, ErrorNote, Input } from "./ui";
+import { Button, Card, ErrorNote, Field, Input, TagPicker } from "./ui";
+import { IconClose, IconCrosshair, IconPlus } from "./icons";
 import type { BusinessHour, RestaurantDetail, Tag } from "@/lib/types";
 
 const DAYS = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
@@ -113,125 +114,134 @@ export function RestaurantForm({ existing }: { existing?: RestaurantDetail }) {
     }
   }
 
-  function field(name: keyof FormState, label: string, required = false, hint?: string) {
+  function field(name: keyof FormState, label: string, required = false, hint?: string, type = "text") {
     return (
-      <div>
-        <label htmlFor={name} className="mb-1 block text-sm font-medium">
-          {label}
-          {required && <span className="text-pepper"> *</span>}
-        </label>
-        <Input
-          id={name}
-          required={required}
-          value={form[name]}
-          onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-        />
-        {hint && !fieldErrors[name] && <p className="mt-1 text-xs text-stone-500">{hint}</p>}
-        {fieldErrors[name] && <p className="mt-1 text-xs text-pepper">{fieldErrors[name]}</p>}
-      </div>
+      <Field id={name} label={label} required={required} hint={hint} error={fieldErrors[name]}>
+        {(props) => (
+          <Input
+            {...props}
+            type={type}
+            value={form[name]}
+            onChange={(e) => setForm({ ...form, [name]: e.target.value })}
+          />
+        )}
+      </Field>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <Card className="space-y-4 p-6">
-        <h2 className="font-display text-lg font-bold">基本資料</h2>
-        {field("name", "餐廳名稱", true)}
-        {field("address", "地址", true, "需與其他餐廳不同；系統以地址作為唯一識別。")}
+    <form onSubmit={onSubmit} className="space-y-5">
+      <Card className="p-6 sm:p-7">
+        <h2 className="font-display text-base font-bold text-ink">基本資料</h2>
+        <div className="mt-5 space-y-5">
+          {field("name", "餐廳名稱", true)}
+          {field("address", "地址", true, "需與其他餐廳不同；系統以地址作為唯一識別。")}
 
-        <div className="flex items-end gap-3">
-          <div className="flex-1">{field("latitude", "緯度", true)}</div>
-          <div className="flex-1">{field("longitude", "經度", true)}</div>
-          <Button type="button" variant="ghost" onClick={geocode} disabled={geocoding}>
-            {geocoding ? "查詢中…" : "從地址查座標"}
-          </Button>
-        </div>
-
-        {field("contact", "聯絡電話")}
-        {field("website", "官方網站")}
-      </Card>
-
-      <Card className="p-6">
-        <h2 className="font-display text-lg font-bold">食物標籤</h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {tags.map((tag) => {
-            const active = selectedTags.includes(tag.id);
-            return (
-              <button
+          <div>
+            <div className="flex flex-wrap items-end gap-3">
+              <div className="min-w-32 flex-1">{field("latitude", "緯度", true)}</div>
+              <div className="min-w-32 flex-1">{field("longitude", "經度", true)}</div>
+              <Button
                 type="button"
-                key={tag.id}
-                aria-pressed={active}
-                onClick={() =>
-                  setSelectedTags(active ? selectedTags.filter((id) => id !== tag.id) : [...selectedTags, tag.id])
-                }
-                className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                  active ? "bg-pepper text-white" : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                }`}
+                variant="ghost"
+                onClick={geocode}
+                loading={geocoding}
+                disabled={!form.address.trim()}
+                icon={<IconCrosshair />}
               >
-                {tag.name}
-              </button>
-            );
-          })}
+                從地址查座標
+              </Button>
+            </div>
+            <p className="mt-2 text-[13px] text-subtle">
+              座標決定餐廳在地圖上的位置。填好地址後按「從地址查座標」自動帶入。
+            </p>
+          </div>
+
+          {field("contact", "聯絡電話", false, undefined, "tel")}
+          {field("website", "官方網站", false, "含 https://", "url")}
         </div>
       </Card>
 
-      <Card className="p-6">
-        <h2 className="font-display text-lg font-bold">營業時間</h2>
-        <p className="mt-1 text-xs text-stone-500">同一天可以有多個時段（例如午晚餐分開）。沒有時段的日子視為公休。</p>
-        <div className="mt-4 space-y-4">
+      <Card className="p-6 sm:p-7">
+        <h2 className="mb-5 font-display text-base font-bold text-ink">食物標籤</h2>
+        <TagPicker
+          legend="選擇這間店的料理類型"
+          tags={tags}
+          selected={selectedTags}
+          onChange={setSelectedTags}
+        />
+      </Card>
+
+      <Card className="p-6 sm:p-7">
+        <h2 className="font-display text-base font-bold text-ink">營業時間</h2>
+        <p className="mt-1.5 text-[13px] text-subtle">
+          同一天可以有多個時段（例如午晚餐分開）。沒有時段的日子視為公休。
+        </p>
+
+        <ul className="mt-5 divide-y divide-line">
           {DAYS.map((label, day) => {
             const dayHours = hours.map((h, i) => ({ ...h, index: i })).filter((h) => h.dayOfWeek === day);
             return (
-              <div key={day} className="flex flex-wrap items-center gap-2 border-b border-stone-100 pb-3">
-                <span className="w-12 shrink-0 text-sm font-medium">{label}</span>
-                {dayHours.length === 0 && <span className="text-sm text-stone-400">公休</span>}
+              <li key={day} className="flex flex-wrap items-center gap-3 py-3.5">
+                <span className="w-12 shrink-0 text-sm font-semibold text-ink">{label}</span>
+
+                {dayHours.length === 0 && <span className="text-sm text-subtle">公休</span>}
+
                 {dayHours.map((hour) => (
-                  <span key={hour.index} className="flex items-center gap-1">
+                  <span
+                    key={hour.index}
+                    className="flex items-center gap-1.5 rounded-xl border border-line bg-mist py-1 pl-2 pr-1"
+                  >
                     <input
                       type="time"
                       value={hour.opensAt.slice(0, 5)}
                       onChange={(e) => updateHour(hour.index, { opensAt: e.target.value })}
                       aria-label={`${label} 開始時間`}
-                      className="rounded border border-stone-300 px-2 py-1 text-sm"
+                      className="min-h-9 rounded-lg border border-line-strong bg-white px-2 text-sm tabular text-ink focus:border-pepper focus:outline-none focus:ring-2 focus:ring-pepper/20"
                     />
-                    <span className="text-stone-400">–</span>
+                    <span aria-hidden className="text-subtle">
+                      –
+                    </span>
                     <input
                       type="time"
                       value={hour.closesAt.slice(0, 5)}
                       onChange={(e) => updateHour(hour.index, { closesAt: e.target.value })}
                       aria-label={`${label} 結束時間`}
-                      className="rounded border border-stone-300 px-2 py-1 text-sm"
+                      className="min-h-9 rounded-lg border border-line-strong bg-white px-2 text-sm tabular text-ink focus:border-pepper focus:outline-none focus:ring-2 focus:ring-pepper/20"
                     />
                     <button
                       type="button"
                       onClick={() => setHours(hours.filter((_, i) => i !== hour.index))}
-                      className="px-1 text-stone-400 hover:text-pepper"
+                      className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-subtle transition hover:bg-danger-tint hover:text-danger"
                       aria-label={`移除 ${label} 這個時段`}
                     >
-                      ✕
+                      <IconClose />
                     </button>
                   </span>
                 ))}
+
                 <button
                   type="button"
                   onClick={() => addHour(day)}
-                  className="ml-auto text-xs text-pepper hover:underline"
+                  className="ml-auto inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-3 text-[13px] font-semibold text-pepper-ink transition hover:bg-pepper-tint sm:min-h-9"
                 >
-                  + 新增時段
+                  <IconPlus aria-hidden className="text-base" />
+                  新增時段
+                  <span className="sr-only">到{label}</span>
                 </button>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </Card>
 
       <ErrorNote error={error} />
 
       <div className="flex gap-3">
-        <Button type="submit" disabled={submitting}>
-          {submitting ? "儲存中…" : existing ? "儲存變更" : "建立餐廳"}
+        <Button type="submit" loading={submitting} size="lg">
+          {existing ? "儲存變更" : "建立餐廳"}
         </Button>
-        <Button type="button" variant="ghost" onClick={() => router.back()}>
+        <Button type="button" variant="ghost" size="lg" onClick={() => router.back()}>
           取消
         </Button>
       </div>

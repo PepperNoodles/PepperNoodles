@@ -4,7 +4,20 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, query } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Empty, ErrorNote, Input, Spinner } from "@/components/ui";
+import {
+  Button,
+  ButtonLink,
+  Empty,
+  ErrorNote,
+  Gate,
+  Input,
+  PageHeader,
+  PageShell,
+  DataTable,
+  Pagination,
+  Spinner,
+} from "@/components/ui";
+import { IconSearch } from "@/components/icons";
 import type { Page } from "@/lib/types";
 
 interface ManagedRestaurant {
@@ -47,116 +60,130 @@ export default function AdminRestaurantsPage() {
   if (authLoading || loading) return <Spinner />;
   if (!hasRole("ROLE_ADMIN")) {
     return (
-      <p className="py-16 text-center text-sm text-stone-500">
+      <Gate title="僅限管理員" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
         這個頁面只有管理員能存取。
-        <Link href="/" className="ml-1 text-pepper hover:underline">
-          回首頁
-        </Link>
-      </p>
+      </Gate>
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-6 py-10">
-      <div>
-        <Link href="/admin" className="text-sm text-stone-500 hover:text-pepper">
-          ← 回到後台
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold">餐廳管理</h1>
-        <p className="mt-1 text-sm text-stone-500">
-          可依店名、地址或店主信箱搜尋。編輯與刪除沿用一般的餐廳管理畫面，管理員本來就有權限。
-        </p>
-      </div>
+    <PageShell width="full">
+      <PageHeader
+        title="餐廳管理"
+        description="可依店名、地址或店主信箱搜尋。編輯與刪除沿用一般的餐廳管理畫面，管理員本來就有權限。"
+        back={{ href: "/admin", label: "回到後台" }}
+      />
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setPageNumber(0);
-          setApplied(search);
-        }}
-        className="flex gap-2"
-      >
-        <Input
-          placeholder="搜尋店名、地址或店主信箱…"
-          aria-label="搜尋餐廳"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <Button type="submit">搜尋</Button>
-      </form>
-
-      <ErrorNote error={error} />
-
-      {!page || page.content.length === 0 ? (
-        <Empty>找不到符合條件的餐廳。</Empty>
-      ) : (
-        <>
-          <p className="text-sm text-stone-500">共 {page.totalElements} 間</p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-stone-200 text-xs uppercase text-stone-500">
-                <tr>
-                  <th className="py-2">餐廳</th>
-                  <th className="py-2">店主</th>
-                  <th className="py-2 text-right">評論</th>
-                  <th className="py-2 text-right">評分</th>
-                  <th className="py-2 text-right">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                {page.content.map((restaurant) => (
-                  <tr key={restaurant.id} className="border-b border-stone-100 last:border-0">
-                    <td className="py-2">
-                      <Link
-                        href={`/restaurants/${restaurant.id}`}
-                        className="font-medium hover:text-pepper hover:underline"
-                      >
-                        {restaurant.name}
-                      </Link>
-                      <p className="text-xs text-stone-500">{restaurant.address}</p>
-                    </td>
-                    <td className="py-2">
-                      <Link
-                        href={`/members/${restaurant.ownerUserId}`}
-                        className="hover:text-pepper hover:underline"
-                      >
-                        {restaurant.ownerName}
-                      </Link>
-                      <p className="text-xs text-stone-400">{restaurant.ownerEmail}</p>
-                    </td>
-                    <td className="py-2 text-right">{restaurant.reviewCount}</td>
-                    <td className="py-2 text-right">
-                      {restaurant.ratingAverage ? Number(restaurant.ratingAverage).toFixed(1) : "—"}
-                    </td>
-                    <td className="py-2 text-right">
-                      <Link
-                        href={`/company/restaurants/${restaurant.id}`}
-                        className="text-xs text-pepper hover:underline"
-                      >
-                        管理
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="space-y-5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setPageNumber(0);
+            setApplied(search);
+          }}
+          className="flex flex-col gap-2.5 sm:flex-row sm:max-w-2xl"
+          role="search"
+        >
+          <div className="relative flex-1">
+            <IconSearch
+              aria-hidden
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg text-subtle"
+            />
+            <Input
+              type="search"
+              placeholder="搜尋店名、地址或店主信箱…"
+              aria-label="搜尋餐廳"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-11"
+            />
           </div>
+          <Button type="submit">搜尋</Button>
+        </form>
 
-          {page.totalPages > 1 && (
-            <div className="flex items-center justify-center gap-3">
-              <Button variant="ghost" disabled={page.first} onClick={() => setPageNumber((n) => n - 1)}>
-                上一頁
-              </Button>
-              <span className="text-sm text-stone-500">
-                {page.page + 1} / {page.totalPages}
-              </span>
-              <Button variant="ghost" disabled={page.last} onClick={() => setPageNumber((n) => n + 1)}>
-                下一頁
-              </Button>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+        <ErrorNote error={error} />
+
+        {!page || page.content.length === 0 ? (
+          <Empty icon={<IconSearch />}>找不到符合條件的餐廳。</Empty>
+        ) : (
+          <>
+            <p className="text-sm text-subtle" aria-live="polite">
+              共 {page.totalElements} 間
+            </p>
+
+            <DataTable
+              caption="後台餐廳列表"
+              rows={page.content}
+              rowKey={(r) => r.id}
+              columns={[
+                {
+                  key: "name",
+                  header: "餐廳",
+                  primary: true,
+                  cell: (r) => (
+                    <>
+                      <Link
+                        href={`/restaurants/${r.id}`}
+                        className="-mx-2 inline-flex min-h-11 items-center rounded-lg px-2 font-semibold text-ink transition hover:bg-mist hover:text-pepper-ink sm:mx-0 sm:min-h-0 sm:px-0 sm:hover:bg-transparent sm:hover:underline sm:underline-offset-2"
+                      >
+                        {r.name}
+                      </Link>
+                      <p className="mt-0.5 text-xs font-normal text-subtle">{r.address}</p>
+                    </>
+                  ),
+                },
+                {
+                  key: "owner",
+                  header: "店主",
+                  cell: (r) => (
+                    <>
+                      <Link
+                        href={`/members/${r.ownerUserId}`}
+                        className="text-body underline-offset-2 hover:text-pepper-ink hover:underline"
+                      >
+                        {r.ownerName}
+                      </Link>
+                      <p className="mt-0.5 break-words text-xs text-subtle">{r.ownerEmail}</p>
+                    </>
+                  ),
+                },
+                { key: "reviews", header: "評論", align: "right", cell: (r) => <span className="tabular">{r.reviewCount}</span> },
+                {
+                  key: "rating",
+                  header: "評分",
+                  align: "right",
+                  cell: (r) => (
+                    <span className="tabular">
+                      {r.ratingAverage ? Number(r.ratingAverage).toFixed(1) : "—"}
+                    </span>
+                  ),
+                },
+                {
+                  key: "actions",
+                  header: "操作",
+                  align: "right",
+                  cell: (r) => (
+                    <Link
+                      href={`/company/restaurants/${r.id}`}
+                      className="text-[13px] font-semibold text-pepper-ink underline-offset-2 hover:underline"
+                    >
+                      管理
+                    </Link>
+                  ),
+                },
+              ]}
+            />
+
+            <Pagination
+              page={page.page}
+              totalPages={page.totalPages}
+              first={page.first}
+              last={page.last}
+              onChange={setPageNumber}
+            />
+          </>
+        )}
+      </div>
+    </PageShell>
   );
 }

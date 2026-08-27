@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Card, Spinner } from "@/components/ui";
+import { ButtonLink, Spinner } from "@/components/ui";
+import { AuthResult } from "@/components/AuthShell";
 
 /** One click, no login — anything more is a dark pattern. */
 function Unsubscribe() {
@@ -29,25 +29,18 @@ function Unsubscribe() {
 
   if (state === "pending") return <Spinner />;
 
+  if (state === "ok") {
+    return (
+      <AuthResult title="已取消訂閱" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
+        <p>我們不會再寄電子報給您。若是誤按，隨時可以到首頁重新訂閱。</p>
+      </AuthResult>
+    );
+  }
+
   return (
-    <Card className="mx-auto my-16 max-w-md p-8 text-center">
-      {state === "ok" ? (
-        <>
-          <h1 className="text-2xl font-bold">已取消訂閱</h1>
-          <p className="mt-3 text-sm text-stone-600">
-            我們不會再寄電子報給您。若是誤按，隨時可以到首頁重新訂閱。
-          </p>
-          <Link href="/" className="mt-6 inline-block text-pepper hover:underline">
-            回首頁 →
-          </Link>
-        </>
-      ) : (
-        <>
-          <h1 className="text-2xl font-bold">取消訂閱失敗</h1>
-          <p className="mt-3 text-sm text-stone-600">{message}</p>
-        </>
-      )}
-    </Card>
+    <AuthResult tone="failure" title="取消訂閱失敗" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
+      <p>{message}</p>
+    </AuthResult>
   );
 }
 

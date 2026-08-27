@@ -4,7 +4,8 @@ import { useCallback, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
 import { Recaptcha, recaptchaEnabled } from "@/components/Recaptcha";
-import { Button, Card, ErrorNote, Input } from "@/components/ui";
+import { Button, ButtonLink, CharCount, ErrorNote, Field, Input, Textarea } from "@/components/ui";
+import { AuthResult, AuthShell } from "@/components/AuthShell";
 
 /** 聯絡我們 — open to logged-out visitors, so it is reCAPTCHA-gated. */
 export default function ContactPage() {
@@ -39,63 +40,69 @@ export default function ContactPage() {
 
   if (sent) {
     return (
-      <Card className="mx-auto my-16 max-w-md p-8 text-center">
-        <h1 className="text-2xl font-bold">訊息已送出 ✓</h1>
-        <p className="mt-3 text-sm text-stone-600">
-          感謝您的來信，我們會盡快回覆。
-        </p>
-      </Card>
+      <AuthResult title="訊息已送出" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
+        <p>感謝您的來信，我們會盡快回覆。</p>
+      </AuthResult>
     );
   }
 
   return (
-    <Card className="mx-auto my-16 max-w-lg p-8">
-      <span className="font-script text-3xl text-pepper">Get in touch</span>
-      <h1 className="text-2xl font-bold">聯絡我們</h1>
-      <p className="mt-2 text-sm text-stone-500">
-        有任何問題、建議或合作提案，都歡迎留言給我們。
-      </p>
-
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
+    <AuthShell
+      width="lg"
+      kicker="Get in touch"
+      title="聯絡我們"
+      description="有任何問題、建議或合作提案，都歡迎留言給我們。"
+    >
+      <form onSubmit={onSubmit} className="space-y-5">
         {!user && (
-          <div>
-            <label htmlFor="contactEmail" className="mb-1 block text-sm font-medium">
-              聯絡信箱 <span className="text-pepper">*</span>
-            </label>
-            <Input
-              id="contactEmail"
-              type="email"
-              required
-              value={contactEmail}
-              onChange={(e) => setContactEmail(e.target.value)}
-            />
-            <p className="mt-1 text-xs text-stone-500">我們需要這個信箱才能回覆您。</p>
-          </div>
+          <Field
+            id="contactEmail"
+            label="聯絡信箱"
+            hint="我們需要這個信箱才能回覆您。"
+            required
+          >
+            {(props) => (
+              <Input
+                {...props}
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+              />
+            )}
+          </Field>
         )}
 
         <div>
-          <label htmlFor="body" className="mb-1 block text-sm font-medium">
-            訊息內容 <span className="text-pepper">*</span>
-          </label>
-          <textarea
-            id="body"
-            required
-            rows={6}
-            maxLength={2000}
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-pepper"
-          />
-          <p className="mt-1 text-right text-xs text-stone-400">{body.length} / 2000</p>
+          <Field id="body" label="訊息內容" required>
+            {(props) => (
+              <Textarea
+                {...props}
+                rows={7}
+                maxLength={2000}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="想告訴我們什麼？"
+              />
+            )}
+          </Field>
+          <CharCount value={body} max={2000} />
         </div>
 
         <Recaptcha onToken={onToken} />
 
         <ErrorNote error={error} />
-        <Button type="submit" disabled={submitting || (recaptchaEnabled && !recaptchaToken)}>
-          {submitting ? "送出中…" : "送出訊息"}
+        <Button
+          type="submit"
+          loading={submitting}
+          disabled={recaptchaEnabled && !recaptchaToken}
+          size="lg"
+          className="w-full"
+        >
+          送出訊息
         </Button>
       </form>
-    </Card>
+    </AuthShell>
   );
 }

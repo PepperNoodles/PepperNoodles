@@ -39,8 +39,8 @@ test.describe("forum", () => {
     const id = await createPost(page, body);
     await page.goto(`/forum/${id}`);
 
-    await page.getByRole("button", { name: /☆ 收藏/ }).click();
-    await expect(page.getByRole("button", { name: /★ 已收藏/ })).toBeVisible();
+    await page.getByRole("button", { name: /^收藏/ }).click();
+    await expect(page.getByRole("button", { name: /^已收藏/ })).toBeVisible();
 
     await page.goto("/forum");
     await page.getByRole("button", { name: "我的收藏" }).click();
@@ -88,9 +88,10 @@ test.describe("member pages", () => {
     await page.getByRole("button", { name: "留言", exact: true }).click();
     await expect(page.getByText(body)).toBeVisible();
 
-    const message = page.locator("div", { hasText: body }).last();
-    await message.getByRole("button", { name: /♡/ }).click();
-    await expect(message.getByRole("button", { name: /♥ 1/ })).toBeVisible();
+    // Wall messages are list items now (they were divs inside a <ul>).
+    const message = page.locator("li", { hasText: body }).first();
+    await message.getByRole("button", { name: /^按讚/ }).click();
+    await expect(message.getByRole("button", { name: /收回讚，目前 1 個讚/ })).toBeVisible();
   });
 
   test("following and unfollowing updates the button state", async ({ page }) => {

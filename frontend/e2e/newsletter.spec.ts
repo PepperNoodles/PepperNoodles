@@ -21,7 +21,7 @@ test.describe("newsletter", () => {
     expect(confirmToken, "no confirmation link in the mail").toBeTruthy();
 
     await page.goto(`/newsletter/confirm?token=${confirmToken}`);
-    await expect(page.getByRole("heading", { name: "訂閱完成 ✓" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "訂閱完成" })).toBeVisible();
 
     // The welcome mail carries the way out.
     const unsubToken = await tokenFromMail(page, "newsletter/unsubscribe");
@@ -40,7 +40,7 @@ test.describe("newsletter", () => {
 
     const token = await tokenFromMail(page, "newsletter/confirm");
     await page.goto(`/newsletter/confirm?token=${token}`);
-    await expect(page.getByRole("heading", { name: "訂閱完成 ✓" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "訂閱完成" })).toBeVisible();
 
     await page.goto(`/newsletter/confirm?token=${token}`);
     await expect(page.getByRole("heading", { name: "確認失敗" })).toBeVisible();
@@ -80,7 +80,7 @@ test.describe("contact us", () => {
     await page.getByLabel(/訊息內容/).fill("請問如何成為企業會員？");
     await page.getByRole("button", { name: "送出訊息" }).click();
 
-    await expect(page.getByRole("heading", { name: "訊息已送出 ✓" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "訊息已送出" })).toBeVisible();
   });
 
   test("a signed-in member is not asked for an address", async ({ page }) => {
@@ -92,7 +92,7 @@ test.describe("contact us", () => {
     await page.getByLabel(/訊息內容/).fill("這是會員的提問");
     await page.getByRole("button", { name: "送出訊息" }).click();
 
-    await expect(page.getByRole("heading", { name: "訊息已送出 ✓" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "訊息已送出" })).toBeVisible();
   });
 
   test("the footer links to the contact page", async ({ page }) => {
@@ -114,7 +114,7 @@ test.describe("admin restaurant management", () => {
     await expect(page).toHaveURL("/admin/restaurants");
     await expect(page.getByRole("heading", { name: "餐廳管理" })).toBeVisible();
     await expect(page.getByText(/共 \d+ 間/)).toBeVisible();
-    await expect(page.getByText("owner.chun@peppernoodles.local").first()).toBeVisible();
+    await expect(page.getByText("owner.chun@peppernoodles.local").filter({ visible: true }).first()).toBeVisible();
   });
 
   test("searching by owner e-mail narrows the list", async ({ page }) => {

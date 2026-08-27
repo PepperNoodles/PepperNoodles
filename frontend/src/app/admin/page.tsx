@@ -1,10 +1,24 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, Empty, ErrorNote, Spinner } from "@/components/ui";
+import {
+  Badge,
+  Button,
+  ButtonLink,
+  Card,
+  Empty,
+  ErrorNote,
+  Gate,
+  PageHeader,
+  PageShell,
+  DataTable,
+  SectionHeader,
+  Spinner,
+  StatCard,
+} from "@/components/ui";
+import { IconFile, IconMail, IconStore } from "@/components/icons";
 import type { AdminDashboard, Inquiry, ManagedUser, Page } from "@/lib/types";
 
 export default function AdminPage() {
@@ -48,138 +62,151 @@ export default function AdminPage() {
   if (authLoading || loading) return <Spinner />;
   if (!hasRole("ROLE_ADMIN")) {
     return (
-      <p className="py-12 text-center text-sm text-stone-500">
+      <Gate title="僅限管理員" action={<ButtonLink href="/" variant="ghost">回首頁</ButtonLink>}>
         這個頁面只有管理員能存取。
-        <Link href="/" className="ml-1 text-red-600 hover:underline">
-          回首頁
-        </Link>
-      </p>
+      </Gate>
     );
   }
 
-  const stats: [string, number][] = dashboard
+  const stats: { label: string; value: number; tone?: "brand" }[] = dashboard
     ? [
-        ["會員總數", dashboard.totalUsers],
-        ["停權中", dashboard.suspendedUsers],
-        ["餐廳", dashboard.totalRestaurants],
-        ["商品", dashboard.totalProducts],
-        ["待付款訂單", dashboard.pendingOrders],
-        ["未處理訊息", dashboard.openInquiries],
+        { label: "會員總數", value: dashboard.totalUsers },
+        { label: "停權中", value: dashboard.suspendedUsers },
+        { label: "餐廳", value: dashboard.totalRestaurants },
+        { label: "商品", value: dashboard.totalProducts },
+        { label: "待付款訂單", value: dashboard.pendingOrders },
+        { label: "未處理訊息", value: dashboard.openInquiries, tone: "brand" },
       ]
     : [];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="mr-auto text-2xl font-bold">後台</h1>
-        <Link href="/admin/restaurants">
-          <Button variant="ghost">餐廳管理</Button>
-        </Link>
-        <Link href="/admin/audit-log">
-          <Button variant="ghost">操作紀錄</Button>
-        </Link>
-      </div>
-      <ErrorNote error={error} />
+    <PageShell>
+      <PageHeader
+        kicker="Back office"
+        title="後台"
+        actions={
+          <>
+            <ButtonLink href="/admin/restaurants" variant="ghost" icon={<IconStore />}>
+              餐廳管理
+            </ButtonLink>
+            <ButtonLink href="/admin/audit-log" variant="ghost" icon={<IconFile />}>
+              操作紀錄
+            </ButtonLink>
+          </>
+        }
+      />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {stats.map(([label, value]) => (
-          <Card key={label} className="p-4 text-center">
-            <p className="text-2xl font-bold">{value}</p>
-            <p className="mt-1 text-xs text-stone-500">{label}</p>
-          </Card>
-        ))}
-      </div>
+      <div className="space-y-12">
+        <ErrorNote error={error} />
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">聯絡我們（未處理）</h2>
-        {inquiries.length === 0 ? (
-          <Empty>沒有待處理的訊息。</Empty>
-        ) : (
-          <ul className="space-y-2">
-            {inquiries.map((inquiry) => (
-              <Card key={inquiry.id} className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">
-                      {inquiry.submitterName ?? inquiry.contactEmail ?? "訪客"}
-                    </p>
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-stone-600 dark:text-stone-400">
-                      {inquiry.body}
-                    </p>
-                    <p className="mt-1 text-xs text-stone-400">
-                      {new Date(inquiry.createdAt).toLocaleString("zh-TW")}
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    onClick={() =>
-                      act(() => api.post(`/admin/inquiries/${inquiry.id}/resolve`, { resolutionNote: "已處理" }))
-                    }
-                  >
-                    標記已處理
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">會員管理</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-stone-200 text-xs uppercase text-stone-500 dark:border-stone-800">
-              <tr>
-                <th className="py-2">信箱</th>
-                <th className="py-2">名稱</th>
-                <th className="py-2">角色</th>
-                <th className="py-2">狀態</th>
-                <th className="py-2 text-right">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id} className="border-b border-stone-100 dark:border-stone-900">
-                  <td className="py-2">{u.email}</td>
-                  <td className="py-2">{u.displayName}</td>
-                  <td className="py-2 text-xs text-stone-500">
-                    {u.roles.map((r) => r.replace("ROLE_", "")).join(", ")}
-                  </td>
-                  <td className="py-2">
-                    {u.suspended ? (
-                      <span className="rounded bg-red-100 px-2 py-0.5 text-xs text-red-700 dark:bg-red-950 dark:text-red-300">
-                        停權
-                      </span>
-                    ) : u.enabled ? (
-                      <span className="text-xs text-green-600">正常</span>
-                    ) : (
-                      <span className="text-xs text-stone-400">未驗證</span>
-                    )}
-                  </td>
-                  <td className="py-2 text-right">
-                    {u.suspended ? (
-                      <Button variant="ghost" onClick={() => act(() => api.post(`/admin/users/${u.id}/reinstate`))}>
-                        恢復
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          const reason = prompt("停權原因：");
-                          if (reason) act(() => api.post(`/admin/users/${u.id}/suspend`, { reason }));
-                        }}
-                      >
-                        停權
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {stats.map((stat) => (
+            <StatCard key={stat.label} label={stat.label} value={stat.value} tone={stat.tone} />
+          ))}
         </div>
-      </section>
-    </div>
+
+        {/* ---------- Inquiries ---------- */}
+        <section>
+          <SectionHeader title="聯絡我們" count={inquiries.length} description="尚未處理的訪客訊息。" />
+          {inquiries.length === 0 ? (
+            <Empty icon={<IconMail />}>沒有待處理的訊息。</Empty>
+          ) : (
+            <ul className="space-y-3">
+              {inquiries.map((inquiry) => (
+                <Card key={inquiry.id} as="li" className="p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <p className="break-words text-sm font-semibold text-ink">
+                        {inquiry.submitterName ?? inquiry.contactEmail ?? "訪客"}
+                      </p>
+                      <p className="measure mt-2 whitespace-pre-wrap text-sm leading-relaxed text-body">
+                        {inquiry.body}
+                      </p>
+                      <p className="mt-2 text-xs tabular text-subtle">
+                        <time dateTime={inquiry.createdAt}>
+                          {new Date(inquiry.createdAt).toLocaleString("zh-TW")}
+                        </time>
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        act(() =>
+                          api.post(`/admin/inquiries/${inquiry.id}/resolve`, { resolutionNote: "已處理" }),
+                        )
+                      }
+                    >
+                      標記已處理
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* ---------- Users ---------- */}
+        <section>
+          <SectionHeader title="會員管理" count={users.length} />
+          <DataTable
+            caption="會員列表"
+            rows={users}
+            rowKey={(u) => u.id}
+            columns={[
+              { key: "email", header: "信箱", primary: true, cell: (u) => u.email },
+              { key: "name", header: "名稱", cell: (u) => u.displayName },
+              {
+                key: "roles",
+                header: "角色",
+                cell: (u) => (
+                  <span className="text-xs text-subtle">
+                    {u.roles.map((r) => r.replace("ROLE_", "")).join(", ")}
+                  </span>
+                ),
+              },
+              {
+                key: "status",
+                header: "狀態",
+                cell: (u) =>
+                  u.suspended ? (
+                    <Badge tone="danger">停權</Badge>
+                  ) : u.enabled ? (
+                    <Badge tone="success">正常</Badge>
+                  ) : (
+                    <Badge>未驗證</Badge>
+                  ),
+              },
+              {
+                key: "actions",
+                header: "操作",
+                align: "right",
+                cell: (u) =>
+                  u.suspended ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => act(() => api.post(`/admin/users/${u.id}/reinstate`))}
+                    >
+                      恢復
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const reason = prompt(`停權「${u.displayName}」的原因：`);
+                        if (reason) act(() => api.post(`/admin/users/${u.id}/suspend`, { reason }));
+                      }}
+                    >
+                      停權
+                    </Button>
+                  ),
+              },
+            ]}
+          />
+        </section>
+      </div>
+    </PageShell>
   );
 }

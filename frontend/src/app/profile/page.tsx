@@ -4,8 +4,28 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
-import { Button, Card, ErrorNote, Input, Spinner, TagPill } from "@/components/ui";
+import {
+  Button,
+  ButtonLink,
+  Card,
+  Empty,
+  ErrorNote,
+  Field,
+  FilterChip,
+  Gate,
+  Input,
+  PageHeader,
+  PageShell,
+  SectionHeader,
+  Spinner,
+  Stars,
+  SuccessNote,
+  TagPill,
+} from "@/components/ui";
+import { IconHeart, IconMapPin, IconUpload, IconUser } from "@/components/icons";
 import type { Page, RestaurantSummary, Tag, UserProfile } from "@/lib/types";
+
+const LABELS = { realName: "姓名", nickname: "暱稱", phone: "手機", location: "居住地區" } as const;
 
 export default function ProfilePage() {
   const { user, loading: authLoading, refreshUser } = useAuth();
@@ -14,10 +34,13 @@ export default function ProfilePage() {
   const [favourites, setFavourites] = useState<RestaurantSummary[]>([]);
   const [error, setError] = useState<unknown>(null);
   const [saved, setSaved] = useState(false);
+  const [passwordChanged, setPasswordChanged] = useState(false);
   const [form, setForm] = useState({ realName: "", nickname: "", phone: "", location: "" });
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [passwords, setPasswords] = useState({ currentPassword: "", newPassword: "" });
   const [uploading, setUploading] = useState(false);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savingPassword, setSavingPassword] = useState(false);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -44,13 +67,9 @@ export default function ProfilePage() {
   if (authLoading) return <Spinner />;
   if (!user) {
     return (
-      <p className="py-12 text-center text-sm text-stone-500">
-        請先{" "}
-        <Link href="/login?next=/profile" className="text-red-600 hover:underline">
-          登入
-        </Link>
-        。
-      </p>
+      <Gate title="請先登入" action={<ButtonLink href="/login?next=/profile">前往登入</ButtonLink>}>
+        登入後才能查看與編輯個人資料。
+      </Gate>
     );
   }
   if (!profile) return <Spinner />;
@@ -59,12 +78,15 @@ export default function ProfilePage() {
     event.preventDefault();
     setError(null);
     setSaved(false);
+    setSavingProfile(true);
     try {
       await api.put("/users/me", { ...form, foodTagIds: selectedTags });
       await refreshUser();
       setSaved(true);
     } catch (e) {
       setError(e);
+    } finally {
+      setSavingProfile(false);
     }
   }
 
@@ -88,163 +110,221 @@ export default function ProfilePage() {
   async function changePassword(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
+    setPasswordChanged(false);
+    setSavingPassword(true);
     try {
       await api.put("/users/me/password", passwords);
       setPasswords({ currentPassword: "", newPassword: "" });
-      alert("密碼已更新，其他裝置的登入已全部登出。");
+      // Was a window.alert(), which blocks the page and cannot be styled.
+      setPasswordChanged(true);
     } catch (e) {
       setError(e);
+    } finally {
+      setSavingPassword(false);
     }
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-6 py-10">
-      <h1 className="text-2xl font-bold">個人資料</h1>
-      <ErrorNote error={error} />
-      {saved && <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">已儲存 ✓</p>}
+    <PageShell>
+      <PageHeader kicker="Your account" title="個人資料" />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="p-6 lg:col-span-2">
-          <h2 className="font-semibold">大頭貼</h2>
-          <div className="mt-4 flex flex-wrap items-center gap-5">
-            {profile.avatarUrl ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={profile.avatarUrl}
-                alt="目前的大頭貼"
-                className="h-24 w-24 rounded-full object-cover"
-              />
-            ) : (
-              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-stone-100 text-4xl">
-                🍜
-              </div>
-            )}
-            <div>
+      <div className="space-y-5">
+        <ErrorNote error={error} />
+        {saved && <SuccessNote>個人資料已儲存。</SuccessNote>}
+        {passwordChanged && <SuccessNote>密碼已更新，其他裝置的登入已全部登出。</SuccessNote>}
+      </div>
+
+      {/* ---------- Avatar ---------- */}
+      <Card className="mt-6 p-6">
+        <h2 className="font-display text-base font-bold text-ink">大頭貼</h2>
+        <div className="mt-5 flex flex-wrap items-center gap-6">
+          {profile.avatarUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={profile.avatarUrl}
+              alt="目前的大頭貼"
+              className="h-24 w-24 shrink-0 rounded-full object-cover ring-1 ring-line"
+            />
+          ) : (
+            <span
+              aria-hidden
+              className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-mist text-4xl text-line-strong ring-1 ring-line"
+            >
+              <IconUser />
+            </span>
+          )}
+          <div>
+            {/*
+              A bare <input type=file> renders as an unstyled OS button that
+              matches nothing else on the page. The input stays (it is the real
+              control, and keyboard-focusable through the label) but is visually
+              replaced by the label.
+            */}
+            <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-line-strong bg-white px-5 font-display text-sm font-bold uppercase tracking-wide text-ink transition hover:border-ink hover:bg-mist has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-pepper">
+              <IconUpload aria-hidden className="text-base" />
+              {uploading ? "上傳中…" : "選擇圖片"}
               <input
                 type="file"
                 accept="image/*"
                 aria-label="上傳大頭貼"
                 disabled={uploading}
                 onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])}
-                className="text-sm"
+                className="sr-only"
               />
-              <p className="mt-2 text-xs text-stone-500">
-                {uploading ? "上傳中…" : "JPG 或 PNG，建議 400×400 以上。"}
-              </p>
-            </div>
+            </label>
+            <p className="mt-2.5 text-[13px] text-subtle">JPG 或 PNG，建議 400×400 以上。</p>
           </div>
-        </Card>
+        </div>
+      </Card>
 
-        <Card className="p-6">
-          <h2 className="font-semibold">基本資料</h2>
-          <form onSubmit={saveProfile} className="mt-4 space-y-3">
-            <div>
-              <label className="mb-1 block text-sm">電子信箱</label>
-              <Input value={profile.email} disabled />
+      <div className="mt-5 grid gap-5 lg:grid-cols-3">
+        {/* ---------- Details ---------- */}
+        <Card className="p-6 lg:col-span-2">
+          <h2 className="font-display text-base font-bold text-ink">基本資料</h2>
+          <form onSubmit={saveProfile} className="mt-5 space-y-5">
+            <Field id="email" label="電子信箱" hint="信箱不能修改。">
+              {(props) => <Input {...props} value={profile.email} disabled />}
+            </Field>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              {(["realName", "nickname", "phone", "location"] as const).map((key) => (
+                <Field key={key} id={key} label={LABELS[key]}>
+                  {(props) => (
+                    <Input
+                      {...props}
+                      type={key === "phone" ? "tel" : "text"}
+                      value={form[key]}
+                      onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                    />
+                  )}
+                </Field>
+              ))}
             </div>
-            {(["realName", "nickname", "phone", "location"] as const).map((key) => (
-              <div key={key}>
-                <label htmlFor={key} className="mb-1 block text-sm">
-                  {{ realName: "姓名", nickname: "暱稱", phone: "手機", location: "居住地區" }[key]}
-                </label>
-                <Input id={key} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} />
-              </div>
-            ))}
 
-            <div>
-              <span className="mb-2 block text-sm">興趣標籤</span>
+            <fieldset>
+              <legend className="mb-2.5 text-sm font-semibold text-ink">興趣標籤</legend>
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => {
                   const active = selectedTags.includes(tag.id);
                   return (
-                    <button
-                      type="button"
+                    <FilterChip
                       key={tag.id}
-                      aria-pressed={active}
+                      active={active}
                       onClick={() =>
                         setSelectedTags(
                           active ? selectedTags.filter((id) => id !== tag.id) : [...selectedTags, tag.id],
                         )
                       }
-                      className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                        active
-                          ? "bg-red-600 text-white"
-                          : "bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300"
-                      }`}
                     >
                       {tag.name}
-                    </button>
+                    </FilterChip>
                   );
                 })}
               </div>
-            </div>
+            </fieldset>
 
-            <Button type="submit">儲存</Button>
+            <Button type="submit" loading={savingProfile}>
+              儲存
+            </Button>
           </form>
         </Card>
 
-        <div className="mx-auto max-w-7xl space-y-6 px-6 py-10">
+        {/* ---------- Password + membership ---------- */}
+        <div className="space-y-5">
           <Card className="p-6">
-            <h2 className="font-semibold">修改密碼</h2>
-            <form onSubmit={changePassword} className="mt-4 space-y-3">
-              <Input
-                type="password"
+            <h2 className="font-display text-base font-bold text-ink">修改密碼</h2>
+            <form onSubmit={changePassword} className="mt-5 space-y-4">
+              <Field id="currentPassword" label="目前的密碼" required>
+                {(props) => (
+                  <Input
+                    {...props}
+                    type="password"
+                    autoComplete="current-password"
+                    value={passwords.currentPassword}
+                    onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
+                  />
+                )}
+              </Field>
+              <Field
+                id="newPassword"
+                label="新密碼"
+                hint="至少 8 碼，需包含英文字母與數字。"
                 required
-                placeholder="目前的密碼"
-                aria-label="目前的密碼"
-                value={passwords.currentPassword}
-                onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-              />
-              <Input
-                type="password"
-                required
-                placeholder="新密碼"
-                aria-label="新密碼"
-                value={passwords.newPassword}
-                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-              />
-              <Button type="submit">更新密碼</Button>
+              >
+                {(props) => (
+                  <Input
+                    {...props}
+                    type="password"
+                    autoComplete="new-password"
+                    value={passwords.newPassword}
+                    onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+                  />
+                )}
+              </Field>
+              <Button type="submit" loading={savingPassword} className="w-full">
+                更新密碼
+              </Button>
             </form>
           </Card>
 
           {profile.stats && (
             <Card className="p-6">
-              <h2 className="font-semibold">會員狀態</h2>
-              <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                <dt className="text-stone-500">等級</dt>
-                <dd>{profile.stats.tier}</dd>
-                <dt className="text-stone-500">登入次數</dt>
-                <dd>{profile.stats.loginCount}</dd>
-                <dt className="text-stone-500">購買次數</dt>
-                <dd>{profile.stats.purchaseCount}</dd>
+              <h2 className="font-display text-base font-bold text-ink">會員狀態</h2>
+              <dl className="mt-4 space-y-2.5 text-sm">
+                {[
+                  ["等級", profile.stats.tier],
+                  ["登入次數", profile.stats.loginCount],
+                  ["購買次數", profile.stats.purchaseCount],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex justify-between gap-3">
+                    <dt className="text-subtle">{label}</dt>
+                    <dd className="font-semibold tabular text-ink">{value}</dd>
+                  </div>
+                ))}
               </dl>
             </Card>
           )}
         </div>
       </div>
 
-      <section>
-        <h2 className="mb-3 text-xl font-semibold">我的收藏</h2>
+      {/* ---------- Favourites ---------- */}
+      <section className="mt-14">
+        <SectionHeader title="我的收藏" count={favourites.length} />
         {favourites.length === 0 ? (
-          <p className="text-sm text-stone-500">還沒有收藏任何餐廳。</p>
+          <Empty
+            icon={<IconHeart />}
+            action={<ButtonLink href="/restaurants" variant="ghost">去找餐廳</ButtonLink>}
+          >
+            還沒有收藏任何餐廳。看到喜歡的店，按下收藏就會出現在這裡。
+          </Empty>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {favourites.map((restaurant) => (
-              <Link key={restaurant.id} href={`/restaurants/${restaurant.id}`}>
-                <Card className="h-full p-4 transition hover:shadow-md">
-                  <h3 className="font-semibold">{restaurant.name}</h3>
-                  <p className="mt-1 text-sm text-stone-500">{restaurant.address}</p>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {restaurant.tags.slice(0, 3).map((tag) => (
-                      <TagPill key={tag.id}>{tag.name}</TagPill>
-                    ))}
-                  </div>
-                </Card>
-              </Link>
+              <li key={restaurant.id} className="flex">
+                <Link href={`/restaurants/${restaurant.id}`} className="group w-full">
+                  <Card interactive className="h-full p-5">
+                    <h3 className="font-display text-base font-bold text-ink transition group-hover:text-pepper-ink">
+                      {restaurant.name}
+                    </h3>
+                    <p className="mt-1.5 flex items-start gap-1.5 text-sm text-subtle">
+                      <IconMapPin aria-hidden className="mt-0.5 shrink-0 text-base" />
+                      {restaurant.address}
+                    </p>
+                    <div className="mt-3">
+                      <Stars average={restaurant.rating.average} count={restaurant.rating.reviewCount} />
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {restaurant.tags.slice(0, 3).map((tag) => (
+                        <TagPill key={tag.id}>{tag.name}</TagPill>
+                      ))}
+                    </div>
+                  </Card>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
-    </div>
+    </PageShell>
   );
 }

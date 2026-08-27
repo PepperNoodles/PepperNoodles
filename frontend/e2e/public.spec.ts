@@ -6,7 +6,7 @@ test.describe("public browsing", () => {
     await page.goto("/");
 
     await expect(page.getByRole("heading", { name: "走吧!美食之旅!" })).toBeVisible();
-    await expect(page.getByText("Explore the Food")).toBeVisible();
+    await expect(page.getByRole("banner").or(page.locator("section").first()).getByText("Explore the Food")).toBeVisible();
 
     // Sections restored from the 2021 index.jsp, each backed by real data.
     for (const heading of ["熱門地點", "如何搜尋", "客戶評論", "最新餐廳"]) {
@@ -17,7 +17,7 @@ test.describe("public browsing", () => {
   test("the hero search sends the visitor to the restaurant list", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByLabel("搜尋", { exact: true }).fill("春水堂");
+    await page.getByLabel("搜尋餐廳或商品").fill("春水堂");
     await page.getByRole("button", { name: "Search" }).click();
 
     await expect(page).toHaveURL(/\/restaurants\?q=/);
