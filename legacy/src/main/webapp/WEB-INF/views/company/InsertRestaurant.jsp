@@ -533,7 +533,7 @@ p {
 	</script>
 
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap"
+		src="https://maps.googleapis.com/maps/api/js?key=***REMOVED-GOOGLE-MAPS-API-KEY***&callback=initMap"
 		async defer>
 		
 	</script>

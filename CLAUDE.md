@@ -73,12 +73,14 @@ bin/                                       committed Eclipse build output (278 f
 
 These are established facts about the current code, verified in-tree. Do not re-derive them.
 
-### 3.1 Security — leaked credentials (resolved 2026-08-16)
+### 3.1 Security — leaked credentials
 
-The 2021 codebase committed live credentials to a **public** repo. All of them were
-**revoked by the owner and purged from git history** on 2026-08-16 via
-`git filter-repo --replace-text`, which rewrote all 454 commits across all 25 branches.
-Their former values now read `***REMOVED-…***` throughout history.
+The 2021 codebase committed live credentials to a **public** repo. Every secret in the
+table below except the Google Maps key was **revoked by the owner and purged from git
+history** on 2026-08-16 via `git filter-repo --replace-text`, which rewrote all 454
+commits across all 25 branches. Their former values now read `***REMOVED-…***`
+throughout history. The Google Maps key was not on that replace-text list and so
+survived the rewrite.
 
 | Secret | Was in | Status |
 |---|---|---|
@@ -87,6 +89,7 @@ Their former values now read `***REMOVED-…***` throughout history.
 | reCAPTCHA site key + secret | `application.properties` | purged — **regenerate before enabling reCAPTCHA** |
 | MSSQL `watcher` password | `application.properties` | purged (MSSQL is gone entirely) |
 | Spring Security in-memory `sa/sa123456` | `application.properties` | gone with the legacy config |
+| Google Maps JS API key | `views/company/{Insert,Update}Restaurant*.jsp` | **missed by the 2026-08-16 purge** — placeholdered in HEAD 2026-08-27, still live in history (GitHub secret-scanning alert #1). Delete the key in Google Cloud Console; the new stack uses OSM + Leaflet and needs no Google key. |
 
 > ECPay's `2000132` / `5294y06JbISpM5x9` / `v77hoKGq4kWxNNIS` in `payment_conf.xml` are
 > **not** a leak — they are ECPay's published stage-test credentials. Replace them with
