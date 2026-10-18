@@ -3,6 +3,8 @@
 .env.*
 !.env.example
 .mcp.json
+# local DB dumps (user accounts, password hashes, tokens)
+/local-db-data-*.sql
 
 # --- Java / Maven ---
 target/

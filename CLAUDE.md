@@ -206,6 +206,33 @@ Installed locally: Supabase CLI 2.109.1, Node v22.17.0, Maven 3.9.9,
 JDKs 25.0.1 / 24 / 17 / 11. **Maven's own `java` is JDK 23**, so always pass
 `JAVA_HOME` as shown above.
 
+### Local data and Docker
+
+- **Images and containers are disposable.** Every container in the stack runs a
+  public Supabase image from `public.ecr.aws/supabase/`. Nothing is built locally.
+  Deleting the containers or images is safe, and `supabase start` re-pulls and
+  recreates them. The containers were all removed on 2026-10-18 to free disk.
+- **The data is not.** It lives only in two Docker volumes on this Mac:
+  `supabase_db_PepperNoodles` (Postgres, ~315 MB) and `supabase_storage_PepperNoodles`
+  (uploaded files). The project is not `supabase link`ed to a hosted project, so
+  there is no cloud copy. Schema and seed are in git (`supabase/migrations/`,
+  `seed.sql`), so only data added by hand is at risk.
+- **`supabase stop --no-backup`, `docker volume rm` or `docker volume prune` destroy
+  the data.** Plain `supabase stop` and removing containers do not.
+- **Data dump from 2026-10-18:** `local-db-data-2026-10-18.sql` at the repo root,
+  data-only, covering `public`, `auth`, `storage` (metadata only) and
+  `supabase_migrations`. It holds user accounts, password hashes and tokens, and
+  is gitignored by `/local-db-data-*.sql`. **Never commit it** (not even with `git add -f`).
+- **Restoring it:** run `supabase start` (or `supabase db reset`) first so the tables
+  exist, then load it with FK triggers off, because `wall_messages` has circular
+  foreign keys:
+  ```bash
+  psql "postgresql://postgres:postgres@127.0.0.1:55322/postgres" \
+    -c "SET session_replication_role = replica;" -f local-db-data-2026-10-18.sql
+  ```
+  After `db reset`, `seed.sql` rows already exist and will collide with the dump.
+  Truncate the seeded tables first or restore onto an empty schema.
+
 ---
 
 ## 4a. Gotchas already hit (do not rediscover these)
